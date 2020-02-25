@@ -1,0 +1,3 @@
+[submodule "docs/source/pjproject"]
+	path = docs/source/pjproject
+	url = https://github.com/bennylp/pjproject.git
