@@ -12,9 +12,34 @@
 #
 import os
 import sys
+import subprocess
+
 # sys.path.insert(0, os.path.abspath('.'))
 
 #sys.path.append( "/home/me/docproj/ext/breathe/" )
+
+# -- Run doxygen and stuff if were in RTD ------------------------------------
+is_in_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
+if is_in_rtd:
+    if os.path.exists('source/'):
+        os.chdir('source')
+    
+    for doxy_dir in ['pjlib', 'pjlib-util', 'pjnath', 'pjmedia', 'pjsip']:
+        cmd = f'cd pjproject{os.sep}{doxy_dir} && doxygen docs{os.sep}doxygen.cfg'
+        print(f'==> {cmd}')
+        rc = subprocess.call(cmd, shell=True)
+        if rc:
+            sys.exit(rc)
+            
+        api_dir = 'pjlib_util' if doxy_dir=='pjlib-util' else doxy_dir
+        cmd = f'breathe-apidoc -f -p {api_dir} ' \
+              f'-o api{os.sep}generated{os.sep}{api_dir} ' \
+              f'pjproject{os.sep}{doxy_dir}{os.sep}docs{os.sep}xml'
+        print(f'==> {cmd}')
+        rc = subprocess.call(cmd, shell=True)
+        if rc:
+            sys.exit(rc)
 
 
 # -- Project information -----------------------------------------------------
