@@ -38,8 +38,11 @@ extensions = [
 ]
 
 breathe_projects = { 
-    "pjlib": "../../../pjproject-bennylp/pjlib/docs/xml", 
-    "pjlib-util": "../../../pjproject-bennylp/pjlib-util/docs/xml",
+    "pjlib": "pjproject/pjlib/docs/xml", 
+    "pilib_util": "pjproject/pjlib-util/docs/xml",
+    "pjnath": "pjproject/pjnath/docs/xml",
+    "pjmedia": "pjproject/pjmedia/docs/xml",
+    "pjsip": "pjproject/pjsip/docs/xml",
 }
 
 
@@ -49,7 +52,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['pjproject/*', '*_8c']
 
 
 # -- Options for HTML output -------------------------------------------------

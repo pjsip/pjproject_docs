@@ -1,8 +1,8 @@
-PJLIB File list
+PJLIB Headers
 =================
 
 .. toctree::
    :glob:
 
-   pjlib/file/*h
+   generated/pjlib/file/*h
    
