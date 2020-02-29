@@ -1,6 +1,6 @@
 
 
-PJSUA2 - C++/Android/iOS/Py
+PJSUA2 - C++/Android/iOS/Python
 ****************************
 
 endpoint.hpp

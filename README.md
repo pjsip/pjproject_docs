@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains configurations to generate https://pjsip.readthedocs.io site.
+This repository contains source and configuration files to generate https://pjsip.readthedocs.io site.
 
 ### Directory Layout
 

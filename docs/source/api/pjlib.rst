@@ -72,9 +72,9 @@ API Reference
 Basic Types and Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- :doc:`Configs & Macros <generated/generated/pjlib/group/group__pj__config>`
-- :doc:`Basic Types and Init/Shutdown Functions <generated/generated/pjlib/group/group__PJ__BASIC>`
-- :doc:`DLL Build Target <generated/generated/pjlib/group/group__pj__dll__target>`
+- :doc:`Configs & Macros <generated/pjlib/group/group__pj__config>`
+- :doc:`Basic Types and Init/Shutdown Functions <generated/pjlib/group/group__PJ__BASIC>`
+- :doc:`DLL Build Target <generated/pjlib/group/group__pj__dll__target>`
 
 
 Infrastructure
@@ -82,23 +82,23 @@ Infrastructure
 
 - Error Number Management
 
-  - :doc:`Errno Framework <generated/generated/pjlib/group/group__pj__errno>`
-  - :doc:`Standard Error Constants <generated/generated/pjlib/group/group__pj__errnum>`
+  - :doc:`Errno Framework <generated/pjlib/group/group__pj__errno>`
+  - :doc:`Standard Error Constants <generated/pjlib/group/group__pj__errnum>`
 
-- :doc:`Ctype <generated/generated/pjlib/group/group__pj__ctype>`
-- :doc:`Logging <generated/generated/pjlib/group/group__PJ__LOG>`
-- :doc:`Assertion <generated/generated/pjlib/group/group__pj__assert>`
-- :doc:`Math <generated/generated/pjlib/group/group__pj__math>`
-- :doc:`Exception Handling <generated/generated/pjlib/group/group__PJ__EXCEPT>`
+- :doc:`Ctype <generated/pjlib/group/group__pj__ctype>`
+- :doc:`Logging <generated/pjlib/group/group__PJ__LOG>`
+- :doc:`Assertion <generated/pjlib/group/group__pj__assert>`
+- :doc:`Math <generated/pjlib/group/group__pj__math>`
+- :doc:`Exception Handling <generated/pjlib/group/group__PJ__EXCEPT>`
 
 
 Data structure
 ^^^^^^^^^^^^^^^
 
-- :doc:`Array <generated/generated/pjlib/group/group__PJ__ARRAY>` 
-- :doc:`Hash Table <generated/generated/pjlib/group/group__PJ__HASH>`
-- :doc:`Linked List <generated/generated/pjlib/group/group__PJ__LIST>`
-- :doc:`RB Tree <generated/generated/pjlib/group/group__PJ__RBTREE>`
+- :doc:`Array <generated/pjlib/group/group__PJ__ARRAY>` 
+- :doc:`Hash Table <generated/pjlib/group/group__PJ__HASH>`
+- :doc:`Linked List <generated/pjlib/group/group__PJ__LIST>`
+- :doc:`RB Tree <generated/pjlib/group/group__PJ__RBTREE>`
 
 
 Network
@@ -106,32 +106,32 @@ Network
 
 - Address Resolution
 
-  - :doc:`IP Helper <generated/generated/pjlib/group/group__pj__ip__helper>`
-  - :doc:`Address Resolution <generated/generated/pjlib/group/group__pj__addr__resolve>`
+  - :doc:`IP Helper <generated/pjlib/group/group__pj__ip__helper>`
+  - :doc:`Address Resolution <generated/pjlib/group/group__pj__addr__resolve>`
 
 - Network I/O
 
-  - :doc:`Socket <generated/generated/pjlib/group/group__PJ__SOCK>`
-  - :doc:`select() Abstraction <generated/generated/pjlib/group/group__PJ__SOCK__SELECT>`
-  - :doc:`Active Socket <generated/generated/pjlib/group/group__PJ__ACTIVESOCK>`
-  - :doc:`IOQueue <generated/generated/pjlib/group/group__PJ__IOQUEUE>`
+  - :doc:`Socket <generated/pjlib/group/group__PJ__SOCK>`
+  - :doc:`select() Abstraction <generated/pjlib/group/group__PJ__SOCK__SELECT>`
+  - :doc:`Active Socket <generated/pjlib/group/group__PJ__ACTIVESOCK>`
+  - :doc:`IOQueue <generated/pjlib/group/group__PJ__IOQUEUE>`
   
-- :doc:`SSL Socket <generated/generated/pjlib/group/group__PJ__SSL__SOCK>`
+- :doc:`SSL Socket <generated/pjlib/group/group__PJ__SSL__SOCK>`
 
 File
 ^^^^^^^^^^
-- :doc:`File Access <generated/generated/pjlib/group/group__PJ__FILE__ACCESS>`
-- :doc:`File I/O <generated/generated/pjlib/group/group__PJ__FILE__IO>`
+- :doc:`File Access <generated/pjlib/group/group__PJ__FILE__ACCESS>`
+- :doc:`File I/O <generated/pjlib/group/group__PJ__FILE__IO>`
 
 
 Memory Management
 ^^^^^^^^^^^^^^^^^^^^^
-- :doc:`Introduction to Memory Pool <generated/generated/pjlib/group/group__PJ__POOL__GROUP>`
-- :doc:`Pool <generated/generated/pjlib/group/group__PJ__POOL>`
-- :doc:`Pool on Fixed Buffer <generated/generated/pjlib/group/group__PJ__POOL__BUFFER>`
-- :doc:`Caching Pool <generated/generated/pjlib/group/group__PJ__CACHING__POOL>`
+- :doc:`Introduction to Memory Pool <generated/pjlib/group/group__PJ__POOL__GROUP>`
+- :doc:`Pool <generated/pjlib/group/group__PJ__POOL>`
+- :doc:`Pool on Fixed Buffer <generated/pjlib/group/group__PJ__POOL__BUFFER>`
+- :doc:`Caching Pool <generated/pjlib/group/group__PJ__CACHING__POOL>`
 
-  - :doc:`Pool Factory Concept <generated/generated/pjlib/group/group__PJ__POOL__FACTORY>`
+  - :doc:`Pool Factory Concept <generated/pjlib/group/group__PJ__POOL__FACTORY>`
 
 
 
@@ -140,52 +140,52 @@ String & Unicode
 String in PJLIB is non-zero terminated, and represented with ``pj_str_t``. A full
 set of API is provided to manipulate such strings.
 
-- :doc:`String Manipulations <generated/generated/pjlib/group/group__PJ__PSTR>`
-- :doc:`Unicode Helper <generated/generated/pjlib/group/group__PJ__UNICODE>`
+- :doc:`String Manipulations <generated/pjlib/group/group__PJ__PSTR>`
+- :doc:`Unicode Helper <generated/pjlib/group/group__PJ__UNICODE>`
 
 
 
 Multithreading and Concurrency
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- :doc:`Thread <generated/generated/pjlib/group/group__PJ__THREAD>`
+- :doc:`Thread <generated/pjlib/group/group__PJ__THREAD>`
 - Concurrency
 
-  - :doc:`Atomic Operation <generated/generated/pjlib/group/group__PJ__ATOMIC>`
-  - :doc:`Critical Section <generated/generated/pjlib/group/group__PJ__CRIT__SEC>`
-  - :doc:`Mutex <generated/generated/pjlib/group/group__PJ__MUTEX>`
-  - :doc:`RW Mutex <generated/generated/pjlib/group/group__PJ__RW__MUTEX>`
-  - :doc:`Semaphore <generated/generated/pjlib/group/group__PJ__SEM>`
-  - :doc:`Lock <generated/generated/pjlib/group/group__PJ__LOCK>`
-  - :doc:`Group Lock <generated/generated/pjlib/group/group__PJ__GRP__LOCK>`
-  - :doc:`Event <generated/generated/pjlib/group/group__PJ__EVENT>`
+  - :doc:`Atomic Operation <generated/pjlib/group/group__PJ__ATOMIC>`
+  - :doc:`Critical Section <generated/pjlib/group/group__PJ__CRIT__SEC>`
+  - :doc:`Mutex <generated/pjlib/group/group__PJ__MUTEX>`
+  - :doc:`RW Mutex <generated/pjlib/group/group__PJ__RW__MUTEX>`
+  - :doc:`Semaphore <generated/pjlib/group/group__PJ__SEM>`
+  - :doc:`Lock <generated/pjlib/group/group__PJ__LOCK>`
+  - :doc:`Group Lock <generated/pjlib/group/group__PJ__GRP__LOCK>`
+  - :doc:`Event <generated/pjlib/group/group__PJ__EVENT>`
   
-- :doc:`Thread Local Storage <generated/generated/pjlib/group/group__PJ__TLS>`
+- :doc:`Thread Local Storage <generated/pjlib/group/group__PJ__TLS>`
 
 OS Abstraction
 ^^^^^^^^^^^^^^^^^
-- :doc:`OS Abstraction <generated/generated/pjlib/group/group__PJ__OS>`
+- :doc:`OS Abstraction <generated/pjlib/group/group__PJ__OS>`
  
-   - :doc:`Symbian OS Specific <generated/generated/pjlib/group/group__PJ__SYMBIAN__OS>`
+   - :doc:`Symbian OS Specific <generated/pjlib/group/group__PJ__SYMBIAN__OS>`
 
-- :doc:`System Information <generated/generated/pjlib/group/group__PJ__SYS__INFO>`
+- :doc:`System Information <generated/pjlib/group/group__PJ__SYS__INFO>`
 
 
 Time and Timer
 ^^^^^^^^^^^^^^^^^
-- :doc:`Time <generated/generated/pjlib/group/group__PJ__TIME>`
-- :doc:`High Resolution Timestamp <generated/generated/pjlib/group/group__PJ__TIMESTAMP>`
-- :doc:`Timer API <generated/generated/pjlib/group/group__PJ__TIMER>`
+- :doc:`Time <generated/pjlib/group/group__PJ__TIME>`
+- :doc:`High Resolution Timestamp <generated/pjlib/group/group__PJ__TIMESTAMP>`
+- :doc:`Timer API <generated/pjlib/group/group__PJ__TIMER>`
 
 
 Random and GUID 
 ^^^^^^^^^^^^^^^^^^^^^^
-- :doc:`Random <generated/generated/pjlib/group/group__PJ__RAND>`
-- :doc:`GUID <generated/generated/pjlib/group/group__PJ__GUID>`
+- :doc:`Random <generated/pjlib/group/group__PJ__RAND>`
+- :doc:`GUID <generated/pjlib/group/group__PJ__GUID>`
 
 
 Application Microframework
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- :doc:`main() <generated/generated/pjlib/group/group__PJ__APP__OS>`
+- :doc:`main() <generated/pjlib/group/group__PJ__APP__OS>`
 
 

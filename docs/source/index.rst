@@ -44,19 +44,6 @@ PJPROJECT Online Documentation
 
 
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Header Files:
-   
-   api/pjsua2_files
-   api/pjsua_lib_files
-   api/pjsip_files
-   api/pjmedia_files
-   api/pjnath_files
-   api/pjlib_util_files
-   api/pjlib_files
-
-
 
 Indices and tables
 ==================

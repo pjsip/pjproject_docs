@@ -33,7 +33,7 @@ if is_in_rtd:
             sys.exit(rc)
             
         api_dir = 'pjlib_util' if doxy_dir=='pjlib-util' else doxy_dir
-        cmd = f'breathe-apidoc -f -g file,group -p {api_dir} ' \
+        cmd = f'breathe-apidoc -f -g group -p {api_dir} ' \
               f'-o api{os.sep}generated{os.sep}{api_dir} ' \
               f'pjproject{os.sep}{doxy_dir}{os.sep}docs{os.sep}xml'
         print(f'==> {cmd}')
@@ -41,7 +41,7 @@ if is_in_rtd:
         if rc:
             sys.exit(rc)
 
-        files = ['filelist.rst', 'grouplist.rst', 'structlist.rst', 'unionlist.rst']
+        files = ['filelist.rst', 'grouplist', 'structlist.rst', 'unionlist.rst']
         for f in files:
             try:
                 os.remove(f'api{os.sep}generated{os.sep}{api_dir}{os.sep}{f}')
