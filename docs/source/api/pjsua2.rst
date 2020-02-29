@@ -1,6 +1,6 @@
 
 
-PJSUA2 API Reference Manuals
+PJSUA2 - C++/Android/iOS/Py
 ****************************
 
 endpoint.hpp
