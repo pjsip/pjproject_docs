@@ -2,6 +2,8 @@
 
 ## Overview
 
+This repository contains configurations to generate https://pjsip.readthedocs.io site.
+
 ### Directory Layout
 
 - `docs/`
@@ -17,22 +19,23 @@
 
 
 
-### Generation Process
+### Overview of Generation Process
 
-1. First of all, the `pjproject` submodule in `docs/source/pjproject` needs to be updated
-   to the correct version using `git pull`. In RTD build server, this is done automatically.
-2. When you run Sphinx's `make doc`, or when building the doc in RTD server, the following processes happen:
-    i. doxygen is run by `conf.py`. This outputs XML files in various `pjproject/**/docs` directories.
-    ii. Then `breathe-apidoc` is run by `conf.py`. This script reads Doxygen's XML files and outputs
-      `.rst` documentation for all files, groups, classes etc in `docs/api/generated` directory.
-    iii. Sphinx then processes the `.rst` files and build a nice documentation.
+1. The `pjproject` submodule in `docs/source/pjproject` needs to be updated
+   to the correct version using `git pull` in that directory. In RTD build server, this is done automatically.
+2. When running Sphinx's `make doc`, or when building the doc in RTD server, the following happen:
+    * doxygen is run by `conf.py`. This outputs XML files in various `pjproject/**/docs` directories.
+    * `breathe-apidoc` is run by `conf.py`. This script reads Doxygen's XML files and outputs
+      `.rst` documentation for all files in `docs/source/api/generated` directory.
+    * Sphinx then processes the `.rst` files and build a nice documentation.
 
 ## Installation
 
+These are the installation instructions for generating the documentation locally. For RTD, the required installations are already specified in `readthedocs.yml` and `requirements.txt`. 
+
 ### 1. Install Doxygen 1.8.4
 
-
-Doxygen 1.5.1 is not suitable for Breathe.
+You need at least Doxygen 1.8.1 because Doxygen 1.5.1 is not suitable for Breathe.
 
 ### 2. Install other requirements
 
@@ -53,12 +56,14 @@ $ breathe-apidoc --version
 
 ## Generating Documentation
 
+These are the instructions for generating the documentation locally.
+
 ### Pull pjproject source
 
 There is a pjproject submodule in `docs/source/pjproject` directory. 
 Pull this pjproject submodule according to the version which documentation is to be built.
 E.g. if you're building the latest docs, then you can just pull the latest source.
-Otherwise pull to the relevant version.
+Otherwise pull the relevant version.
 
 You may also need to checkout to different branch than the master. This is totally
 up to you. 
