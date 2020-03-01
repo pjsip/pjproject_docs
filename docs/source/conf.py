@@ -71,7 +71,7 @@ extensions = [
 
 breathe_projects = { 
     "pjlib": "pjproject/pjlib/docs/xml", 
-    "pilib_util": "pjproject/pjlib-util/docs/xml",
+    "pjlib_util": "pjproject/pjlib-util/docs/xml",
     "pjnath": "pjproject/pjnath/docs/xml",
     "pjmedia": "pjproject/pjmedia/docs/xml",
     "pjsip": "pjproject/pjsip/docs/xml",
