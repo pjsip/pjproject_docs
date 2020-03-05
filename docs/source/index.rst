@@ -14,6 +14,7 @@ PJPROJECT Online Documentation
    
    intro
    consider
+   datasheet
 
 .. toctree::
    :maxdepth: 2

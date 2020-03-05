@@ -11,13 +11,12 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-import sys
 import subprocess
+import sys
+
 
 # sys.path.insert(0, os.path.abspath('.'))
-
 #sys.path.append( "/home/me/docproj/ext/breathe/" )
-
 # -- Run doxygen and stuff if were in RTD ------------------------------------
 is_in_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
@@ -68,6 +67,12 @@ extensions = [
     'breathe',
     'sphinx_rtd_theme'
 ]
+
+source_parsers = {
+   '.md': 'recommonmark.parser.CommonMarkParser',
+}
+
+source_suffix = ['.rst', '.md']
 
 breathe_projects = { 
     "pjlib": "pjproject/pjlib/docs/xml", 
