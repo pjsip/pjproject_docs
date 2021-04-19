@@ -11,26 +11,65 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import re
 import subprocess
 import sys
 
 
-# sys.path.insert(0, os.path.abspath('.'))
-#sys.path.append( "/home/me/docproj/ext/breathe/" )
-# -- Run doxygen and stuff if were in RTD ------------------------------------
-is_in_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+# Which pjproject tag to checkout to create the documentation.
+# Set to "master" to checkout the latest version
+pjproject_tag = '2.10'
 
+# Doxygen XML files to be sanitized because it contains characters causing XML parsing to fail
+sanitize_xml_files = [
+    'pjproject/pjmedia/docs/xml/group__PJMED__G7221__CODEC.xml',
+    'pjproject/pjnath/docs/xml/group__nat__intro.xml'
+]
+
+
+# Run doxygen if were in RTD
+is_in_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if is_in_rtd:
     if os.path.exists('source/'):
         os.chdir('source')
     
-    for doxy_dir in ['pjlib', 'pjlib-util', 'pjnath', 'pjmedia', 'pjsip']:
-        cmd = f'cd pjproject{os.sep}{doxy_dir} && doxygen docs{os.sep}doxygen.cfg'
+    # Update pjproject git submodule to the specified version
+    cmd = f"""cd pjproject && git checkout {pjproject_tag}"""
+    print(f'==> {cmd}')
+    rc = subprocess.call(cmd, shell=True)
+    if rc:
+        sys.exit(rc)
+    
+    pj_components = ['pjlib', 'pjlib-util', 'pjnath', 'pjmedia', 'pjsip']
+    
+    # doxygen
+    for doxy_dir in pj_components:
+        # Execute doxygen. The standard doxygen.cfg file in pjproject has GENERATE_XML set to NO.
+        # We need to set it to YES
+        if os.name == 'nt':
+            cmd = f'cd pjproject{os.sep}{doxy_dir} && ' + \
+                  f"""( type docs{os.sep}doxygen.cfg & echo GENERATE_XML=YES ) |""" + \
+                  f'doxygen -'
+        else:
+            cmd = f'cd pjproject{os.sep}{doxy_dir} && ' + \
+                   """(cat docs/doxygen.cfg; echo "GENERATE_XML = YES" ) |""" + \
+                  f'doxygen -'
         print(f'==> {cmd}')
         rc = subprocess.call(cmd, shell=True)
         if rc:
             sys.exit(rc)
-            
+    
+    # Sanitize XML files
+    for fname in sanitize_xml_files:
+        with open(fname, 'rb') as f:
+            b = f.read()
+    
+        txt = b.decode('utf-8', errors='ignore')
+        with open(fname, 'wt') as f:
+            f.write(txt)
+
+    # breathe
+    for doxy_dir in pj_components:        
         api_dir = 'pjlib_util' if doxy_dir=='pjlib-util' else doxy_dir
         cmd = f'breathe-apidoc -f -g group -p {api_dir} ' \
               f'-o api{os.sep}generated{os.sep}{api_dir} ' \
@@ -51,11 +90,39 @@ if is_in_rtd:
 # -- Project information -----------------------------------------------------
 
 project = 'PJPROJECT'
-copyright = '2020, Teluu'
+copyright = '2021, Teluu'
 author = 'Teluu Team'
 
+# Find pjproject directory to open version.mak
+pj_dirs = ['source/pjproject', 'pjproject']
+pj_dir = None
+for d in pj_dirs:
+    if os.path.isdir(d):
+        pj_dir = d
+        break
+if not pj_dir:
+    raise RuntimeError(f'Unable to find pjproject directory')
+
+# Parse pjproject version
+with open(f'{pj_dir}/version.mak', 'rt') as f:
+    doc = f.read()
+lines = doc.splitlines()
+vers = {}
+for line in lines:
+    m = re.search(r'(PJ_VERSION_[A-Z]+)\s*:=\s*(.*)', line)
+    if m:
+        vers[m.group(1)] = m.group(2)
+#print(vers)
+pj_version = f"{vers['PJ_VERSION_MAJOR']}.{vers['PJ_VERSION_MINOR']}"
+if vers.get('PJ_VERSION_REV',''):
+    pj_version += f".{vers['PJ_VERSION_REV']}"
+if vers.get('PJ_VERSION_SUFFIX',''):
+    pj_version += f"{vers['PJ_VERSION_SUFFIX']}"
+
+print(f'Using pjproject version {pj_version}')
+
 # The full version, including alpha/beta/rc tags
-release = '2.10'
+release = pj_version
 
 
 # -- General configuration ---------------------------------------------------

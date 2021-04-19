@@ -133,7 +133,9 @@ of the doc from the PJSIP's RTD settings page.
 
 First read how versioning is done in RTD: https://docs.readthedocs.io/en/stable/versions.html
 
+Here's how to release new version for PJSIP docs:
 
+1. Checkout
 
 
 ## Guides
