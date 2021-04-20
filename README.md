@@ -159,8 +159,6 @@ Follow the steps below to create new documentation version.
 
 ### Creating New PJPROJECT Version
 
-Note that the oldest supported PJPROJECT version is 2.10, as the older versions had some Doxygen problems that are causing errors for `breathe`.
-
 #### 1. Git pull 
 
 ```sh
@@ -271,7 +269,12 @@ If the building fails, these are the steps to recreate the documentation.
 1. Investigate the error by looking at the build logs (in the Builds page)
 2. Fix the error.
 3. If the error is in the `latest` version, you just need to commit, push, and watch the building process in RTD.
-4. If the error is in the tagged version (e.g. `2.10`, etc.), then you may need to re-tag and re-push. Please follow Git documentation on how to change existing tag to different commit.
+4. If the error is in the tagged version (e.g. `2.10`, etc.), then you need to delete the tag first before tagging it again, something like to following:
+
+   ```sh
+   $ git tag -d 2.9
+   $ git tag 2.9
+   ``` 
 
 
 ### Cleaning generated files
