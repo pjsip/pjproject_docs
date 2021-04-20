@@ -136,7 +136,8 @@ release = pj_version
 # ones.
 extensions = [
     'breathe',
-    'sphinx_rtd_theme'
+    'sphinx_rtd_theme',
+    'recommonmark'
 ]
 
 source_parsers = {

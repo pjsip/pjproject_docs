@@ -10,9 +10,6 @@ PJSUA-LIB API itself is a library that unifies SIP, audio/video media, NAT trave
 media application best practices into a high level, integrated, and easy to use API. 
 The next chapter will guide you on selecting which API level to use depending on your requirements.
 
-This documentation can be `viewed online <http://www.pjsip.org/docs/book-latest/html/index.html>`_, 
-or alternatively you can `download the PDF format <http://www.pjsip.org/docs/book-latest/PJSUA2Doc.pdf>`_ 
-for offline viewing.
 
 Getting Started
 ==============================
