@@ -18,7 +18,7 @@ import sys
 
 # Which pjproject tag to checkout to create the documentation.
 # Set to "master" to checkout the latest version
-pjproject_tag = 'master'
+pjproject_tag = '1.16'
 
 # Doxygen XML files to be sanitized because it contains characters causing XML parsing to fail
 sanitize_xml_files = [
@@ -61,6 +61,10 @@ if is_in_rtd:
     
     # Sanitize XML files
     for fname in sanitize_xml_files:
+        if not os.path.exists(fname):
+            print(f'Warning: file {fname} does not exist')
+            continue
+        
         with open(fname, 'rb') as f:
             b = f.read()
     
