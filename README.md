@@ -34,9 +34,8 @@ The documentation repository is at https://github.com/pjsip/pjproject_docs (you'
 
 There are two ways to build PJSIP RTD docs: locally, and in the RTD server. You build the docs locally only when developing the documentation itself, i.e. to preview the results locally. 
 
-For the live version, the docs are built in the RTD server automatically whenever it detects changes to **pjproject_docs** repository (note: not the *pjproject* repository!)
+For the live version, the docs are built in the RTD server automatically whenever changes are pushed to **pjproject_docs** repository (note: not the *pjproject* repository!)
 
-More will be explained in the *Generating Documentation* section below.
 
 ## Local Installation
 
@@ -123,7 +122,7 @@ documentation from existing Doxygen XML files.
 
 ```sh
 $ cd docs
-$ make html
+$ make clean html
 ```
 
 The result is `docs/build/html/index.html`. You can open this in the browser.
@@ -140,24 +139,24 @@ Just for information, when running Sphinx's `make html`, or when building the do
 
 ## Building Live Documentation
 
-The live (RTD) docs in https://docs.pjsip.org are generated automatically whenever changes happen in the `pjproject_docs` repository. 
+The live (RTD) docs in https://docs.pjsip.org are generated automatically whenever changes are pushed to the `pjproject_docs` repository. 
 
-You can also manually trigger rebuilding of the doc by clicking **Build Version** from the PJSIP's RTD settings page (https://readthedocs.org/projects/pjsip/), although this shouldn't be necessary.
+You can see the live building process, as well as logs of all previous build processes from the **Builds** page (https://readthedocs.org/projects/pjsip/builds/). This comes handy when the build failed to investigate what went wrong.
 
-You can see live building process, as well as logs of all previous build processes from the **Builds** tab (https://readthedocs.org/projects/pjsip/builds/). This comes handy when the build failed to investigate what went wrong.
+You can also manually trigger rebuilding of the doc by clicking **Build Version** from that page, but this shouldn't be necessary unless you modify something in the RTD settings and want to regenerate the docs.
 
 
 ## Versioning the Documentation
 
 RTD supports multiple versions of the docs. It does so by analyzing the Git *tags* of the **pjproject_docs** repository.
 
-By default RTD only supports `latest` version of the doc, which corresponds to latest Git `master`. If there is a Git tag in the repository, RTD will create `stable` version of the doc, which corresponds to the latest Git tag of the repository. If you wish to show the individual version, activate the version from https://readthedocs.org/projects/pjsip/versions/.
+As an overview, by default RTD only supports `latest` version of the doc, which corresponds to latest commit in Git `master`. If there is a Git tag in the repository, RTD will create `stable` version of the doc, which corresponds to the latest Git tag of the repository. If you wish to show the individual version, activate the version from https://readthedocs.org/projects/pjsip/versions/.
 
 For more info please see https://docs.readthedocs.io/en/stable/versions.html
 
 Follow the steps below to create new documentation version.
 
-### Creating New PJPROJECT Version
+### Creating New Documentation Version
 
 #### 1. Git pull 
 
@@ -190,12 +189,14 @@ C:> SET READTHEDOCS=True
 
 #### 3b. Optional: build the docs locally
 
-You need to have local installation to do this.
+You need to have local installation to do this. Build the docs by running these:
 
 ```sh
 $ cd docs
-$ make html
+$ make clean html
 ```
+
+Then open `docs/build/html/index.html` to preview the result.
 
 #### 4. Git commit (but don't push yet)
 
@@ -237,13 +238,20 @@ Go to https://readthedocs.org/projects/pjsip/versions/, and activate the new ver
 
 This will trigger a build process for that version.
 
+#### 9. Wait the build process
+
+Wait until all build processes are finished.
+
 
 ### Creating documentation for latest master
 
 #### 1. Set PJPROJECT version
 
 1. Edit `docs/source/conf.py`
-2. Set **`pjproject_tag`** `master`. 
+2. Set **`pjproject_tag`** `master`, e.g.:
+    ```python
+   pjproject_tag = 'master'
+   ``` 
 3. Save and close
 
 #### 2. Commit and Push
@@ -259,7 +267,7 @@ Note that **you must not add any tags** to the `pjproject_docs` repository.
 
 #### 3. Watch the building process
 
-It should build *latest* version.
+There should be a build process for the *latest* version.
 
 
 ### Handling errors
@@ -269,7 +277,7 @@ If the building fails, these are the steps to recreate the documentation.
 1. Investigate the error by looking at the build logs (in the Builds page)
 2. Fix the error.
 3. If the error is in the `latest` version, you just need to commit, push, and watch the building process in RTD.
-4. If the error is in the tagged version (e.g. `2.10`, etc.), then you need to delete the tag first before tagging it again, something like to following:
+4. If the error is in the tagged version (e.g. `2.10`, etc.), then you need to delete the tag first before tagging it again, something like the following:
 
    ```sh
    $ git tag -d 2.9
@@ -278,6 +286,8 @@ If the building fails, these are the steps to recreate the documentation.
 
 
 ### Cleaning generated files
+
+To clean up the `build` directory:
 
 ```
 $ cd docs
