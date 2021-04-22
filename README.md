@@ -198,15 +198,16 @@ $ make clean html
 
 Then open `docs/build/html/index.html` to preview the result.
 
-#### 4. Git commit (but don't push yet)
+#### 4. Git commit and push
 
 ```sh
 $ cd pjproject_docs
 $ git add -u
 $ git commit -m 'Setting pjproject version to 2.10'
+$ git push
 ```
 
-Note: don't push the repository yet to avoid triggering unnecessary build in RTD.
+This should trigger a building process for version `latest` in RTD. 
 
 
 #### 5. Tag pjproject_docs
@@ -225,16 +226,14 @@ $ cd pjproject_docs
 $ git push --tags
 ```
 
-This should trigger a building process in RTD.
-
 #### 7. See the building process
 
 Open https://readthedocs.org/projects/pjsip/builds/, there should be one that is currently building.
-You may wait until it is finished (it will take approximately 15 minutes) to make sure that everything is okay or do the next step.
+You may wait until it is finished (it will take approximately 15 minutes) to make sure that everything is okay, otherwise continue the next steps (but it will cause more than one build processes to be started by RTD, which is okay).
 
 #### 8. Activate the version
 
-Go to https://readthedocs.org/projects/pjsip/versions/, and activate the new version and make it public.
+Go to https://readthedocs.org/projects/pjsip/versions/, and activate the new version and make it active and public.
 
 This will trigger a build process for that version.
 
