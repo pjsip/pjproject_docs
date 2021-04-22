@@ -276,11 +276,11 @@ If the building fails, these are the steps to recreate the documentation.
 1. Investigate the error by looking at the build logs (in the Builds page)
 2. Fix the error.
 3. If the error is in the `latest` version, you just need to commit, push, and watch the building process in RTD.
-4. If the error is in the tagged version (e.g. `2.10`, etc.), then you need to delete the tag first before tagging it again, something like the following:
+4. If the error is in the tagged version (e.g. `2.10`, etc.), then you need to delete the tag first:
 
    ```sh
-   $ git tag -d 2.9
-   $ git tag 2.9
+   $ git tag -d <the tag>
+   $ git push --delete origin <the tag>
    ``` 
 
 
