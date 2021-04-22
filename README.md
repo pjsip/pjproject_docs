@@ -54,7 +54,17 @@ You need at least Doxygen 1.8.1 because Doxygen 1.5.1 is not suitable for Breath
 
 We need Python version 3.7 or newer. It's also recommended co create `virtualenv` environment to avoid cluttering your main Python installation.
 
-#### 3. Install other requirements
+#### 3. Clone pjproject_docs with the submodules
+
+```sh
+$ git clone https://github.com/pjsip/pjproject_docs.git
+$ cd pjproject_docs
+$ git submodule update --init --recursive
+```
+
+Note: the last command is for fetching the `pjproject` submodule in `docs/source/pjproject` directory.
+
+#### 4. Install other requirements
 
 Run this command (maybe inside your virtualenv) to install the required Python modules:
 
@@ -63,7 +73,7 @@ $ pip install -r requirements.txt
 ```
 
 
-#### 4. Check Installation
+#### 5. Check Installation
 
 Check that the tools are available on the PATH by running the following:
 
@@ -78,18 +88,6 @@ $ breathe-apidoc --version
 You build the docs locally when you are developing them in order to test locally first before updating the live docs.
 
 Here are the steps to do it. Make sure you have followed the steps in *Installation* above. If you created a virtualenv environment, activate that environment.
-
-### Clone pjproject_docs
-
-First time to install the project:
-
-```sh
-$ git clone https://github.com/pjsip/pjproject_docs.git
-$ cd pjproject_docs
-$ git submodule update --init --recursive
-```
-
-Note: the last command is for fetching the `pjproject` submodule in `docs/source/pjproject` directory.
 
 ### Git pull
 
@@ -198,44 +196,47 @@ $ make clean html
 
 Then open `docs/build/html/index.html` to preview the result.
 
-#### 4. Git commit and push
+#### 4. Git commit (but don't push yet)
 
 ```sh
 $ cd pjproject_docs
 $ git add -u
 $ git commit -m 'Setting pjproject version to 2.10'
-$ git push
 ```
-
-This should trigger a building process for version `latest` in RTD. 
 
 
 #### 5. Tag pjproject_docs
 
 ```sh
-$ cd pjproject_docs
 $ git tag 2.10
 ```
 
-Note that this tag will appear as *version* in the RTD site.
-
 #### 6. Git push with tags
+
+Push the tags first then the code.
 
 ```sh
 $ cd pjproject_docs
 $ git push --tags
+$ git push
 ```
+
+The last command would trigger a building process for version `latest` in RTD. 
 
 #### 7. See the building process
 
-Open https://readthedocs.org/projects/pjsip/builds/, there should be one that is currently building.
-You may wait until it is finished (it will take approximately 15 minutes) to make sure that everything is okay, otherwise continue the next steps (but it will cause more than one build processes to be started by RTD, which is okay).
+Open https://readthedocs.org/projects/pjsip/builds/, there should be one that is currently 
+building (i.e. for `latest` version).
+
+You may wait until it is finished (it will take approximately 15 minutes) to make sure that 
+everything is okay, or otherwise continue to the next steps (but it will cause more than one 
+build processes to be started by RTD, which is okay).
 
 #### 8. Activate the version
 
 Go to https://readthedocs.org/projects/pjsip/versions/, and activate the new version and make it active and public.
 
-This will trigger a build process for that version.
+This will trigger a new build process for that version.
 
 #### 9. Wait the build process
 
@@ -244,7 +245,10 @@ Wait until all build processes are finished.
 
 ### Creating documentation for latest master
 
-#### 1. Set PJPROJECT version
+After a version is released, if you want to generate a documentation for the latest *master*
+(i.e. before next version is released), you need to do the following.
+
+#### 1. Set PJPROJECT version to *master*
 
 1. Edit `docs/source/conf.py`
 2. Set **`pjproject_tag`** `master`, e.g.:
