@@ -10,7 +10,7 @@ PJSIP Project Online Documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Introduction:
+   :caption: Introduction
    
    intro
    consider
@@ -18,7 +18,7 @@ PJSIP Project Online Documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: PJSUA2:
+   :caption: PJSUA2
 
    pjsua2/intro_pjsua2
    pjsua2/endpoint
@@ -33,7 +33,7 @@ PJSIP Project Online Documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: API Reference:
+   :caption: API Reference
    
    api/pjsua2
    api/pjsua_lib

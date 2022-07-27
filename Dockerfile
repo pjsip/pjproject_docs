@@ -11,7 +11,4 @@ RUN cd /root/pjproject_docs && \
     pip3 install -r requirements.txt && \
     git restore *
 EXPOSE 8000
-#CMD ["/usr/bin/bash", "--init-file", "/root/pjproject_docs/docker/start.sh"]
-CMD python3 -m http.server --directory=/root/pjproject_docs/docs/build/html/ 8000
-
-
+CMD ["/usr/bin/python3", "-m", "http.server", "--directory=/root/pjproject_docs/docs/build/html/", "8000"]
