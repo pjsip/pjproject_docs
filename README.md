@@ -2,7 +2,7 @@
 
 ## Overview
 
-### Overview of The Documentation Infrastructure
+### Overview of the documentation infrastructure
 
 The PJSIP docs at **https://docs.pjsip.org** is hosted by the *Read the Docs* (RTD) service. It contains:
 1. reference manuals (was at [pjsip.org/docs/latest/...](https://www.pjsip.org/docs/latest/pjlib/docs/html/index.htm)
@@ -11,10 +11,11 @@ The PJSIP docs at **https://docs.pjsip.org** is hosted by the *Read the Docs* (R
 
 The PJSIP's RTD settings page is at https://readthedocs.org/projects/pjsip/. This page controls various aspects of the RTD page. Some will be explained below.
 
-The documentation repository is at https://github.com/pjsip/pjproject_docs.
+The documentation repository is at https://github.com/pjsip/pjproject_docs. You are reading the README
+of that repository.
 
 
-### Directory Layout
+### Contents
 
 - `docs/`
     - `source/`
@@ -27,38 +28,40 @@ The documentation repository is at https://github.com/pjsip/pjproject_docs.
         - `pjsua2/`
             - `*.rst`: PJSUA2 book (was pjsip-book)
     - `build/`: output files will be placed here
-- `docker/`
-    - `start.sh`: Docker container startup script
+- `readthedocs.yml`: configuration for generating live RTD.
+- `requirements.txt`: Python modules required to build the docs
+- `Dockerfile`: to build Docker image.
 
 
-
-### Overview of Generation Process
+### Overview of the generation process
 
 There are three ways to build PJSIP RTD docs: 
-1. (locally) using Docker image (recommended), 
-2. (locally) using manual installation, and
-3. in the RTD server. 
+1. (locally) using provided Docker image. This is the preferred method for authoring/developing the
+   documentation.
+2. In the RTD server. This is to build the live version of the documentation. The docs are built
+   automatically whenever changes are pushed to **pjproject_docs** repository (note: not the 
+   *pjproject* repository!)
+2. (locally) using manual installation, if you don't want to use the Docker image, or if you need
+   to understand how the Docker image is built.
 
-The local development is for developing the documentation itself, i.e. to preview the results locally. 
-
-For the live version, the docs are built in the RTD server automatically whenever changes are pushed to **pjproject_docs** repository (note: not the *pjproject* repository!)
 
 ## Using the Docker image
 
-The provided Docker image is an Ubuntu 22.04 based container with all required software
-preinstalled, and it also contains pre-built, ready to serve RTD HTML files to be used as starting 
-point for editing the documentation. This is the recommended way to develop the documentation.
+We've provided an Ubuntu 22.04 Docker image that contains all the required software to develop the
+docs. It is equipped with two nice editors, **vim** and **tilde**, and it even contains pre-built
+documentation to get you started.
 
 Below are steps to use this method.
 
-### Install Docker and Docker Desktop
+### Install Docker
 
-Follow the installation instructions on https://www.docker.com/get-started/
+Follow the installation instructions on https://www.docker.com/get-started/ to install Docker on
+your system (Linux, Mac, or Windows).
 
 ### Pull and run pjproject-docs image
 
 ```
-$ docker pull pjproject-docs
+$ docker pull pjsip/pjproject-docs
 $ docker run -dit -p 8000:8000 --name=pjproject-docs pjproject-docs
 ```
 
@@ -66,90 +69,51 @@ $ docker run -dit -p 8000:8000 --name=pjproject-docs pjproject-docs
 
 Point your browser to http://localhost:8000 to view RTD served by the Docker container.
 
+### Open terminal to the Docker container
+
+```
+$ docker exec -it pjproject-docs bash
+```
+
+The next section explains how to edit and generate the docs.
+
 ### Editing the docs
 
-1. Open container terminal window from Docker Desktop.
-2. The container contains two nice text editors: **vim** and **tilde**. You may of course
-   install other editors (or software, for that matter) using `apt-get`.
+(In the Docker container terminal)
+
+
+
 2. Go to `/root/pjproject_docs` directory to edit the files, rebuild the documentation etc. 
    as explained in the next section (**Generating Documentation Locally**)
-3. The HTTP server is served by `python3 -m http.server` background process. As long this
-   process is running, it automatically serves the latest generated HTML files from 
-   `docs/build/html` directory.
+   - Note: The container contains two nice text editors: **vim** and **tilde**. 
+     You may of course install other editors (or any other software, for that matter) 
+     using `apt-get install` as usual.
+3. The HTTP server is served by `python3 -m http.server` background process. It automatically
+   serves the latest generated HTML files in `docs/build/html` directory.
 
 
-## Manual Installation
+## Generating documentation locally
 
-These are for generating the docs locally if you do not wish to use the Docker image
-(note for RTD, the required installations are already specified in `readthedocs.yml`
-and `requirements.txt`). 
+The Docker container already contains cloned repository of the `pjproject-docs` in
+`/root/pjproject-docs`. You can pull, add, edit, modify, and push this repository as usual.
 
-Note that local installation is not required for releasing new documentation version (new pjproject version). You only need a text editor for that. This will be explained in later section.
-
-Also note that these are only tested on Linux at the moment. Macs should work, and Windows is supported in the codes, but both haven't been tested yet.
-
-
-#### 1. Install Doxygen 1.8.4
-
-You need at least Doxygen 1.8.1 because Doxygen 1.5.1 is not suitable for Breathe.
-
-#### 2. Install Python
-
-We need Python version 3.7 or newer. It's also recommended co create `virtualenv` environment to avoid cluttering your main Python installation.
-
-#### 3. Clone pjproject_docs with the submodules
-
-```sh
-$ git clone https://github.com/pjsip/pjproject_docs.git
-$ cd pjproject_docs
-$ git submodule update --init --recursive
-```
-
-Note: the last command is for fetching the `pjproject` submodule in `docs/source/pjproject` directory.
-
-#### 4. Install other requirements
-
-Run this command (maybe inside your virtualenv) to install the required Python modules:
-
-```cmd
-$ pip install -r requirements.txt
-```
-
-
-#### 5. Check Installation
-
-Check that the tools are available on the PATH by running the following:
-
-```
-$ doxygen -v
-$ sphinx-build --version
-$ breathe-apidoc --version
-```
-
-## Generating Documentation Locally
-
-You build the docs locally when you are developing them in order to test locally first before updating the live docs.
-
-Here are the steps to do it. Make sure you have followed the steps in *Installation* above. If you created a virtualenv environment, activate that environment.
+Below are steps to generate the docs. Perform these steps in the Docker container terminal.
 
 ### Git pull
-
-Subsequently, to update `pjproject_docs` and the `pjproject` submodule:
 
 ```sh
 $ cd pjproject_docs
 $ git pull --recurse-submodules
 ```
 
-### Generate the Docs
+### Generate the docs
 
 #### 1. Set environment variable
 
-The `READTHEDOCS` environment variable is used to control whether Doxygen needs to be
-executed to regenerate Doxygen XML and *breathe* API docs. If the PJPROJECT version has
-been changed, the Doxygen needs to be regenerated. On the other hand, when you only edit 
-the `.rst` files, you don't need to regenerate Doxygen files to build the docs, so set it
-to False or unset it (`export READTHEDOCS=`). 
+The `READTHEDOCS` environment variable is used to control whether Doxygen XML and *breathe*
+API docs needs to be regenerated. You need to set it to generate docs for different PJPROJECT
+versions. On the other hand, when you only edit the `.rst` files, there is no need to regenerate
+the Doxygen files, so set it to `False` or unset it (`export READTHEDOCS=`). 
 
 To set the value with Bash:
 ```
@@ -171,19 +135,22 @@ To unset the value with Windows:
 $ SET READTHEDOCS=
 ``` 
 
-#### 2. Build
+#### 2. Build the docs
 
 ```sh
 $ cd docs
 $ make clean html
 ```
 
-The result is `docs/build/html/index.html`. You can open this in the browser. Or if the RTD site
-is served by the Docker container, refresh the http://localhost:8000 page.
+The result is `docs/build/html/index.html`. Now refresh the http://localhost:8000 page in the host
+computer to view the updated docs.
 
-## How It Works
+## How it works
 
-Just for information, when running Sphinx's `make html`, or when building the doc in RTD server, the following processes happen:
+This section is just for information. 
+
+When running Sphinx's `make html`, or when building the doc in RTD server, the following processes happen:
+
 * `docs/source/conf.py` is read by sphinx
 * if `READTHEDOCS` environment variable is set to True, `doxygen` is run by `conf.py`. This outputs Doxygen XML files in various `pjproject/**/docs` directories.
 * `breathe-apidoc` is run by `conf.py`. This script reads Doxygen's XML files and outputs
@@ -191,7 +158,7 @@ Just for information, when running Sphinx's `make html`, or when building the do
 * Sphinx then processes the `.rst` files and build a nice documentation.
 
 
-## Building Live Documentation
+## Building live documentation
 
 The live (RTD) docs in https://docs.pjsip.org are generated automatically whenever changes are pushed to the `pjproject_docs` repository. 
 
@@ -200,19 +167,27 @@ You can see the live building process, as well as logs of all previous build pro
 You can also manually trigger rebuilding of the doc by clicking **Build Version** from that page, but this shouldn't be necessary unless you modify something in the RTD settings and want to regenerate the docs.
 
 
-## Versioning the Documentation
+## Versioning the documentation
 
 RTD supports multiple versions of the docs. It does so by analyzing the Git *tags* of the **pjproject_docs** repository.
 
-As an overview, by default RTD only supports `latest` version of the doc, which corresponds to latest commit in Git `master`. If there is a Git tag in the repository, RTD will create `stable` version of the doc, which corresponds to the latest Git tag of the repository. If you wish to show the individual version, activate the version from https://readthedocs.org/projects/pjsip/versions/.
+By default, RTD only supports `latest` version of the doc, which corresponds to latest commit in Git `master` (again, of the `pjproject_docs` repository). If you wish to show the individual version, activate the version from https://readthedocs.org/projects/pjsip/versions/.
 
 For more info please see https://docs.readthedocs.io/en/stable/versions.html
 
-Follow the steps below to create new documentation version.
+Follow the steps below to create documentation for specific PJSIP version.
 
-### Creating New Documentation Version
+### Creating new documentation version
+
+#### 0. Open terminal to the Docker container
+
+```
+$ docker exec -it pjproject-docs bash
+```
 
 #### 1. Git pull 
+
+(In the terminal to the Docker container)
 
 ```sh
 $ cd pjproject_docs
@@ -233,7 +208,7 @@ C:> SET READTHEDOCS=True
 
 #### 3. Set which PJPROJECT version to build
 
-1. Edit `docs/source/conf.py`
+1. Edit `docs/source/conf.py` (note: use **tilde** or **vim**)
 2. Modify **`pjproject_tag`** to match the PJPROJECT Git **tag** which documentation is to be built. Example:
    ```python
    pjproject_tag = '2.10'
@@ -353,39 +328,67 @@ $ cd docs
 $ make clean
 ```
 
+## Manual installation
 
-## Generating Docker image
+These are for generating the docs locally if you do not wish to use the Docker image
+(note for RTD, the required installations are already specified in `readthedocs.yml`
+and `requirements.txt`). 
 
-### Install requirements
+Note that local installation is not required for releasing new documentation version (new pjproject version). You only need a text editor for that. This will be explained in later section.
 
-Install doxygen, sphinx etc. as explained in the beginning of this article.
+Also note that these are only tested on Linux at the moment. Macs should work, and Windows is supported in the codes, but both haven't been tested yet.
 
-### Fetch and generate documentation locally
 
-The objective is to copy this generated documentation to the Docker image file
-so that the image doesn't have to start from scratch.
+#### 1. Install Doxygen 1.8.4
 
-Fetch `pjproject`:
+You need at least Doxygen 1.8.1 because Doxygen 1.5.1 is not suitable for Breathe.
 
-```
+#### 2. Install Python
+
+We need Python version 3.7 or newer. It's also recommended co create `virtualenv` environment to avoid cluttering your main Python installation.
+
+#### 3. Clone pjproject_docs with the submodules
+
+```sh
 $ git clone https://github.com/pjsip/pjproject_docs.git
 $ cd pjproject_docs
 $ git submodule update --init --recursive
 ```
 
-Preferably set the pjproject version to the latest before building the docs, 
-by setting `pjproject_tag` in `conf.py`:
+Note: the last command is for fetching the `pjproject` submodule in `docs/source/pjproject` directory.
+
+#### 4. Install other requirements
+
+Run this command (maybe inside your virtualenv) to install the required Python modules:
+
+```cmd
+$ pip install -r requirements.txt
+```
+
+
+#### 5. Check installation
+
+Check that the tools are available on the PATH by running the following:
 
 ```
-$ cd docs
-$ vi source/conf.py
+$ doxygen -v
+$ sphinx-build --version
+$ breathe-apidoc --version
 ```
 
-Build the docs:
 
-```
-$ make clean html
-```
+## Generating Docker image
+
+### Install requirements
+
+Install the required software as explained in **Manual Installation** section above.
+
+### Fetch and generate documentation locally
+
+Follow the instructions in **Generate the Docs** section above.
+The objective is to copy this generated documentation to the Docker image file
+so that the image doesn't have to start from scratch.
+
 
 ### Build the Docker image
 
@@ -394,6 +397,55 @@ $ cd pjproject_docs
 $ docker build --tag pjproject-docs .
 ```
 
+### Test the image
+
+Run a Docker container from the image with `docker run` (see above).
+
+### Tag and upload the image
+
+This is for PJSIP team to upload the image to Docker hub repository:
+
+```
+$ docker tag pjproject-docs pjsip/pjproject-docs
+$ docker login
+$ docker push pjsip/pjproject-docs
+```
+
+## Cheatsheet
+
+Image related commands:
+
+```
+docker build --tag pjproject-docs .
+docker image ls
+docker image rm pjproject-docs
+```
+
+Container related commands:
+
+```
+docker run -dit -p 8000:8000 --name=pjproject-docs pjproject-docs
+docker ps
+docker container ls
+docker exec -it pjproject-docs bash
+docker kill pjproject-docs
+docker start pjproject-docs
+docker container rm pjproject-docs
+```
+
+Repository related commands:
+
+```
+docker tag pjproject-docs pjsip/pjproject-docs
+docker push pjsip/pjproject-docs
+```
+
+Service commands:
+
+```
+sudo service docker start
+sudo systemctl start docker.socket
+```
 
 ## More Info
 
