@@ -3,22 +3,34 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-==============================
+========================================
 PJSIP Project Online Documentation
-==============================
+========================================
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Introduction
+   :caption: PJSIP OVERVIEW
    
-   intro
-   consider
-   datasheet
+   intro/intro
+   intro/getting
+   intro/features
+   intro/license
 
 .. toctree::
    :maxdepth: 2
-   :caption: PJSUA2
+   :caption: GET STARTED
+
+   get-started/consider
+   get-started/android
+   get-started/iphone
+   get-started/posix
+   get-started/windows
+   get-started/windows-phone
+
+.. toctree::
+   :maxdepth: 2
+   :caption: PJSUA2 GUIDES
 
    pjsua2/intro_pjsua2
    pjsua2/endpoint
@@ -27,22 +39,23 @@ PJSIP Project Online Documentation
    pjsua2/call
    pjsua2/presence
    pjsua2/samples
-   pjsua2/media_quality
-   pjsua2/network_problems
-
-
+   
 .. toctree::
-   :maxdepth: 2
-   :caption: API Reference
+   :caption: API REFERENCE
    
    api/pjsua2
    api/pjsua_lib
    api/pjsip
-   api/pjmedia
-   api/pjnath
+   api/pjmedia/index
+   api/pjnath/index
    api/pjlib_util
    api/pjlib
 
+.. toctree::
+   :maxdepth: 3
+   :caption: SPECIFIC GUIDES
+
+   specific-guides/index
 
 
 

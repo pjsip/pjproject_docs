@@ -1,7 +1,7 @@
-Guidelines and Considerations
+General guidelines
 *****************************************
 
-Development Guidelines
+Development guidelines
 ======================
 
 Preparation

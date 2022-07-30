@@ -1,4 +1,4 @@
-PJSIP - SIP Stack
+PJSIP
 ============================================
 
 PJSIP is an Open Source SIP prototol stack, designed to be very small in footprint, 

@@ -1,9 +1,6 @@
 
-PJSUA2 Sample Applications
+Sample Applications
 ***********************************
-
-Sample Apps
-===========
 
 C++
 -----

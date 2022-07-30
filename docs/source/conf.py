@@ -18,7 +18,7 @@ import sys
 
 # Which pjproject tag to checkout to create the documentation.
 # Set to "master" to checkout the latest version
-pjproject_tag = '2.12.1'
+pjproject_tag = 'master'
 
 # Doxygen XML files to be sanitized because it contains characters causing XML parsing to fail
 sanitize_xml_files = [
@@ -154,6 +154,10 @@ breathe_projects = {
     "pjsip": "pjproject/pjsip/docs/xml",
 }
 
+html_theme_options = {
+    'navigation_depth': 3,
+    'collapse_navigation': False,
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

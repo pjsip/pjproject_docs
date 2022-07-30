@@ -11,8 +11,8 @@ Key Features
 - Extreme Portability
 
   From 16-bit, 32-bit, to 64-bit, big or little endian, single or multi-processors, wide range of
-  operating systems. With or without floating point support. Multi-threading or not. With/without ANSI LIBC. 
-  Currently known to run on these platforms:
+  operating systems, Unicode support. With or without floating point support. Multi-threading or not.
+  With/without ANSI LIBC. Currently known to run on these platforms:
   
   - Mobile platforms:
   
@@ -21,13 +21,13 @@ Key Features
     - UWP and Windows Phone 8
     - BlackBerry 10
     - Symbian S60 3rd Edition
-    - Windows Mobile
+    - Windows Mobile/CE
     
   - Desktop platforms:
   
     - MacOS X (Intel and powerpc)
-    - Win32/x86 (Win95/98/ME, NT/2000/XP/2003, mingw)
-    - Linux/x86, (user mode and as kernel module(!))
+    - Win32/x86_64 (Win95/98/ME, NT/2000/XP/2003)
+    - Linux/x86_64
     
   - Embedded platforms:
   

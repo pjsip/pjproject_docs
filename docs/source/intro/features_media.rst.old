@@ -1,0 +1,142 @@
+Media/audio features
+------------------------
+
+List of media features and link to the relevant documentation.
+
+Core
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+PJMEDIA was designed to be applicable in broad range of systems, including DSPs.
+These are the core considerations for such design:
+
+- any clockrates
+- N-channels support
+- zero thread capable
+
+
+Audio Features
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- :doc:`Accoustic Echo Cancellation API </api/generated/pjmedia/group/group__PJMEDIA__Echo__Cancel>`
+- :doc:`Adaptive Delay Buffer </api/generated/pjmedia/group/group__PJMED__DELAYBUF>`
+- :doc:`Adaptive Jitter Buffer </api/generated/pjmedia/group/group__PJMED__JBUF>`
+- :doc:`Adaptive Silence Detection </api/generated/pjmedia/group/group__PJMEDIA__SILENCEDET>`
+- :doc:`Circular Buffer </api/generated/pjmedia/group/group__PJMED__CIRCBUF>`
+- :doc:`Format converter </api/generated/pjmedia/group/group__PJMEDIA__CONVERTER>`
+- :doc:`Mono/Stereo/Multichannel Converter </api/generated/pjmedia/group/group__PJMEDIA__STEREO>`
+- :doc:`Packet Lost Concealment (PLC) </api/generated/pjmedia/group/group__PJMED__PLC>`
+- :doc:`Resampling Algorithm </api/generated/pjmedia/group/group__PJMEDIA__RESAMPLE>`
+- :doc:`Waveform Similarity Based Overlap-Add (WSOLA) </api/generated/pjmedia/group/group__PJMED__WSOLA>`
+
+- Port concept (framework for media processing component)
+- Audio conferencing (in client)
+- DTMF (`RFC 4733 <http://tools.ietf.org/html/rfc4733>`__/`RFC
+  2833 <http://tools.ietf.org/html/rfc2833>`__)
+- echo cancellation (WebRTC, Speex, suppressor, or native)
+
+   -  Third party acoustic echo cancellation (AEC)
+
+      -  `Echo cancellation software from voice INTER
+         connect <http://www.voiceinterconnect.de/echo-cancellation.html>`__
+      -  `CANEC from DSP
+         Algorithms <http://www.dspalgorithms.com/products/canec.html>`__
+      -  `VQE from Wave Arts <http://wavearts.com/licensing/#vqe>`__
+      -  `bdIMAD from
+         bdSound <http://www.bdsound.com/products/bdimad-for-pjsip.html>`__
+      -  `TrueVoice from Limes
+         Audio <http://www.limesaudio.com/truevoice-acoustic-echo-cancellation-software/>`__
+      -  `Echo cancellation software from
+         SoliCall <http://solicall.com/products.html>`__
+
+- inband DTMF/tone generation
+- WAV file playback and recording
+- WAV file playlist
+- memory based playback and capture
+- adaptive jitter buffer
+- packet lost concealment
+- clock drift recovery
+- Flexible media flow management
+
+Audio Codecs
+~~~~~~~~~~~~~~~~~~~~~~~~~
+   -  Bundled:
+
+      -  Speex 8KHz, 16Khz, 32KHz
+      -  iLBC, GSM,
+      -  L16, G.711A/U (PCMA/PCMU),
+      -  G.722,
+      -  G.722.1 16KHz/32KHz (Siren7/Siren14, `licensed from
+         Polycom <http://www.polycom.com/company/about_us/technology/siren14_g7221c/license_agreement.html>`__)
+
+   -  with third party libraries (may need additional licensing, please
+      check each codec provider):
+
+      -  `Opus <https://www.opus-codec.org>`__ codec (see ticket #1904)
+      -  `Intel IPP <Intel_IPP_Codecs>`__:
+
+         -  AMR-NB, AMR-WB,
+         -  G.722, G.722.1,
+         -  G.723.1, G.726, G.728, G.729A,
+
+      -  `SILK <https://developer.skype.com/silk>`__ codec (see ticket
+         #1586)
+      -  `OpenCore
+         AMR <http://sourceforge.net/projects/opencore-amr/>`__:
+
+         -  AMR-NB (see ticket #1388)
+         -  AMR-WB (see ticket #1608)
+
+      -  `bcg729 <http://www.linphone.org/technical-corner/bcg729/>`__:
+         G.729 (see ticket #2029)
+
+   -  Hardware codecs:
+
+      -  on Nokia with `APS/VAS-Direct <Nokia_APS_VAS_Direct>`__:
+         AMR-NB, G.729, iLBC, PCMA, PCMU
+      -  on iPhone: iLBC
+
+Transports
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   -  RTP and RTCP with media statistic (`RFC
+      3550 <http://tools.ietf.org/html/rfc3550>`__, `RFC
+      3551 <http://tools.ietf.org/html/rfc3551>`__)
+   -  RTCP XR (subset, `RFC
+      3611 <http://tools.ietf.org/html/rfc3611>`__)
+   -  UDP, STUN, ICE
+   -  IPv6 (UDP only)
+   -  SRTP (`RFC 3711 <http://tools.ietf.org/html/rfc3711>`__), SRTP
+      SDES (`RFC 4568 <http://tools.ietf.org/html/rfc4568>`__), and
+      DTLS-SRTP (`RFC 5763 <http://tools.ietf.org/html/rfc5763>`__)
+   -  `QoS <QoS>`__ (DSCP, WMM)
+   -  Symmetric RTP/RTCP (`RFC
+      4961 <http://tools.ietf.org/html/rfc4961>`__)
+   -  Multiplexing RTP and RTCP (rtcp-mux) (`RFC
+      5671 <http://tools.ietf.org/html/rfc5671>`__) (see ticket #2087)
+   -  Third Party
+
+      -  ZRTP
+
+         -  `Zorg <http://www.zrtp.org/>`__
+         -  `ZRTP4PJ <https://github.com/wernerd/ZRTP4PJ>`__
+
+Audio devices
+~~~~~~~~~~~~~~~~~~~~~~~~~
+See :ref:`supported audio devices <audiodev_supported_devs>` for more info.
+
+- :ref:`alsa`
+- :ref:`opensl`
+- :ref:`jnisound`
+- :ref:`oboe`
+- :ref:`bdsound`
+- :ref:`coreaudio`
+- :ref:`wmme`
+- :ref:`wasapi`
+
+Deprecated audio devices:
+
+- :ref:`portaudio`
+- Blackberry BB10
+- Symbian audio streaming/multimedia framework (MMF) implementation
+- Nokia Audio Proxy Server (APS) implementation
+

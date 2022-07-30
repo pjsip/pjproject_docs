@@ -1,4 +1,4 @@
-PJSUA-LIB - High-level C API
+PJSUA-LIB
 ============================================
 
 PJSUA-LIB is a library that integrates PJSIP, PJMEDIA, and PJNATH into high-level,
