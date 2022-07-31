@@ -19,10 +19,25 @@ tested at SIP Interoperability Event (`SIPit <https://www.sipit.net>`_) since 20
 PJSIP development is hosted at https://github.com/pjsip/pjproject
 
 
-Library Architecture
+Libraries Architecture
 =========================================
 
-Click the link on the diagram to go to the documentation (TBD).
+PJSIP contains several libraries, which can be grouped into three main components:
+
+ - SIP protocol stack, in PJSIP
+ - Media stack, in PJMEDIA
+ - NAT traversal stack, in PJNATH
+
+There are also high level libraries that integrate the above components (PJSUA, for
+SIP User Agent), as well as low level libraries that abstracts operating system 
+differences.
+
+To avoid naming confusion between PJSIP as organization name (as in 
+`PJSIP.ORG <https://pjsip.org>`_) and PJSIP as libraries that provide SIP protocol
+implementation  above, we also call this project **PJPROJECT**.
+
+Below is the diagram that shows the relationship among libraries in PJPROJECT.
+Click the link on the diagram to go to the documentation.
 
 .. raw:: html
     :file: architecture.svg

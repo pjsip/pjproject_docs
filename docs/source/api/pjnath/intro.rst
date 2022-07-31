@@ -220,7 +220,7 @@ in the past:
 * The complexity of the ALG processing in itself seems to have caused the device to 
   behave erraticly with managing the address bindings (e.g. it creates a new binding 
   for the second packet sent by the client, even when the previous packet was sent 
-   just second ago, or it just sends inbound packet to the wrong host).
+  just second ago, or it just sends inbound packet to the wrong host).
 
 Many man-months efforts have been spent just to troubleshoot issues caused by these ALG 
 (mal)functioning, and as it adds complexity to the problem rather than solving it, 

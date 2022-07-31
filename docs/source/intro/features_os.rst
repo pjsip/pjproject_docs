@@ -1,7 +1,7 @@
 Supported Platforms
 ---------------------------
 
-List of supported operating systems and link to the relevant documentation.
+List of supported operating systems and link to the relevant guide.
 
 -  `Mac OS X <../get-started/posix.html>`__
 -  `Windows (32 and 64bit) <../get-started/windows.html>`__

@@ -7,22 +7,7 @@ Overview
 PJMEDIA Audio Device API is a cross-platform audio API appropriate for use with VoIP applications 
 and other types of audio streaming applications.
 
-The API abstracts many different audio API’s on various platforms, such as:
-
-- :ref:`alsa`
-- :ref:`opensl`
-- :ref:`jnisound`
-- :ref:`oboe`
-- :ref:`bdsound`
-- :ref:`coreaudio`
-- :ref:`portaudio`
-- :ref:`wmme`
-- :ref:`wasapi`
-- Blackberry BB10
-- Symbian audio streaming/multimedia framework (MMF) implementation
-- Nokia Audio Proxy Server (APS) implementation
-- null-audio implementation
-
+.. include:: ../../common/common_audiodev.rst
 
 Core features supported by PJMEDIA Audio Device API:
 

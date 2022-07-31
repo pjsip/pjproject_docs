@@ -3,4 +3,4 @@
 Supported Codecs
 ---------------------------------------------
 
-.. include:: ../common/pjmedia_codec.rst
+.. include:: ../common/common_codecs.rst

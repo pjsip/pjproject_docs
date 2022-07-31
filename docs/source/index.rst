@@ -13,7 +13,6 @@ PJSIP Project Online Documentation
    :caption: PJSIP OVERVIEW
    
    intro/intro
-   intro/getting
    intro/features
    intro/license
 
@@ -21,6 +20,7 @@ PJSIP Project Online Documentation
    :maxdepth: 2
    :caption: GET STARTED
 
+   get-started/getting
    get-started/consider
    get-started/android
    get-started/iphone
@@ -32,7 +32,7 @@ PJSIP Project Online Documentation
    :maxdepth: 2
    :caption: PJSUA2 GUIDES
 
-   pjsua2/intro_pjsua2
+   pjsua2/intro
    pjsua2/endpoint
    pjsua2/account
    pjsua2/media
@@ -43,13 +43,14 @@ PJSIP Project Online Documentation
 .. toctree::
    :caption: API REFERENCE
    
-   api/pjsua2
-   api/pjsua_lib
-   api/pjsip
+   api/pjsua2/index
+   api/pjsua-lib/index
+   api/pjsip/index
    api/pjmedia/index
    api/pjnath/index
-   api/pjlib_util
-   api/pjlib
+   api/pjlib-util/index
+   api/pjlib/index
+..   api/doxygen_index
 
 .. toctree::
    :maxdepth: 3

@@ -8,8 +8,9 @@
 Core
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-PJMEDIA was designed to be applicable in broad range of systems, including DSPs.
-These are the core considerations for such design:
+PJMEDIA was designed to be applicable in broad range of systems, from desktop to
+mobile, embedded, and maybe even DSP. These are the core considerations for such 
+design:
 
 - any clockrates
 - N-channels support
@@ -70,6 +71,18 @@ Base audio processing algorithms implemented in PJMEDIA.
 - :doc:`Tone/DTMF Generator </api/generated/pjmedia/group/group__PJMEDIA__MF__DTMF__TONE__GENERATOR>`
 - :doc:`Waveform Similarity Based Overlap-Add (WSOLA) </api/generated/pjmedia/group/group__PJMED__WSOLA>`
 
+Codec Framework
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- :doc:`Codec Registration </api/generated/pjmedia/group/group__PJMEDIA__CODEC__REGISTER__ALL>`
+- :doc:`Codec constants </api/generated/pjmedia/group/group__pjmedia__codec__types>`
+- :doc:`Audio Codec Framework </api/generated/pjmedia/group/group__PJMEDIA__CODEC>`
+- :doc:`G.711 </api/generated/pjmedia/group/group__PJMED__G711>`
+- :doc:`Video Codec Framework </api/generated/pjmedia/group/group__PJMEDIA__VID__CODEC>`
+
+  .. note::
+
+     For list of supported codecs, see :ref:`supported_codecs`.
 
 Transports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -123,19 +136,6 @@ Formats
 - :doc:`RIFF/WAVE </api/generated/pjmedia/group/group__PJMEDIA__WAVE>`
 - :doc:`AVI </api/generated/pjmedia/group/group__PJMEDIA__AVI>`
 - :doc:`Media format framework </api/generated/pjmedia/group/group__PJMEDIA__FORMAT>`
-
-
-Codecs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-PJMEDIA implements the codec framework and G.711 codec for reference. Other codecs
-are implemented in :ref:`PJMEDIA-Codec <pjmedia-codec>` library. Please see 
-the complete list of :ref:`supported_codecs`.
-
-- :doc:`Codec Registration </api/generated/pjmedia/group/group__PJMEDIA__CODEC__REGISTER__ALL>`
-- :doc:`Codec constants </api/generated/pjmedia/group/group__pjmedia__codec__types>`
-- :doc:`Audio Codec Framework </api/generated/pjmedia/group/group__PJMEDIA__CODEC>`
-- :doc:`G.711 </api/generated/pjmedia/group/group__PJMED__G711>`
-- :doc:`Video Codec Framework </api/generated/pjmedia/group/group__PJMEDIA__VID__CODEC>`
 
 
 Media Flow

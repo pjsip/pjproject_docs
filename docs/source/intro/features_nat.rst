@@ -42,5 +42,5 @@ NAT Traversal
 
 -  Other:
 
-   -  `QoS <QoS>`__ support on sockets (DSCP, WMM)
+   -  :ref:`qos`
 

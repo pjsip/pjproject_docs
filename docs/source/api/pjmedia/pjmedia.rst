@@ -1,4 +1,4 @@
 PJMEDIA Core
 ---------------------------------------------
 
-.. include:: ../../common/pjmedia.rst
+.. include:: ../../common/common_pjmedia.rst

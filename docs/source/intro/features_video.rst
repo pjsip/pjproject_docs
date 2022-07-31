@@ -1,36 +1,20 @@
 Video Features
 ------------------
 
+PJMEDIA supports end-to-end video communication as well as video conferencing
+in client.
 
-- AVI file reader
-- Platforms:
+Video is available on the following platforms:
 
-   - Windows
-   - Linux
-   - Mac
-   - iOS
-   - Android
+- `Mac OS X <../get-started/posix.html>`_
+- `Windows <../get-started/windows.html>`_
+- `Linux <../get-started/posix.html>`_
+- `iOS <../get-started/iphone.html>`_
+- `Android <../get-started/android.html>`_
 
-- Codecs:
+The following video codecs are available:
 
-   - H.263-1998 (ffmpeg)
-   - H.264 (`OpenH264 <http://www.openh264.org>`__, VideoToolbox (iOS and Mac), ffmpeg+x264)
-   - VP8 (libvpx)
-   - VP9 (libvpx)
+.. include:: ../common/common_video_codec_list.rst
 
-- Capture devices:
-
-   - colorbar (all platforms)
-   - DirectShow (Windows)
-   - Video4Linux2 (Linux)
-   - QuickTime (Mac OS X)
-   - AVFoundation (iOS)
-
-- Rendering devices:
-
-   - SDL (Windows, Linux, and Mac OS X)
-   - OpenGL ES or UIView (iOS)
+.. include:: ../common/common_videodev.rst
    
-- Video conferencing (in client)
-- Flexible media flow management
-

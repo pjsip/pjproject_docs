@@ -22,7 +22,7 @@ PJMEDIA contains the following libraries:
 .. toctree::
 
   pjmedia
-  codec
-  audiodev
-  videodev
+  pjmedia-codec
+  pjmedia-audiodev
+  pjmedia-videodev
   

@@ -27,11 +27,20 @@ It is probably easier to do the testing using lower level API such as PJSUA sinc
 Integrating 3rd party media
 =========================================
 
-Intel IPP codecs
+.. _guide_ipp:
+
+Intel IPP codecs integration
 =========================================
 
-OpenCore AMR codecs
+- Trac: https://trac.pjsip.org/repos/wiki/Intel_IPP_Codecs
+
+
+.. _guide_opencore_amr:
+
+OpenCore AMR codecs integration
 =========================================
+
+- Trac: https://trac.pjsip.org/repos/wiki/Using-OpenCORE-AMR-NB-WB-Codec
 
 OPUS  codec
 =========================================
@@ -95,13 +104,19 @@ IPv6
 Need detailed guide.
 
 Relevant links:
+
 * https://trac.pjsip.org/repos/wiki/IPv6
 * https://github.com/pjsip/pjproject/issues/422
 * https://github.com/pjsip/pjproject/issues/1971
 * https://github.com/pjsip/pjproject/issues/2032
 
+.. _qos:
+
 QoS
 =========================================
+
+https://trac.pjsip.org/repos/wiki/QoS
+
 
 Standalone ICE
 =========================================
