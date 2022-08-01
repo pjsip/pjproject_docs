@@ -9,27 +9,27 @@ PJSIP Project Online Documentation
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: PJSIP OVERVIEW
    
    intro/intro
    intro/features
    intro/license
-
+   
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: GET STARTED
 
    get-started/getting
    get-started/consider
-   get-started/android
-   get-started/iphone
-   get-started/posix
-   get-started/windows
-   get-started/windows-phone
+   get-started/android/index
+   get-started/ios/index
+   get-started/posix/index
+   get-started/windows/index
+   get-started/windows-phone/index
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: PJSUA2 GUIDES
 
    pjsua2/intro
@@ -41,6 +41,7 @@ PJSIP Project Online Documentation
    pjsua2/samples
    
 .. toctree::
+   :maxdepth: 1
    :caption: API REFERENCE
    
    api/pjsua2/index
@@ -53,7 +54,7 @@ PJSIP Project Online Documentation
 ..   api/doxygen_index
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: SPECIFIC GUIDES
 
    specific-guides/index

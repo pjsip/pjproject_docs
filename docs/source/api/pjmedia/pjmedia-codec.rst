@@ -38,8 +38,8 @@ BCG729 (a G.729 compliant codec)
 
 FFMPEG codecs (H.261, H.263, H.263P (H263-1998), H.264, MJPEG, VP8, VP9)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-With the ``configure`` script, ffmpeg support is detected and enabled
-automatically.
+With the ``configure`` script, ffmpeg may be detected and enabled automatically or 
+manually via ``--with-ffmpeg`` option.
 
 With Visual Studio, to enable ffmpeg support you need to make sure that
 ffmpeg headers and libraries are available in standard location and
@@ -156,7 +156,10 @@ OpenH264
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Supports Windows, Posix (Mac OS X, Linux), iOS, Android.
-- Build instructions: https://github.com/pjsip/pjproject/issues/1947
+- OpenH264 may be detected and enabled by the ``configure`` script, either 
+  automatically or manually via ``--with-openh264`` option. It may be forcefully 
+  disabled by defining ``PJMEDIA_HAS_OPENH264_CODEC`` to 0 in ``config_site.h``
+- Detailed instructions: https://github.com/pjsip/pjproject/issues/1947
 - Code documentation: :doc:`OpenH264 </api/generated/pjmedia/group/group__PJMEDIA__CODEC__OPENH264>`
 
 .. _opus:
@@ -201,9 +204,9 @@ Speex
 - Code documentation: :doc:`Speex </api/generated/pjmedia/group/group__PJMED__SPEEX>`
 
 
-.. _libpvx:
+.. _libvpx:
 
-VP8 and VP9 (libpvx)
+VP8 and VP9 (libvpx)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 - Build instructions: https://github.com/pjsip/pjproject/issues/2253
 - Code documentation: :doc:`VP8 and VP9 </api/generated/pjmedia/group/group__PJMEDIA__CODEC__VPX>`

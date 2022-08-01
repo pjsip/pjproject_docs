@@ -17,16 +17,61 @@ design:
 - zero thread capable
 
 
+Audio Features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Some audio processing algorithms implemented in PJMEDIA.
+
+- :doc:`Accoustic Echo Cancellation </api/generated/pjmedia/group/group__PJMEDIA__Echo__Cancel>` 
+  (multichannel capable)
+- :doc:`Adaptive Delay Buffer </api/generated/pjmedia/group/group__PJMED__DELAYBUF>`
+- :doc:`Adaptive Jitter Buffer </api/generated/pjmedia/group/group__PJMED__JBUF>`
+- :doc:`Adaptive Silence Detection </api/generated/pjmedia/group/group__PJMEDIA__SILENCEDET>`
+- :doc:`Circular Buffer </api/generated/pjmedia/group/group__PJMED__CIRCBUF>`
+- :doc:`Codec Framework </api/generated/pjmedia/group/group__PJMEDIA__CODEC>`
+- :doc:`Conference Bridge </api/generated/pjmedia/group/group__PJMEDIA__CONF>`
+- :doc:`Format converter </api/generated/pjmedia/group/group__PJMEDIA__CONVERTER>`
+- :doc:`Mono/Stereo/Multichannel Converter </api/generated/pjmedia/group/group__PJMEDIA__STEREO>`
+- :doc:`Packet Lost Concealment (PLC) </api/generated/pjmedia/group/group__PJMED__PLC>`
+- :doc:`Resampling Algorithm </api/generated/pjmedia/group/group__PJMEDIA__RESAMPLE>`
+- :doc:`Tone/DTMF Generator </api/generated/pjmedia/group/group__PJMEDIA__MF__DTMF__TONE__GENERATOR>`
+- :doc:`WAV file playback </api/generated/pjmedia/group/group__PJMEDIA__FILE__PLAY>`,
+  :doc:`playlist </api/generated/pjmedia/group/group__PJMEDIA__WAV__PLAYLIST>`, and
+  :doc:`recorder </api/generated/pjmedia/group/group__PJMEDIA__FILE__REC>`
+- :doc:`Waveform Similarity Based Overlap-Add (WSOLA) </api/generated/pjmedia/group/group__PJMED__WSOLA>`
+- `WebRTC AEC3 support <https://github.com/pjsip/pjproject/pull/2722>`_
+
+
+Video Features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. include:: /common/common_video_features.rst
+
+
+Transports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Media transport is responsible for packing/unpacking media frames to/from the network,
+as well as getting involved in negotiation of suitable transport in SDP. Media transports
+can also be chained in a pipeline (for example, SRTP+ICE).
+
+- :doc:`Media Transport API </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT>`
+- :doc:`SRTP - Secure RTP (SDES and DTLS) </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__SRTP>`
+- :doc:`ICE - Interactive Connectivity Establishment </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__ICE>`
+- :doc:`UDP </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__UDP>`
+- :doc:`Loopback </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__LOOP>`
+- :doc:`Sample Transport Adapter </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__ADAPTER__SAMPLE>`
+
+Media transports implemented by community:
+
+- ZRTP: https://github.com/wernerd/ZRTP4PJ
+
+
 Media components (Ports)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 :doc:`Port </api/generated/pjmedia/group/group__PJMEDIA__PORT>` is PJMEDIA component 
 for processing media frames. Media ports can be linked in a pipeline to process 
 audio/video frames end-to-end from audio device to the network/transport.
 
-- :doc:`File Playback </api/generated/pjmedia/group/group__PJMEDIA__FILE__PLAY>`
-- :doc:`File Recorder </api/generated/pjmedia/group/group__PJMEDIA__FILE__REC>`
-- :doc:`Bidirectional Port </api/generated/pjmedia/group/group__PJMEDIA__BIDIRECTIONAL__PORT>`
 - :doc:`Conference Bridge </api/generated/pjmedia/group/group__PJMEDIA__CONF>`
+- :doc:`Bidirectional Port </api/generated/pjmedia/group/group__PJMEDIA__BIDIRECTIONAL__PORT>`
 - :doc:`Echo Cancellation Port </api/generated/pjmedia/group/group__PJMEDIA__ECHO__PORT>`
 - :doc:`Buffer Playback </api/generated/pjmedia/group/group__PJMEDIA__MEM__PLAYER>`
 - :doc:`Capture to Buffer </api/generated/pjmedia/group/group__PJMEDIA__MEM__CAPTURE>`
@@ -35,10 +80,10 @@ audio/video frames end-to-end from audio device to the network/transport.
 - :doc:`Multi-frequency/DTMF Tone Generator </api/generated/pjmedia/group/group__PJMEDIA__MF__DTMF__TONE__GENERATOR>`
 - :doc:`Audio Stream </api/generated/pjmedia/group/group__PJMED__STRM>`
 - :doc:`Video Stream </api/generated/pjmedia/group/group__PJMED__VID__STRM>`
+- :doc:`WAV File Playback </api/generated/pjmedia/group/group__PJMEDIA__FILE__PLAY>`
 - :doc:`WAV Playlist </api/generated/pjmedia/group/group__PJMEDIA__WAV__PLAYLIST>`
+- :doc:`WAV File Recorder </api/generated/pjmedia/group/group__PJMEDIA__FILE__REC>`
 - :doc:`Media channel splitter/combiner </api/generated/pjmedia/group/group__PJMEDIA__SPLITCOMB>`
-- :doc:`Video conference bridge </api/generated/pjmedia/group/group__PJMEDIA__VID__CONF>`
-- :doc:`Video source duplicator </api/generated/pjmedia/group/group__PJMEDIA__VID__TEE>`
   
   
 Clock provider
@@ -54,23 +99,6 @@ inside the media pipeline in a timely manner.
 - :doc:`Clock Generator </api/generated/pjmedia/group/group__PJMEDIA__CLOCK>`
 
 
-Audio Features
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Base audio processing algorithms implemented in PJMEDIA.
-
-- :doc:`Accoustic Echo Cancellation API </api/generated/pjmedia/group/group__PJMEDIA__Echo__Cancel>`
-- :doc:`Adaptive Delay Buffer </api/generated/pjmedia/group/group__PJMED__DELAYBUF>`
-- :doc:`Adaptive Jitter Buffer </api/generated/pjmedia/group/group__PJMED__JBUF>`
-- :doc:`Adaptive Silence Detection </api/generated/pjmedia/group/group__PJMEDIA__SILENCEDET>`
-- :doc:`Circular Buffer </api/generated/pjmedia/group/group__PJMED__CIRCBUF>`
-- :doc:`Codec Framework </api/generated/pjmedia/group/group__PJMEDIA__CODEC>`
-- :doc:`Format converter </api/generated/pjmedia/group/group__PJMEDIA__CONVERTER>`
-- :doc:`Mono/Stereo/Multichannel Converter </api/generated/pjmedia/group/group__PJMEDIA__STEREO>`
-- :doc:`Packet Lost Concealment (PLC) </api/generated/pjmedia/group/group__PJMED__PLC>`
-- :doc:`Resampling Algorithm </api/generated/pjmedia/group/group__PJMEDIA__RESAMPLE>`
-- :doc:`Tone/DTMF Generator </api/generated/pjmedia/group/group__PJMEDIA__MF__DTMF__TONE__GENERATOR>`
-- :doc:`Waveform Similarity Based Overlap-Add (WSOLA) </api/generated/pjmedia/group/group__PJMED__WSOLA>`
-
 Codec Framework
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -84,31 +112,33 @@ Codec Framework
 
      For list of supported codecs, see :ref:`supported_codecs`.
 
-Transports
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Media transport is responsible for packing/unpacking media frames to/from the network,
-as well as getting involved in negotiation of suitable transport in SDP. Media transports
-can also be chained in a pipeline (for example, SRTP+ICE).
-
-- :doc:`Media Transport API </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT>`
-- :doc:`SRTP - Secure RTP (SDES and DTLS) </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__SRTP>`
-- :doc:`ICE - Interactive Connectivity Establishment </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__ICE>`
-- :doc:`UDP </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__UDP>`
-- :doc:`Loopback </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__LOOP>`
-- :doc:`Sample Transport Adapter </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__ADAPTER__SAMPLE>`
-
 SDP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 - :doc:`SDP Parsing and Data Structure </api/generated/pjmedia/group/group__PJMEDIA__SDP>`
-- :doc:`SDP Negotiation State Machine (Offer/Answer Model, RFC 3264) </api/generated/pjmedia/group/group__PJMEDIA__SDP__NEG>`
-
+- :doc:`SDP Negotiation State Machine (Offer/Answer Model) </api/generated/pjmedia/group/group__PJMEDIA__SDP__NEG>`
+  (`RFC 3264 <https://datatracker.ietf.org/doc/html/rfc3264>`_)
+- `SDP SSRC attribute <https://github.com/pjsip/pjproject/issues/2098>`_ 
+  (`RFC 5576 <https://datatracker.ietf.org/doc/html/rfc5576>`_)
+- `RTP and RTCP multiplexing <https://github.com/pjsip/pjproject/issues/2087>`_
+  `(RFC 5761) <https://datatracker.ietf.org/doc/html/rfc5761>`_
 
 RTP and RTCP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- :doc:`RTP Session and Encapsulation (RFC 3350) </api/generated/pjmedia/group/group__PJMED__RTP>`
-- :doc:`RTCP Session and Encapsulation (RFC 3350) </api/generated/pjmedia/group/group__PJMED__RTCP>`
-- :doc:`RTCP Feedback (RFC 4585) </api/generated/pjmedia/group/group__PJMED__RTCP__FB>`
-- :doc:`RTCP XR (RFC 3611) </api/generated/pjmedia/group/group__PJMED__RTCP__XR>`
+- :doc:`RTP Session and Encapsulation </api/generated/pjmedia/group/group__PJMED__RTP>`
+  `(RFC 3350) <https://datatracker.ietf.org/doc/html/rfc3350>`_
+- :doc:`RTCP Session and Encapsulation </api/generated/pjmedia/group/group__PJMED__RTCP>`
+  `(RFC 3350) <https://datatracker.ietf.org/doc/html/rfc3350>`_
+- `RTP and RTCP multiplexing <https://github.com/pjsip/pjproject/issues/2087>`_
+  `(RFC 5761) <https://datatracker.ietf.org/doc/html/rfc5761>`_
+- :doc:`RTP/AVPF (RTP with Feedback profile) </api/generated/pjmedia/group/group__PJMED__RTCP__FB>`
+  `(RFC 4585) <https://datatracker.ietf.org/doc/html/rfc4585>`_
+- :doc:`RTCP XR </api/generated/pjmedia/group/group__PJMED__RTCP__XR>`
+  `(RFC 3611) <https://datatracker.ietf.org/doc/html/rfc3611>`_
+- `SSRC synchronization via SDP <https://github.com/pjsip/pjproject/issues/2098>`_ 
+  (`RFC 5576 <https://datatracker.ietf.org/doc/html/rfc5576>`_)
+- `RTCP CNAME guideline <https://github.com/pjsip/pjproject/issues/2098>`_ 
+  (`RFC 7022 <https://datatracker.ietf.org/doc/html/rfc7022>`_)
+  
 
 Compile Time Settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

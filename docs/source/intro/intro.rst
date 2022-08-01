@@ -36,8 +36,8 @@ To avoid naming confusion between PJSIP as organization name (as in
 `PJSIP.ORG <https://pjsip.org>`_) and PJSIP as libraries that provide SIP protocol
 implementation  above, we also call this project **PJPROJECT**.
 
-Below is the diagram that shows the relationship among libraries in PJPROJECT.
-Click the link on the diagram to go to the documentation.
+Below is architecture diagram of libraries in PJPROJECT. Click the link on the 
+diagram to go to the documentation.
 
 .. raw:: html
     :file: architecture.svg

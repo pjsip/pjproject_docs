@@ -6,17 +6,17 @@ Basic Types and Functions
 - :doc:`Error Codes </api/generated/pjnath/group/group__PJNATH__ERROR>`
 
 
-ICE
----------------------------
 .. _ice:
 
+ICE and Trickle ICE
+---------------------------
 Interactive Connectivity Establishment (`RFC 5245 <http://tools.ietf.org/html/rfc5245>`_)
 
 - :doc:`Introduction </api/generated/pjnath/group/group__PJNATH__ICE>`
 - :doc:`High-level ICE Transport </api/generated/pjnath/group/group__PJNATH__ICE__STREAM__TRANSPORT>`
 - :doc:`Transport-independent ICE Session </api/generated/pjnath/group/group__PJNATH__ICE__SESSION>`
 - TCP
--  `trickle ICE <https://github.com/pjsip/pjproject/pull/2588>`_ 
+-  Trickle ICE, see: https://github.com/pjsip/pjproject/pull/2588
 
 
 STUN

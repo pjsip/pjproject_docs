@@ -77,8 +77,8 @@ Experimental: with Mingw64, enable it with ``./configure --enable-video=yes``
 FFMPEG
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The ffmpeg capture device is available where ffmpeg support is available. 
-With the ``configure`` script, ffmpeg support is detected and enabled
-automatically.
+With the ``configure`` script, ffmpeg may be detected and enabled 
+automatically or manually via ``--with-ffmpeg`` option.
 
 With Visual Studio, to enable ffmpeg support you need to make sure that
 ffmpeg headers and libraries are available in standard location and

@@ -8,62 +8,44 @@ It can be used in wide range of applications, from embedded systems, mobile appl
 Key Features
 -------------
 
-- Extreme Portability
+Extreme Portability
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+From 16-bit, 32-bit, to 64-bit, big or little endian, single or multi-processors, wide range of
+operating systems, Unicode support. With or without floating point support. Multi-threading or not.
+With/without ANSI LIBC. Currently known to run on these platforms:
 
-  From 16-bit, 32-bit, to 64-bit, big or little endian, single or multi-processors, wide range of
-  operating systems, Unicode support. With or without floating point support. Multi-threading or not.
-  With/without ANSI LIBC. Currently known to run on these platforms:
-  
-  - Mobile platforms:
-  
-    - Android
-    - iOS (iPhone, iPad, iPod Touch)
-    - UWP and Windows Phone 8
-    - BlackBerry 10
-    - Symbian S60 3rd Edition
-    - Windows Mobile/CE
-    
-  - Desktop platforms:
-  
-    - MacOS X (Intel and powerpc)
-    - Win32/x86_64 (Win95/98/ME, NT/2000/XP/2003)
-    - Linux/x86_64
-    
-  - Embedded platforms:
-  
-    - Embedded Linux
-    - WinCE
-    - RTEMS (x86 and powerpc)
-    
-  - Others:
-  
-    - Solaris/ultra
-    - Linux/alpha
-  
+.. include:: /common/common_os_list.rst
 
-- Small in Size
 
-  - Size around 100 KB.
+Small Footprint
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PJLIB size is around 150 KB. See :ref:`guide_footprint` for more information.
 
-- Big in Performance
 
-  - Everything is designed for highest performance.
-  
-- No Dynamic Memory Allocations
+Big in Performance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PJLIB has been designed to achieve highest performance, with design decisions such as
+own :ref:`memory management <pjlib_pool>`, :ref:`string <pjlib_string>`, and 
+:doc:`network event proactor </api/generated/pjlib/group/group__PJ__IOQUEUE>`. 
 
-  - alloc() is a O(1) operation.
-  - no mutex is used inside alloc().
-  - no free(). All chunks will be deleted when the pool is destroyed.
+See :ref:`guide_performance` for more information.
 
-- Rich Features
 
-  - Operating system abstraction
-  - Low and high level network I/O
-  - Timer management
-  - Rich data structures
-  - Exception construct
-  - Logging facility
-  - Random and GUID generation
+No Dynamic Memory Allocations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- alloc() is a O(1) operation.
+- no mutex is used inside alloc().
+- no free(). All chunks will be deleted when the pool is destroyed.
+
+Rich Features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Operating system abstraction
+- Low and high level network I/O
+- Timer management
+- Rich data structures
+- Exception construct
+- Logging facility
+- Random and GUID generation
   
   
 API Reference
@@ -117,13 +99,24 @@ Network
   - :doc:`IOQueue (Event Proactor pattern) </api/generated/pjlib/group/group__PJ__IOQUEUE>`
 
 - :ref:`qos`
-- :doc:`SSL Socket </api/generated/pjlib/group/group__PJ__SSL__SOCK>`
+
+
+
+SSL/Secure Socket
+^^^^^^^^^^^^^^^^^^^^^^^
+SSL socket implementation on top of OpenSSL, BoringSSL, GNUTLS, and Apple's Network framework.
+See:
+
+- :doc:`SSL Socket API </api/generated/pjlib/group/group__PJ__SSL__SOCK>`
+- Guide on :ref:`guide_ssl`
+
 
 File
 ^^^^^^^^^^
 - :doc:`File Access </api/generated/pjlib/group/group__PJ__FILE__ACCESS>`
 - :doc:`File I/O </api/generated/pjlib/group/group__PJ__FILE__IO>`
 
+.. _pjlib_pool:
 
 Memory Management
 ^^^^^^^^^^^^^^^^^^^^^
@@ -134,7 +127,7 @@ Memory Management
 
   - :doc:`Pool Factory Concept </api/generated/pjlib/group/group__PJ__POOL__FACTORY>`
 
-
+.. _pjlib_string:
 
 String & Unicode
 ^^^^^^^^^^^^^^^^^^^^
@@ -182,7 +175,7 @@ Time and Timer
 Random and GUID 
 ^^^^^^^^^^^^^^^^^^^^^^
 - :doc:`Random </api/generated/pjlib/group/group__PJ__RAND>`
-- :doc:`GUID </api/generated/pjlib/group/group__PJ__GUID>`
+- :doc:`Native GUID generator </api/generated/pjlib/group/group__PJ__GUID>`
 
 
 Application Microframework

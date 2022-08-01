@@ -4,6 +4,10 @@ Video Features
 PJMEDIA supports end-to-end video communication as well as video conferencing
 in client.
 
+Some of the features of the video subsystem:
+
+.. include:: /common/common_video_features.rst
+
 Video is available on the following platforms:
 
 - `Mac OS X <../get-started/posix.html>`_

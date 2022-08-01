@@ -7,6 +7,12 @@ Audio device API
 Audio device tuning
 =========================================
 
+AEC
+=========================================
+- WebRTC: https://github.com/pjsip/pjproject/pull/2775
+- Hardware AEC/VPIO: https://github.com/pjsip/pjproject/issues/1778
+- Speex AEC: https://github.com/pjsip/pjproject/issues/589
+
 Audio latency benchmark
 =========================================
 
@@ -48,10 +54,6 @@ OPUS  codec
 Tone generator
 =========================================
 
-WebRTC AEC
-=========================================
-
-
 Media
 *****************************************
 
@@ -71,6 +73,11 @@ Development & Programming
 
 Build and Installation
 =========================================
+
+C#
+=========================================
+https://github.com/pjsip/pjproject/issues/2086
+
 
 Group lock
 =========================================
@@ -112,6 +119,11 @@ Relevant links:
 
 .. _qos:
 
+NAT64
+=========================================
+
+https://trac.pjsip.org/repos/wiki/IPv6#NAT64-IPv4
+
 QoS
 =========================================
 
@@ -131,6 +143,8 @@ Trickle ICE
 Performance & Footprint
 *****************************************
 
+.. _guide_performance:
+
 Performance Optimization
 =========================================
 A general guide on how to reduce CPU utilization can be found here: `FAQ-CPU utilization`_.
@@ -138,6 +152,12 @@ A general guide on how to reduce CPU utilization can be found here: `FAQ-CPU uti
 .. _`FAQ-CPU utilization`: http://trac.pjsip.org/repos/wiki/FAQ#cpu
 
 
+.. _guide_footprint:
+
+Footprint Optimization
+=========================
+
+https://trac.pjsip.org/repos/wiki/FAQ#Footprint
 
 Security
 *****************************************
@@ -145,16 +165,32 @@ Security
 SRTP
 =========================================
 
-TLS
-=========================================
+.. _guide_ssl:
 
+Secure socket (SSL, TLS)
+=========================================
+- BoringSSL: https://github.com/pjsip/pjproject/pull/2856
+- Mac/iOS native backend: https://github.com/pjsip/pjproject/issues/2185
 
 SIP
 *****************************************
 
+DTMF
+=========================================
+
+- https://github.com/pjsip/pjproject/issues/2036
+
 
 Video
 *****************************************
+
+.. _guide_vidconf:
+
+Video conferencing
+=========================================
+- https://github.com/pjsip/pjproject/issues/2181
+- :doc:`Video conference bridge </api/generated/pjmedia/group/group__PJMEDIA__VID__CONF>`
+
 
 Video quality troubleshooting
 =========================================
