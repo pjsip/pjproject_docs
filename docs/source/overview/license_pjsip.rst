@@ -6,7 +6,7 @@ proprietary license.
 PJSIP may be linked with bundled or external third-party software, most of 
 them are open source, but some may require specific licensing terms.
 
-Below are more detailed terms of the licenses.
+Below are more detailed terms of PJSIP license.
 
 
 The SOFTWARE
@@ -60,7 +60,7 @@ Alternative license
 ------------------------
 If you can't comply with GPL, an alternative licensing scheme may be arranged.
 
-If you still have questions, just email icensing@pjsip.org and we'll help you sort it out.
+If you still have questions, just email licensing@pjsip.org and we'll help you sort it out.
 
 
 Special Exception

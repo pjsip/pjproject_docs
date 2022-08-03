@@ -38,18 +38,9 @@ BCG729 (a G.729 compliant codec)
 
 FFMPEG codecs (H.261, H.263, H.263P (H263-1998), H.264, MJPEG, VP8, VP9)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-With the ``configure`` script, ffmpeg may be detected and enabled automatically or 
-manually via ``--with-ffmpeg`` option.
+See :ref:`guide_ffmpeg`.
 
-With Visual Studio, to enable ffmpeg support you need to make sure that
-ffmpeg headers and libraries are available in standard location and
-declare this in ``config_site.h``:
-
-.. code-block:: c
-
-   #define PJMEDIA_HAS_FFMPEG  1
-
-References:
+See also:
 
 - Code documentation: :doc:`FFMPEG </api/generated/pjmedia/group/group__PJMEDIA__CODEC__VID__FFMPEG>`
 - VP8/VP9 support: https://github.com/pjsip/pjproject/pull/2863

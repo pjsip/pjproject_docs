@@ -76,24 +76,9 @@ Experimental: with Mingw64, enable it with ``./configure --enable-video=yes``
 
 FFMPEG
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ffmpeg capture device is available where ffmpeg support is available. 
-With the ``configure`` script, ffmpeg may be detected and enabled 
-automatically or manually via ``--with-ffmpeg`` option.
+PJMEDIA uses FFMPEG to provide codecs and video capture device.
 
-With Visual Studio, to enable ffmpeg support you need to make sure that
-ffmpeg headers and libraries are available in standard location and
-declare this in ``config_site.h``:
-
-.. code-block:: c
-
-   #define PJMEDIA_HAS_VIDEO   1
-   #define PJMEDIA_HAS_FFMPEG  1
-
-To enable ffmpeg capture device, add this in  ``config_site.h``:
-
-.. code-block:: c
-
-   #define PJMEDIA_VIDEO_DEV_HAS_FFMPEG  1
+See :ref:`guide_ffmpeg`.
 
 
 .. _opengl:
@@ -149,13 +134,49 @@ References:
 
 SDL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Quoting http://www.libsdl.org/ website:
 
-With the ``configure`` script, SDL support is detected and enabled automatically.
+   *Simple DirectMedia Layer is a cross-platform development library designed to 
+   provide low level access to audio, keyboard, mouse, joystick, and graphics 
+   hardware via OpenGL and Direct3D*
 
-With Visual Studio, to enable SDL renderer in the build declare this in 
-``config_site.h``:
+In PJMEDIA, currently we use SDL as renderer device.
 
-.. code-block:: c
+.. _guide_sdl:
+
+Adding SDL support
+^^^^^^^^^^^^^^^^^^^^
+On Debian based distributions:
+
+.. code-block:: shell
+
+   sudo apt-get install libsdl2-dev
+
+For other systems, follow the instructions in http://www.libsdl.org/. Make sure
+headers and libraries are accessible in build search paths after installation.
+
+Building PJPROJECT with SDL support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**autoconf build system**
+
+With the ``configure`` script, SDL support can be detected and enabled automatically,
+or explicitly with ``--with-sdl=DIR`` option.
+
+Notice the following output:
+
+.. code-block::
+
+   checking for sdl2-config... /usr/bin/sdl2-config
+   checking SDL availability... 2.0.10
+
+Note that support can be explicitly disabled with ``--disable-sdl`` option.
+
+**Visual Studio**
+
+Declare this in  ``config_site.h`` and rebuild:
+
+.. code-block:: cpp
 
    #define PJMEDIA_VIDEO_DEV_HAS_SDL     1
 
@@ -164,5 +185,31 @@ With Visual Studio, to enable SDL renderer in the build declare this in
 
 Video4Linux
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Video4Linux capture device is detected and enabled automatically by the
-``configure`` script.
+
+.. _guide_video4linux:
+
+Adding Video4Linux support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+On Debian based systems:
+
+.. code-block:: shell
+
+   sudo apt-get install libv4l-dev
+
+For other systems, find the appropriate instructions. Make sure
+headers and libraries are accessible in build search paths after installation.
+
+Building PJPROJECT with V4L support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**autoconf build system**
+
+With the ``configure`` script, support is detected and enabled automatically.
+Notice the following output:
+
+.. code-block::
+
+   checking for v4l2_open in -lv4l2... yes
+
+Support for V4L can be disabled by explicitly specifying ``--disable-v4l2``.
+

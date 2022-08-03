@@ -1,0 +1,28 @@
+Class Reference
+---------------
+Buddy
++++++
+.. doxygenclass:: pj::Buddy
+        :project: pjsip
+        :members:
+
+Status
+++++++
+.. doxygenstruct:: pj::PresenceStatus
+        :project: pjsip
+        :members:
+        
+Info
+++++
+.. doxygenstruct:: pj::BuddyInfo
+        :project: pjsip
+        :members:
+
+Config
+++++++
+.. doxygenstruct:: pj::BuddyConfig
+        :project: pjsip
+        :members:
+
+
+

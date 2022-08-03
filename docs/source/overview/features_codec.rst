@@ -1,5 +1,3 @@
-.. _supported_codecs:
-
 Supported Codecs
 ---------------------------------------------
 

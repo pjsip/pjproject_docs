@@ -1,10 +1,8 @@
 Features (Datasheet)
 ====================
-
-Table of contents:
-
 .. toctree::
    :maxdepth: 1
+   :caption: Table of Contents
 
    features_os
    features_sip

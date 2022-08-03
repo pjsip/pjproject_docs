@@ -10,11 +10,11 @@ Supported capture devices:
 - :ref:`avfoundation`
 - :ref:`colorbar`
 - :ref:`dshow`
+- :ref:`ffmpeg_capture`
 - :ref:`video4linux`
 
 Supported renderer devices:
 
-- :ref:`ffmpeg_capture`
 - :ref:`opengl`
 - :ref:`sdl`
 - :ref:`UIView (iOS) <avfoundation>`

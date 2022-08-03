@@ -110,7 +110,7 @@ Codec Framework
 
   .. note::
 
-     For list of supported codecs, see :ref:`supported_codecs`.
+     For list of supported codecs, see :doc:`Supported codecs </overview/features_codec>`.
 
 SDP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

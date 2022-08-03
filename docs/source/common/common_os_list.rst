@@ -1,11 +1,11 @@
-- `Mac OS X (Intel and M1) </get-started/posix/index.html>`__
-- `Windows (32 and 64bit) </get-started/windows/index.html>`__
-- `Linux/uClinux </get-started/posix/index.html>`__
+- :doc:`Mac OS X (Intel and M1) </get-started/posix/index>`
+- :doc:`Windows (32 and 64bit) </get-started/windows/index>`
+- :doc:`Linux/uClinux </get-started/posix/index>`
 - Smartphones:
 
-   - `iOS </get-started/ios/index.html>`__
-   - `Android </get-started/android/index.html>`__
-   - `Windows Phone 10/Universal Windows Platform (UWP) </get-started/windows-phone/index.html>`__
+   - :doc:`iOS </get-started/ios/index>`
+   - :doc:`Android </get-started/android/index>`
+   - :doc:`Windows Phone 10/Universal Windows Platform (UWP) </get-started/windows-phone/index>`
 
 - Community supported:
 

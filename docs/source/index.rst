@@ -12,9 +12,9 @@ PJSIP Project Online Documentation
    :maxdepth: 1
    :caption: PJSIP OVERVIEW
    
-   intro/intro
-   intro/features
-   intro/license
+   overview/intro
+   overview/features
+   overview/license
    
 .. toctree::
    :maxdepth: 1
@@ -32,17 +32,17 @@ PJSIP Project Online Documentation
    :maxdepth: 1
    :caption: PJSUA2 GUIDES
 
-   pjsua2/intro
-   pjsua2/endpoint
-   pjsua2/account
-   pjsua2/media
-   pjsua2/call
-   pjsua2/presence
-   pjsua2/samples
+   pjsua2/index
    
 .. toctree::
    :maxdepth: 1
-   :caption: API REFERENCE
+   :caption: SPECIFIC GUIDES
+
+   specific-guides/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: API REFERENCE & SAMPLES
    
    api/pjsua2/index
    api/pjsua-lib/index
@@ -51,13 +51,9 @@ PJSIP Project Online Documentation
    api/pjnath/index
    api/pjlib-util/index
    api/pjlib/index
+   api/samples
+
 ..   api/doxygen_index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: SPECIFIC GUIDES
-
-   specific-guides/index
 
 
 

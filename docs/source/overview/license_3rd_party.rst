@@ -1,7 +1,7 @@
 Third Party SOFTWARE
 =====================
 The SOFTWARE may provide links to third party libraries or code (collectively "Third Party 
-Software") to iplement various functions, and access to Third Party Software may be 
+Software") to implement various functions, and access to Third Party Software may be 
 included along with the SOFTWARE delivery as a convenience. Third Party Software does not 
 comprise part of the SOFTWARE.
 
@@ -31,7 +31,7 @@ ACE Timer Heap
      - Permissions have been obtained from the copyright holder/original author (Douglas C. 
        Schmidt) to use and redistribute this code according to the SOFTWARE licenses. You may, 
        at your option, opt to use ACE license for this particular software.
-   * - Using the Software
+   * - Usage
      - This code is integral part of the library and can not be disabled.
 
 
@@ -49,32 +49,8 @@ Alaw/Ulaw Converter
    * - Description
      - PCM Alaw and U-law conversion
    * - License
-     - ::
-
-         This source code is a product of Sun Microsystems, Inc. and is provided
-         for unrestricted use.  Users may copy or modify this source code without
-         charge.
-         
-         SUN SOURCE CODE IS PROVIDED AS IS WITH NO WARRANTIES OF ANY KIND INCLUDING
-         THE WARRANTIES OF DESIGN, MERCHANTIBILITY AND FITNESS FOR A PARTICULAR
-         PURPOSE, OR ARISING FROM A COURSE OF DEALING, USAGE OR TRADE PRACTICE.
-
-         Sun source code is provided with no support and without any obligation on
-         the part of Sun Microsystems, Inc. to assist in its use, correction,
-         modification or enhancement.
-
-         SUN MICROSYSTEMS, INC. SHALL HAVE NO LIABILITY WITH RESPECT TO THE
-         INFRINGEMENT OF COPYRIGHTS, TRADE SECRETS OR ANY PATENTS BY THIS SOFTWARE
-         OR ANY PART THEREOF.
-
-         In no event will Sun Microsystems, Inc. be liable for any lost revenue
-         or profits or other special, indirect and consequential damages, even if
-         Sun has been advised of the possibility of such damages.
-
-         Sun Microsystems, Inc.
-         2550 Garcia Avenue
-         Mountain View, California  94043
-   * - Using the Software
+     - Free and unrestricted use, see the source code for details.
+   * - Usage
      - This software is not used by default unless ``PJMEDIA_HAS_ALAW_ULAW_TABLE`` is disabled. 
        When ``PJMEDIA_HAS_ALAW_ULAW_TABLE`` is enabled (the default setting), a table based 
        alaw/ulaw conversion will be used instead. 
@@ -105,7 +81,7 @@ CRC32 Algorithm
          Since the original version of the code is put in public domain,
          this file is put on public domain as well.
 
-   * - Using the Software
+   * - Usage
      - This code is needed by the STUN implementation in PJNATH and can not be disabled. 
 
 
@@ -123,24 +99,8 @@ MD5 Hashing Algorithm
    * - Description
      - MD5 hashing for digest authentication. 
    * - License
-     - This software is put in public domain, and can be used for any purpose with no warranty::
-
-         This code implements the MD5 message-digest algorithm.
-         The algorithm is due to Ron Rivest.  This code was
-         written by Colin Plumb in 1993, no copyright is claimed.
-         This code is in the public domain; do with it what you wish.
-
-         Equivalent code is available from RSA Data Security, Inc.
-         This code has been tested against that, and is equivalent,
-         except that you don't need to include two pages of legalese
-         with every copy.
-
-         To compute the message digest of a chunk of bytes, declare an
-         MD5Context structure, pass it to MD5Init, call MD5Update as
-         needed on buffers full of bytes, and then call MD5Final, which
-         will fill a supplied 16-byte array with the digest.
-
-   * - Using the Software
+     - Public domain, see the source code for details.
+   * - Usage
      - This code is needed by SIP digest authentication procedure, and can not be disabled. 
 
 
@@ -157,26 +117,8 @@ SHA1 Encryption
    * - Location
      - https://github.com/pjsip/pjproject/blob/master/pjlib-util/src/pjlib-util/sha1.c
    * - License
-     - This software is put in public domain, and can be used for any purpose with no warranty::
-
-         SHA-1 in C
-         By Steve Reid 
-         100% Public Domain
-         -----------------
-         Modified 7/98 
-         By James H. Brown 
-         Still 100% Public Domain
-         -----------------
-         Modified 4/01
-         By Saul Kravitz 
-         Still 100% PD
-         Modified to run on Compaq Alpha hardware.  
-         -----------------
-         Modified 07/2002
-         By Ralph Giles 
-         Still 100% public domain
-
-   * - Using the Software
+     - Public domain, see the source code for details.
+   * - Usage
      - This code is needed by the STUN implementation in PJNATH and can not be disabled.
 
 
@@ -198,7 +140,7 @@ G.722 Codec
      - The G.722 codec algorithms are included in PJMEDIA source directory
    * - License
      - Public domain software
-   * - Using the Software
+   * - Usage
      - This software will only be linked if application explicitly initialize the G.722 library 
        by calling ``pjmedia_codec_g722_init()``. Note that if PJSUA-LIB is used, then this call is 
        made by PJSUA-LIB, hence causing your application to be linked with the software. The 
@@ -231,8 +173,8 @@ GNU Getopt
    * - Description
      - Command line parsing library that is used by our sample applications
    * - License
-     - Distributed under opensource GNU LGPL
-   * - Using the Software
+     - GNU LGPL
+   * - Usage
      - This code will only be linked if applications explicitly call ``pj_getopt()`` 
        or pj_getopt_long(). Normally application doesn't need to use this, since this 
        functionality is useful for command line/console types of applications only.
@@ -254,7 +196,7 @@ Resample
        `Digital Audio Resampling Home Page <https://ccrma.stanford.edu/~jos/resample/>`_.
    * - License
      - LGPL: https://github.com/pjsip/pjproject/blob/master/third_party/resample/COPYING
-   * - Using the Software
+   * - Usage
      - This resampling software is used by the conference bridge. This software is used 
        when the ``PJMEDIA_RESAMPLE_IMP`` macro is set to ``PJMEDIA_RESAMPLE_LIBRESAMPLE``, 
        which is the default. Other options for resampling backends include Speex and 
@@ -278,7 +220,7 @@ GSM Codec 06.10
      - PJMEDIA includes uses GSM 06.10 version 1.0 at patchlevel 12 
    * - License
      - Free to use with no warranty: https://github.com/pjsip/pjproject/blob/master/third_party/gsm/COPYRIGHT
-   * - Using the Software
+   * - Usage
      - This software will only be linked if application explicitly initialize the
        GSM library by calling ``pjmedia_codec_gsm_init()``. Note that if PJSUA-LIB 
        is used, then this call is made by PJSUA-LIB, hence causing your application 
@@ -302,7 +244,7 @@ Speex
        patent free codec implementation developed by open source community.
    * - License
      - https://github.com/pjsip/pjproject/blob/master/third_party/speex/COPYING
-   * - Using the Software
+   * - Usage
      - **Speex codec**: this software will only be linked if application explicitly 
        initialize the Speex library by calling ``pjmedia_codec_speex_init()``.
        Note that if PJSUA-LIB is used, then this call is made by PJSUA-LIB, 
@@ -367,7 +309,7 @@ iLBC Codec
         NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
         SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-   * - Using the Software
+   * - Usage
      - This software will only be linked if application explicitly initialize 
        the iLBC library by calling ``pjmedia_codec_ilbc_init()``. Note that if 
        PJSUA-LIB is used, then this call is made by PJSUA-LIB, hence causing 
@@ -399,7 +341,7 @@ G.722.1/C (aka Siren7 and Siren14) codecs
        https://web.archive.org/web/20140709022721/http://www.polycom.com/company/about-us/technology/siren/siren-faq.html 
        for more info (this is temporarily a web archive link because when Polycom 
        became Poly the original link disappeared). 
-   * - Using the Software
+   * - Usage
      - This software is by default disabled, due to the licensing restriction above. 
        The software can be explicitly enabled by defining ``PJMEDIA_HAS_G7221_CODEC`` 
        to one.
@@ -430,7 +372,7 @@ Milenage and Rijndael
          services. There are no additional requirements or authorizations necessary for these 
          algorithms to be implemented.
 
-   * - Using the Software
+   * - Usage
      - The Milenage and Rijndael implementation will only be linked with application if 
        AKA authentication is used and application explicitly calls or makes reference to 
        ``pjsip_auth_create_aka_response()`` function. 
@@ -451,7 +393,7 @@ libSRTP
      - libSRTP implements Secure RTP/RTCP (SRTP and SRTCP).
    * - License
      - BSD 3-clause: https://github.com/pjsip/pjproject/blob/master/third_party/srtp/README.md 
-   * - Using the Software
+   * - Usage
      - Copy of libSRTP is included in PJSIP distribution, and it is built by 
        default on all supported platforms. SRTP functionality is also enabled 
        by default. If you wish to disable SRTP, declare ``PJMEDIA_HAS_SRTP`` 
@@ -479,7 +421,7 @@ DirectShow Base Classes Microsoft SDK Sample
           Sample Code.  You may modify, copy, and distribute the source and 
           object code form of code marked as "sample."
 
-   * - Using the Software
+   * - Usage
      - Used in DirectShow device driver for video capture support on Windows platform. 
        If you wish to disable it define macro ``PJMEDIA_VIDEO_DEV_HAS_DSHOW`` to 0. 
        This will disable video capture on Windows. 
@@ -501,7 +443,7 @@ libYUV
    * - License
      - - BSD 3-clause: https://github.com/pjsip/pjproject/blob/master/third_party/yuv/LICENSE
        - Third-party: https://github.com/pjsip/pjproject/blob/master/third_party/yuv/LICENSE_THIRD_PARTY
-   * - Using the Software
+   * - Usage
      - Libyuv may be detected and enabled by the configure script, either automatically 
        or manually via ``--with-libyuv`` option. It may be forcefully disabled by 
        defining ``PJMEDIA_HAS_LIBYUV`` to 0 in ``config_site.h``. 
@@ -524,7 +466,7 @@ WebRTC
        - https://github.com/pjsip/pjproject/blob/master/third_party/webrtc/LICENSE
        - https://github.com/pjsip/pjproject/blob/master/third_party/webrtc/LICENSE_THIRD_PARTY
 
-   * - Using the Software
+   * - Usage
      - WebRTC AEC is by default enabled, but can be disabled by passing 
        ``--disable-webrtc`` to the configure script or defining 
        ``PJMEDIA_HAS_WEBRTC_AEC`` to 0 in ``config_site.h``.
@@ -557,7 +499,7 @@ WebRTC AEC3
          (rnnoise),
        - https://github.com/pjsip/pjproject/tree/master/third_party/webrtc_aec3/src/third_party/pffft/README.txt (pffft)
 
-   * - Using the Software
+   * - Usage
      - WebRTC AEC3 can be enabled by passing ``--enable-libwebrtc-aec3`` to the 
        ``configure`` script. 
 
@@ -584,7 +526,7 @@ bcg729
      - G.729 codec using backend implementation from bcg729
    * - License
      - Please consult the bcg729 website
-   * - Using the Software
+   * - Usage
      - See :ref:`bcg729`
 
 
@@ -605,7 +547,7 @@ ffmpeg and libx264
        format converter.
    * - License
      - Please consult the Ffmpeg and libx264 websites. 
-   * - Using the Software
+   * - Usage
      - See :ref:`ffmpeg`. 
 
 
@@ -624,7 +566,7 @@ Oboe
      - PJSIP may be configured to use Oboe capture and playback audio device on Android
    * - License
      - Apache 2.0. See https://github.com/google/oboe/blob/main/LICENSE
-   * - Using the Software
+   * - Usage
      - See :ref:`oboe`
 
 
@@ -642,7 +584,7 @@ OpenCore AMR
    * - License
      - Apache v2 license, but it may contain derived work of other project. Please check the
        website for the details.
-   * - Using the Software
+   * - Usage
      - See :ref:`opencore_amr`
 
 
@@ -659,7 +601,7 @@ OpenH264
      - OpenH264 codec
    * - License
      - Please consult the OpenH264 website
-   * - Using the Software
+   * - Usage
      - See :ref:`openh264`
 
 
@@ -680,7 +622,7 @@ OpenSSL
        `Apache-style license <http://www.openssl.org/source/license.html>`_, but this is 
        deemed to be `incompatible with GPL <http://ftp-master.debian.org/REJECT-FAQ.html>`_
        (hence we give explicit permission to link with it).
-   * - Using the Software
+   * - Usage
      - The library will use OpenSSL if ``PJ_HAS_SSL_SOCK`` is set to non-zero. It is 
        detected automatically with the GNU build system, and must be set manually on 
        other build systems (e.g. Windows and Symbian) 
@@ -699,7 +641,7 @@ Opus
      - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-codec/opus.c
    * - License
      - https://www.opus-codec.org/license/
-   * - Using the Software
+   * - Usage
      - See :ref:`opus`
 
 
@@ -717,7 +659,7 @@ Silk
      - Silk codec
    * - License
      - Please check the website
-   * - Using the Software
+   * - Usage
      - See :ref:`silk`
 
 
@@ -735,7 +677,7 @@ VPX
      - VP8 and VP9 video codecs
    * - License
      - BSD 3-clause: https://github.com/webmproject/libvpx/blob/main/LICENSE
-   * - Using the Software
+   * - Usage
      - See :ref:`libvpx`
 
 
@@ -755,7 +697,7 @@ Template
      - 
    * - License
      - 
-   * - Using the Software
+   * - Usage
      - 
 
 

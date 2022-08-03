@@ -10,11 +10,11 @@ Some of the features of the video subsystem:
 
 Video is available on the following platforms:
 
-- `Mac OS X <../get-started/posix.html>`_
-- `Windows <../get-started/windows.html>`_
-- `Linux <../get-started/posix.html>`_
-- `iOS <../get-started/iphone.html>`_
-- `Android <../get-started/android.html>`_
+- :doc:`Mac OS X </get-started/posix/index>`
+- :doc:`Windows </get-started/windows/index>`
+- :doc:`Linux </get-started/posix/index>`
+- :doc:`iOS </get-started/ios/index>`
+- :doc:`Android </get-started/android/index>`
 
 The following video codecs are available:
 

@@ -1,6 +1,5 @@
-
 Endpoint
-************
+====================
 The Endpoint class is a singleton class, and application MUST create one and at most one of this class instance before it can do anything else, and similarly, once this class is destroyed, application must NOT call any library API. This class is the core class of PJSUA2, and it provides the following functions:
 
 - Starting up and shutting down
@@ -108,76 +107,4 @@ Once the application exits, the library needs to be shutdown so that resources c
     ep->libDestroy();
     delete ep;
 
-
-Class Reference
----------------
-The Endpoint
-++++++++++++
-.. doxygenclass:: pj::Endpoint
-        :project: pjsip
-        :members:
-
-Endpoint Configurations
-+++++++++++++++++++++++
-Endpoint
-~~~~~~~~
-.. doxygenstruct:: pj::EpConfig
-        :project: pjsip
-        :members:
-
-Media
-~~~~~
-.. doxygenstruct:: pj::MediaConfig
-        :project: pjsip
-        :members:
-
-Logging
-~~~~~~~
-.. doxygenstruct:: pj::LogConfig
-        :project: pjsip
-        :members:
-
-.. doxygenclass:: pj::LogWriter
-        :project: pjsip
-        :members:
-
-.. doxygenstruct:: pj::LogEntry
-        :project: pjsip
-        :members:
-
-User Agent
-~~~~~~~~~~
-.. doxygenstruct:: pj::UaConfig
-        :project: pjsip
-        :members:
-
-
-Callback Parameters
-+++++++++++++++++++
-.. doxygenstruct:: pj::OnNatDetectionCompleteParam
-        :project: pjsip
-        :members:
-
-.. doxygenstruct:: pj::OnNatCheckStunServersCompleteParam
-        :project: pjsip
-        :members:
-
-.. doxygenstruct:: pj::OnTimerParam
-        :project: pjsip
-        :members:
-
-.. doxygenstruct:: pj::OnTransportStateParam
-        :project: pjsip
-        :members:
-
-.. doxygenstruct:: pj::OnSelectAccountParam
-        :project: pjsip
-        :members:
-
-
-Other
-+++++
-.. doxygenstruct:: pj::PendingJob
-        :project: pjsip
-        :members:
 

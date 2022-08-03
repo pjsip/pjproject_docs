@@ -1,6 +1,6 @@
 
 Media
-=====
+====================
 Media objects are objects that are capable to either produce media or takes media.
 
 An important subclass of Media is AudioMedia which represents audio media. There are several type of audio media objects supported in PJSUA2:
@@ -167,59 +167,4 @@ Audio Device Management
 -----------------------
 Please see `Audio Device Framework <#auddev>`_ below.
 
-
-Class Reference
----------------
-Media Framework
-+++++++++++++++
-Classes
-~~~~~~~
-.. doxygenclass:: pj::Media
-        :project: pjsip
-        :members:
-
-.. doxygenclass:: pj::AudioMedia
-        :project: pjsip
-        :members:
-
-.. doxygenclass:: pj::AudioMediaPlayer
-        :project: pjsip
-        :members:
-
-.. doxygenclass:: pj::AudioMediaRecorder
-        :project: pjsip
-        :members:
-
-Formats and Info
-~~~~~~~~~~~~~~~~
-.. doxygenstruct:: pj::MediaFormat
-        :project: pjsip
-        :members:
-
-.. doxygenstruct:: pj::MediaFormatAudio
-        :project: pjsip
-        :members:
-
-.. doxygenstruct:: pj::MediaFormatVideo
-        :project: pjsip
-        :members:
-
-.. doxygenstruct:: pj::ConfPortInfo
-        :project: pjsip
-        :members:
-
-Audio Device Framework
-++++++++++++++++++++++
-Device Manager
-~~~~~~~~~~~~~~
-.. _auddev:
-.. doxygenclass:: pj::AudDevManager
-        :project: pjsip
-        :members:
-
-Device Info
-~~~~~~~~~~~
-.. doxygenstruct:: pj::AudioDevInfo
-        :project: pjsip
-        :members:
 

@@ -1,5 +1,8 @@
+API Reference
+-------------------
+
 Basic Types and Functions
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - :doc:`Basic Initialization </api/generated/pjnath/group/group__PJNATH>`
 - :doc:`Configurations </api/generated/pjnath/group/group__PJNATH__CONFIG>`
@@ -9,7 +12,7 @@ Basic Types and Functions
 .. _ice:
 
 ICE and Trickle ICE
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Interactive Connectivity Establishment (`RFC 5245 <http://tools.ietf.org/html/rfc5245>`_)
 
 - :doc:`Introduction </api/generated/pjnath/group/group__PJNATH__ICE>`
@@ -20,7 +23,7 @@ Interactive Connectivity Establishment (`RFC 5245 <http://tools.ietf.org/html/rf
 
 
 STUN
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. _stun:
 
 Session Traversal Utilities for NAT (`RFC 5389 <http://tools.ietf.org/html/rfc5389>`__)
@@ -37,7 +40,7 @@ Session Traversal Utilities for NAT (`RFC 5389 <http://tools.ietf.org/html/rfc53
 
 
 TURN
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. _turn:
 
 Traversal Using Relays around NAT
@@ -48,14 +51,14 @@ Traversal Using Relays around NAT
 
 
 uPnP
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. _upnp:
 
 - :doc:`uPnP </api/generated/pjnath/group/group__PJNATH__UPNP>`
 
 
 NAT Type Detection
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. _nat_detect:
 
 - :doc:`NAT Type Detection Tool </api/generated/pjnath/group/group__PJNATH__NAT__DETECT>`

@@ -19,10 +19,13 @@ PJMEDIA contains the following libraries:
    * - PJMEDIA Video Device
      - Video device framework and abstraction library for native video device.
 
+
 .. toctree::
+  :maxdepth: 1
+  :caption: Table of Contents
 
   pjmedia
   pjmedia-codec
   pjmedia-audiodev
   pjmedia-videodev
-  
+  samples

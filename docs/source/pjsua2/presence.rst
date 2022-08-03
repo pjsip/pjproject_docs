@@ -1,11 +1,11 @@
 
 Buddy (Presence)
-================
-Presence feature in PJSUA2 centers around Buddy class. This class represents a remote buddy (a person, or a SIP endpoint).
+====================
+Presence feature in PJSUA2 centers around :cpp:class:`pj::Buddy` class. This class represents a remote buddy (a person, or a SIP endpoint).
 
 Subclassing the Buddy class
 ----------------------------
-To use the Buddy class, normally application SHOULD create its own subclass, such as:
+To use the :cpp:class:`pj::Buddy` class, normally application SHOULD create its own subclass, such as:
 
 .. code-block:: c++
 
@@ -22,7 +22,7 @@ In its subclass, application can implement the buddy callback to get the notific
 
 Subscribing to Buddy's Presence Status
 ---------------------------------------
-To subscribe to buddy's presence status, you need to add a buddy object and subscribe to buddy's presence status. The snippet below shows a sample code to achieve these:
+To subscribe to buddy's :cpp:class:`presence status <pj::PresenceStatus>`, you need to add a buddy object and subscribe to buddy's presence status. The snippet below shows a sample code to achieve these:
 
 .. code-block:: c++
 
@@ -45,7 +45,7 @@ Then you can get the buddy's presence state change inside the onBuddyState() cal
         cout << "Buddy " << bi.uri << " is " << bi.presStatus.statusText << endl;
     }
 
-For more information, please see Buddy class reference documentation.
+For more information, please see :cpp:class:`pj::Buddy` and :cpp:class:`pj::PresenceStatus` class reference documentation.
 
 Responding to Presence Subscription Request
 -------------------------------------------
@@ -80,32 +80,5 @@ In addition to sending instant messages, you can also send typing indication to 
 Incoming IM and typing indication received not within the scope of a call will be reported in the callback functions Account.onInstantMessage() and Account.onTypingIndication().
 
 Alternatively, you can send IM and typing indication within a call by using Call.sendInstantMessage() and Call.sendTypingIndication(). For more information, please see Call documentation.
-
-
-Class Reference
----------------
-Buddy
-+++++
-.. doxygenclass:: pj::Buddy
-        :project: pjsip
-        :members:
-
-Status
-++++++
-.. doxygenstruct:: pj::PresenceStatus
-        :project: pjsip
-        :members:
-        
-Info
-++++
-.. doxygenstruct:: pj::BuddyInfo
-        :project: pjsip
-        :members:
-
-Config
-++++++
-.. doxygenstruct:: pj::BuddyConfig
-        :project: pjsip
-        :members:
 
 

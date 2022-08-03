@@ -18,7 +18,7 @@ import sys
 
 # Which pjproject tag to checkout to create the documentation.
 # Set to "master" to checkout the latest version
-pjproject_tag = 'master'
+pjproject_tag = 'docs_2_0'
 
 # Doxygen XML files to be sanitized because it contains characters causing XML parsing to fail
 sanitize_xml_files = [
@@ -73,9 +73,9 @@ if is_in_rtd:
             f.write(txt)
 
     # breathe
-    for doxy_dir in pj_components:        
+    for doxy_dir in pj_components:
         api_dir = 'pjlib_util' if doxy_dir=='pjlib-util' else doxy_dir
-        cmd = f'breathe-apidoc -f -g group -p {api_dir} ' \
+        cmd = f'breathe-apidoc -f -g group -m -p {api_dir} ' \
               f'-o api{os.sep}generated{os.sep}{api_dir} ' \
               f'pjproject{os.sep}{doxy_dir}{os.sep}docs{os.sep}xml'
         print(f'==> {cmd}')
@@ -137,7 +137,8 @@ release = pj_version
 extensions = [
     'breathe',
     'sphinx_rtd_theme',
-    'recommonmark'
+    'recommonmark',
+    'sphinx_copybutton'
 ]
 
 source_parsers = {
