@@ -1,6 +1,6 @@
 Building PJSUA2
 ******************************
-The PJSUA2 C++ library will be built by default by PJSIP build system. 
+The PJSUA2 C++ library is built by default by PJSIP build system. 
 Standard C++ library is required.
 
 The following sections applies to building SWIG Python, Java, or C# modules.

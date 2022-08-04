@@ -26,7 +26,9 @@ and :cpp:class:`pj::AudioMediaRecorder`.
 
 :cpp:class:`pj::Call`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This class represents an ongoing call (or speaking technically, an INVITE session) and can be used to manipulate it, such as to answer the call, hangup the call, put the call on hold, transfer the call, etc.
+This class represents an ongoing call (or speaking technically, an INVITE session) and 
+can be used to manipulate it, such as to answer the call, hangup the call, put the call 
+on hold, transfer the call, etc.
 
 :cpp:class:`pj::Buddy`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,8 +52,9 @@ explained in later sections.
 Error Handling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 We use exceptions as means to report error, as this would make the program flows 
-more naturally. Operations which yield error will raise Error exception. If you 
-prefer to display the error in more structured manner, the Error class has 
+more naturally. Operations which yield error will raise :cpp:class:`pj::Error` 
+exception. If you prefer to display the error in more structured manner, the 
+:cpp:class:`pj::Error` class has 
 several members to explain the error, such as the operation name that raised the 
 error, the error code, and the error message itself.
 
@@ -60,35 +63,33 @@ Asynchronous Operations
 If you have developed applications with PJSIP, you'll know about this already. 
 In PJSIP, all operations that involve sending and receiving SIP messages are 
 asynchronous, meaning that the function that invokes the operation will complete 
-immediately, and you will be given the completion status as callbacks.
+immediately, and you will be given the completion status in a callback.
 
-Take a look for example the ``makeCall()`` method of the :cpp:class:`pj::Call` 
+Take a look for example the :cpp:func:`pj::Call::makeCall()` method of the :cpp:class:`pj::Call` 
 class. This function  is used to initiate outgoing call to a destination. When 
 this function returns  successfully, it does not mean that the call has been 
 established, but rather  it means that the call has been initiated successfully. 
 You will be given the report of the call progress and/or completion in the 
-``onCallState()`` callback method of :cpp:class:`pj::Call` class.
+:cpp:func:`pj::Call::onCallState()` callback method of :cpp:class:`pj::Call` class.
 
 Threading
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 For platforms that require polling, the PJSUA2 module provides its own worker 
 thread to poll PJSIP, so it is not necessary to instantiate own your polling 
-thread. Having said that the application should be prepared to have the 
+thread. Application should be prepared to have the 
 callbacks called by different thread than the main thread. The PJSUA2 module 
 itself is thread safe.
 
 Often though, especially if you use PJSUA2 with high level languages such as 
 Python, it is required to disable PJSUA2 internal worker threads by setting 
-:cpp:struct:`EpConfig.uaConfig.threadCnt <pj::EpConfig>` to 0, because the 
-high level environment doesn't  like to be called by external thread (such as 
-PJSIP's worker thread).
+:cpp:struct:`EpConfig.uaConfig.threadCnt <pj::EpConfig>` to 0, because Python 
+doesn't  like to be called by external thread (such as PJSIP's worker thread).
 
 
 Problems with Garbage Collection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Garbage collection (GC) exists in Java and Python (and other languages, but 
-we don't support those for now), and there are some problems with it when 
-it comes to PJSUA2 usage:
+Garbage collection (GC) exists in run-time such as Java and Python, and there 
+are some problems with it when it comes to PJSUA2 usage:
 
 - it delays the destruction of objects (including PJSUA2 objects), causing 
   the code in object's destructor to be executed out of order
@@ -113,8 +114,8 @@ PJSUA2 includes :cpp:class:`pj::PersistentObject` class to provide functionality
 to read/write data from/to a document (string or file). The data can be simple 
 data types such as boolean, number, string, and string arrays, or a user defined 
 object. Currently the implementation supports reading and writing from/to JSON 
-document ([http://tools.ietf.org/html/rfc4627 RFC 4627]), but the framework 
-allows application to extend the API to support other document formats.
+document (`RFC 4627 <https://datatracker.ietf.org/doc/html/rfc4627>`_), 
+but the framework allows application to extend the API to support other document formats.
 
 As such, classes which inherit from PersistentObject, such as 
 :cpp:class:`pj::EpConfig` (endpoint configuration), 
@@ -129,7 +130,7 @@ a file. Heres an example to save a config to a file:
     epCfg.uaConfig.maxCalls = 61;
     epCfg.uaConfig.userAgent = "Just JSON Test";
     jDoc.writeObject(epCfg);
-    jDoc.saveFile("jsontest.js");
+    jDoc.saveFile("jsontest.json");
 
 To load from the file:
 
@@ -137,7 +138,7 @@ To load from the file:
 
     EpConfig epCfg;
     JsonDocument jDoc;
-    jDoc.loadFile("jsontest.js");
+    jDoc.loadFile("jsontest.json");
     jDoc.readObject(epCfg);
 
 

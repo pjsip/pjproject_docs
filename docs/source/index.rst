@@ -10,7 +10,8 @@ PJSIP Project Online Documentation
 
 .. toctree::
    :maxdepth: 1
-   :caption: PJSIP OVERVIEW
+   :name: overview
+   :caption: PJSIP Overview
    
    overview/intro
    overview/features
@@ -18,10 +19,11 @@ PJSIP Project Online Documentation
    
 .. toctree::
    :maxdepth: 1
-   :caption: GET STARTED
+   :name: get_started
+   :caption: Get Started
 
    get-started/getting
-   get-started/consider
+   get-started/general_guidelines
    get-started/android/index
    get-started/ios/index
    get-started/posix/index
@@ -30,19 +32,35 @@ PJSIP Project Online Documentation
 
 .. toctree::
    :maxdepth: 1
-   :caption: PJSUA2 GUIDES
+   :name: pjsua2_guide
+   :caption: PJSUA2 Guide
 
-   pjsua2/index
+   pjsua2/intro
+   pjsua2/building
+   pjsua2/general_concept
+   pjsua2/hello_world
+   pjsua2/using/index
+   pjsua2/samples
    
 .. toctree::
    :maxdepth: 1
-   :caption: SPECIFIC GUIDES
+   :name: specific_guides
+   :caption: Specific Guides
 
-   specific-guides/index
+   specific-guides/audio/index
+   specific-guides/develop/index
+   specific-guides/media/index
+   specific-guides/network_nat/index
+   specific-guides/perf_footprint/index
+   specific-guides/security/index
+   specific-guides/sip/index
+   specific-guides/video/index
+
 
 .. toctree::
    :maxdepth: 1
-   :caption: API REFERENCE & SAMPLES
+   :name: api_reference
+   :caption: API Reference & Samples
    
    api/pjsua2/index
    api/pjsua-lib/index
@@ -53,7 +71,6 @@ PJSIP Project Online Documentation
    api/pjlib/index
    api/samples
 
-..   api/doxygen_index
 
 
 

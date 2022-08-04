@@ -115,24 +115,14 @@ API docs needs to be regenerated. You need to set it to generate docs for differ
 versions. On the other hand, when you only edit the `.rst` files, there is no need to regenerate
 the Doxygen files, so set it to `False` or unset it (`export READTHEDOCS=`). 
 
-To set the value with Bash:
+To set the value:
 ```
 $ export READTHEDOCS=True
 ``` 
 
-On Windows:
-```
-C:> SET READTHEDOCS=True
-```
-
 To unset the value with Bash:
 ```
-$ export READTHEDOCS=
-``` 
-
-To unset the value with Windows:
-```
-$ SET READTHEDOCS=
+$ unset READTHEDOCS
 ``` 
 
 #### 2. Build the docs
@@ -200,11 +190,6 @@ Bash:
 ```
 $ export READTHEDOCS=True
 ``` 
-
-Windows:
-```
-C:> SET READTHEDOCS=True
-```
 
 #### 3. Set which PJPROJECT version to build
 
@@ -336,7 +321,8 @@ and `requirements.txt`).
 
 Note that local installation is not required for releasing new documentation version (new pjproject version). You only need a text editor for that. This will be explained in later section.
 
-Also note that these are only tested on Linux at the moment. Macs should work, and Windows is supported in the codes, but both haven't been tested yet.
+Also note that these are only tested on Linux at the moment, and Windows will not work
+(because `conf.py` calls `./configure` to initialize the macros). Mac may work but untested.
 
 
 #### 1. Install Doxygen 1.8.4

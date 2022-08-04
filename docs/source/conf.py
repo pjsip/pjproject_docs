@@ -39,21 +39,19 @@ if is_in_rtd:
     rc = subprocess.call(cmd, shell=True)
     if rc:
         sys.exit(rc)
-    
+
+    # Run configure so that macros are declared more properly
+    cmd = f"""cd pjproject && ./configure && make clean-doc"""
+    print(f'==> {cmd}')
+    rc = subprocess.call(cmd, shell=True)
+    if rc:
+        sys.exit(rc)
+
     pj_components = ['pjlib', 'pjlib-util', 'pjnath', 'pjmedia', 'pjsip']
     
     # doxygen
     for doxy_dir in pj_components:
-        # Execute doxygen. The standard doxygen.cfg file in pjproject has GENERATE_XML set to NO.
-        # We need to set it to YES
-        if os.name == 'nt':
-            cmd = f'cd pjproject{os.sep}{doxy_dir} && ' + \
-                  f"""( type docs{os.sep}doxygen.cfg & echo GENERATE_XML=YES ) |""" + \
-                  f'doxygen -'
-        else:
-            cmd = f'cd pjproject{os.sep}{doxy_dir} && ' + \
-                   """(cat docs/doxygen.cfg; echo "GENERATE_XML = YES" ) |""" + \
-                  f'doxygen -'
+        cmd = f'cd pjproject{os.sep}{doxy_dir} && doxygen docs/doxygen.cfg'
         print(f'==> {cmd}')
         rc = subprocess.call(cmd, shell=True)
         if rc:

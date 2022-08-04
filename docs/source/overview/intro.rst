@@ -24,13 +24,22 @@ Libraries Architecture
 
 PJSIP contains several libraries, which can be grouped into three main components:
 
- - SIP protocol stack, in PJSIP
- - Media stack, in PJMEDIA
- - NAT traversal stack, in PJNATH
+ - SIP protocol stack, in :doc:`PJSIP </api/pjsip/index>`
+ - Media stack, in :doc:`PJMEDIA </api/pjmedia/index>`
+ - NAT traversal stack, in :doc:`PJNATH </api/pjnath/index>`
 
-There are also high level libraries that integrate the above components (PJSUA, for
-SIP User Agent), as well as low level libraries that abstracts operating system 
-differences.
+These libraries are then integrated into high-level libraries, namely
+:doc:`PJSUA-LIB API </api/pjsua-lib/index>` (written in C) and 
+:doc:`PJSUA2 API </api/pjsua2/index>` (written in C++).
+
+There are also low level libraries that abstracts operating system differences
+(:doc:`PJLIB </api/pjlib/index>`) as well as a utility libraries 
+(:doc:`PJLIB-UTIL </api/pjlib-util/index>`).
+
+.. note::
+
+    Later in :ref:`get_started` we will discuss considerations for selecting
+    :ref:`which_api_to_use`
 
 To avoid naming confusion between PJSIP as organization name (as in 
 `PJSIP.ORG <https://pjsip.org>`_) and PJSIP as libraries that provide SIP protocol

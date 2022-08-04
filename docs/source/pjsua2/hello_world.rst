@@ -2,9 +2,8 @@ Hello World!
 ***********************
 C++ Application
 ========================
-As mentioned in previous chapter, a C++ application can use *pjsua2* natively, while at the same time still has access to the lower level objects and the ability to extend the libraries if it needs to. Using the API will be exactly the same as the API reference that is written in this book.
-
-Here is a sample complete C++ application to give you some idea about the API. The snippet below initializes the library and creates an account that registers to our pjsip.org SIP server.
+Below is a sample application that initializes the library, creates an account, 
+registers to our pjsip.org SIP server, and quit.
 
 .. code-block:: c++
     
@@ -49,8 +48,8 @@ Here is a sample complete C++ application to give you some idea about the API. T
       
       // Configure an AccountConfig
       AccountConfig acfg;
-      acfg.idUri = "sip:test@pjsip.org";
-      acfg.regConfig.registrarUri = "sip:pjsip.org";
+      acfg.idUri = "sip:test@sip.pjsip.org";
+      acfg.regConfig.registrarUri = "sip:sip.pjsip.org";
       AuthCredInfo cred("digest", "*", "test", 0, "secret");
       acfg.sipConfig.authCreds.push_back( cred );
       
@@ -67,6 +66,13 @@ Here is a sample complete C++ application to give you some idea about the API. T
       // This will implicitly shutdown the library
       return 0;
   }
+
+.. tip::
+
+  View this file `on GitHub <https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/samples/pjsua2_hello_reg.cpp>`_
+
+The C++ sample app above is built along with standard build, you can run the executable
+from ``pjsip-apps/bin/samples/..`` directory.
 
 
 Python Application
@@ -96,8 +102,8 @@ The equivalence of the C++ sample code above in Python is as follows:
     ep.libStart();
     
     acfg = pj.AccountConfig();
-    acfg.idUri = "sip:test@pjsip.org";
-    acfg.regConfig.registrarUri = "sip:pjsip.org";
+    acfg.idUri = "sip:test@sip.pjsip.org";
+    acfg.regConfig.registrarUri = "sip:sip.pjsip.org";
     cred = pj.AuthCredInfo("digest", "*", "test", 0, "pwtest");
     acfg.sipConfig.authCreds.append( cred );
     # Create the account
@@ -154,8 +160,8 @@ The equivalence of the C++ sample code above in Java is as follows:
             ep.libStart();
 
             AccountConfig acfg = new AccountConfig();
-            acfg.setIdUri("sip:test@pjsip.org");
-            acfg.getRegConfig().setRegistrarUri("sip:pjsip.org");
+            acfg.setIdUri("sip:test@sip.pjsip.org");
+            acfg.getRegConfig().setRegistrarUri("sip:sip.pjsip.org");
             AuthCredInfo cred = new AuthCredInfo("digest", "*", "test", 0, "secret");
             acfg.getSipConfig().getAuthCreds().add( cred );
             // Create the account
