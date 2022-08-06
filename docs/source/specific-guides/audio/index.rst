@@ -1,5 +1,3 @@
-Audio
-*****************************************
 
 Audio device API
 =========================================
@@ -54,3 +52,11 @@ OPUS  codec
 Tone generator
 =========================================
 
+.. _guide_webrtc:
+
+WebRTC integration
+================================
+See:
+
+- Main webrtc integration: https://github.com/pjsip/pjproject/issues/1888
+- WebRTC AEC3: https://github.com/pjsip/pjproject/pull/2722

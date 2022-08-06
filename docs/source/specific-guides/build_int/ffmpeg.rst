@@ -12,6 +12,10 @@ PJMEDIA can make use of the following FFMPEG **development** components:
 
 Installation
 -----------------
+PJMEDIA by default supports FFMPEG version 2.8 or newer 
+(see `#1897 <https://github.com/pjsip/pjproject/issues/1897>`_). Using older version of
+FFMPEG is possible, see the ticket for information.
+
 The instructions to install the above development packages vary.
 
 Debian based distributions

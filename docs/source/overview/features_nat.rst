@@ -20,7 +20,7 @@ NAT Traversal
 
    -  `RFC 5766 <https://datatracker.ietf.org/doc/html/rfc5766>`__
    -  DNS SRV resolution
-   -  UDP, TCP, TLS client connection
+   -  UDP, TCP, :doc:`TLS </specific-guides/security/ssl>` client connection
    -  TCP allocations, `accept <https://github.com/pjsip/pjproject/issues/2197>`_ and 
       `connect <https://github.com/pjsip/pjproject/pull/2754>`_ mode 
       (`RFC 6062 <https://datatracker.ietf.org/doc/html/rfc6062>`__)

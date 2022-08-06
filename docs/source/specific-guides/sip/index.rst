@@ -1,5 +1,9 @@
-SIP
-*****************************************
+.. _guide_adding_custom_header:
+
+Adding Custom Header
+=========================================
+
+https://trac.pjsip.org/repos/wiki/FAQ#custom-header
 
 DTMF
 =========================================

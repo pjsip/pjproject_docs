@@ -1,5 +1,3 @@
-Network & NAT
-*****************************************
 
 Blocked/filtered network
 =========================================
@@ -20,6 +18,9 @@ Relevant links:
 * https://github.com/pjsip/pjproject/issues/422
 * https://github.com/pjsip/pjproject/issues/1971
 * https://github.com/pjsip/pjproject/issues/2032
+* PJNATH: https://github.com/pjsip/pjproject/issues/422
+* Address resolution: https://github.com/pjsip/pjproject/issues/1926
+* DNS SRV resolution: https://github.com/pjsip/pjproject/issues/1927
 
 .. _qos:
 
@@ -30,9 +31,9 @@ https://trac.pjsip.org/repos/wiki/IPv6#NAT64-IPv4
 
 QoS
 =========================================
-
-https://trac.pjsip.org/repos/wiki/QoS
-
+- https://trac.pjsip.org/repos/wiki/QoS
+- Apple SO_NET_SERVICE_TYPE: https://github.com/pjsip/pjproject/issues/1964
+- IPV6_TCLASS: https://github.com/pjsip/pjproject/issues/1963
 
 Standalone ICE
 =========================================

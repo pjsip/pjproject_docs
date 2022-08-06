@@ -199,7 +199,7 @@ you're doing.
 
 .. _which_api_to_use:
 
-Which API to Use
+Which API to use
 ================
 Let's have a look at the libraries architecture again:
 
@@ -260,7 +260,7 @@ Benefits of using PJSUA2 C++ API include:
    the libraries, for example creating custom PJSIP module, pjmedia_port, pjmedia_transport, etc.)
 
 
-Some considerations on PJSUA2 C++ API are:
+Some considerations on using PJSUA2 C++ API are:
 
 #. Instead of returning error, the API uses exception for error reporting
 #. It uses standard C++ library (STL)

@@ -1,6 +1,6 @@
 Hello World!
 ***********************
-C++ Application
+C++
 ========================
 Below is a sample application that initializes the library, creates an account, 
 registers to our pjsip.org SIP server, and quit.
@@ -75,7 +75,7 @@ The C++ sample app above is built along with standard build, you can run the exe
 from ``pjsip-apps/bin/samples/..`` directory.
 
 
-Python Application
+Python
 ===========================
 The equivalence of the C++ sample code above in Python is as follows:
 
@@ -122,7 +122,7 @@ The equivalence of the C++ sample code above in Python is as follows:
     pjsua2_test()
 
 
-Java Application
+Java
 =========================
 The equivalence of the C++ sample code above in Java is as follows:
 

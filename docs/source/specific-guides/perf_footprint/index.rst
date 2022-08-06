@@ -1,6 +1,3 @@
-Performance & Footprint
-*****************************************
-
 .. _guide_performance:
 
 Performance Optimization

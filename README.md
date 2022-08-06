@@ -113,17 +113,13 @@ $ git pull --recurse-submodules
 The `READTHEDOCS` environment variable is used to control whether Doxygen XML and *breathe*
 API docs needs to be regenerated. You need to set it to generate docs for different PJPROJECT
 versions. On the other hand, when you only edit the `.rst` files, there is no need to regenerate
-the Doxygen files, so set it to `False` or unset it (`export READTHEDOCS=`). 
+the Doxygen files, so unset it (`unset READTHEDOCS`). 
 
 To set the value:
 ```
 $ export READTHEDOCS=True
 ``` 
 
-To unset the value with Bash:
-```
-$ unset READTHEDOCS
-``` 
 
 #### 2. Build the docs
 

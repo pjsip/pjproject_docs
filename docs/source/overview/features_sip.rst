@@ -48,9 +48,9 @@ Call
 -  tel: URI (`RFC 3966 <https://datatracker.ietf.org/doc/html/rfc3966>`__)
 -  Session Timers (`RFC 4028 <https://datatracker.ietf.org/doc/html/rfc4028>`__)
 -  Reason header (`RFC 3326 <https://datatracker.ietf.org/doc/html/rfc3326>`__,
-   `partially supported <https://trac.pjsip.org/repos/wiki/FAQ#custom-header>`__)
+   :ref:`partially supported <guide_adding_custom_header>`)
 -  P-Header (`RFC 3325 <https://datatracker.ietf.org/doc/html/rfc3325>`__,
-   `partially supported <https://trac.pjsip.org/repos/wiki/FAQ#custom-header>`__)
+   :ref:`partially supported <guide_adding_custom_header>`)
 
 SDP
 ~~~~~~~~~~~~~

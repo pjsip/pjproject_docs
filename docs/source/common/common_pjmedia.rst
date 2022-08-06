@@ -21,8 +21,7 @@ Audio Features
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Some audio processing algorithms implemented in PJMEDIA.
 
-- :doc:`Accoustic Echo Cancellation </api/generated/pjmedia/group/group__PJMEDIA__Echo__Cancel>` 
-  (multichannel capable)
+- :doc:`Accoustic Echo Cancellation </specific-guides/audio/aec>` 
 - :doc:`Adaptive Delay Buffer </api/generated/pjmedia/group/group__PJMED__DELAYBUF>`
 - :doc:`Adaptive Jitter Buffer </api/generated/pjmedia/group/group__PJMED__JBUF>`
 - :doc:`Adaptive Silence Detection </api/generated/pjmedia/group/group__PJMEDIA__SILENCEDET>`
@@ -130,8 +129,7 @@ RTP and RTCP
   `(RFC 3350) <https://datatracker.ietf.org/doc/html/rfc3350>`_
 - `RTP and RTCP multiplexing <https://github.com/pjsip/pjproject/issues/2087>`_
   `(RFC 5761) <https://datatracker.ietf.org/doc/html/rfc5761>`_
-- :doc:`RTP/AVPF (RTP with Feedback profile) </api/generated/pjmedia/group/group__PJMED__RTCP__FB>`
-  `(RFC 4585) <https://datatracker.ietf.org/doc/html/rfc4585>`_
+- :doc:`RTCP Feedback mechanism </specific-guides/media/rtcp_fb>`
 - :doc:`RTCP XR </api/generated/pjmedia/group/group__PJMED__RTCP__XR>`
   `(RFC 3611) <https://datatracker.ietf.org/doc/html/rfc3611>`_
 - `SSRC synchronization via SDP <https://github.com/pjsip/pjproject/issues/2098>`_ 
@@ -166,7 +164,7 @@ Formats
 - :doc:`RIFF/WAVE </api/generated/pjmedia/group/group__PJMEDIA__WAVE>`
 - :doc:`AVI </api/generated/pjmedia/group/group__PJMEDIA__AVI>`
 - :doc:`Media format framework </api/generated/pjmedia/group/group__PJMEDIA__FORMAT>`
-
+- :doc:`Format Converter </api/generated/pjmedia/group/group__PJMEDIA__CONVERTER>`
 
 Media Flow
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,5 +1,13 @@
-Video
-*****************************************
+FFMPEG
+=======================
+See :ref:`guide_ffmpeg`.
+
+
+.. _guide_libyuv:
+
+Integrating libyuv
+====================
+See https://github.com/pjsip/pjproject/issues/1937
 
 .. _guide_vidconf:
 
@@ -7,6 +15,12 @@ Video conferencing
 =========================================
 - https://github.com/pjsip/pjproject/issues/2181
 - :doc:`Video conference bridge </api/generated/pjmedia/group/group__PJMEDIA__VID__CONF>`
+
+
+Video key frame transmission
+====================================
+- Key frame at the start of the call: https://github.com/pjsip/pjproject/issues/1910
+- See also RTCP key frame request
 
 
 Video quality troubleshooting

@@ -47,15 +47,7 @@ PJSIP Project Online Documentation
    :name: specific_guides
    :caption: Specific Guides
 
-   specific-guides/audio/index
-   specific-guides/develop/index
-   specific-guides/media/index
-   specific-guides/network_nat/index
-   specific-guides/perf_footprint/index
-   specific-guides/security/index
-   specific-guides/sip/index
-   specific-guides/video/index
-
+   specific-guides/index
 
 .. toctree::
    :maxdepth: 1
