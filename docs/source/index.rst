@@ -3,45 +3,65 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-==============================
+========================================
 PJSIP Project Online Documentation
-==============================
+========================================
 
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Introduction
+   :maxdepth: 1
+   :name: overview
+   :caption: PJSIP Overview
    
-   intro
-   consider
-   datasheet
+   overview/intro
+   overview/features
+   overview/license
+   
+.. toctree::
+   :maxdepth: 1
+   :name: get_started
+   :caption: Get Started
+
+   get-started/getting
+   get-started/general_guidelines
+   get-started/android/index
+   get-started/ios/index
+   get-started/posix/index
+   get-started/windows/index
+   get-started/windows-phone/index
 
 .. toctree::
-   :maxdepth: 2
-   :caption: PJSUA2
+   :maxdepth: 1
+   :name: pjsua2_guide
+   :caption: PJSUA2 Guide
 
-   pjsua2/intro_pjsua2
-   pjsua2/endpoint
-   pjsua2/account
-   pjsua2/media
-   pjsua2/call
-   pjsua2/presence
+   pjsua2/intro
+   pjsua2/building
+   pjsua2/general_concept
+   pjsua2/hello_world
+   pjsua2/using/index
    pjsua2/samples
-   pjsua2/media_quality
-   pjsua2/network_problems
+   
+.. toctree::
+   :maxdepth: 1
+   :name: specific_guides
+   :caption: Specific Guides
 
+   specific-guides/index
 
 .. toctree::
-   :maxdepth: 2
-   :caption: API Reference
+   :maxdepth: 1
+   :name: api_reference
+   :caption: API Reference & Samples
    
-   api/pjsua2
-   api/pjsua_lib
-   api/pjsip
-   api/pjmedia
-   api/pjnath
-   api/pjlib_util
-   api/pjlib
+   api/pjsua2/index
+   api/pjsua-lib/index
+   api/pjsip/index
+   api/pjmedia/index
+   api/pjnath/index
+   api/pjlib-util/index
+   api/pjlib/index
+   api/samples
 
 
 

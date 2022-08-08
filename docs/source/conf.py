@@ -18,7 +18,7 @@ import sys
 
 # Which pjproject tag to checkout to create the documentation.
 # Set to "master" to checkout the latest version
-pjproject_tag = '2.12.1'
+pjproject_tag = 'docs_2_0'
 
 # Doxygen XML files to be sanitized because it contains characters causing XML parsing to fail
 sanitize_xml_files = [
@@ -39,21 +39,19 @@ if is_in_rtd:
     rc = subprocess.call(cmd, shell=True)
     if rc:
         sys.exit(rc)
-    
+
+    # Run configure so that macros are declared more properly
+    cmd = f"""cd pjproject && ./configure && make clean-doc"""
+    print(f'==> {cmd}')
+    rc = subprocess.call(cmd, shell=True)
+    if rc:
+        sys.exit(rc)
+
     pj_components = ['pjlib', 'pjlib-util', 'pjnath', 'pjmedia', 'pjsip']
     
     # doxygen
     for doxy_dir in pj_components:
-        # Execute doxygen. The standard doxygen.cfg file in pjproject has GENERATE_XML set to NO.
-        # We need to set it to YES
-        if os.name == 'nt':
-            cmd = f'cd pjproject{os.sep}{doxy_dir} && ' + \
-                  f"""( type docs{os.sep}doxygen.cfg & echo GENERATE_XML=YES ) |""" + \
-                  f'doxygen -'
-        else:
-            cmd = f'cd pjproject{os.sep}{doxy_dir} && ' + \
-                   """(cat docs/doxygen.cfg; echo "GENERATE_XML = YES" ) |""" + \
-                  f'doxygen -'
+        cmd = f'cd pjproject{os.sep}{doxy_dir} && doxygen docs/doxygen.cfg'
         print(f'==> {cmd}')
         rc = subprocess.call(cmd, shell=True)
         if rc:
@@ -73,9 +71,9 @@ if is_in_rtd:
             f.write(txt)
 
     # breathe
-    for doxy_dir in pj_components:        
+    for doxy_dir in pj_components:
         api_dir = 'pjlib_util' if doxy_dir=='pjlib-util' else doxy_dir
-        cmd = f'breathe-apidoc -f -g group -p {api_dir} ' \
+        cmd = f'breathe-apidoc -f -g group -m -p {api_dir} ' \
               f'-o api{os.sep}generated{os.sep}{api_dir} ' \
               f'pjproject{os.sep}{doxy_dir}{os.sep}docs{os.sep}xml'
         print(f'==> {cmd}')
@@ -94,7 +92,7 @@ if is_in_rtd:
 # -- Project information -----------------------------------------------------
 
 project = 'PJSIP Project'
-copyright = '2021, Teluu'
+copyright = '2022, Teluu'
 author = 'Teluu Team'
 
 # Find pjproject directory to open version.mak
@@ -137,7 +135,8 @@ release = pj_version
 extensions = [
     'breathe',
     'sphinx_rtd_theme',
-    'recommonmark'
+    'recommonmark',
+    'sphinx_copybutton'
 ]
 
 source_parsers = {
@@ -154,6 +153,10 @@ breathe_projects = {
     "pjsip": "pjproject/pjsip/docs/xml",
 }
 
+html_theme_options = {
+    'navigation_depth': 3,
+    'collapse_navigation': False,
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -175,3 +178,9 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# These paths are either relative to html_static_path
+# or fully qualified paths (eg. https://...)
+html_css_files = [
+    'css/custom.css',
+]
