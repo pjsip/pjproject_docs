@@ -106,6 +106,14 @@ $ cd pjproject_docs
 $ git pull --recurse-submodules
 ```
 
+Note:
+
+- if directory `source/pjproject` is still empty, run:
+
+```
+$ git submodule update --init --recursive
+```
+
 ### Generate the docs
 
 #### 1. Set environment variable
@@ -178,6 +186,14 @@ $ docker exec -it pjproject-docs bash
 ```sh
 $ cd pjproject_docs
 $ git pull --recurse-submodules
+```
+
+Note:
+
+- if directory `source/pjproject` is still empty, run:
+
+```
+$ git submodule update --init --recursive
 ```
 
 #### 2. Set READTHEDOCS environment variable
