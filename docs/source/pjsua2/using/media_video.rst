@@ -2,17 +2,17 @@
 Working with video media
 ==========================
 Video media is similar to audio media in many ways. The class :cpp:class:`pj::VideoMedia` is
-also derived from :cpp:class:`pj::Media` class. Its object types also consists of capture &
+also derived from :cpp:class:`pj::Media` class. Its object types also consist of capture &
 playback devices, and call stream. The video conference bridge shares the same
 principles as the audio conference bridge; application connects video source to video
 destination to allow video flow from that source to the specified destination, which
-in turn it may also induce video mixing and duplicating operations.
+in turn may also induce video mixing and duplicating operations.
 
 There are several types of video media objects supported in PJSUA2:
 
 - Capture device's VideoMedia, to capture video frames from the camera.
 - Render device's VideoMedia, to render video frames on the screen.
-- Call's VideoMedia, to transmit and receive video to/from remote person.
+- Call's VideoMedia, to transmit and receive video to/from the remote party.
 
 
 The video conference bridge
@@ -23,18 +23,18 @@ flows from that source to the specified destination. If more than one sources ar
 to the same destination, then the video frames from the sources will be combined into one
 video frame in specific tile configuration. If one source is transmitting to more than one 
 destinations, the bridge will take care of duplicating the video frame from the source to the 
-multiple destinations. The bridge will even take care of mixing video with different sampling
+multiple destinations. The bridge will even take care of mixing video with different frame
 rates.
 
 In PJSUA2, all video media objects, of class :cpp:class:`pj::VideoMedia`, are registered to
 the central conference bridge for easier manipulation. At first, a registered video media will
-not be connected to anything, so media will not flow from/to any objects. An video media source
+not be connected to anything, so media will not flow from/to any objects. A video media source
 can start/stop the transmission to a destination by using the API
 :cpp:func:`pj::VideoMedia::startTransmit()` and :cpp:func:`pj::VideoMedia::stopTransmit()`.
 
 .. note::
 
-    An video media object registered to the conference bridge will be given a port ID number that 
+    A video media object registered to the conference bridge will be given a port ID number that
     identifies the object in the bridge. Application can use the API :cpp:func:`pj::VideoMedia::getPortId()` 
     to retrieve the port ID. Normally, application should not need to worry about the conference 
     bridge and its port ID (as all will be taken care of by the ``Media`` class) unless application 
@@ -50,9 +50,9 @@ Application can start the camera (or any capture device in general) preview usin
 :cpp:class:`pj::VideoPreview`.
 
 .. note::
-    Application does not need to start a camera preview manually to setup a video call,
-    the camera preview will be started automatically once the video call is established,
-    it is just that by default the video preview windows is hidden. The capture device
+    Application does not need to start a camera preview manually to setup a video call.
+    The camera preview will be started automatically once the video call is established,
+    it is just that by default the video preview window is hidden. The capture device
     to be used in a video call is configurable in account setting.
 
 .. code-block:: c++
@@ -84,16 +84,22 @@ Application can start the camera (or any capture device in general) preview usin
 See :cpp:class:`pj::VideoPreview`, :cpp:class:`VideoPreviewOpParam`, :cpp:class:`MediaFormatVideo`,
 and :cpp:func:`pj::Endpoint::vidDevManager()` for reference.
 
-.. note::
 
-    On some GUI frameworks, for example SDL on Windows, calling :cpp:func:`pj::VideoPreview::start()`
-    from the GUI thread, such as from window event callback, may cause GUI to gets stuck (e.g:
-    unresponsive GUI window). This can be avoided by calling :cpp:func:`pj::VideoPreview::start()`
-    from non-GUI thread, for example via PJSUA2 timer so it will be invoked from the library worker thread.
-    
-    Note that some other operations that indirectly involve video rendering may need to be done in
-    non-GUI thread too, for example we found :cpp:func:`pj::Endpoint::libDestroy()` in C# desktop
-    will cause stuck when initiated from GUI thread.
+Important note about threading
+----------------------------
+On some GUI frameworks, for example SDL on Windows, calling :cpp:func:`pj::VideoPreview::start()`
+from the GUI thread, such as from window event callback, may cause GUI to gets stuck (e.g:
+unresponsive GUI window). This can be avoided by calling :cpp:func:`pj::VideoPreview::start()`
+from non-GUI thread, for example via PJSUA2 timer so it will be invoked from the library worker thread.
+
+Note that some other operations that indirectly involve video rendering may need to be done in
+non-GUI thread too, for example we found :cpp:func:`pj::Endpoint::libDestroy()` in C# desktop
+will cause stuck when initiated from GUI thread.
+
+Generally it is a good practice to keep the GUI thread free from non-UI work to improve application
+responsiveness. So it is also recommended to avoid calling PJSIP API from GUI thread since:
+- it may take some time to complete, or
+- it may block while trying to acquire a lock.
     
 Here is a sample code to post a job via schedule timer, in this sample, it is for scheduling
 a video capture device preview start.
@@ -103,7 +109,7 @@ a video capture device preview start.
     enum {
         TIMER_START_PREVIEW = 1,
 	...
-    }
+    };
     
     // Generic timer parameter
     struct MyTimerParam {
