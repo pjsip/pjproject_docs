@@ -62,7 +62,7 @@ your system (Linux, Mac, or Windows).
 
 ```
 $ docker pull pjsip/pjproject-docs
-$ docker run -dit -p 8000:8000 --name=pjproject-docs pjproject-docs
+$ docker run -dit -p 8000:8000 --name=pjproject-docs pjsip/pjproject-docs
 ```
 
 ### Viewing local RTD
@@ -104,6 +104,7 @@ Below are steps to generate the docs. Perform these steps in the Docker containe
 ```sh
 $ cd pjproject_docs
 $ git pull --recurse-submodules
+$ git submodule update --remote
 ```
 
 Note:
@@ -112,6 +113,15 @@ Note:
 
 ```
 $ git submodule update --init --recursive
+```
+
+### Update requirements
+
+New Python modules may be added to requirements after the docker image is created, so let's
+make sure all required Python modules are installed.
+
+```cmd
+$ pip install -r requirements.txt
 ```
 
 ### Generate the docs
@@ -186,6 +196,7 @@ $ docker exec -it pjproject-docs bash
 ```sh
 $ cd pjproject_docs
 $ git pull --recurse-submodules
+$ git submodule update --remote
 ```
 
 Note:
@@ -422,7 +433,7 @@ docker image rm pjproject-docs
 Container related commands:
 
 ```
-docker run -dit -p 8000:8000 --name=pjproject-docs pjproject-docs
+docker run -dit -p 8000:8000 --name=pjproject-docs pjsip/pjproject-docs
 docker ps
 docker container ls
 docker exec -it pjproject-docs bash
