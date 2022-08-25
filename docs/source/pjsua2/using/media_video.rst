@@ -81,12 +81,12 @@ Application can start the camera (or any capture device in general) preview usin
         }
     }
 
-See :cpp:class:`pj::VideoPreview`, :cpp:class:`VideoPreviewOpParam`, :cpp:class:`MediaFormatVideo`,
+See :cpp:class:`pj::VideoPreview`, :cpp:class:`pj::VideoPreviewOpParam`, :cpp:class:`pj::MediaFormatVideo`,
 and :cpp:func:`pj::Endpoint::vidDevManager()` for reference.
 
 
 Important note about threading
-----------------------------
+------------------------------
 On some GUI frameworks, for example SDL on Windows, calling :cpp:func:`pj::VideoPreview::start()`
 from the GUI thread, such as from window event callback, may cause GUI to gets stuck (e.g:
 unresponsive GUI window). This can be avoided by calling :cpp:func:`pj::VideoPreview::start()`
@@ -98,6 +98,7 @@ will cause stuck when initiated from GUI thread.
 
 Generally it is a good practice to keep the GUI thread free from non-UI work to improve application
 responsiveness. So it is also recommended to avoid calling PJSIP API from GUI thread since:
+
 - it may take some time to complete, or
 - it may block while trying to acquire a lock.
     
@@ -105,6 +106,7 @@ Here is a sample code to post a job via schedule timer, in this sample, it is fo
 a video capture device preview start.
 
 .. code-block:: c++
+
     // Timer type ID
     enum {
         TIMER_START_PREVIEW = 1,
