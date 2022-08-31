@@ -88,7 +88,7 @@ and :cpp:func:`pj::Endpoint::vidDevManager()` for reference.
 Important note about threading
 ------------------------------
 On some GUI frameworks, for example SDL on Windows, calling :cpp:func:`pj::VideoPreview::start()`
-from the GUI thread, such as from window event callback, may cause GUI to gets stuck (e.g:
+from the GUI thread, such as from window event callback, may cause GUI to get stuck (e.g:
 unresponsive GUI window). This can be avoided by calling :cpp:func:`pj::VideoPreview::start()`
 from non-GUI thread, for example via PJSUA2 timer so it will be invoked from the library worker thread.
 
@@ -172,7 +172,7 @@ Also unlike in audio call where port connections between audio device and call a
 to be set up manually by application, in video, the port connections in the conference bridge
 are set up automatically by the library, so the video capture device (configured via account settings)
 will be connected to the encoding video media and the decoding video media will be connected
-to a renderer video window.
+to a renderer video window once the call's video media is started.
 
 .. note::
 
