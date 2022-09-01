@@ -1,3 +1,9 @@
 iPhone
 *****************************************
-- Swift: https://github.com/pjsip/pjproject/pull/2636
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Table of Contents
+
+   build_instructions
+   issues

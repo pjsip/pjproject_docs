@@ -1,3 +1,9 @@
 Android
 *****************************************
-- Kotlin: https://github.com/pjsip/pjproject/pull/2648
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Table of Contents
+
+   build_instructions
+   issues

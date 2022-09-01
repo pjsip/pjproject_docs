@@ -12,6 +12,7 @@ Preparation
 * Familiarize with the structure of https://docs.pjsip.org. All documentations
   are hosted here.
 
+.. _dev_start:
 
 Development
 -------------
@@ -20,7 +21,7 @@ Development
 * **Essential:** Interactive debugging capability is essential during development
 * Start with default settings in 
   `config_site_sample.h <https://github.com/pjsip/pjproject/blob/master/pjlib/include/pj/config_site_sample.h>`_. 
-  One way is to include this in your ``config_site.h``, i.e.:
+  One way is to include this in your ``pjlib/inlcude/pj/config_site.h``, i.e.:
 
   .. code-block:: c
 
