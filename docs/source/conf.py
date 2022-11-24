@@ -18,7 +18,7 @@ import sys
 
 # Which pjproject tag to checkout to create the documentation.
 # Set to "master" to checkout the latest version
-pjproject_tag = 'master'
+pjproject_tag = '2.13'
 
 # Doxygen XML files to be sanitized because it contains characters causing XML parsing to fail
 sanitize_xml_files = [
