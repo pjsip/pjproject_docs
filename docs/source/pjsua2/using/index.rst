@@ -8,5 +8,6 @@ Using PJSUA2
    endpoint
    account
    media_audio
+   media_video
    call
    presence
