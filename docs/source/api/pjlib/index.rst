@@ -108,7 +108,7 @@ SSL socket implementation on top of OpenSSL, BoringSSL, GNUTLS, and Apple's Netw
 See:
 
 - :doc:`SSL Socket API </api/generated/pjlib/group/group__PJ__SSL__SOCK>`
-- Guide on :ref:`guide_ssl`
+- Guide on :ref:`SSL <guide_ssl>`
 
 
 File

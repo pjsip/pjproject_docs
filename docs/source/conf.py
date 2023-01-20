@@ -136,7 +136,8 @@ extensions = [
     'breathe',
     'sphinx_rtd_theme',
     'recommonmark',
-    'sphinx_copybutton'
+    'sphinx_copybutton',
+    'sphinx.ext.extlinks',
 ]
 
 source_parsers = {
@@ -166,6 +167,10 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['pjproject/*', '*_8c']
 
+extlinks = {
+    'pr': ('https://github.com/pjsip/pjproject/pull/%s', '#%s'),
+    'source' : ('https://github.com/pjsip/pjproject/tree/master/%s', '%s'),
+}
 
 # -- Options for HTML output -------------------------------------------------
 
