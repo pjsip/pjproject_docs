@@ -2,6 +2,8 @@
 Audio device API
 =========================================
 
+See :doc:`PJMEDIA-AudioDev </api/pjmedia/pjmedia-audiodev>` API reference.
+
 Audio device tuning
 =========================================
 
@@ -39,15 +41,11 @@ Intel IPP codecs integration
 - Trac: https://trac.pjsip.org/repos/wiki/Intel_IPP_Codecs
 
 
-.. _guide_opencore_amr:
-
-OpenCore AMR codecs integration
-=========================================
-
-- Trac: https://trac.pjsip.org/repos/wiki/Using-OpenCORE-AMR-NB-WB-Codec
-
 OPUS  codec
 =========================================
+
+- Integration instructions: https://github.com/pjsip/pjproject/issues/1904
+
 
 Tone generator
 =========================================

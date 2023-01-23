@@ -1,3 +1,5 @@
+.. _licensing_3rd_party:
+
 Third Party SOFTWARE
 =====================
 The SOFTWARE may provide links to third party libraries or code (collectively "Third Party 

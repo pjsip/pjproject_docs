@@ -45,4 +45,3 @@ Trickle ICE
 =========================================
 
 
-.. include:: ip_change.rst
