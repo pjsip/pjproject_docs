@@ -60,6 +60,10 @@ You can also manually trigger rebuilding of the doc by clicking **Build Version*
 
 Just pull *pjproject_docs* to your computer, edit, commit, and push the files. Once the files are pushed to GitHub, this will trigger a build process in RTD.
 
+Note: 
+
+- consider creating a branch when editing the docs, especially if the edit is not very trivial, to avoid excessive builds in RTD server.
+
 ### Creating new documentation version for a new PJSIP release
 
 Follow the instructions in [Versioning the documentation](#versioning-the-documentation) section below.
@@ -403,6 +407,20 @@ $ doxygen -v
 $ sphinx-build --version
 $ breathe-apidoc --version
 ```
+
+
+#### 6. Generate documentation locally
+
+Follow instructions in [Generating documentation locally](#generating-documentation-locally)
+
+#### 7. Serving the documentation
+
+```sh
+$ cd pjproject_docs
+$ python -m http.server
+```
+
+And then open http://localhost:8000/docs/build/html
 
 
 ## Generating Docker image
