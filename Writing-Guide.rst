@@ -130,25 +130,37 @@ Notes, Warnings, and Blocks
 .. code-block::
 
   .. note:: 
+
         This is a note
 
   .. tip::
+
         This is a tip
 
   .. warning::
+
         This is a warning
 
   .. code-block:: c
+
         /* Sample C code */
         puts("Hello world");
 
   .. code-block:: shell
+        
         $ echo Hello world
 
 
 References:
 - https://sublime-and-sphinx-guide.readthedocs.io/en/latest/notes_warnings.html
 - https://sublime-and-sphinx-guide.readthedocs.io/en/latest/code_blocks.html
+
+
+Local TOC
+============
+::
+        .. contents:: Table of Contents
+            :depth: 2
 
 
 Converting from Trac wiki

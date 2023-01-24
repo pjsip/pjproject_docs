@@ -1,6 +1,9 @@
 Using Trickle ICE
 ====================
 
+.. contents:: Table of Contents
+    :depth: 2
+
 Brief info about Trickle ICE
 --------------------------------
 
