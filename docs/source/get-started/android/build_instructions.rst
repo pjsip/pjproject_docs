@@ -210,7 +210,7 @@ device orientation), application needs to do the following:
 #. Inside the callback, call PJSUA2 API ``VidDevManager::setCaptureOrient()`` 
    to set the video device to the correct orientation.
 
-For sample usage, please refer to pjsua2 sample app. Ticket :pr:`1861`` explains 
+For sample usage, please refer to pjsua2 sample app. Ticket :pr:`1861` explains 
 this feature in detail.
 
 OpenSSL Support

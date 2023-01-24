@@ -90,7 +90,7 @@ libsrtp is always built by default, from ``third_party/build/srtp``
 directory.
 
 Support for SRTP is enabled by default in PJMEDIA and PJSUA-LIB. To
-**disable** this feature, declare this in your ``config_site.h``:
+**disable** this feature, declare :cpp:any:`PJMEDIA_HAS_SRTP` as zero in your ``config_site.h``:
 
 ::
 
@@ -109,42 +109,39 @@ Using SRTP in PJSUA-LIB
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 In :doc:`/api/pjsua-lib/index`, the use of SRTP is controlled by settings in 
-both ``pjsua_config`` and ``pjsua_acc_config``. The settings in
-``pjsua_config`` specify the default settings for all accounts, and the settings in
-``pjsua_acc_config`` can be used to further set the behavior for that specific account.
+both :cpp:any:`pjsua_config` and :cpp:any:`pjsua_acc_config`. The settings in
+:cpp:any:`pjsua_config` specify the default settings for all accounts, and the settings in
+:cpp:any:`pjsua_acc_config` can be used to further set the behavior for that specific account.
 
-In both ``pjsua_config`` and ``pjsua_acc_config``, there are two
+In both :cpp:any:`pjsua_config` and :cpp:any:`pjsua_acc_config`, there are two
 configuration items related to SRTP:
 
 ``use_srtp``
 
-This option controls whether secure media transport
-(SRTP) should be used for this account. Valid values are: 
+The :cpp:any:`pjsua_config::use_srtp` and :cpp:any:`pjsua_acc_config::use_srtp` options control whether secure media transport (SRTP) should be used for this account. Valid values are: 
 
-- ``PJMEDIA_SRTP_DISABLED`` (0): SRTP is disabled, and incoming call with
+- :cpp:any:`PJMEDIA_SRTP_DISABLED` (0): SRTP is disabled, and incoming call with
   RTP/SAVP transport will be rejected with 488/Not Acceptable Here
   response. 
-- ``PJMEDIA_SRTP_OPTIONAL`` (1): SRTP will be advertised and
+- :cpp:any:`PJMEDIA_SRTP_OPTIONAL` (1): SRTP will be advertised and
   SRTP will be used if remote supports it, but the call may fall back to
   unsecure media. Incoming call with RTP/SAVP is accepted and responded
   with RTP/SAVP too. 
-- ``PJMEDIA_SRTP_MANDATORY`` (2): secure media is
+- :cpp:any:`PJMEDIA_SRTP_MANDATORY` (2): secure media is
   mandatory, and the call can only proceed if secure media can be
   established. 
      
-The default value for this option is ``PJSUA_DEFAULT_USE_SRTP``, which is zero (disabled).
+The default value for this option is :cpp:any:`PJSUA_DEFAULT_USE_SRTP`, which is zero (disabled).
 
 ``srtp_secure_signaling``
 
-This option controls whether SRTP
-requires secure signaling to be used. This option is only used when
-``use_srtp`` option above is non-zero. Valid values are: 
+The :cpp:any:`pjsua_config::srtp_secure_signaling` and :cpp:any:`pjsua_acc_config::srtp_secure_signaling` options controls whether SRTP requires secure signaling to be used. This option is only used when ``use_srtp`` option above is non-zero. Valid values are: 
 
 - 0: SRTP does not require secure signaling (not recommended) 
 - 1: SRTP requires secure transport such as TLS to be used. 
 - 2: SRTP requires secure end-to-end transport (``sips:`` URI scheme) to be used. 
 
-The default value for this option is ``PJSUA_DEFAULT_SRTP_SECURE_SIGNALING``, 
+The default value for this option is :cpp:any:`PJSUA_DEFAULT_SRTP_SECURE_SIGNALING`, 
 which is 1 (require TLS transport).
 
 pjsua
@@ -169,24 +166,23 @@ Using SRTP Transport Directly
 
 The SRTP transport may also be used directly without having to involve
 SDP negotiations (for example, to use SRTP without SIP). Please see
-``streamutil`` from the - - :doc:`/api/samples` collection for a sample application. 
+``streamutil`` from the :doc:`/api/samples` collection for a sample application. 
 For this to work, you will need to have a different mechanism to exchange keys between
 endpoints.
 
 To use SRTP transport directly: 
 
-- Call ``pjmedia_transport_srtp_create()``  to create the SRTP adapter, giving it the actual media transport
+- Call :cpp:any:`pjmedia_transport_srtp_create()` to create the SRTP adapter, giving it the actual media transport
   instance (such as UDP transport). 
-- Call ``pjmedia_transport_srtp_start()`` to active SRTP session, giving it both local and remote crypto settings
+- Call :cpp:any:`pjmedia_transport_srtp_start()` to active SRTP session, giving it both local and remote crypto settings
   and keys. 
-- Call ``pjmedia_transport_attach()`` to configure the remote RTP/RTCP addresses and attach your RTP and RTCP
+- Call :cpp:any:`pjmedia_transport_attach()` to configure the remote RTP/RTCP addresses and attach your RTP and RTCP
   callbacks. 
-- Call ``pjmedia_transport_send_rtp()`` and  ``pjmedia_transport_send_rtcp()``
-  to send RTP/RTCP packets. 
-- Once you done with your session, call ``pjmedia_transport_close()``
+- Call :cpp:any:`pjmedia_transport_send_rtp()` and  :cpp:any:`pjmedia_transport_send_rtcp()` to send RTP/RTCP packets. 
+- Once you done with your session, call :cpp:any:`pjmedia_transport_close()` 
   to destroy the SRTP adapter (and optionally the actual transport which
   is attached to the SRTP adapter, depending on whether *close_member_tp*
-  flag is set in the ``pjmedia_srtp_setting`` when creating the SRTP adapter).
+  flag is set in the :cpp:any:`pjmedia_srtp_setting`  when creating the SRTP adapter).
 
 
 
@@ -204,17 +200,18 @@ and negotiate SDP. Incidently this would work well with ICE too
 treated differently, but with this new interfaces, all media transports
 will behave uniformly (anyway that’s what API abstraction is for!)).
 
-New interfaces in media transport are as follows (please consult the
-PJMEDIA transport documentation for more info):
+New interfaces in media transport are as follows:
 
-- ``media_create()``:
+- :cpp:any:`pjmedia_transport_op::media_create()`
+
   This callback is called by application (or PJSUA-LIB) to allow the media
   transport to add more information in the SDP offer, before the offer is
   sent to remote. Additionally, for answerer side, this callback allows
   the media transport to reject the offer before this offer is processed
   by the SDP negotiator.
 
-- ``media_start()``: 
+- :cpp:any:`pjmedia_transport_op::media_start()`
+
   This callback is called after offer and answer are negotiated, and both
   SDPs are available, and before the media is started. For answerer side,
   this callback will be called before the answer is sent to remote, to
@@ -224,11 +221,13 @@ PJMEDIA transport documentation for more info):
   the offer and answer before media is really started (and answer is sent,
   for answerer side).
 
-- ``media_stop()``:
+- :cpp:any:`pjmedia_transport_op::media_stop()`
+
   This callback is called when the media is stopped, to allow the media
   transport to release its resources.
 
-- ``simulate_lost()``:
+- :cpp:any:`pjmedia_transport_op::simulate_lost()`
+
   This has nothing to do with SRTP, but since all media transports support
   this feature (packet loss simulation), we added this as a new interface.
 

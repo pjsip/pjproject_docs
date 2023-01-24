@@ -2,7 +2,7 @@ Handling IP address change
 =========================================
 
 This article describes some issues and their corresponding solutions related to access point disconnection, reconnection, IP address change, and how to handle these events in your PJSIP applications, specifically 
-for PJSIP version 2.7 or later. This wiki will focus on the new API :cpp:func:`pjsua_handle_ip_change()`.
+for PJSIP version 2.7 or later. This wiki will focus on the new API :cpp:any:`pjsua_handle_ip_change()`.
 
 
 Problem description
@@ -31,7 +31,7 @@ When invoked, the stack will:
    This will restart TCP/TLS listener no matter whether they are enabled or not when the transport were created. If you don't have any use of the listener, you can disable this.
    However, if you do need this, then on some platform (e.g: on IOS), some delay is needed when restarting the the listener.
 
-   ref: :cpp:member:`pjsua_ip_change_param::restart_listener` and :cpp:member:`pjsua_ip_change_param::restart_lis_delay`.
+   ref: :cpp:any:`pjsua_ip_change_param::restart_listener` and :cpp:any:`pjsua_ip_change_param::restart_lis_delay`.
 
 2. Shutdown the SIP transport used by account registration
 
