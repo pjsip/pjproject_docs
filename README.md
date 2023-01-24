@@ -1,5 +1,7 @@
 # docs.pjsip.org Project
 
+(Note: see also [Writing-Guide.rst](Writing-Guide.rst))
+
 ## Overview
 
 ### Overview of the documentation infrastructure

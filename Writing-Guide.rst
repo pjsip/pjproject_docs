@@ -75,13 +75,13 @@ Linking to a page
 
 Creating/linking to user defined point
 -------------------------------------------
-Create the link target (similar to ``<A name>``). Don't forget the underscore before the id:
+Create the link target (analogous to ``<A name>``). Don't forget the underscore before the id:
 
 ::
 
         .. _android_pjsua2:
 
-Then you can create the link (note: no underscore):
+Then create the link (without underscore):
 
 ::
 
@@ -104,7 +104,7 @@ Linking to Doxygen Objects
         - C++ class: :cpp:any:`pj::AccountConfig`
         - C++ method: :cpp:any:`pj::Account::create()`
 
-Limitations: I don't know how to link nested struct member. Example: :cpp:any:`pjsua_acc_config::ip_change_cfg::hangup_calls`
+Limitations: I don't know how to link nested struct member. Example: :cpp:any:`pjsua_acc_config::ip_change_cfg::hangup_calls` would not resolve.
 
 For full reference see https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cpp-domain
 
@@ -124,25 +124,31 @@ Find the target link from the front page: https://docs.pjsip.org/en/latest/index
 
 
 
-Blocks
-==============
+Notes, Warnings, and Blocks
+==============================
 
-.. note:: 
+.. code-block::
 
+  .. note:: 
         This is a note
 
-.. tip::
-
+  .. tip::
         This is a tip
 
-.. code-block:: c
+  .. warning::
+        This is a warning
 
+  .. code-block:: c
         /* Sample C code */
         puts("Hello world");
 
-.. code-block:: shell
-
+  .. code-block:: shell
         $ echo Hello world
+
+
+References:
+- https://sublime-and-sphinx-guide.readthedocs.io/en/latest/notes_warnings.html
+- https://sublime-and-sphinx-guide.readthedocs.io/en/latest/code_blocks.html
 
 
 Converting from Trac wiki
@@ -157,7 +163,7 @@ This is what I found to get the best conversion result, although bear in mind th
 
         $ trac2down tracwikifile.trac | pandoc -f markdown -t rst > output.rst
 
-   Note: ``trac2down.py`` is in the root dir of ``pjproject_docs``
+Note: ``trac2down.py`` is in the root dir of ``pjproject_docs``
 
 Note: there should be other tools to convert from markdown to rst. I happen to have Pandoc installed.
 
