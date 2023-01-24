@@ -12,6 +12,7 @@ TBD:
 See:
 
 - :doc:`Accoustic Echo Cancellation API </api/generated/pjmedia/group/group__PJMEDIA__Echo__Cancel>`
-- WebRTC AEC3: https://github.com/pjsip/pjproject/pull/2722
+- WebRTC AEC3 support: https://github.com/pjsip/pjproject/pull/2722
+- WebRTC AEC support: https://github.com/pjsip/pjproject/issues/1888
 
 See also :ref:`guide_webrtc`

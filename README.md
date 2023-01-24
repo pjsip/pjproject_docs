@@ -1,5 +1,7 @@
 # docs.pjsip.org Project
 
+(Note: see also [Writing-Guide.rst](Writing-Guide.rst))
+
 ## Overview
 
 ### Overview of the documentation infrastructure
@@ -35,17 +37,40 @@ of that repository.
 
 ### Overview of the generation process
 
-There are three ways to build PJSIP RTD docs: 
-1. (locally) using provided Docker image. This is the preferred method for authoring/developing the
+There are three methods to build PJSIP RTD docs: 
+1. In the RTD server. This method is the simplest, and it's intended for routine operations such as
+   releasing new version or minor editing of the documentation.
+2. (locally) using provided Docker image. This is the preferred method for authoring/developing the
    documentation.
-2. In the RTD server. This is to build the live version of the documentation. The docs are built
-   automatically whenever changes are pushed to **pjproject_docs** repository (note: not the 
-   *pjproject* repository!)
-2. (locally) using manual installation, if you don't want to use the Docker image, or if you need
+3. (locally) using manual installation, if you don't want to use the Docker image, or if you need
    to understand how the Docker image is built.
 
 
-## Using the Docker image
+## Method 1: managing live documentation
+
+Use this method to perform routine tasks such as releasing new PJSIP version or editing of the documentation.
+
+This method doesn't require any software except git and text editor. In fact, you don't even need those as you can edit the files directly on GitHub (but this is not recommended).
+
+The live (RTD) docs in https://docs.pjsip.org are generated automatically whenever changes are pushed to the `pjproject_docs` repository (note: not the *pjproject* repository!). So remember that every commit will trigger costly build in RTD.
+
+You can see the live building process, as well as logs of all previous build processes from the **Builds** page (https://readthedocs.org/projects/pjsip/builds/). This comes handy when the build failed to investigate what went wrong.
+
+You can also manually trigger rebuilding of the doc by clicking **Build Version** from that page, but this shouldn't be necessary unless you modify something in the RTD settings and want to regenerate the docs.
+
+### Editing documentation
+
+Just pull *pjproject_docs* to your computer, edit, commit, and push the files. Once the files are pushed to GitHub, this will trigger a build process in RTD.
+
+Note: 
+
+- consider creating a branch when editing the docs, especially if the edit is not very trivial, to avoid excessive builds in RTD server.
+
+### Creating new documentation version for a new PJSIP release
+
+Follow the instructions in [Versioning the documentation](#versioning-the-documentation) section below.
+
+## Method 2: Using the Docker image
 
 We've provided an Ubuntu 22.04 Docker image that contains all the required software to develop the
 docs. It is equipped with two nice editors, **vim** and **tilde**, and it even contains pre-built
@@ -81,14 +106,12 @@ The next section explains how to edit and generate the docs.
 
 (In the Docker container terminal)
 
-
-
-2. Go to `/root/pjproject_docs` directory to edit the files, rebuild the documentation etc. 
+1. Go to `/root/pjproject_docs` directory to edit the files, rebuild the documentation etc. 
    as explained in the next section (**Generating Documentation Locally**)
    - Note: The container contains two nice text editors: **vim** and **tilde**. 
      You may of course install other editors (or any other software, for that matter) 
      using `apt-get install` as usual.
-3. The HTTP server is served by `python3 -m http.server` background process. It automatically
+2. The HTTP server is served by `python3 -m http.server` background process. It automatically
    serves the latest generated HTML files in `docs/build/html` directory.
 
 
@@ -162,15 +185,6 @@ When running Sphinx's `make html`, or when building the doc in RTD server, the f
 * Sphinx then processes the `.rst` files and build a nice documentation.
 
 
-## Building live documentation
-
-The live (RTD) docs in https://docs.pjsip.org are generated automatically whenever changes are pushed to the `pjproject_docs` repository. 
-
-You can see the live building process, as well as logs of all previous build processes from the **Builds** page (https://readthedocs.org/projects/pjsip/builds/). This comes handy when the build failed to investigate what went wrong.
-
-You can also manually trigger rebuilding of the doc by clicking **Build Version** from that page, but this shouldn't be necessary unless you modify something in the RTD settings and want to regenerate the docs.
-
-
 ## Versioning the documentation
 
 RTD supports multiple versions of the docs. It does so by analyzing the Git *tags* of the **pjproject_docs** repository.
@@ -183,15 +197,26 @@ Follow the steps below to create documentation for specific PJSIP version.
 
 ### Creating new documentation version
 
-#### 0. Open terminal to the Docker container
+#### 1a: get the source
+
+Pull the docs:
+
+```sh
+$ cd pjproject_docs
+$ git pull
+```
+
+#### 1b: get the source (for Docker installation)
+
+Open terminal to the Docker container
 
 ```
 $ docker exec -it pjproject-docs bash
 ```
 
-#### 1. Git pull 
+All the remaining steps are done in the the terminal to the Docker container.
 
-(In the terminal to the Docker container)
+Pull the docs:
 
 ```sh
 $ cd pjproject_docs
@@ -207,14 +232,14 @@ Note:
 $ git submodule update --init --recursive
 ```
 
-#### 2. Set READTHEDOCS environment variable
+Set READTHEDOCS environment variable:
 
 Bash:
 ```
 $ export READTHEDOCS=True
 ``` 
 
-#### 3. Set which PJPROJECT version to build
+#### 2. Set which PJPROJECT version to build
 
 1. Edit `docs/source/conf.py` (note: use **tilde** or **vim**)
 2. Modify **`pjproject_tag`** to match the PJPROJECT Git **tag** which documentation is to be built. Example:
@@ -224,7 +249,7 @@ $ export READTHEDOCS=True
 3. Save and close
 
 
-#### 3b. Optional: build the docs locally
+#### 3. Optional: build the docs locally
 
 You need to have local installation to do this. Build the docs by running these:
 
@@ -282,7 +307,7 @@ This will trigger a new build process for that version.
 Wait until all build processes are finished.
 
 
-### Creating documentation for latest master
+### Restoring documentation for latest master
 
 After a version is released, if you want to generate a documentation for the latest *master*
 (i.e. before next version is released), you need to do the following.
@@ -327,7 +352,7 @@ If the building fails, these are the steps to recreate the documentation.
    ``` 
 
 
-### Cleaning generated files
+### (Only for local installation) Cleaning generated files
 
 To clean up the `build` directory:
 
@@ -336,13 +361,13 @@ $ cd docs
 $ make clean
 ```
 
-## Manual installation
+## Method 3: Manual installation
 
 These are for generating the docs locally if you do not wish to use the Docker image
 (note for RTD, the required installations are already specified in `readthedocs.yml`
 and `requirements.txt`). 
 
-Note that local installation is not required for releasing new documentation version (new pjproject version). You only need a text editor for that. This will be explained in later section.
+Note that local installation is not required for releasing new documentation version (new pjproject version). You only need a text editor for that.
 
 Also note that these are only tested on Linux at the moment, and Windows will not work
 (because `conf.py` calls `./configure` to initialize the macros). Mac may work but untested.
@@ -384,6 +409,20 @@ $ doxygen -v
 $ sphinx-build --version
 $ breathe-apidoc --version
 ```
+
+
+#### 6. Generate documentation locally
+
+Follow instructions in [Generating documentation locally](#generating-documentation-locally)
+
+#### 7. Serving the documentation
+
+```sh
+$ cd pjproject_docs
+$ python -m http.server
+```
+
+And then open http://localhost:8000/docs/build/html
 
 
 ## Generating Docker image
