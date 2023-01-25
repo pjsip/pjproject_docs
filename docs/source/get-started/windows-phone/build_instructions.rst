@@ -8,9 +8,9 @@ Tools and SDKs
 ^^^^^^^^^^^^^^^
 
 * Microsoft Visual Studio 2015 Update 3
-* `UWP SDK <https://dev.windows.com/en-us/downloads/windows-10-sdk>`_ 
+* `UWP SDK <https://dev.windows.com/en-us/downloads/windows-10-sdk>`__ 
   for UWP/Windows 10 target.
-* `Windows Phone 8 SDK <http://dev.windowsphone.com/en-us/downloadsdk>`_ 
+* `Windows Phone 8 SDK <http://dev.windowsphone.com/en-us/downloadsdk>`__ 
   for Windows Phone 8 target. 
 * Configuring device for development:
 
@@ -133,5 +133,5 @@ assertion:
 Other References
 -----------------
 
- * `VoIP apps for Windows Phone 8 <http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj206983%28v=vs.105%29.aspx>`_ 
+ * `VoIP apps for Windows Phone 8 <http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj206983%28v=vs.105%29.aspx>`__ 
  * Ticket :pr:`1900` about porting to Windows 10/UWP

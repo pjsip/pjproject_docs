@@ -13,7 +13,7 @@ Basic Types and Functions
 
 ICE and Trickle ICE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Interactive Connectivity Establishment (`RFC 5245 <http://tools.ietf.org/html/rfc5245>`_)
+Interactive Connectivity Establishment (`RFC 5245 <http://tools.ietf.org/html/rfc5245>`__)
 
 - :doc:`Introduction </api/generated/pjnath/group/group__PJNATH__ICE>`
 - :doc:`High-level ICE Transport </api/generated/pjnath/group/group__PJNATH__ICE__STREAM__TRANSPORT>`

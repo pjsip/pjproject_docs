@@ -42,7 +42,7 @@ Video Support (for 2.0 and above)
 
 The following components are needed for video:
 
-#. `SDL <http://www.libsdl.org/>`_ **version 2.0**
+#. `SDL <http://www.libsdl.org/>`__ **version 2.0**
 #. For format conversion and video manipulation, you can use one of the following:
 
    * libyuv (Recommended) for format conversion and video manipulation. 
@@ -87,7 +87,7 @@ The following components are needed for video:
             # to enable H264, add "--enable-gpl --enable-libx264"
             $ make && make install
         
-     * Get `libx264 <http://www.videolan.org/developers/x264.html>`_. We tested 
+     * Get `libx264 <http://www.videolan.org/developers/x264.html>`__. We tested 
        with the latest from git (as of October 2011):
 
           .. code-block:: shell
@@ -97,11 +97,11 @@ The following components are needed for video:
 
    * VP8 and VP9.
 
-     Get `libvpx <https://www.webmproject.org/code/>`_. Download, build, and 
+     Get `libvpx <https://www.webmproject.org/code/>`__. Download, build, and 
      make install.             
 
 #. Linux: Video4Linux2 (v4l2) development library.
-#. Optional: `Qt development SDK <http://qt.nokia.com/downloads/>`_ for building 
+#. Optional: `Qt development SDK <http://qt.nokia.com/downloads/>`__ for building 
    the :source:`vidgui <pjsip-apps/src/vidgui/>`. We tested with version 4.6 or 
    later.
    
@@ -429,5 +429,5 @@ Steps for Building Your Application that Uses PJSIP/PJMEDIA:
 
 #. Last, run **make** in your source directory.
 
-You can also go to `Video Users Guide <http://trac.pjsip.org/repos/wiki/Video_Users_Guide>`_ 
+You can also go to `Video Users Guide <http://trac.pjsip.org/repos/wiki/Video_Users_Guide>`__ 
 for video usage instructions for pjsip version 2.x.

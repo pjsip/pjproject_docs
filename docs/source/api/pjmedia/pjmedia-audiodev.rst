@@ -110,7 +110,7 @@ Android JNI
 
 Android Oboe
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-From `Oboe GitHub page <https://github.com/google/oboe>`_: *"Oboe is a 
+From `Oboe GitHub page <https://github.com/google/oboe>`__: *"Oboe is a 
 C++ library which makes it easy to build high-performance audio apps on 
 Android"*. PJMEDIA support Oboe audio capture and playback device.
 

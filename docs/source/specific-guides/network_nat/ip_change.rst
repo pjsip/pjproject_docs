@@ -1,6 +1,10 @@
 Handling IP address change
 =========================================
 
+.. contents:: Table of Contents
+    :depth: 2
+
+
 This article describes some issues and their corresponding solutions related to access point disconnection, reconnection, IP address change, and how to handle these events in your PJSIP applications, specifically 
 for PJSIP version 2.7 or later. This wiki will focus on the new API :cpp:any:`pjsua_handle_ip_change()`.
 
@@ -125,11 +129,11 @@ IP address change detection
 
 iOS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Have a look at `Reachability API <https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html>`_.
+Have a look at `Reachability API <https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html>`__.
 
 Android
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Have a look at `ConnectivityManager <https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html>`_.
+Have a look at `ConnectivityManager <https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html>`__.
 
 
 

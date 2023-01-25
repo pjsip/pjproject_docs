@@ -13,7 +13,7 @@ PJMEDIA can make use of the following FFMPEG **development** components:
 Installation
 -----------------
 PJMEDIA by default supports FFMPEG version 2.8 or newer 
-(see `#1897 <https://github.com/pjsip/pjproject/issues/1897>`_). Using older version of
+(see `#1897 <https://github.com/pjsip/pjproject/issues/1897>`__). Using older version of
 FFMPEG is possible, see the ticket for information.
 
 The instructions to install the above development packages vary.
@@ -74,4 +74,4 @@ Visual Studio
       The above assumes that all FFMPEG components (libavcodecs, libavformat, etc)
       above are installed. If only partial components are installed, you will need to 
       specify the availability of each components (see ``PJMEDIA_HAS_LIBAVFORMAT`` and
-      friends in `pjmedia/config.h <https://github.com/pjsip/pjproject/blob/master/pjmedia/include/pjmedia/config.h>`_)
+      friends in `pjmedia/config.h <https://github.com/pjsip/pjproject/blob/master/pjmedia/include/pjmedia/config.h>`__)

@@ -15,7 +15,7 @@ We tested building the OpenCORE libraries for Linux, MacOS X, Windows (MinGW), a
 
 Building and installing OpenCORE AMR library
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- #. Download the latest `opencore-amr <http://sourceforge.net/projects/opencore-amr/files/opencore-amr/>`_ tarball. We tested with version 0.1.3.
+ #. Download the latest `opencore-amr <http://sourceforge.net/projects/opencore-amr/files/opencore-amr/>`__ tarball. We tested with version 0.1.3.
  #. Unpack the tarballs to a directory:
  
     .. code-block:: shell
@@ -48,7 +48,7 @@ Adding AMR-WB Support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The OpenCORE AMR tarball contains AMR-NB encoder and decoder, but only AMR-WB decoder. We have to install AMR-WB encoder separately:
 
-#. Download the latest `vo-amrwbenc <http://sourceforge.net/projects/opencore-amr/files/vo-amrwbenc/>`_ tarball. We tested with version 0.1.3
+#. Download the latest `vo-amrwbenc <http://sourceforge.net/projects/opencore-amr/files/vo-amrwbenc/>`__ tarball. We tested with version 0.1.3
 #. Unpack the tarballs to a directory:
 
    .. code-block:: shell

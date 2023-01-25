@@ -195,7 +195,7 @@ Resample
      - https://github.com/pjsip/pjproject/tree/master/third_party/resample/
    * - Description
      - PJMEDIA uses ``resample-1.7.tar.gz`` from 
-       `Digital Audio Resampling Home Page <https://ccrma.stanford.edu/~jos/resample/>`_.
+       `Digital Audio Resampling Home Page <https://ccrma.stanford.edu/~jos/resample/>`__.
    * - License
      - LGPL: https://github.com/pjsip/pjproject/blob/master/third_party/resample/COPYING
    * - Usage
@@ -358,14 +358,14 @@ Milenage and Rijndael
      - Milenage
    * - Author
      - The implementation was taken from 
-       `3GPP TS 35.206 V7.0.0 <http://www.3gpp.org/ftp/Specs/archive/35_series/35.206/>`_ 
+       `3GPP TS 35.206 V7.0.0 <http://www.3gpp.org/ftp/Specs/archive/35_series/35.206/>`__ 
        document
    * - Location
      - https://github.com/pjsip/pjproject/tree/master/third_party/milenage/
    * - Description
      - Milenage algorithm is used for AKAv1-MD5 and AKAv2 SIP digest authentication.
    * - License
-     - Please consult `3GPP TS documents <http://www.3gpp.org/specifications/60-confidentiality-algorithms>`_ ::
+     - Please consult `3GPP TS documents <http://www.3gpp.org/specifications/60-confidentiality-algorithms>`__ ::
 
          The 3GPP authentication and key generation functions (MILENAGE) have been developed
          through the collaborative efforts of the 3GPP Organizational Partners.
@@ -621,7 +621,7 @@ OpenSSL
        other thing is used by PJSIP's SIP TLS transport object. 
    * - License
      - The OpenSSL library is licensed under 
-       `Apache-style license <http://www.openssl.org/source/license.html>`_, but this is 
+       `Apache-style license <http://www.openssl.org/source/license.html>`__, but this is 
        deemed to be `incompatible with GPL <http://ftp-master.debian.org/REJECT-FAQ.html>`_
        (hence we give explicit permission to link with it).
    * - Usage

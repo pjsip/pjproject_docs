@@ -5,7 +5,7 @@ Requirements
 -------------
 
 * iOS SDK, part of Xcode.
-* **Command Line Tools** for Xcode: download from `Apple Developer Downloads <https://developer.apple.com/downloads/index.action>`_ 
+* **Command Line Tools** for Xcode: download from `Apple Developer Downloads <https://developer.apple.com/downloads/index.action>`__ 
   then install.
 
 Build Preparation
@@ -195,7 +195,7 @@ OpenH264 or **VideoToolbox** (if you need H264 codec, choose one of them)
 libvpx (if you need VP8 or VP9 codec)
 `````````````````````````````````````
 
-Get `libvpx <https://www.webmproject.org/code/>`_.
+Get `libvpx <https://www.webmproject.org/code/>`__.
 
 Configuring
 ^^^^^^^^^^^^
@@ -254,7 +254,7 @@ Alternatively, using OpenSSL backend is also supported. Follow the instructions
 below to enable TLS transport by using OpenSSL:
 
 #. Build and install OpenSSL-1.1.x, please check this 
-   `OpenSSL wiki <https://wiki.openssl.org/index.php/Compilation_and_Installation#iOS>`_. 
+   `OpenSSL wiki <https://wiki.openssl.org/index.php/Compilation_and_Installation#iOS>`__. 
    For example, to build for arm64 architecture:
 
    .. code-block:: shell
