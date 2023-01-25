@@ -31,15 +31,25 @@ Heading convention
 Typography convention
 ========================
 
-* ``identifier``
+* For PJSIP symbols, use doxygen link constructs, e.g.:
+   - macro: :cpp:any:`PJSUA_CALL_NO_SDP_OFFER` 
+   - C API: :cpp:any:`pjsua_handle_ip_change()`
+   - C struct: :cpp:any:`pjsua_ip_change_param`
+   - C field: :cpp:any:`pjsua_callback::on_call_state`
+   - PJSUA2 class: :cpp:any:`pj::AccountConfig`
+   - PJSUA2 method: :cpp:any:`pj::Account::create()`
+* For other identifier: ``identifier``
 * ``command``
 * ``file name``
-* **UI item**
+* Bold for **UI item** and for normal emphasis like **this** is important.
+* Italics for quoted info, e.g. according to RFC 123 Section 1.2: *Open source software is good*.
 
 
-Writing links From within the doc (from other .rst file)
+
+Cross referencing
 ============================================================
 
+This is for writing links from an .rst to another .rst.
 
 Linking to a page
 -------------------------------------------
@@ -47,30 +57,30 @@ Linking to a page
 
     Getting started pages:
 
-        - :doc:`/get-started/android/index`
-        - :doc:`/get-started/ios/index`
-        - :doc:`/get-started/ios/index`
-        - :doc:`/get-started/posix/index`
-        - :doc:`/get-started/windows/index`
-        - :doc:`/get-started/windows-phone/index`
+  - :doc:`/get-started/android/index`
+  - :doc:`/get-started/ios/index`
+  - :doc:`/get-started/ios/index`
+  - :doc:`/get-started/posix/index`
+  - :doc:`/get-started/windows/index`
+  - :doc:`/get-started/windows-phone/index`
 
     Root API reference pages and samples:
 
-        - :doc:`/api/pjsua2/index`
-        - :doc:`/api/pjsua-lib/index`
-        - :doc:`/api/pjsip/index`
-        - :doc:`/api/pjmedia/index`
-        - :doc:`/api/pjnath/index`
-        - :doc:`/api/pjlib-util/index`
-        - :doc:`/api/pjlib/index`
-        - :doc:`/api/samples`
+  - :doc:`/api/pjsua2/index`
+  - :doc:`/api/pjsua-lib/index`
+  - :doc:`/api/pjsip/index`
+  - :doc:`/api/pjmedia/index`
+  - :doc:`/api/pjnath/index`
+  - :doc:`/api/pjlib-util/index`
+  - :doc:`/api/pjlib/index`
+  - :doc:`/api/samples`
 
     For links to specific Doxygen group, see group's Doxygen ID in the index page
     of the corresponding library:
 
-        - api/pjlib/index.rst
-        - api/pjlib-util/index.rst
-        - etc
+  - api/pjlib/index.rst
+  - api/pjlib-util/index.rst
+  - etc
   
 
 Creating/linking to user defined point
@@ -97,17 +107,16 @@ Linking to Doxygen Objects
 
 ::
 
-        - macro: :cpp:any:`PJSUA_CALL_NO_SDP_OFFER`
-        - C API: :cpp:any:`pjsua_handle_ip_change()`
-        - C struct: :cpp:any:`pjsua_ip_change_param`
-        - C field: :cpp:any:`pjsua_callback::on_call_state`
-        - C++ class: :cpp:any:`pj::AccountConfig`
-        - C++ method: :cpp:any:`pj::Account::create()`
+  - macro: :cpp:any:`PJSUA_CALL_NO_SDP_OFFER`
+  - C API: :cpp:any:`pjsua_handle_ip_change()`
+  - C struct: :cpp:any:`pjsua_ip_change_param`
+  - C field: :cpp:any:`pjsua_callback::on_call_state`
+  - C++ class: :cpp:any:`pj::AccountConfig`
+  - C++ method: :cpp:any:`pj::Account::create()`
 
 Limitations: I don't know how to link nested struct member. Example: :cpp:any:`pjsua_acc_config::ip_change_cfg::hangup_calls` would not resolve.
 
 For full reference see https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cpp-domain
-
 
 
 Linking to issues/PR in PJPROJECT GitHub
@@ -115,6 +124,23 @@ Linking to issues/PR in PJPROJECT GitHub
 ::
 
         :pr:`2797`
+
+
+External links
+-------------------------------------------
+
+::
+        `PJSIP website <https://pjsip.org>`__
+
+Note: use double instead of single underscore.
+
+
+Reference
+---------------
+
+For more information:
+
+* https://docs.typo3.org/m/typo3/docs-how-to-document/main/en-us/WritingReST/Reference/Content/Links.html
 
 
 Linking from external website
@@ -133,18 +159,22 @@ Notes, Warnings, and Blocks
 
         This is a note
 
+
   .. tip::
 
         This is a tip
+
 
   .. warning::
 
         This is a warning
 
+
   .. code-block:: c
 
         /* Sample C code */
         puts("Hello world");
+
 
   .. code-block:: shell
         
