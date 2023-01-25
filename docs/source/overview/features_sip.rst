@@ -1,6 +1,9 @@
 SIP Capabilities
 -----------------
 
+.. contents:: Table of Contents
+    :depth: 2
+
 List of supported SIP features and link to the relevant PJSIP documentation and/or the standard document.
 
 

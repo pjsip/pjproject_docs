@@ -1,5 +1,10 @@
 Building PJSUA2
 ******************************
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
 The PJSUA2 C++ library is built by default by PJSIP build system. 
 Standard C++ library is required.
 

@@ -1,5 +1,8 @@
 Presence and Instant Messaging
 ====================================
+.. contents:: Table of Contents
+    :depth: 2
+
 Presence feature in PJSUA2 centers around :cpp:class:`pj::Buddy` class. This class represents 
 a remote buddy (a person, or a SIP endpoint).
 

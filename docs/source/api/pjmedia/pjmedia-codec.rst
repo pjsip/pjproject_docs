@@ -20,8 +20,7 @@ Android H.264, VP8, VP9 (native)
 Android AMediaCodec provides native AMR-NB and AMR-WB audio codecs and AVC (H264), 
 VP8, VP9 video codecs for Android.
 
-- Build instructions: https://github.com/pjsip/pjproject/pull/2552
-
+- See :pr:`2552` for integration instructions
 
 .. _bcg729:
 
@@ -33,12 +32,13 @@ BCG729 (a G.729 compliant codec)
 - Build instructions: https://github.com/pjsip/pjproject/issues/2029
 - Code documentation: :doc:`BCG729 </api/generated/pjmedia/group/group__PJMED__BCG729>`
 
-
 .. _ffmpeg:
 
 FFMPEG codecs (H.261, H.263, H.263P (H263-1998), H.264, MJPEG, VP8, VP9)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 See :ref:`guide_ffmpeg`.
+
 
 See also:
 
@@ -146,12 +146,16 @@ OpenCore AMR NB/WB
 OpenH264
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Provides video codec H.264, alternatively you can use ffmpeg (together with 
+libx264).
+
 - Supports Windows, Posix (Mac OS X, Linux), iOS, Android.
 - OpenH264 may be detected and enabled by the ``configure`` script, either 
   automatically or manually via ``--with-openh264`` option. It may be forcefully 
   disabled by defining ``PJMEDIA_HAS_OPENH264_CODEC`` to 0 in ``config_site.h``
-- Detailed instructions: https://github.com/pjsip/pjproject/issues/1947
+- Detailed instructions: :issue:`1947`
 - Code documentation: :doc:`OpenH264 </api/generated/pjmedia/group/group__PJMEDIA__CODEC__OPENH264>`
+
 
 .. _opus:
 
@@ -199,6 +203,6 @@ Speex
 
 VP8 and VP9 (libvpx)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- Build instructions: https://github.com/pjsip/pjproject/issues/2253
+- Build instructions: :issue:`2253`
 - Code documentation: :doc:`VP8 and VP9 </api/generated/pjmedia/group/group__PJMEDIA__CODEC__VPX>`
 

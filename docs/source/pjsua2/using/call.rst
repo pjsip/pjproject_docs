@@ -1,6 +1,11 @@
 
 Calls
 ====================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
 Calls are represented by :cpp:class:`pj::Call` class.
 
 Subclassing the Call class

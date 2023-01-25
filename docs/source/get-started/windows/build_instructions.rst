@@ -1,6 +1,9 @@
 Build Instructions
 ===================
 
+.. contents:: Table of Contents
+    :depth: 3
+
 This page describes how to use Microsoft Visual Studio to build pjsip libraries:
 
 .. note::

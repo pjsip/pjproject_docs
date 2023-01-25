@@ -2,6 +2,10 @@
 
 Adding FFMPEG support
 =======================
+.. contents:: Table of Contents
+   :depth: 3
+
+
 PJMEDIA can make use of the following FFMPEG **development** components:
 
 - libavutil
@@ -12,11 +16,24 @@ PJMEDIA can make use of the following FFMPEG **development** components:
 
 Installation
 -----------------
-PJMEDIA by default supports FFMPEG version 2.8 or newer 
-(see `#1897 <https://github.com/pjsip/pjproject/issues/1897>`__). Using older version of
+PJMEDIA by default supports FFMPEG version 2.8 or newer (see :issue:`1897`). Using older version of
 FFMPEG is possible, see the ticket for information.
 
 The instructions to install the above development packages vary.
+
+Android
+^^^^^^^^^^^^^^^^^
+#. Follow the instructions from the web on how to build ffmpeg for android. 
+   We followed the instructions provided `here <http://www.roman10.net/how-to-build-ffmpeg-with-ndk-r9/>`__ 
+   and successfully built with Android NDK r10.
+#. Copy all library .so files into your Android application project directory, 
+   for example:
+
+   .. code-block:: shell
+
+      cp /Users/me/src/ffmpeg-2.5/android/arm/lib/*.so /Users/me/pjproject-2.0/pjsip-apps/src/swig/java/android/libs/armeabi
+
+
 
 Debian based distributions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -74,4 +91,4 @@ Visual Studio
       The above assumes that all FFMPEG components (libavcodecs, libavformat, etc)
       above are installed. If only partial components are installed, you will need to 
       specify the availability of each components (see ``PJMEDIA_HAS_LIBAVFORMAT`` and
-      friends in `pjmedia/config.h <https://github.com/pjsip/pjproject/blob/master/pjmedia/include/pjmedia/config.h>`__)
+      friends in :source:`pjmedia/include/pjmedia/config.h`)

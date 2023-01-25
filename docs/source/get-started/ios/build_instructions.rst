@@ -1,6 +1,10 @@
 Build Instructions
 ===================
 
+.. contents:: Table of Contents
+    :depth: 3
+
+
 Requirements
 -------------
 
@@ -184,7 +188,7 @@ libyuv
 OpenH264 or **VideoToolbox** (if you need H264 codec, choose one of them)
 ``````````````````````````````````````````````````````````````````````````
 
-* For OpenH264, follow the instructions in ticket :pr:`1947`.
+* For OpenH264, see :ref:`openh264`
 * For **VideoToolbox** (supported since PJSIP version 2.7), define this in 
   your ``config_site.h``:
 
@@ -195,12 +199,12 @@ OpenH264 or **VideoToolbox** (if you need H264 codec, choose one of them)
 libvpx (if you need VP8 or VP9 codec)
 `````````````````````````````````````
 
-Get `libvpx <https://www.webmproject.org/code/>`__.
+See See :ref:`libvpx`
 
 Configuring
 ^^^^^^^^^^^^
 
-Sam ple invocation of ``./configure-iphone``:
+Sample invocation of ``./configure-iphone``:
 
 .. code-block:: shell
 

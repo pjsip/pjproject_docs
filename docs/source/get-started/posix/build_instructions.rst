@@ -1,5 +1,9 @@
-Build Instructions for Linux, \*nix, \*BSD, and MacOS X Targets with GNU Build Systems
+Build Instructions with GNU Build Systems
 =======================================================================================
+
+.. contents:: Table of Contents
+    :depth: 3
+
 
 Supported Targets
 -----------------
@@ -8,7 +12,7 @@ The autoconf based GNU build system can be used to build the libraries/applicati
 for the following targets:
 
 * Linux/uC-Linux (i386, Opteron, Itanium, MIPS, PowerPC, etc.),
-* MacOS X (PowerPC),
+* MacOS X (PowerPC, Intel, Apple M),
 * mingw/mingw-w64(i386),
 * FreeBSD and maybe other BSD's (i386, Opteron, etc.),
 * RTEMS with cross compilation (ARM, powerpc),
@@ -35,7 +39,6 @@ are present:
   or ``apt-get install alsa-lib-devel`` (depending on the distribution).
 * OpenSSL header files/libraries (optional) if TLS support is wanted.
 
-.. _`ffmpeg`: http://ffmpeg.org
 
 Video Support (for 2.0 and above)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -48,13 +51,13 @@ The following components are needed for video:
    * libyuv (Recommended) for format conversion and video manipulation. 
      If you are using PJSIP 2.5.5 or newer, libyuv should be built and enabled 
      automatically.
-   * `ffmpeg`_ development library. For build instructions, see below.
+   * :ref:`ffmpeg`.
   
 #. For video codecs:
 
    * H263.
      
-     Get `ffmpeg`_ development library. For H263P/H263-1998.
+     Get :ref:`ffmpeg`.
    
    * H264. 
     
@@ -63,10 +66,13 @@ The following components are needed for video:
      * OpenH264 (Recommended): Follow the instructions in ticket :pr:`1947`. 
        Alternatively, you can use **VideoToolbox** (only for Mac) or ffmpeg as 
        explained below.
-     * For Mac only: **VideoToolbox** (supported since PJSIP version 2.7).
-       Define this in your ``config_site.h``: 
-       ``#define PJMEDIA_HAS_VID_TOOLBOX_CODEC 1``
-     * Get `ffmpeg`_ development library, using libx264. We tested with ffmpeg 
+     * For Mac only: **VideoToolbox** (supported since PJSIP version 2.7). Define this in your ``config_site.h``: 
+
+       .. code-block:: c
+
+          #define PJMEDIA_HAS_VID_TOOLBOX_CODEC 1
+
+     * Get :ref:`ffmpeg` development library, using libx264. We tested with ffmpeg 
        version 1.x (1.2.5) to 0.x (from 0.5.1 (from circa 2009) to 0.10). 
        
        Since :pr:`1897` we have added support for ffmpeg 2.8, however note that 

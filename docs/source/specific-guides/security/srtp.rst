@@ -1,8 +1,12 @@
 SRTP
 =====================
 
+.. contents:: Table of Contents
+    :depth: 2
+
+
 This article describes about SRTP support in PJSIP. SRTP support is
-included since version 0.9 (see ticket #61).
+included since version 0.9 (see ticket :issue:`61`).
 
 
 Features
@@ -28,7 +32,7 @@ Requirements
 ------------
 
 SRTP feature in PJSIP uses the Open Source `libsrtp <http://sourceforge.net/projects/srtp/>`__ 
-library created by David A. McGrew of Cisco Systems, Inc. Copy of
+library created by David A. McGrew of Cisco Systems, Inc. Copy of
 `libsrtp <http://sourceforge.net/projects/srtp/>`__ is included in PJSIP
 source tree in ``third_party/srtp`` directory. There is no other
 software to download.

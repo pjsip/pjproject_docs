@@ -1,6 +1,11 @@
 
 Working with video media
 ==========================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
 Video media is similar to audio media in many ways. The class :cpp:class:`pj::VideoMedia` is
 also derived from :cpp:class:`pj::Media` class. Its object types also consist of capture &
 playback devices, and call stream. The video conference bridge shares the same

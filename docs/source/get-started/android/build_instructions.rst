@@ -1,6 +1,9 @@
 Build Instructions
 ===================
 
+.. contents:: Table of Contents
+    :depth: 3
+
 Requirements
 -------------
 
@@ -83,10 +86,10 @@ Building for other architectures
         page.
 
 Video Support
-^^^^^^^^^^^^^
+-------------------
 
 Features
-````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Video on Android will be supported since PJSIP version 2.4. It has the following 
 features:
@@ -96,52 +99,34 @@ features:
 * H.264 codec (via OpenH264 library or AMediaCodec, see below)
 
 Requirements
-````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-OpenH264 (this is recommended if you need H264 codec)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**OpenH264 (this is recommended if you need H264 codec)**
 
-Provides video codec H.264, alternatively you can use ffmpeg (together with 
-libx264).
-
-#. Follow the instructions in ticket :pr:`1947`.
-#. Copy all library .so files into your Android application project directory, 
-   for example:
-
-.. code-block:: shell
-
-   cp /Users/me/openh264/android/*.so /Users/me/pjproject-2.0/pjsip-apps/src/swig/java/android/libs/armeabi
-
-libvpx (if you need VP8 or VP9 codec)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Get `libvpx <https://www.webmproject.org/code/ libvpx>`_
-
-ffmpeg (optional)
-~~~~~~~~~~~~~~~~~~
-
-Provides format conversion and video manipulation as well as video codecs: H.264 
-(together with libx264) and H263P/H263-1998.
-
-#. Follow the instructions from the web on how to build ffmpeg for android. 
-   We followed the instructions provided `here <http://www.roman10.net/how-to-build-ffmpeg-with-ndk-r9/>`__ 
-   and successfully built with Android NDK r10.
+#. For general information see :ref:`openh264`
 #. Copy all library .so files into your Android application project directory, 
    for example:
 
    .. code-block:: shell
 
-      cp /Users/me/src/ffmpeg-2.5/android/arm/lib/*.so /Users/me/pjproject-2.0/pjsip-apps/src/swig/java/android/libs/armeabi
+     cp /Users/me/openh264/android/*.so /Users/me/pjproject-2.0/pjsip-apps/src/swig/java/android/libs/armeabi
 
 
-AMediaCodec, native Android codecs (experimental)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**libvpx (if you need VP8 or VP9 codec)**
 
-This is available since 2.11, it provides H264, VP8, and VP9 video codecs 
-(also AMR-NB & AMR-WB audio codecs). Please check :pr:`2552` for how to enable it.
+See :ref:`libvpx`
+
+**ffmpeg (optional)**
+
+See :doc:`/specific-guides/build_int/ffmpeg`
+
+**AMediaCodec, native Android codecs (experimental)**
+
+See :ref:`amediacodec`
+
 
 Configuring
-````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To enable video, append this into ``config_site.h``:
 
@@ -170,7 +155,7 @@ Make sure openh264 is detected by ``./configure-android``:
    the configure script param ``--with-libyuv``, check :pr:`1776` for more info.
 
 Adding Video Capture Device to Your Application
-```````````````````````````````````````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Copy the java part of PJSIP Android capture device to the application's source 
 directory:
@@ -195,11 +180,11 @@ in ``PjCameraInfo2`` before using the camera, e.g:
    }
 
 Using Video API
-```````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Please check :doc:`Video User's Guide </pjsua2/using/media_video>`.
 
 Video capture orientation support
-`````````````````````````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To send video in the proper orientation (i.e. head always up regardless of the 
 device orientation), application needs to do the following:
@@ -214,7 +199,7 @@ For sample usage, please refer to pjsua2 sample app. Ticket :pr:`1861` explains
 this feature in detail.
 
 OpenSSL Support
-^^^^^^^^^^^^^^^
+-------------------
 #. Build OpenSSL (tested with OpenSSL 1.0.2s) for Android.
    The instruction provided here is specifically for arm64. 
    For other architectures, modify accordingly. 
@@ -282,10 +267,10 @@ OpenSSL Support
       export LIBS += "-ldl -lz"
 
 Trying our sample application and creating your own
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------------------------
 
 Setting up the target device
-````````````````````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To run or debug application (such as the sample applications below), 
 first we need to setup the target device: 
@@ -296,7 +281,7 @@ first we need to setup the target device:
 .. _android_pjsua2:
 
 Building and running pjsua2 sample application
-```````````````````````````````````````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A sample application using :doc:`pjsua2 API </api/pjsua2/ref>` with SWIG Java binding, 
 is located under :source:`pjsip-apps/src/swig/java/android`. It is not built by 
@@ -336,15 +321,14 @@ Follow these steps to build pjsua2 sample application:
    :source:`pjsip-apps/src/swig/java/android`.
 #. Run it.
 
-Log output
-~~~~~~~~~~
+**Log output**
 
 The pjsua2 sample application will write log messages to **LogCat** window.
 
 .. _android_create_app:
 
 Creating your own application
-`````````````````````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For developing Android application, you should use :doc:`pjsua2 API </api/pjsua2/ref>` 
 whose Java interface available via SWIG Java binding.
@@ -381,7 +365,7 @@ whose Java interface available via SWIG Java binding.
    reference.
 
 Pjsua sample application with telnet interface
-``````````````````````````````````````````````
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There is also the usual `pjsua <http://www.pjsip.org/pjsua.htm>`__ with telnet 
 command line user interface, which is located under :source:`pjsip-apps/src/pjsua/android`. 
 It is not built by default and you need `SWIG <http://www.swig.org/download.html>`__ 

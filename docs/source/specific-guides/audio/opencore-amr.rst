@@ -3,6 +3,9 @@
 OpenCore AMR codecs integration
 =========================================
 
+.. contents:: Table of Contents
+    :depth: 3
+
 
 This page describes how to add OpenCORE AMR-NB and AMR-WB support into PJSIP.
 

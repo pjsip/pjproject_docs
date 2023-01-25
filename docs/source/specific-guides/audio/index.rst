@@ -7,12 +7,6 @@ See :doc:`PJMEDIA-AudioDev </api/pjmedia/pjmedia-audiodev>` API reference.
 Audio device tuning
 =========================================
 
-AEC
-=========================================
-- WebRTC: https://github.com/pjsip/pjproject/pull/2775
-- Hardware AEC/VPIO: https://github.com/pjsip/pjproject/issues/1778
-- Speex AEC: https://github.com/pjsip/pjproject/issues/589
-
 Audio latency benchmark
 =========================================
 
@@ -50,11 +44,3 @@ OPUS  codec
 Tone generator
 =========================================
 
-.. _guide_webrtc:
-
-WebRTC integration
-================================
-See:
-
-- Main webrtc integration: https://github.com/pjsip/pjproject/issues/1888
-- WebRTC AEC3: https://github.com/pjsip/pjproject/pull/2722

@@ -1,6 +1,10 @@
 PJSUA Command Line Interface (CLI) Manual
 ==========================================
 
+.. contents:: Table of Contents
+    :depth: 3
+
+
 Introduction
 -------------
 

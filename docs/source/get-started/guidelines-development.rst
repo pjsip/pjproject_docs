@@ -16,7 +16,7 @@ Development
 * **Essential:** Follow the :doc:`Getting Started </get-started/getting>`
   instructions to build PJSIP for your platform.
 * **Essential:** Interactive debugging capability is essential during development
-* Start with default settings in 
+* You need to create ``pjlib/include/pj/config_site.h`` file. Start with default settings in 
   `config_site_sample.h <https://github.com/pjsip/pjproject/blob/master/pjlib/include/pj/config_site_sample.h>`__. 
   One way is to include this in your ``pjlib/inlcude/pj/config_site.h``, i.e.:
 

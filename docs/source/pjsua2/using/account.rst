@@ -1,6 +1,11 @@
 
 Accounts
 ====================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
 Accounts provide identity (or identities) of the user who is currently using the application. 
 Each account has one SIP Uniform Resource Identifier (URI) associated with it. In SIP terms, 
 this URI acts as Address of Record (AOR) of the person and is used in the From header in 

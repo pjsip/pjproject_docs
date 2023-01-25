@@ -46,7 +46,7 @@ Heading convention
 Typography conventions
 ----------------------------------------------
 
-- For PJSIP symbols, use doxygen link constructs, e.g.:
+- For PJSIP symbols, use breathe-apidoc constructs, e.g.:
    - macro: :cpp:any:`PJ_HAS_TCP`
    - C API: :cpp:any:`pjsua_handle_ip_change()`
    - C struct: :cpp:any:`pjsua_ip_change_param`
@@ -62,8 +62,8 @@ Typography conventions
 
 .. note::
 
-   - macros other than the ones declared in PJLIB wouldn't resolve, e.g. :cpp:any:`PJSUA_CALL_NO_SDP_OFFER`
-   - nested struct member wouldn't resolve, e.g.: :cpp:any:`pjsua_acc_config::ip_change_cfg::hangup_calls`
+   - Sometomes macros wouldn't resolve (sometimes it resolves in my local machine, but not in RTD site, or the other way around). Don't know why yet.
+   - nested struct member wouldn't resolve, not sure why yet, e.g.: :cpp:any:`pjsua_acc_config::ip_change_cfg::hangup_calls`
    - For full reference see https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cpp-domain
 
 
@@ -98,9 +98,7 @@ Sample linking to root API reference pages and samples:
 Linking to doxygen group/topic
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Also use ``:doc:`` to link to specific doxygen group/topic, e.g. see :doc:`uPnP </api/generated/pjnath/group/group__PJNATH__UPNP>`.
-
-To see what the link is:
+To link to specific doxygen group/topic:
 
 - Open the relevant API reference page (e.g. :doc:`/api/pjnath/ref`)
 - View the source to get the link, e.g. 
@@ -108,6 +106,8 @@ To see what the link is:
   ::
 
         `:doc:`uPnP </api/generated/pjnath/group/group__PJNATH__UPNP>`
+
+  which will be rendered as :doc:`uPnP </api/generated/pjnath/group/group__PJNATH__UPNP>`
 
 
 Creating own cross reference
@@ -126,12 +126,17 @@ Then to reference the target, use `my_secret_target`_ or :ref:`With a text <my_s
 
 
 
-Linking to issues/PR in PJPROJECT GitHub
+Linking to GitHub
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-E.g. issue :issue:`1234` or PR :pr:`3291` 
+- Issue :issue:`1234`
+- PR :pr:`3291` 
+- source :source:`pjmedia/include/pjmedia/config.h`
+- source directory :sourcedir:`pjmedia/include`
 
-Iin practice ``:issue:`` or ``:pr:`` can be used interchangeably since GitHub will redirect to correct URL, but it's best to use the correct construct to avoid unnecessary redirect.
+.. note::
+
+   In practice ``:issue:`` or ``:pr:`` can be used interchangeably since GitHub will redirect to correct URL, but it's best to use the correct construct to avoid unnecessary redirect.
 
 
 External links

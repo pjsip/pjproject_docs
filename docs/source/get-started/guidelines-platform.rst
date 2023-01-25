@@ -1,5 +1,9 @@
 Platform Considerations
 ========================
+
+.. contents:: Table of Contents
+    :depth: 2
+
 Platform selection is usually driven by business motives. The selection will affect all aspects of 
 development, and this section will try to cover considerations for each platforms that PJSIP supports.
 
