@@ -83,7 +83,7 @@ Video
    :maxdepth: 1
    :glob:
 
-   sip/*
+   video/*
 
 Other
 *****************************************

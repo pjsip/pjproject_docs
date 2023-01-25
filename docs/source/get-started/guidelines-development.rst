@@ -16,16 +16,6 @@ Development
 * **Essential:** Follow the :doc:`Getting Started </get-started/getting>`
   instructions to build PJSIP for your platform.
 * **Essential:** Interactive debugging capability is essential during development
-* You need to create ``pjlib/include/pj/config_site.h`` file. Start with default settings in 
-  `config_site_sample.h <https://github.com/pjsip/pjproject/blob/master/pjlib/include/pj/config_site_sample.h>`__. 
-  One way is to include this in your ``pjlib/inlcude/pj/config_site.h``, i.e.:
-
-  .. code-block:: c
-
-        #include <pj/config_site_sample.h>
-
-  The default settings should be good to get you started. You can always optimize later after 
-  things are running okay.
 
 
 Coding Style
@@ -47,4 +37,22 @@ Deployment
 -----------
 * **Essential:** Logging is essential when troubleshooting any problems. The application MUST be 
   equipped with logging capability. Enable PJSIP log at level 5.
+
+
+.. _config_site.h:
+
+config_site.h
+---------------------
+You need to create ``pjlib/include/pj/config_site.h`` file. This file contains compile-time
+customizations for your application.
+
+It is recommended to start with default settings in :source:`pjlib/include/pj/config_site_sample.h`,
+by including this file in your ``config_site.h``, i.e.:
+
+  .. code-block:: c
+
+        #include <pj/config_site_sample.h>
+
+The default settings should be good to get you started. You can always optimize later after 
+things are running okay.
 

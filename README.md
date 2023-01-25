@@ -9,7 +9,7 @@
 The PJSIP docs at **https://docs.pjsip.org** is hosted by the *Read the Docs* (RTD) service. It contains:
 1. reference manuals (was at [pjsip.org/docs/latest/...](https://www.pjsip.org/docs/latest/pjlib/docs/html/index.htm)
 2. pjsua2 book (was at [pjsip.org/docs/book-latest](https://www.pjsip.org/docs/book-latest/html/index.html))
-3. (TODO) wiki (previously at https://trac.pjsip.org/repos/) 
+3. (in progress) wiki (previously at https://trac.pjsip.org/repos/) 
 
 The PJSIP's RTD settings page is at https://readthedocs.org/projects/pjsip/. This page controls various aspects of the RTD page. Some will be explained below.
 

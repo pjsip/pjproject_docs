@@ -198,6 +198,8 @@ device orientation), application needs to do the following:
 For sample usage, please refer to pjsua2 sample app. Ticket :pr:`1861` explains 
 this feature in detail.
 
+.. _android_openssl:
+
 OpenSSL Support
 -------------------
 #. Build OpenSSL (tested with OpenSSL 1.0.2s) for Android.

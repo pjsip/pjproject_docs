@@ -219,7 +219,7 @@ If you use openh264, make sure it is detected by ``./configure-iphone``:
    checking OpenH264 availability... ok
    ...
 
-Set these in your ``config_site.h``:
+Set these in your :ref:`config_site.h`:
 
 .. code-block:: c
 
@@ -247,6 +247,8 @@ to set the video device to the correct orientation.
 
 For sample usage, please refer to :source:`ipjsuaAppDelegate.m <pjsip-apps/src/pjsua/ios/ipjsua/ipjsuaAppDelegate.m>`. 
 :pr:`1861` explains this feature in detail.
+
+.. _ios_openssl:
 
 TLS/OpenSSL Support
 -------------------

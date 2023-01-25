@@ -260,6 +260,8 @@ Below is an example of specifying CFLAGS in configure:
 
    $ ./configure CFLAGS="-O3 -DNDEBUG -msoft-float -fno-builtin"
 
+.. _posix_openssl:
+
 Configuring TLS Support
 ^^^^^^^^^^^^^^^^^^^^^^^
 

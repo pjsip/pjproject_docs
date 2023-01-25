@@ -183,22 +183,7 @@ The objective of this ticket is to add new API to PJLIB socket API to enable man
 Design
 ---------------------------
 
-Based on the above, the following API is proposed.
-
-Declare the following "standard" traffic types.
-
-.. code-block:: c
-
-    typedef enum pj_qos_type
-    {
-        PJ_QOS_TYPE_BEST_EFFORT,
-        PJ_QOS_TYPE_BACKGROUND,
-        PJ_QOS_TYPE_VIDEO,
-        PJ_QOS_TYPE_VOICE,
-        PJ_QOS_TYPE_CONTROL
-    } pj_qos_type;
- 
-The traffic classes above will determine how the Layer 2 and 3 QoS settings will be used. The standard mapping between the classes above to the corresponding Layer 2 and 3 settings are as follows:
+Based on the above, PJLIB classifies traffic types in :cpp:any:`pj_qos_type`. The traffic types determines how the Layer 2 and 3 QoS settings will be used. The standard mapping between the classes above to the corresponding Layer 2 and 3 settings are as follows:
 
 .. list-table:: Mapping between PJLIB QoS type and network settings
    :header-rows: 1
@@ -239,7 +224,7 @@ There are two sets of API provided to manipulate the QoS parameters.
 Portable High Level API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The first set of API is:
+The first set of API are :cpp:any:`pj_sock_set_qos_type()` and :cpp:any:`pj_sock_get_qos_type()`:
 
 .. code-block:: c
 
@@ -252,7 +237,7 @@ The first set of API is:
                                                 pj_qos_type *p_val);
 
 
-The API will set the traffic type according to the DSCP class, for '''both''' Layer 2 and Layer 3 QoS settings, where it's available. If any of the layer QoS setting is not settable, the API will silently ignore it. If '''both''' layers are not setable, the API will return error.
+The API will set the traffic type according to the DSCP class, for **both** Layer 2 and Layer 3 QoS settings, where it's available. If any of the layer QoS setting is not settable, the API will silently ignore it. If **both** layers are not setable, the API will return error.
 
 The API above is the recommended use of QoS, since it is the most portable across all platforms.
 
@@ -322,14 +307,23 @@ Win32 currently is not be implemented.
 Using QoS in PJSIP Applications
 ---------------------------------
 
+PJSUA2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+QoS parameters are in :cpp:any:`pj::TransportConfig::qosType` and 
+:cpp:any:`pj::TransportConfig::qosParams`. The transport config can be used
+to specify the media transport (i.e. RTP/RTCP) configuration in 
+:cpp:any:`pj::AccountMediaConfig::transportConfig`.
+
+
 PJSUA-LIB
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On PJSUA-LIB, QoS parameters have been added to :cpp:any:`pjsua_transport_config`.
+QoS parameters are in :cpp:any:`pjsua_transport_config::qos_type` and 
+:cpp:any:`pjsua_transport_config::qos_params`.
 
-**Examples**
+**Example**
 
-To set QoS of RTP/RTCP traffic to '''Voice''' type (this will activate the appropriate DSCP, WMM, and SO_PRIORITY settings, if the OS supports it):
+To set QoS of RTP/RTCP traffic to **Voice** type (this will activate the appropriate DSCP, WMM, and SO_PRIORITY settings, if the OS supports it):
 
 .. code-block:: c
 

@@ -67,7 +67,7 @@ Autoconf build system
 
    Note that support can be explicitly disabled with ``--disable-ffmpeg`` option.
 
-#. Add video support and **support of ffmpeg capture device** to ``config_site.h``:
+#. Add video support and **support of ffmpeg capture device** to :any:`config_site.h`:
 
    .. code-block:: c
 
@@ -79,7 +79,7 @@ Visual Studio
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 #. Make sure FFMPEG headers and libraries are installed in locations that can be
    found by MSVC projects
-#. Add video and FFMPEG support to ``config_site.h``:
+#. Add video and FFMPEG support to :any:`config_site.h`:
 
    .. code-block:: c
 

@@ -83,6 +83,8 @@ Next, you can initialize the library by calling :cpp:func:`pj::Endpoint::libInit
 
 The snippet above initializes the library with the default settings.
 
+.. _pjsua2_create_transport:
+
 Creating one or more transports
 --------------------------------------------------
 Application needs to create one or more transports before it can send or receive SIP messages:

@@ -69,6 +69,32 @@ In addition, the following SDK's are needed:
 
     * Optional: OpenSSL development kit is needed if TLS support is wanted.
 
+
+.. _windows_openssl:
+
+Installing OpenSSL
+^^^^^^^^^^^^^^^^^^^^^^^^
+If TLS support is wanted, then OpenSSL SDK must be installed in the development host.
+
+To install OpenSSL SDK from the Win32 binary distribution:
+
+#. Install OpenSSL SDK to any folder (e.g. C:\OpenSSL)
+#. Add OpenSSL DLL location to the system PATH.
+#. Add OpenSSL include path to Visual Studio includes search directory. Make sure that 
+   OpenSSL header files can be accessed from the program with ``#include <openssl/ssl.h>``
+   construct.
+#. Add OpenSSL library path to Visual Studio library search directory. Make sure the following
+   libraries are accessible:
+   
+    * libeay32 and ssleay32
+    
+      You must use the same run-time option for PJSIP and the OpenSSL libraries. 
+      If you compile PJSIP with Multithreaded Debug (/MTd), you need to use the same 
+      run-time option when compiling the library. Please consult the library's doc for more details.
+
+Then to enable TLS transport support in PJSIP, please check :any:`guide_ssl`.
+
+
 Video support (2.0 and above only)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

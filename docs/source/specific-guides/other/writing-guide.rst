@@ -110,6 +110,85 @@ To link to specific doxygen group/topic:
   which will be rendered as :doc:`uPnP </api/generated/pjnath/group/group__PJNATH__UPNP>`
 
 
+Available cross-references:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Currenty available cross-references:
+
+.. code-block:: shell
+
+
+   $ egrep -r '^.. _' * | grep rst
+   api/pjlib/index.rst:.. _pjlib_pool:
+   api/pjlib/index.rst:.. _pjlib_string:
+   api/pjnath/ref.rst:.. _ice:
+   api/pjnath/ref.rst:.. _stun:
+   api/pjnath/ref.rst:.. _turn:
+   api/pjnath/ref.rst:.. _upnp:
+   api/pjnath/ref.rst:.. _nat_detect:
+   api/pjmedia/pjmedia-audiodev.rst:.. _audiodev_supported_devs:
+   api/pjmedia/pjmedia-audiodev.rst:.. _alsa:
+   api/pjmedia/pjmedia-audiodev.rst:.. _opensl:
+   api/pjmedia/pjmedia-audiodev.rst:.. _jnisound:
+   api/pjmedia/pjmedia-audiodev.rst:.. _oboe:
+   api/pjmedia/pjmedia-audiodev.rst:.. _bdsound:
+   api/pjmedia/pjmedia-audiodev.rst:.. _coreaudio:
+   api/pjmedia/pjmedia-audiodev.rst:.. _wmme:
+   api/pjmedia/pjmedia-audiodev.rst:.. _wasapi:
+   api/pjmedia/pjmedia-audiodev.rst:.. _portaudio:
+   api/pjmedia/pjmedia-videodev.rst:.. _android_cam:
+   api/pjmedia/pjmedia-videodev.rst:.. _avi_device:
+   api/pjmedia/pjmedia-videodev.rst:.. _avfoundation:
+   api/pjmedia/pjmedia-videodev.rst:.. _colorbar:
+   api/pjmedia/pjmedia-videodev.rst:.. _dshow:
+   api/pjmedia/pjmedia-videodev.rst:.. _ffmpeg_capture:
+   api/pjmedia/pjmedia-videodev.rst:.. _opengl:
+   api/pjmedia/pjmedia-videodev.rst:.. _qtdev:
+   api/pjmedia/pjmedia-videodev.rst:.. _sdl:
+   api/pjmedia/pjmedia-videodev.rst:.. _guide_sdl:
+   api/pjmedia/pjmedia-videodev.rst:.. _video4linux:
+   api/pjmedia/pjmedia-videodev.rst:.. _guide_video4linux:
+   api/pjmedia/pjmedia-codec.rst:.. _pjmedia-codec:
+   api/pjmedia/pjmedia-codec.rst:.. _amediacodec:
+   api/pjmedia/pjmedia-codec.rst:.. _bcg729:
+   api/pjmedia/pjmedia-codec.rst:.. _ffmpeg:
+   api/pjmedia/pjmedia-codec.rst:.. _g711:
+   api/pjmedia/pjmedia-codec.rst:.. _g722:
+   api/pjmedia/pjmedia-codec.rst:.. _g7221:
+   api/pjmedia/pjmedia-codec.rst:.. _gsm:
+   api/pjmedia/pjmedia-codec.rst:.. _ilbc:
+   api/pjmedia/pjmedia-codec.rst:.. _ipp:
+   api/pjmedia/pjmedia-codec.rst:.. _l16:
+   api/pjmedia/pjmedia-codec.rst:.. _opencore_amr:
+   api/pjmedia/pjmedia-codec.rst:.. _openh264:
+   api/pjmedia/pjmedia-codec.rst:.. _opus:
+   api/pjmedia/pjmedia-codec.rst:.. _passthrough:
+   api/pjmedia/pjmedia-codec.rst:.. _silk:
+   api/pjmedia/pjmedia-codec.rst:.. _speex:
+   api/pjmedia/pjmedia-codec.rst:.. _libvpx:
+   get-started/android/build_instructions.rst:.. _android_pjsua2:
+   get-started/android/build_instructions.rst:.. _android_create_app:
+   get-started/ios/issues.rst:.. _ios_bg:
+   get-started/guidelines-development.rst:.. _dev_start:
+   get-started/guidelines-development.rst:.. _config_site.h:
+   get-started/guidelines-api.rst:.. _which_api_to_use:
+   overview/license_3rd_party.rst:.. _licensing_3rd_party:
+   pjsua2/using/call.rst:.. _pjsua2_call_disconnection:
+   pjsua2/using/account.rst:.. _pjsua2_creating_userless_account:
+   specific-guides/sip/index.rst:.. _guide_adding_custom_header:
+   specific-guides/build_int/ffmpeg.rst:.. _guide_ffmpeg:
+   specific-guides/audio/webrtc.rst:.. _guide_webrtc:
+   specific-guides/audio/opencore-amr.rst:.. _guide_opencore_amr:
+   specific-guides/audio/index.rst:.. _guide_ipp:
+   specific-guides/perf_footprint/index.rst:.. _guide_performance:
+   specific-guides/perf_footprint/index.rst:.. _guide_footprint:
+   specific-guides/security/ssl.rst:.. _guide_ssl:
+   specific-guides/network_nat/qos.rst:.. _qos:
+   specific-guides/other/writing-guide.rst:.. _my_secret_target:
+   specific-guides/video/index.rst:.. _guide_libyuv:
+   specific-guides/video/index.rst:.. _guide_vidconf:
+
+
 Creating own cross reference
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This is if you want to create and cross reference a specific location in a page (rather than the whole page).
