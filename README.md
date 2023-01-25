@@ -1,6 +1,6 @@
 # docs.pjsip.org Project
 
-(Note: see also [Writing-Guide.rst](Writing-Guide.rst))
+(Note: see also [writing-guide.rst](docs/source/specific-guides/other/writing-guide.rst))
 
 ## Overview
 

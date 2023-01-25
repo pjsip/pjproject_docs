@@ -169,6 +169,7 @@ exclude_patterns = ['pjproject/*', '*_8c']
 
 extlinks = {
     'pr': ('https://github.com/pjsip/pjproject/pull/%s', '#%s'),
+    'issue': ('https://github.com/pjsip/pjproject/issues/%s', '#%s'),
     'source' : ('https://github.com/pjsip/pjproject/tree/master/%s', '%s'),
 }
 
