@@ -9,11 +9,11 @@ Important Issue(s) when Developing Android Apps
 *  **Garbage Collector May Crash Your App (Pjsua2 API)**
 
    Please check this pjsua2 book page about 
-   `problems with GC <http://www.pjsip.org/docs/book-latest/html/intro_pjsua2.html#problems-with-garbage-collection>`_.
+   `problems with GC <http://www.pjsip.org/docs/book-latest/html/intro_pjsua2.html#problems-with-garbage-collection>`__.
 
 *  **OpenSLES audio device deadlock upon shutdown**
 
-   As reported in `Android NDK forum <https://groups.google.com/forum/#!topic/android-ndk/G7dLKAGGL28>`_, 
+   As reported in `Android NDK forum <https://groups.google.com/forum/#!topic/android-ndk/G7dLKAGGL28>`__, 
    when shutting down OpenSLES sound device backend, it may block forever:
 
    .. code-block:: 

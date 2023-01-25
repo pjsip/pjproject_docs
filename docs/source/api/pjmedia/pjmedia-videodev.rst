@@ -23,7 +23,7 @@ Supported devices
 Android Camera2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This is a capture device based on `Android Camera2 framework <https://developer.android.com/training/camera2>`_. 
+This is a capture device based on `Android Camera2 framework <https://developer.android.com/training/camera2>`__. 
 Support for this device is enabled automatically for Android build (reference: 
 ``PJMEDIA_VIDEO_DEV_HAS_ANDROID=1`` macro).
 

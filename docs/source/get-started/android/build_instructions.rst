@@ -4,7 +4,7 @@ Build Instructions
 Requirements
 -------------
 
-* You need the `Android NDK <http://developer.android.com/tools/sdk/ndk/index.html>`_.
+* You need the `Android NDK <http://developer.android.com/tools/sdk/ndk/index.html>`__.
 * Optional if you want to build and and run the sample applications (i.e: pjsua2 
   and pjsua):
   
@@ -68,8 +68,8 @@ Building for other architectures
 
       TARGET_ABI=arm64-v8a ./configure-android --use-ndk-cflags
 
-   Also you should adjust `Application.mk <https://developer.android.com/ndk/guides/abis.html#gc>`_ 
-   and `library packaging path <https://developer.android.com/ndk/guides/abis.html#am>`_ 
+   Also you should adjust `Application.mk <https://developer.android.com/ndk/guides/abis.html#gc>`__ 
+   and `library packaging path <https://developer.android.com/ndk/guides/abis.html#am>`__ 
    (see also :pr:`1803`).
 
    .. note:: 
@@ -219,7 +219,7 @@ OpenSSL Support
    The instruction provided here is specifically for arm64. 
    For other architectures, modify accordingly. 
 
-   Please visit `this page <https://github.com/openssl/openssl/blob/master/NOTES-ANDROID.md>`_ 
+   Please visit `this page <https://github.com/openssl/openssl/blob/master/NOTES-ANDROID.md>`__ 
    for reference and some examples. 
 
    .. note:: 
@@ -300,7 +300,7 @@ Building and running pjsua2 sample application
 
 A sample application using :doc:`pjsua2 API </api/pjsua2/ref>` with SWIG Java binding, 
 is located under :source:`pjsip-apps/src/swig/java/android`. It is not built by 
-default, and you need `SWIG <http://www.swig.org/download.html>`_ to build it.
+default, and you need `SWIG <http://www.swig.org/download.html>`__ to build it.
 
 Follow these steps to build pjsua2 sample application:
 
@@ -377,14 +377,14 @@ whose Java interface available via SWIG Java binding.
          $ cp -r $PJSIP_DIR/{pjsip-apps/src/swig/java/android/app/src/main/jniLibs .
 
 #. Start writing your application, please check 
-   `pjsua2 docs <http://www.pjsip.org/docs/book-latest/html/index.html>`_ for 
+   `pjsua2 docs <http://www.pjsip.org/docs/book-latest/html/index.html>`__ for 
    reference.
 
 Pjsua sample application with telnet interface
 ``````````````````````````````````````````````
-There is also the usual `pjsua <http://www.pjsip.org/pjsua.htm>`_ with telnet 
+There is also the usual `pjsua <http://www.pjsip.org/pjsua.htm>`__ with telnet 
 command line user interface, which is located under :source:`pjsip-apps/src/pjsua/android`. 
-It is not built by default and you need `SWIG <http://www.swig.org/download.html>`_ 
+It is not built by default and you need `SWIG <http://www.swig.org/download.html>`__ 
 to build it. Application flow and user interface are handled mainly in the native 
 level, so it doesn't use pjsua2 API with Java interface.
 

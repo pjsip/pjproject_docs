@@ -76,8 +76,8 @@ Additional requirements
    within the SDK is **Windows Development Headers and Libraris** and **Samples**.
 
    * If you don't need Windows 7 features, the recommended SDK is 
-     `Windows SDK Update for Windows Vista <http://www.microsoft.com/downloads/en/details.aspx?FamilyID=ff6467e6-5bba-4bf5-b562-9199be864d29>`_.
-   * If you need Windows 7 features then use `Windows SDK for Windows 7 <http://www.microsoft.com/downloads/en/confirmation.aspx?FamilyID=6B6C21D2-2006-4AFA-9702-529FA782D63B>`_. 
+     `Windows SDK Update for Windows Vista <http://www.microsoft.com/downloads/en/details.aspx?FamilyID=ff6467e6-5bba-4bf5-b562-9199be864d29>`__.
+   * If you need Windows 7 features then use `Windows SDK for Windows 7 <http://www.microsoft.com/downloads/en/confirmation.aspx?FamilyID=6B6C21D2-2006-4AFA-9702-529FA782D63B>`__. 
      Also if you are using Visual Studio 2005 then you will need to patch it 
      using `MS Knowledge Base 949009 <http://support.microsoft.com/kb/949009/>`_
 
@@ -101,9 +101,9 @@ Additional requirements
       For H.264 support, you need newer releases (October 2011 onwards), and it needs libz too.
    
    * You may be able to use the binary distributions (such as from 
-     `Zeranoe <http://ffmpeg.zeranoe.com/builds/>`_ - get the 'dev' builds). 
+     `Zeranoe <http://ffmpeg.zeranoe.com/builds/>`__ - get the 'dev' builds). 
      It compiles fine, however we haven't tested them thoroughly.
-   * Otherwise, get `MSYS|MinGW <http://www.mingw.org/wiki/MSYS>`_ for building 
+   * Otherwise, get `MSYS|MinGW <http://www.mingw.org/wiki/MSYS>`__ for building 
      libx264 and ffmpeg. 
      
      .. note:: 
@@ -124,7 +124,7 @@ Additional requirements
         # to enable H264, add "--enable-gpl --enable-libx264"
         $ make && make install
 
-#. Optional for H.264: `libx264 <http://www.videolan.org/developers/x264.html>`_. 
+#. Optional for H.264: `libx264 <http://www.videolan.org/developers/x264.html>`__. 
    We tested with the latest from git (as of October 2011). In MSYS console:
 
    .. code-block:: shell
@@ -132,7 +132,7 @@ Additional requirements
       $ ./configure --enable-static      # add options if needed, e.g: optimization, install dir, search path
       $ make && make install-lib-static  # default install dir is /usr/local
 
-#. Optional for libvpx: `libvpx <https://www.webmproject.org/code/>`_, 
+#. Optional for libvpx: `libvpx <https://www.webmproject.org/code/>`__, 
    supported since :pr:`2253`. In MSYS console:
 
    .. code-block:: shell
@@ -141,7 +141,7 @@ Additional requirements
       $ make    #Generate Visual Studio solution      
       #Build the static library using Visual Studio solution
       
-#. Optional: `Qt development SDK <http://qt-project.org/downloads/>`_ for 
+#. Optional: `Qt development SDK <http://qt-project.org/downloads/>`__ for 
    building the video GUI sample. We tested with version 4.6 or later.
    
    * without this you can still enjoy video with pjsua console application

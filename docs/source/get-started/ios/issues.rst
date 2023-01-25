@@ -4,10 +4,10 @@ Important Issue(s) when Developing iOS Apps
 * **PushKit guide, to accept calls in the background after kCFStreamNetworkServiceTypeVoIP is deprecated (iOS 10/iOS 9)**
 
   Starting in iOS 9, 
-  `kCFStreamNetworkServiceTypeVoIP <https://developer.apple.com/library/ios/documentation/CoreFoundation/Reference/CFSocketStreamRef/index.html#//apple_ref/doc/constant_group/Stream_Service_Types>`_ is deprecated. 
+  `kCFStreamNetworkServiceTypeVoIP <https://developer.apple.com/library/ios/documentation/CoreFoundation/Reference/CFSocketStreamRef/index.html#//apple_ref/doc/constant_group/Stream_Service_Types>`__ is deprecated. 
   Apple recommends that applications use VoIP Push Notifications 
   (using **PushKit** framework) to avoid persistent connections as described in 
-  the `Apple's official doc <https://developer.apple.com/library/ios/documentation/Performance/Conceptual/EnergyGuide-iOS/OptimizeVoIP.html>`_. 
+  the `Apple's official doc <https://developer.apple.com/library/ios/documentation/Performance/Conceptual/EnergyGuide-iOS/OptimizeVoIP.html>`__. 
   
   This will require application to implement the setup and handling of push 
   notifications in the application layer (for more details, you can refer to 
@@ -27,7 +27,7 @@ Important Issue(s) when Developing iOS Apps
 
   In order to make it work with the normal SIP flow which may require you to wait 
   for some time to receive the INVITE message, please look at Apple's recommendation 
-  in its `developer forum <https://forums.developer.apple.com/thread/117939>`_.
+  in its `developer forum <https://forums.developer.apple.com/thread/117939>`__.
 
 * **CallKit integration and audio session (AVAudioSession) management (iOS 10)**
 
@@ -73,7 +73,7 @@ Important Issue(s) when Developing iOS Apps
   Here is the reported working solution:
 
   * Application should be configured to receive interruption events, see 
-    `Apple's AVAudioSession doc <https://developer.apple.com/reference/avfoundation/avaudiosession>`_.
+    `Apple's AVAudioSession doc <https://developer.apple.com/reference/avfoundation/avaudiosession>`__.
   * Forcefully shutdown the sound device when interruption begins, 
     e.g: using ``pjsua_set_no_snd_dev())`` for pjsua, or ``AudDevManager.setNoDev()`` 
     for pjsua2

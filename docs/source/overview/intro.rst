@@ -14,7 +14,7 @@ multimedia capabilities of the device.
 
 PJSIP has been developed by a small team working exclusively for the project since 2005,
 with participation of hundreds of developers from around the world, and is routinely
-tested at SIP Interoperability Event (`SIPit <https://www.sipit.net>`_) since 2007.
+tested at SIP Interoperability Event (`SIPit <https://www.sipit.net>`__) since 2007.
 
 PJSIP development is hosted at https://github.com/pjsip/pjproject
 
@@ -42,7 +42,7 @@ There are also low level libraries that abstracts operating system differences
     :ref:`which_api_to_use`
 
 To avoid naming confusion between PJSIP as organization name (as in 
-`PJSIP.ORG <https://pjsip.org>`_) and PJSIP as libraries that provide SIP protocol
+`PJSIP.ORG <https://pjsip.org>`__) and PJSIP as libraries that provide SIP protocol
 implementation  above, we also call this project **PJPROJECT**.
 
 Below is architecture diagram of libraries in PJPROJECT. Click the link on the 

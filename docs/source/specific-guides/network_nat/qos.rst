@@ -148,7 +148,7 @@ Update 2022: Windows
 - TLDR; two ways to achieve QoS on Windows: with QoS2/qWAVE API or by using Policy-based. [1]
 - QoS2/qWAVE API requires the app to be a member of Administrators or Network Configuration Operators group [2].
 - Using Policy-based QoS, it works without any changes in the app, but it requires the user 
-  (or network administrator) to set up the QoS Policy. A sample setup is `discussed here <https://community.cisco.com/t5/collaboration-knowledge-base/enable-dscp-marking-in-windows-os-7-8-10/tac-p/3849518/highlight/true#M9259>`_.
+  (or network administrator) to set up the QoS Policy. A sample setup is `discussed here <https://community.cisco.com/t5/collaboration-knowledge-base/enable-dscp-marking-in-windows-os-7-8-10/tac-p/3849518/highlight/true#M9259>`__.
   DSCP tagging can be set per application/IP-port/protocol basis.
 
 PJLIB currently does not support QoS2/qWAVE, and supporting it requires major modifications:
@@ -376,8 +376,8 @@ If you are using the low level transports (such as SIP transports, media transpo
 References
 ---------------------------
 
-1. `QoS Support in Windows <http://technet.microsoft.com/en-gb/magazine/2007.02.cableguy.aspx>`_ - good intro for QoS on Windows and in general
-2. `WMM (Wi-Fi Multimedia) <http://msdn.microsoft.com/en-us/library/aa916767.aspx>`_ (Windows Mobile 6)
+1. `QoS Support in Windows <http://technet.microsoft.com/en-gb/magazine/2007.02.cableguy.aspx>`__ - good intro for QoS on Windows and in general
+2. `WMM (Wi-Fi Multimedia) <http://msdn.microsoft.com/en-us/library/aa916767.aspx>`__ (Windows Mobile 6)
 3. `VoIP developer guidelines for S60 <http://wiki.forum.nokia.com/index.php/VoIP_developer_guidelines_for_S60>`_
 4. `WiFi QoS Support in Windows Vista: WMM part 2 <http://blogs.msdn.com/wndp/archive/2006/06/30/WiFi_QoS_Support_in_Windows_Vista_part_2.aspx>`_
 5. Apple SO_NET_SERVICE_TYPE: https://github.com/pjsip/pjproject/issues/1964

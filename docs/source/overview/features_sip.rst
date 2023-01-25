@@ -11,7 +11,7 @@ Base specs
   INVITE, CANCEL, BYE, REGISTER, OPTIONS, INFO
 - Digest authentication (`RFC 2617 <https://datatracker.ietf.org/doc/html/rfc2617>`__)
 - Encoding and parsing of Bearer authenticaion (OAuth 2.0)
-  (`RFC 8898 <https://datatracker.ietf.org/doc/html/rfc8898>`_)
+  (`RFC 8898 <https://datatracker.ietf.org/doc/html/rfc8898>`__)
 
 Transports
 ~~~~~~~~~~~~~~
@@ -27,7 +27,7 @@ Routing/NAT
 - SIP outbound for TCP/TLS (`RFC 5626 <https://datatracker.ietf.org/doc/html/rfc5626>`__)
 - Path header (with SIP outbound) (`RFC 3327 <https://datatracker.ietf.org/doc/html/rfc3327>`__)
 - ICE option tag (`RFC 5768 <https://datatracker.ietf.org/doc/html/rfc5768>`__)
-- Trickle ICE on SIP: (`RFC 8840 <https://datatracker.ietf.org/doc/html/rfc8840>`_)
+- Trickle ICE on SIP: (`RFC 8840 <https://datatracker.ietf.org/doc/html/rfc8840>`__)
 
 
 Call
@@ -58,8 +58,8 @@ SDP
   `RFC 4566 <https://datatracker.ietf.org/doc/html/rfc4566>`__)
 - RTCP attribute (`RFC 3605 <https://datatracker.ietf.org/doc/html/rfc3605>`__)
 - IPv6 support (`RFC 3266 <https://datatracker.ietf.org/doc/html/rfc3266>`__)
-- SDP media ID (`RFC 5888 <https://datatracker.ietf.org/doc/html/rfc5888>`_)
-- SDP for ICE (`RFC 8839 <https://datatracker.ietf.org/doc/html/rfc8839>`_)
+- SDP media ID (`RFC 5888 <https://datatracker.ietf.org/doc/html/rfc5888>`__)
+- SDP for ICE (`RFC 8839 <https://datatracker.ietf.org/doc/html/rfc8839>`__)
 
    
 Presence and IM

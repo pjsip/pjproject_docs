@@ -17,7 +17,7 @@ Development
   instructions to build PJSIP for your platform.
 * **Essential:** Interactive debugging capability is essential during development
 * Start with default settings in 
-  `config_site_sample.h <https://github.com/pjsip/pjproject/blob/master/pjlib/include/pj/config_site_sample.h>`_. 
+  `config_site_sample.h <https://github.com/pjsip/pjproject/blob/master/pjlib/include/pj/config_site_sample.h>`__. 
   One way is to include this in your ``pjlib/inlcude/pj/config_site.h``, i.e.:
 
   .. code-block:: c
@@ -35,7 +35,7 @@ patches to PJSIP:
 
 * Indent by 4 characters and use spaces only.
 * All public API in header file must be documented in Doxygen format.
-* Use `K & R style <http://en.wikipedia.org/wiki/1_true_brace_style#K.26R_style>`_, 
+* Use `K & R style <http://en.wikipedia.org/wiki/1_true_brace_style#K.26R_style>`__, 
   which is the only correct style anyway.
 
 .. note::

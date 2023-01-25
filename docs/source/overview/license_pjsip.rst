@@ -53,7 +53,7 @@ The GPL allows you to compile, modify, link, or combine **the SOFTWARE** with ot
 commercial or non-commercial, as long as the resulting program complies with GPL (see 
 the GPL Compliance Guide for what this means). Copy of GNU General Public License is 
 available on the http://www.gnu.org. More information about GPL can be found in
-`GPL FAQ <http://www.gnu.org/licenses/gpl-faq.html>`_.
+`GPL FAQ <http://www.gnu.org/licenses/gpl-faq.html>`__.
 
 
 Alternative license

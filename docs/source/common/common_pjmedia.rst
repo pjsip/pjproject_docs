@@ -115,9 +115,9 @@ SDP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 - :doc:`SDP Parsing and Data Structure </api/generated/pjmedia/group/group__PJMEDIA__SDP>`
 - :doc:`SDP Negotiation State Machine (Offer/Answer Model) </api/generated/pjmedia/group/group__PJMEDIA__SDP__NEG>`
-  (`RFC 3264 <https://datatracker.ietf.org/doc/html/rfc3264>`_)
-- `SDP SSRC attribute <https://github.com/pjsip/pjproject/issues/2098>`_ 
-  (`RFC 5576 <https://datatracker.ietf.org/doc/html/rfc5576>`_)
+  (`RFC 3264 <https://datatracker.ietf.org/doc/html/rfc3264>`__)
+- `SDP SSRC attribute <https://github.com/pjsip/pjproject/issues/2098>`__ 
+  (`RFC 5576 <https://datatracker.ietf.org/doc/html/rfc5576>`__)
 - `RTP and RTCP multiplexing <https://github.com/pjsip/pjproject/issues/2087>`_
   `(RFC 5761) <https://datatracker.ietf.org/doc/html/rfc5761>`_
 
@@ -132,10 +132,10 @@ RTP and RTCP
 - :doc:`RTCP Feedback mechanism </specific-guides/media/rtcp_fb>`
 - :doc:`RTCP XR </api/generated/pjmedia/group/group__PJMED__RTCP__XR>`
   `(RFC 3611) <https://datatracker.ietf.org/doc/html/rfc3611>`_
-- `SSRC synchronization via SDP <https://github.com/pjsip/pjproject/issues/2098>`_ 
-  (`RFC 5576 <https://datatracker.ietf.org/doc/html/rfc5576>`_)
-- `RTCP CNAME guideline <https://github.com/pjsip/pjproject/issues/2098>`_ 
-  (`RFC 7022 <https://datatracker.ietf.org/doc/html/rfc7022>`_)
+- `SSRC synchronization via SDP <https://github.com/pjsip/pjproject/issues/2098>`__ 
+  (`RFC 5576 <https://datatracker.ietf.org/doc/html/rfc5576>`__)
+- `RTCP CNAME guideline <https://github.com/pjsip/pjproject/issues/2098>`__ 
+  (`RFC 7022 <https://datatracker.ietf.org/doc/html/rfc7022>`__)
   
 
 Compile Time Settings

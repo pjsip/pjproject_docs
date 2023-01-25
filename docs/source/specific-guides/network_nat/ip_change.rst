@@ -129,11 +129,11 @@ IP address change detection
 
 iOS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Have a look at `Reachability API <https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html>`_.
+Have a look at `Reachability API <https://developer.apple.com/library/content/samplecode/Reachability/Introduction/Intro.html>`__.
 
 Android
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Have a look at `ConnectivityManager <https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html>`_.
+Have a look at `ConnectivityManager <https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html>`__.
 
 
 

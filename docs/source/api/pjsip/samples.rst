@@ -14,11 +14,11 @@ PJSIP Samples
 
        This simple program responds any incoming requests (except ACK, of course!)
        with 501/Not Implemented. It supports UDP and TCP.
-   * - `stateless_proxy.c <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/stateless_proxy.c>`_,
+   * - `stateless_proxy.c <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/stateless_proxy.c>`__,
        `proxy.h <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/proxy.h>`_
      - PJSIP (core)
      - Simple implementation of pure stateless proxy as spec-ed by RFC 3261. 
-   * - `stateful_proxy.c <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/stateful_proxy.c>`_,
+   * - `stateful_proxy.c <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/stateful_proxy.c>`__,
        `proxy.h <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/proxy.h>`_
      - PJSIP (core)
      - Simple implementation of stateful proxy as spec-ed by RFC 3261. 
@@ -33,7 +33,7 @@ PJSIP Samples
      - PJSIP-UA
      - SIP call generator/load testing/performance measurement, can be used as both server and client. 
        Only performs signaling (SIP and SDP negotiation) and does not do RTP.
-   * - `simpleua.c <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/simpleua.c>`_,
+   * - `simpleua.c <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/simpleua.c>`__,
        `util.h <https://github.com/pjsip/pjproject/blob/master/pjsip-apps/src/samples/util.h>`_
      - PJSIP-UA, PJMEDIA (Codec, AudioDev, VideoDev)
      - Full implementation of a SIP user agent, supporting SIP, SDP, RTP, audio, and video, with
