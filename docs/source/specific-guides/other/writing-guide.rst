@@ -62,18 +62,51 @@ Typography conventions
 
 .. note::
 
-   - Sometomes macros wouldn't resolve (sometimes it resolves in my local machine, but not in RTD site, or the other way around). Don't know why yet.
-   - nested struct member wouldn't resolve, not sure why yet, e.g.: :cpp:any:`pjsua_acc_config::ip_change_cfg::hangup_calls`
+   - Sometomes macros wouldn't resolve (sometimes it resolves in development machine, but not in RTD site, or the other way around). Not sure why yet.
+   - nested struct member wouldn't resolve, e.g.: :cpp:any:`pjsua_acc_config::ip_change_cfg::hangup_calls`, so you need to break it down into separate parts, e.g. :cpp:any:`hangup_calls <pjsua_ip_change_acc_cfg::hangup_calls>` of :cpp:any:`pjsua_acc_config::ip_change_cfg`
    - For full reference see https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cpp-domain
 
 
 Cross referencing
 ----------------------------------------------
 
+.. tip::
+
+   Rather than explicitly specifying the role in the link (with ``:doc:`` or
+   ``:ref:``), you can use ``:any:`` to make Sphinx automatically detect the best
+   role to use for the specified target.
+
+
+Linking to documentation section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Links to sections in the menu:
+
+- :any:`overview_toc`
+- :any:`get_started_toc`
+- :any:`pjsua2_toc`
+- :any:`specific_guides_toc`
+
+  - :any:`spec_guide_audio_toc`
+  - :any:`build_int_guide_toc`
+  - :any:`dev_prog_guide_toc`
+  - :any:`media_guide_toc`
+  - :any:`network_nat_guide_toc`
+  - :any:`perf_footprint_guide_toc`
+  - :any:`security_guide_toc`
+  - :any:`sip_guide_toc`
+  - :any:`video_guide_toc`
+  - :any:`other_guide_toc`
+
+
+- API Reference & Samples: :any:`api_ref_samples_toc`
+
+
+
 Linking to a page
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Use ``:doc:`` to link to a page.
+Use ``:any:`` or ``:doc:`` to link to a page.
 
 Sample linking to getting started pages:
 

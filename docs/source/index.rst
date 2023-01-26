@@ -10,7 +10,7 @@ PJSIP Project Online Documentation
 
 .. toctree::
    :maxdepth: 1
-   :name: overview
+   :name: overview_toc
    :caption: PJSIP Overview
    
    overview/intro
@@ -19,7 +19,7 @@ PJSIP Project Online Documentation
    
 .. toctree::
    :maxdepth: 1
-   :name: get_started
+   :name: get_started_toc
    :caption: Get Started
 
    get-started/getting
@@ -32,7 +32,7 @@ PJSIP Project Online Documentation
 
 .. toctree::
    :maxdepth: 1
-   :name: pjsua2_guide
+   :name: pjsua2_toc
    :caption: PJSUA2 Guide
 
    pjsua2/intro
@@ -44,14 +44,14 @@ PJSIP Project Online Documentation
    
 .. toctree::
    :maxdepth: 1
-   :name: specific_guides
+   :name: specific_guides_toc
    :caption: Specific Guides
 
    specific-guides/index
 
 .. toctree::
    :maxdepth: 1
-   :name: api_reference
+   :name: api_ref_samples_toc
    :caption: API Reference & Samples
    
    api/pjsua2/index
@@ -70,5 +70,4 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

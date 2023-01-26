@@ -1,4 +1,4 @@
-PJMEDIA Performance Measurement (MIPS test) (*old*)
+Media Performance (MIPS test)
 ===================================================
 
 .. note::
