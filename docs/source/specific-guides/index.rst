@@ -1,3 +1,11 @@
+Specific Guides
+*****************************************
+
+.. Note: we need the above heading so that this page will have the
+   correct title (otherwise this page's title will be "Audio").
+   The drawback is "Specific Guides" section will appear in menu.
+
+
 Audio
 *****************************************
 
@@ -95,7 +103,7 @@ Video
 *****************************************
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :name: video_guide_toc
    :caption: Video Guide
    :glob:

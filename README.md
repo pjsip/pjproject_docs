@@ -1,5 +1,7 @@
 # docs.pjsip.org Project
 
+[![docs.pjsip.org](https://readthedocs.org/projects/pjsip/badge/?version=latest)](https://docs.pjsip.org/en/latest/)
+
 (Note: see also [writing-guide.rst](docs/source/specific-guides/other/writing-guide.rst))
 
 ## Overview
