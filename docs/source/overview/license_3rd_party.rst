@@ -30,8 +30,8 @@ ACE Timer Heap
      - Douglas C. Schmidt and his research group at Washington University, University of 
        California, Irvine, and Vanderbilt University, Copyright (c) 1993-2006, all rights reserved
    * - Location
-     - - https://github.com/pjsip/pjproject/blob/master/pjlib/include/pj/timer.h
-       - https://github.com/pjsip/pjproject/blob/master/pjlib/src/pj/timer.c
+     - - :source:`pjlib/include/pj/timer.h`
+       - :source:`pjlib/src/pj/timer.c`
    * - Description
      - The timer heap in PJLIB was based on ACE's Timer_Heap
    * - License
@@ -52,14 +52,14 @@ Alaw/Ulaw Converter
    * - Author
      - Sun Microsystems, Inc 
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia/alaw_ulaw.c
+     - :source:`pjmedia/src/pjmedia/alaw_ulaw.c`
    * - Description
      - PCM Alaw and U-law conversion
    * - License
      - Free and unrestricted use, see the source code for details.
    * - Usage
-     - This software is not used by default unless ``PJMEDIA_HAS_ALAW_ULAW_TABLE`` is disabled. 
-       When ``PJMEDIA_HAS_ALAW_ULAW_TABLE`` is enabled (the default setting), a table based 
+     - This software is not used by default unless :cpp:any:`PJMEDIA_HAS_ALAW_ULAW_TABLE` is disabled. 
+       When :cpp:any:`PJMEDIA_HAS_ALAW_ULAW_TABLE` is enabled (the default setting), a table based 
        alaw/ulaw conversion will be used instead. 
 
 
@@ -73,7 +73,7 @@ CRC32 Algorithm
    * - Author
      - Unknown
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjlib-util/src/pjlib-util/crc32.c
+     - :source:`pjlib-util/src/pjlib-util/crc32.c`
    * - Description
      - 
    * - License
@@ -102,7 +102,7 @@ MD5 Hashing Algorithm
    * - Author
      - Written by Colin Plumb in 1993 based on MD5 algorithm by Ron Rivest, no copyright is claimed.
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjlib-util/src/pjlib-util/md5.c
+     - :source:`pjlib-util/src/pjlib-util/md5.c`
    * - Description
      - MD5 hashing for digest authentication. 
    * - License
@@ -122,7 +122,7 @@ SHA1 Encryption
    * - Author
      - Steve Reid, James H. Brown, Saul Kravitz, Ralph Giles
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjlib-util/src/pjlib-util/sha1.c
+     - :source:`pjlib-util/src/pjlib-util/sha1.c`
    * - License
      - Public domain, see the source code for details.
    * - Usage
@@ -142,17 +142,17 @@ G.722 Codec
        No copyright is claimed on the original source code. The author is possibly Milton Anderson 
        (milton@thumper.bellcore.com) from BELLCORE
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/pjmedia/src/pjmedia-codec/g722/
+     - :sourcedir:`pjmedia/src/pjmedia-codec/g722/`
    * - Description
      - The G.722 codec algorithms are included in PJMEDIA source directory
    * - License
      - Public domain software
    * - Usage
      - This software will only be linked if application explicitly initialize the G.722 library 
-       by calling ``pjmedia_codec_g722_init()``. Note that if PJSUA-LIB is used, then this call is 
+       by calling :cpp:any:`pjmedia_codec_g722_init()`. Note that if PJSUA-LIB is used, then this call is 
        made by PJSUA-LIB, hence causing your application to be linked with the software. The 
        software can be explicitly disabled from the link process by defining 
-       ``PJMEDIA_HAS_G722_CODEC`` to zero. 
+       :cpp:any:`PJMEDIA_HAS_G722_CODEC` to zero. 
 
 
 
@@ -175,15 +175,15 @@ GNU Getopt
    * - Author
      - Copyright (C) 1987,88,89,90,91,92,93,94,96,97 Free Software Foundation, Inc
    * - Location
-     - - https://github.com/pjsip/pjproject/blob/master/pjlib-util/include/pjlib-util/getopt.h
-       - https://github.com/pjsip/pjproject/blob/master/pjlib-util/src/pjlib-util/getopt.c
+     - - :source:`pjlib-util/include/pjlib-util/getopt.h`
+       - :source:`pjlib-util/src/pjlib-util/getopt.c`
    * - Description
      - Command line parsing library that is used by our sample applications
    * - License
      - GNU LGPL
    * - Usage
-     - This code will only be linked if applications explicitly call ``pj_getopt()`` 
-       or pj_getopt_long(). Normally application doesn't need to use this, since this 
+     - This code will only be linked if applications explicitly call :cpp:any:`pj_getopt()`
+       or :cpp:any:`pj_getopt_long()`. Normally application doesn't need to use this, since this 
        functionality is useful for command line/console types of applications only.
 
 
@@ -197,17 +197,17 @@ Resample
    * - Author
      - https://ccrma.stanford.edu/~jos/resample/
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/resample/
+     - :sourcedir:`third_party/resample/`
    * - Description
      - PJMEDIA uses ``resample-1.7.tar.gz`` from 
        `Digital Audio Resampling Home Page <https://ccrma.stanford.edu/~jos/resample/>`__.
    * - License
-     - LGPL: https://github.com/pjsip/pjproject/blob/master/third_party/resample/COPYING
+     - LGPL: :source:`third_party/resample/COPYING`
    * - Usage
      - This resampling software is used by the conference bridge. This software is used 
-       when the ``PJMEDIA_RESAMPLE_IMP`` macro is set to ``PJMEDIA_RESAMPLE_LIBRESAMPLE``, 
+       when the :cpp:any:`PJMEDIA_RESAMPLE_IMP` macro is set to :cpp:any:`PJMEDIA_RESAMPLE_LIBRESAMPLE`, 
        which is the default. Other options for resampling backends include Speex and 
-       Secret Rabbit Code (which is dual licensed). Please see ``PJMEDIA_RESAMPLE_IMP`` 
+       Secret Rabbit Code (which is dual licensed). Please see :cpp:any:`PJMEDIA_RESAMPLE_IMP` 
        documentation for more info. 
 
 
@@ -222,17 +222,17 @@ GSM Codec 06.10
      - Copyright 1992, 1993, 1994 by Jutta Degener and Carsten Bormann, Technische 
        Universitaet Berlin
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/gsm/
+     - :sourcedir:`third_party/gsm`
    * - Description
      - PJMEDIA includes uses GSM 06.10 version 1.0 at patchlevel 12 
    * - License
-     - Free to use with no warranty: https://github.com/pjsip/pjproject/blob/master/third_party/gsm/COPYRIGHT
+     - Free to use with no warranty: :source:`third_party/gsm/COPYRIGHT`
    * - Usage
      - This software will only be linked if application explicitly initialize the
-       GSM library by calling ``pjmedia_codec_gsm_init()``. Note that if PJSUA-LIB 
+       GSM library by calling :cpp:any:`pjmedia_codec_gsm_init()`. Note that if PJSUA-LIB 
        is used, then this call is made by PJSUA-LIB, hence causing your application 
        to be linked with the software. The software can be explicitly disabled from 
-       the link process by defining ``PJMEDIA_HAS_GSM_CODEC`` to zero. 
+       the link process by defining :cpp:any:`PJMEDIA_HAS_GSM_CODEC` to zero. 
 
 
 Speex
@@ -245,27 +245,27 @@ Speex
    * - Author
      - https://speex.org/
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/speex/
+     - :sourcedir:`third_party/speex/`
    * - Description
      - PJMEDIA uses Speex codec version 1.1.12. Speex is a high quality, Open source, 
        patent free codec implementation developed by open source community.
    * - License
-     - https://github.com/pjsip/pjproject/blob/master/third_party/speex/COPYING
+     - :source:`third_party/speex/COPYING`
    * - Usage
-     - **Speex codec**: this software will only be linked if application explicitly 
-       initialize the Speex library by calling ``pjmedia_codec_speex_init()``.
-       Note that if PJSUA-LIB is used, then this call is made by PJSUA-LIB, 
-       hence causing your application to be linked with the software. The 
-       software can be explicitly disabled from the link process by defining 
-       ``PJMEDIA_HAS_SPEEX_CODEC`` to zero.
+     - - **Speex codec**:  this software will only be linked if application explicitly 
+         initialize the Speex library by calling :cpp:any:`pjmedia_codec_speex_init()`.
+         Note that if PJSUA-LIB is used, then this call is made by PJSUA-LIB, 
+         hence causing your application to be linked with the software. The 
+         software can be explicitly disabled from the link process by defining 
+         :cpp:any:`PJMEDIA_HAS_SPEEX_CODEC` to zero.
 
-       **Speex AEC**: Speex accoustic echo cancellation is enabled by default for 
-       the sound device. Application can disable this by setting 
-       ``PJMEDIA_HAS_SPEEX_AEC`` to zero.
+       - **Speex AEC**: Speex accoustic echo cancellation is enabled by default for 
+         the sound device. Application can disable this by setting 
+         :cpp:any:`PJMEDIA_HAS_SPEEX_AEC` to zero.
 
-       **Speex sample rate converter**: Speex sample rate converter is only used 
-       when ``PJMEDIA_HAS_SPEEX_RESAMPLE`` macro is set to non-zero. The 
-       default is disabled.
+       - **Speex sample rate converter**: Speex sample rate converter is only used 
+         when :cpp:any:`PJMEDIA_HAS_SPEEX_RESAMPLE` macro is set to non-zero. The 
+         default is disabled.
 
 
 iLBC Codec
@@ -278,7 +278,7 @@ iLBC Codec
    * - Author
      - `WebRTC Project <http://www.webrtc.org/ilbc-freeware>`_
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/ilbc/
+     - :sourcedir:`third_party/ilbc/`
    * - Description
      - PJMEDIA supports iLBC codec, and iLBC codec implementation is included in PJSIP 
        source distribution. 
@@ -318,11 +318,11 @@ iLBC Codec
 
    * - Usage
      - This software will only be linked if application explicitly initialize 
-       the iLBC library by calling ``pjmedia_codec_ilbc_init()``. Note that if 
+       the iLBC library by calling :cpp:any:`pjmedia_codec_ilbc_init()`. Note that if 
        PJSUA-LIB is used, then this call is made by PJSUA-LIB, hence causing 
        your application to be linked with the software. The software can be 
        explicitly disabled from the link process by defining 
-       ``PJMEDIA_HAS_ILBC_CODEC`` to zero. 
+       :cpp:any:`PJMEDIA_HAS_ILBC_CODEC` to zero. 
 
 
 G.722.1/C (aka Siren7 and Siren14) codecs
@@ -336,7 +336,7 @@ G.722.1/C (aka Siren7 and Siren14) codecs
    * - Author
      - `Polycom <http://www.polycom.com/>`_
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/g7221/
+     - :sourcedir:`third_party/g7221/`
    * - Description
      - PJMEDIA supports G.722.1/C codecs, and G.722.1/C codec implementation is 
        included in PJSIP source distribution.
@@ -350,7 +350,7 @@ G.722.1/C (aka Siren7 and Siren14) codecs
        became Poly the original link disappeared). 
    * - Usage
      - This software is by default disabled, due to the licensing restriction above. 
-       The software can be explicitly enabled by defining ``PJMEDIA_HAS_G7221_CODEC`` 
+       The software can be explicitly enabled by defining :cpp:any:`PJMEDIA_HAS_G7221_CODEC`
        to one.
 
 
@@ -366,7 +366,7 @@ Milenage and Rijndael
        `3GPP TS 35.206 V7.0.0 <http://www.3gpp.org/ftp/Specs/archive/35_series/35.206/>`__ 
        document
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/milenage/
+     - :sourcedir:`third_party/milenage/`
    * - Description
      - Milenage algorithm is used for AKAv1-MD5 and AKAv2 SIP digest authentication.
    * - License
@@ -382,7 +382,7 @@ Milenage and Rijndael
    * - Usage
      - The Milenage and Rijndael implementation will only be linked with application if 
        AKA authentication is used and application explicitly calls or makes reference to 
-       ``pjsip_auth_create_aka_response()`` function. 
+       :cpp:any:`pjsip_auth_create_aka_response()` function. 
 
 
 libSRTP
@@ -395,15 +395,15 @@ libSRTP
    * - Author
      - David A. McGrew, Cisco Systems, Inc. 
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/srtp/
+     - :sourcedir:`third_party/srtp/`
    * - Description
      - libSRTP implements Secure RTP/RTCP (SRTP and SRTCP).
    * - License
-     - BSD 3-clause: https://github.com/pjsip/pjproject/blob/master/third_party/srtp/README.md 
+     - BSD 3-clause: :source:`third_party/srtp/README.md`
    * - Usage
      - Copy of libSRTP is included in PJSIP distribution, and it is built by 
        default on all supported platforms. SRTP functionality is also enabled 
-       by default. If you wish to disable SRTP, declare ``PJMEDIA_HAS_SRTP`` 
+       by default. If you wish to disable SRTP, declare :cpp:any:`PJMEDIA_HAS_SRTP`
        macro to zero. 
 
 
@@ -417,7 +417,7 @@ DirectShow Base Classes Microsoft SDK Sample
    * - Author
      - Microsoft
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/BaseClasses/
+     - :sourcedir:`third_party/BaseClasses/`
    * - Description
      - The DirectShow base classes are a set of C++ classes and utility functions 
        designed for implementing DirectShow filters. Several of the helper classes 
@@ -430,7 +430,7 @@ DirectShow Base Classes Microsoft SDK Sample
 
    * - Usage
      - Used in DirectShow device driver for video capture support on Windows platform. 
-       If you wish to disable it define macro ``PJMEDIA_VIDEO_DEV_HAS_DSHOW`` to 0. 
+       If you wish to disable it define macro :cpp:any:`PJMEDIA_VIDEO_DEV_HAS_DSHOW` to 0. 
        This will disable video capture on Windows. 
 
 
@@ -444,16 +444,16 @@ libYUV
    * - Author
      - The LibYuv Project Authors
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/yuv/
+     - :sourcedir:`third_party/yuv/`
    * - Description
      - Video conversion utilities. 
    * - License
-     - - BSD 3-clause: https://github.com/pjsip/pjproject/blob/master/third_party/yuv/LICENSE
-       - Third-party: https://github.com/pjsip/pjproject/blob/master/third_party/yuv/LICENSE_THIRD_PARTY
+     - - BSD 3-clause: :source:`third_party/yuv/LICENSE`
+       - Third-party: :source:`third_party/yuv/LICENSE_THIRD_PARTY`
    * - Usage
      - Libyuv may be detected and enabled by the configure script, either automatically 
        or manually via ``--with-libyuv`` option. It may be forcefully disabled by 
-       defining ``PJMEDIA_HAS_LIBYUV`` to 0 in ``config_site.h``. 
+       defining :cpp:any:`PJMEDIA_HAS_LIBYUV` to 0 in :any:`config_site.h`. 
 
 
 WebRTC
@@ -464,19 +464,19 @@ WebRTC
    * - Software
      - https://chromium.googlesource.com/external/webrtc/+/master
    * - Location
-     - https://github.com/pjsip/pjproject/tree/master/third_party/webrtc/
+     - :sourcedir:`third_party/webrtc/`
    * - Description
      - WebRTC Acoustic Echo Cancellation
    * - License
      - Please consult:
 
-       - https://github.com/pjsip/pjproject/blob/master/third_party/webrtc/LICENSE
-       - https://github.com/pjsip/pjproject/blob/master/third_party/webrtc/LICENSE_THIRD_PARTY
+       - :source:`third_party/webrtc/LICENSE`
+       - :source:`third_party/webrtc/LICENSE_THIRD_PARTY`
 
    * - Usage
      - WebRTC AEC is by default enabled, but can be disabled by passing 
        ``--disable-webrtc`` to the configure script or defining 
-       ``PJMEDIA_HAS_WEBRTC_AEC`` to 0 in ``config_site.h``.
+       :cpp:any:`PJMEDIA_HAS_WEBRTC_AEC` to 0 in :any:`config_site.h`.
 
 
 WebRTC AEC3
@@ -493,18 +493,18 @@ WebRTC AEC3
    * - License
      - Please consult:
 
-       - https://github.com/pjsip/pjproject/tree/master/third_party/webrtc_aec3/PJSIP_NOTES
+       - :source:`third_party/webrtc_aec3/PJSIP_NOTES`
 
        Specifically, please consult WebRTC's license in:
 
-       - https://github.com/pjsip/pjproject/tree/master/third_party/webrtc_aec3/LICENSE
+       - :source:`third_party/webrtc_aec3/LICENSE`
         
        as well as the licenses of the third party components required in:
 
-       - https://github.com/pjsip/pjproject/tree/master/third_party/webrtc_aec3/src/absl/LICENSE (abseil),
-       - https://github.com/pjsip/pjproject/tree/master/third_party/webrtc_aec3/src/third_party/rnnoise/COPYING
+       - :source:`third_party/webrtc_aec3/src/absl/LICENSE` (abseil),
+       - :source:`third_party/webrtc_aec3/src/third_party/rnnoise/COPYING`
          (rnnoise),
-       - https://github.com/pjsip/pjproject/tree/master/third_party/webrtc_aec3/src/third_party/pffft/README.txt (pffft)
+       - :source:`third_party/webrtc_aec3/src/third_party/pffft/README.txt` (pffft)
 
    * - Usage
      - WebRTC AEC3 can be enabled by passing ``--enable-libwebrtc-aec3`` to the 
@@ -527,8 +527,8 @@ bcg729
    * - Software
      - http://www.linphone.org/technical-corner/bcg729
    * - Location
-     - - https://github.com/pjsip/pjproject/blob/master/pjmedia/include/pjmedia-codec/bcg729.h
-       - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-codec/bcg729.c
+     - - :source:`pjmedia/include/pjmedia-codec/bcg729.h`
+       - :source:`pjmedia/src/pjmedia-codec/bcg729.c`
    * - Description
      - G.729 codec using backend implementation from bcg729
    * - License
@@ -546,9 +546,9 @@ ffmpeg and libx264
      -  - https://www.ffmpeg.org
         - http://www.videolan.org/developers/x264.html
    * - Location
-     -  - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-codec/ffmpeg_vid_codecs.c
-        - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia/ffmpeg_util.c
-        - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia/converter_libswscale.c
+     -  - :source:`pjmedia/src/pjmedia-codec/ffmpeg_vid_codecs.c`
+        - :source:`pjmedia/src/pjmedia/ffmpeg_util.c`
+        - :source:`pjmedia/src/pjmedia/converter_libswscale.c`
    * - Description
      - Ffmpeg and libx264 are used as codec backends for H.263 and H.264 and as video 
        format converter.
@@ -568,7 +568,7 @@ Oboe
    * - Author
      - https://github.com/google/oboe/blob/main/AUTHORS
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-audiodev/oboe_dev.cpp
+     - :source:`pjmedia/src/pjmedia-audiodev/oboe_dev.cpp`
    * - Description
      - PJSIP may be configured to use Oboe capture and playback audio device on Android
    * - License
@@ -585,7 +585,7 @@ OpenCore AMR
    * - Software
      - https://sourceforge.net/projects/opencore-amr/
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-codec/opencore_amr.c
+     - :source:`pjmedia/src/pjmedia-codec/opencore_amr.c`
    * - Description
      - OpenCore AMR NB/WB codec can be used with the SOFTWARE
    * - License
@@ -603,7 +603,7 @@ OpenH264
    * - Software
      - http://www.openh264.org/
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-codec/openh264.cpp
+     - :source:`pjmedia/src/pjmedia-codec/openh264.cpp`
    * - Description
      - OpenH264 codec
    * - License
@@ -620,7 +620,7 @@ OpenSSL
    * - Software
      - http://www.openssl.org/
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjlib/src/pj/ssl_sock_ossl.c
+     - :source:`pjlib/src/pj/ssl_sock_ossl.c`
    * - Description
      - OpenSSL is used as the backend implementation of PJLIB's secure socket, which among 
        other thing is used by PJSIP's SIP TLS transport object. 
@@ -630,9 +630,7 @@ OpenSSL
        deemed to be `incompatible with GPL <http://ftp-master.debian.org/REJECT-FAQ.html>`_
        (hence we give explicit permission to link with it).
    * - Usage
-     - The library will use OpenSSL if ``PJ_HAS_SSL_SOCK`` is set to non-zero. It is 
-       detected automatically with the GNU build system, and must be set manually on 
-       other build systems (e.g. Windows and Symbian) 
+     - See :any:`/specific-guides/security/ssl`
 
 
 Opus
@@ -645,7 +643,7 @@ Opus
    * - Author
      - https://www.opus-codec.org/
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-codec/opus.c
+     - :source:`pjmedia/src/pjmedia-codec/opus.c`
    * - License
      - https://www.opus-codec.org/license/
    * - Usage
@@ -661,7 +659,7 @@ Silk
    * - Software
      - https://github.com/mycelialold/spore/tree/master/jni/silk/sources
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-codec/silk.c
+     - :source:`pjmedia/src/pjmedia-codec/silk.c`
    * - Description
      - Silk codec
    * - License
@@ -679,32 +677,10 @@ VPX
    * - Software
      - libvpx: https://www.webmproject.org/code/
    * - Location
-     - https://github.com/pjsip/pjproject/blob/master/pjmedia/src/pjmedia-codec/vpx.c
+     - :source:`pjmedia/src/pjmedia-codec/vpx.c`
    * - Description
      - VP8 and VP9 video codecs
    * - License
      - BSD 3-clause: https://github.com/webmproject/libvpx/blob/main/LICENSE
    * - Usage
      - See :ref:`libvpx`
-
-
-
-Template
-~~~~~~~~~~~~~~~~~~~~~~~~~
-.. list-table::
-   :header-rows: 0
-
-   * - Software
-     - 
-   * - Author
-     - 
-   * - Location
-     - 
-   * - Description
-     - 
-   * - License
-     - 
-   * - Usage
-     - 
-
-
