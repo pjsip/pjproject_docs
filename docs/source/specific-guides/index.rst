@@ -5,118 +5,115 @@ Specific Guides
    correct title (otherwise this page's title will be "Audio").
    The drawback is "Specific Guides" section will appear in menu.
 
+.. _spec_guide_audio_toc:
 
 Audio
 *****************************************
 
 .. toctree::
    :maxdepth: 1
-   :name: spec_guide_audio_toc
-   :caption: Audio Guide
    :glob:
    
    audio/*
+
+.. _build_int_guide_toc:
 
 Build & Integration
 *****************************************
 
 .. toctree::
    :maxdepth: 1
-   :name: build_int_guide_toc
-   :caption: Build & Integration Guide
    :glob:
 
    build_int/*
 
+
+.. _dev_prog_guide_toc:
 
 Development & Programming
 *****************************************
 
 .. toctree::
    :maxdepth: 1
-   :name: dev_prog_guide_toc
-   :caption: Development & Programming Guide
    :glob:
 
    develop/*
 
+
+.. _media_guide_toc:
 
 Media
 *****************************************
 
 .. toctree::
    :maxdepth: 1
-   :name: media_guide_toc
-   :caption: Media Guide
    :glob:
 
    media/*
 
 
+.. _network_nat_guide_toc:
+
 Network & NAT
 *****************************************
 .. toctree::
    :maxdepth: 1
-   :name: network_nat_guide_toc
-   :caption: Network & NAT Guide
    :glob:
 
    network_nat/*
 
 
+.. _perf_footprint_guide_toc:
+
 Performance & Footprint
 *****************************************
 .. toctree::
    :maxdepth: 1
-   :name: perf_footprint_guide_toc
-   :caption: Performance and Footprint Guide
    :glob:
 
    perf_footprint/*
 
+
+.. _security_guide_toc:
 
 Security
 *****************************************
 
 .. toctree::
    :maxdepth: 1
-   :name: security_guide_toc
-   :caption: Security Guide
    :glob:
 
    security/*
 
+.. _sip_guide_toc:
 
 SIP
 *****************************************
 
 .. toctree::
    :maxdepth: 1
-   :name: sip_guide_toc
-   :caption: SIP Guide
    :glob:
 
    sip/*
 
+.. _video_guide_toc:
 
 Video
 *****************************************
 
 .. toctree::
    :maxdepth: 1
-   :name: video_guide_toc
-   :caption: Video Guide
    :glob:
 
    video/*
+
+.. _other_guide_toc:
 
 Other
 *****************************************
 
 .. toctree::
    :maxdepth: 1
-   :name: other_guide_toc
-   :caption: Other Guide
    :glob:
 
    other/*
