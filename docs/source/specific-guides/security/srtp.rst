@@ -5,19 +5,25 @@ SRTP
     :depth: 2
 
 
-This article describes about SRTP support in PJSIP. SRTP support is
-included since version 0.9 (see ticket :issue:`61`).
+
+Introduction
+----------------
+Secure Real-time Transport Protocol (SRTP) is a profile of the 
+Real-time Transport Protocol (RTP) to provide confidentiality, message authentication, 
+and replay protection to the RTP/RTCP traffic. SRTP is an IETF Standard, 
+defined in :rfc:`3711`.
+
+In PJSIP, SRTP support is included in version 0.9 (see ticket :issue:`61`). SRTP is
+implemented by means of :any:`/specific-guides/media/transport_adapter`.
 
 
 Features
 --------
-
 The SRTP functionality in PJSIP has the following features: 
 
-- SRTP (`RFC 3711 <http://www.ietf.org/rfc/rfc3711.txt>`__), using the Open Source
-  `libsrtp <http://sourceforge.net/projects/srtp/>`__ library. 
-- Keys exchange using Security Descriptions for Media Streams (SDESC, `RFC
-  4568 <http://www.ietf.org/rfc/rfc4568.txt>`__) 
+- SRTP (:rfc:`3711`), using the Open Source
+  `libsrtp <https://github.com/cisco/libsrtp>`__ library. 
+- Keys exchange using Security Descriptions for Media Streams (SDESC, :rfc:`4568`) 
 - Supported cryptos:
 
   - AES_CM_128_HMAC_SHA1_80 
@@ -31,13 +37,13 @@ supported.
 Requirements
 ------------
 
-SRTP feature in PJSIP uses the Open Source `libsrtp <http://sourceforge.net/projects/srtp/>`__ 
-library created by David A. McGrew of Cisco Systems, Inc. Copy of
-`libsrtp <http://sourceforge.net/projects/srtp/>`__ is included in PJSIP
-source tree in ``third_party/srtp`` directory. There is no other
+SRTP feature in PJSIP uses the Open Source `libsrtp <https://github.com/cisco/libsrtp>`__ 
+library from Cisco Systems, Inc. Copy of
+`libsrtp <https://github.com/cisco/libsrtp>`__ is included in PJSIP
+source tree in :sourcedir:`third_party/srtp` directory. There is no other
 software to download.
 
-`libsrtp <http://sourceforge.net/projects/srtp/>`__ is distributed under
+`libsrtp <https://github.com/cisco/libsrtp>`__ is distributed under
 BSD-like license, you must satisfy the license requirements if you
 incorporate SRTP in your application. Please see :ref:`3rd Party Licensing <licensing_3rd_party>` 
 page for more information.
@@ -62,10 +68,10 @@ For GNU build systems
    from ``third_party/lib`` directory to your input libraries.
 
 
-For Visual Studio 6 and 2005
+For Visual Studio
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #. New ``libsrtp`` project has been
-   added into **pjproject.dsw** and **pjproject-vs8.sln** workspace. 
+   added into pjproject Visual Studio workspaces.
 #. If you maintain your own application workspace, you need to add ``libsrtp``
    project into your application. The ``libsrtp`` project files are in
    ``third_party/build/srtp`` directory.
@@ -80,9 +86,9 @@ Availability
 
 SRTP feature is currently available in: 
 
-- Visual C++ 6 and 2005 (for Windows targets) 
-- GNU based build system (for Linux, including uC-Linux for embedded systems, Mingw, 
-  MacOS X, and \*nix based platforms) 
+- Visual Studio for Windows targets
+- GNU based build system (for Linux, including uC-Linux for embedded systems, Mingw,
+  MacOS X, and \*nix based platforms)
 - Windows Mobile targets (deprecated)
 - Symbian targets (deprecated)
 
@@ -94,9 +100,9 @@ libsrtp is always built by default, from ``third_party/build/srtp``
 directory.
 
 Support for SRTP is enabled by default in PJMEDIA and PJSUA-LIB. To
-**disable** this feature, declare :cpp:any:`PJMEDIA_HAS_SRTP` as zero in your ``config_site.h``:
+**disable** this feature, declare :cpp:any:`PJMEDIA_HAS_SRTP` as zero in your :any:`config_site.h`:
 
-::
+.. code-block:: c
 
    #define PJMEDIA_HAS_SRTP  0
 
@@ -120,7 +126,8 @@ both :cpp:any:`pjsua_config` and :cpp:any:`pjsua_acc_config`. The settings in
 In both :cpp:any:`pjsua_config` and :cpp:any:`pjsua_acc_config`, there are two
 configuration items related to SRTP:
 
-``use_srtp``
+use_srtp
+```````````````
 
 The :cpp:any:`pjsua_config::use_srtp` and :cpp:any:`pjsua_acc_config::use_srtp` options control whether secure media transport (SRTP) should be used for this account. Valid values are: 
 
@@ -137,7 +144,8 @@ The :cpp:any:`pjsua_config::use_srtp` and :cpp:any:`pjsua_acc_config::use_srtp` 
      
 The default value for this option is :cpp:any:`PJSUA_DEFAULT_USE_SRTP`, which is zero (disabled).
 
-``srtp_secure_signaling``
+srtp_secure_signaling
+```````````````````````````
 
 The :cpp:any:`pjsua_config::srtp_secure_signaling` and :cpp:any:`pjsua_acc_config::srtp_secure_signaling` options controls whether SRTP requires secure signaling to be used. This option is only used when ``use_srtp`` option above is non-zero. Valid values are: 
 
@@ -160,7 +168,7 @@ Two new options were added to *pjsua*:
 
 Sample usage:
 
-::
+.. code-block:: shell
 
     $ ./pjsua --use-tls --use-srtp=1 sip:alice@example.com;transport=tls
 
@@ -190,99 +198,15 @@ To use SRTP transport directly:
 
 
 
-Implementation Notes
---------------------
-
-Changes in Media Transport Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Since the availability of SRTP changes SDP (Session Description
-Protocol) contents and the SDP negotiation, we needed to modify/add new
-interfaces in PJMEDIA transport API to allow media transport to modify
-and negotiate SDP. Incidently this would work well with ICE too
-(previously we treat ICE as a special kind of media transport so it is
-treated differently, but with this new interfaces, all media transports
-will behave uniformly (anyway that’s what API abstraction is for!)).
-
-New interfaces in media transport are as follows:
-
-- :cpp:any:`pjmedia_transport_op::media_create()`
-
-  This callback is called by application (or PJSUA-LIB) to allow the media
-  transport to add more information in the SDP offer, before the offer is
-  sent to remote. Additionally, for answerer side, this callback allows
-  the media transport to reject the offer before this offer is processed
-  by the SDP negotiator.
-
-- :cpp:any:`pjmedia_transport_op::media_start()`
-
-  This callback is called after offer and answer are negotiated, and both
-  SDPs are available, and before the media is started. For answerer side,
-  this callback will be called before the answer is sent to remote, to
-  allow media transport to put additional info in the SDP. For offerer
-  side, this callback will be called after SDP answer is received. In this
-  callback, the media transport has the final chance to negotiate/validate
-  the offer and answer before media is really started (and answer is sent,
-  for answerer side).
-
-- :cpp:any:`pjmedia_transport_op::media_stop()`
-
-  This callback is called when the media is stopped, to allow the media
-  transport to release its resources.
-
-- :cpp:any:`pjmedia_transport_op::simulate_lost()`
-
-  This has nothing to do with SRTP, but since all media transports support
-  this feature (packet loss simulation), we added this as a new interface.
-
-
-pjmedia_transport_srtp Implementation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-As we know, media transport is separated from the stream object (which
-does the encoding/decoding of PCM frames, (de)packetization of RTP/RTCP
-packets, and de-jitter buffering). The connection between stream and
-media transport is established when the stream is created (we need to
-specify media transport during stream creation), and the interconnection
-can be depicted from the diagram below:
-
-.. figure:: media-transport.png
-   :alt: media-transport.png
-
-   media-transport.png
-
-I think the diagram above is self-explanatory.
-
-SRTP functionality is implemented as some kind of “adapter”, which is
-plugged between the stream and the actual media transport that does
-sending/receiving RTP/RTCP packets. When SRTP is used, the
-interconnection between stream and transport is like the diagram below:
-
-.. figure:: media-srtp-transport.png
-   :alt: media-srtp-transport.png
-
-   media-srtp-transport.png
-
-So to stream, the SRTP transport behaves as if it is a media transport
-(because it **is** a media transport), and to the media transport it
-behaves as if it is a stream. The SRTP object then forwards RTP packets
-back and forth between stream and the actual transport,
-encrypting/decrypting the RTP/RTCP packets as necessary.
-
-The neat thing about this design is the SRTP “adapter” then can be used
-to encrypt any kind of media transports. We currently have UDP and ICE
-media transports that can benefit SRTP, and we could add SRTP to any
-media transports that will be added in the future.
-
 AES-GCM support
 -----------------
 
-Pjsip 2.6 enabled the support for AES-GCM (#1943), however the bundled
+PJSIP 2.6 enabled the support for AES-GCM (:issue:`1943`), however the bundled
 libSRTP (1.5.4) at that time has compatibility issue with OpenSSL 1.1.0.
-Updating the libSRTP was done in #1993, included in 2.7.
+Updating the libSRTP was done in :issue:`1993`, included in 2.7.
 
 As an alternative to the bundled libSRTP, users are also allowed to use
-external libSRTP by specifying ``--with-external-srtp``. Using #2050,
+external libSRTP by specifying ``--with-external-srtp``. Using :issue:`2050`,
 it's been tested to work with external libSRTP 1.5.4 and 2.1.0. Note
 about this option, using libSRTP with AES-GCM would also require the
 user to enable building pjsip with ssl.

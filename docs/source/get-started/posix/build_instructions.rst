@@ -135,8 +135,12 @@ system.
 Mingw-w64 is supported since 2.11, including video with DirectShow camera, 
 please check :pr:`2598` for more info.
 
-Running configure
+.. _configure:
+
+``./configure``
 ------------------
+
+Running ``./configure``.
 
 Using Default Settings
 ^^^^^^^^^^^^^^^^^^^^^^

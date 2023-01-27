@@ -41,7 +41,7 @@ PJSUA2 C++ API
 --------------
 :doc:`PJSUA2 API </api/pjsua2/index>` is an objected oriented, C++ API created on top of PJSUA-LIB. 
 The API is different than PJSUA-LIB, but it should be even easier to use and it should have better 
-documentation too (see :ref:`PJSUA2 Guide <pjsua2_guide>`). The PJSUA2 API removes most cruxes 
+documentation too (see :any:`PJSUA2 Guide <pjsua2_toc>`). The PJSUA2 API removes most cruxes 
 typically associated with PJSIP, such as :ref:`the pool <pjlib_pool>` and :ref:`pj_str_t <pjlib_string>`, 
 and adds new features such as object persistence so you can save your configs to JSON file, for example. 
 All data structures are rewritten for more clarity. 

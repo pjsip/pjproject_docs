@@ -13,7 +13,7 @@ Basic Types and Functions
 
 ICE and Trickle ICE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Interactive Connectivity Establishment (`RFC 5245 <http://tools.ietf.org/html/rfc5245>`__)
+Interactive Connectivity Establishment (:rfc:`5245`)
 
 - :doc:`Introduction </api/generated/pjnath/group/group__PJNATH__ICE>`
 - :doc:`High-level ICE Transport </api/generated/pjnath/group/group__PJNATH__ICE__STREAM__TRANSPORT>`
@@ -26,7 +26,7 @@ STUN
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. _stun:
 
-Session Traversal Utilities for NAT (`RFC 5389 <http://tools.ietf.org/html/rfc5389>`__)
+Session Traversal Utilities for NAT (:rfc:`5389`)
 
 - :doc:`Introduction </api/generated/pjnath/group/group__PJNATH__STUN>`
 - :doc:`High-level STUN Transport </api/generated/pjnath/group/group__PJNATH__STUN__SOCK>`

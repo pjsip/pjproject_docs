@@ -19,7 +19,7 @@ With/without ANSI LIBC. Currently known to run on these platforms:
 
 Small Footprint
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-PJLIB size is around 150 KB. See :ref:`guide_footprint` for more information.
+PJLIB size is around 150 KB. See :any:`/specific-guides/perf_footprint/footprint` for more information.
 
 
 Big in Performance
@@ -28,7 +28,7 @@ PJLIB has been designed to achieve highest performance, with design decisions su
 own :ref:`memory management <pjlib_pool>`, :ref:`string <pjlib_string>`, and 
 :doc:`network event proactor </api/generated/pjlib/group/group__PJ__IOQUEUE>`. 
 
-See :ref:`guide_performance` for more information.
+See :any:`/specific-guides/perf_footprint/performance` for more information.
 
 
 No Dynamic Memory Allocations

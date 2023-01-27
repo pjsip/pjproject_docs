@@ -42,7 +42,7 @@ There are also low level libraries that abstracts operating system differences
 
 .. note::
 
-    Later in :ref:`get_started` we will discuss considerations for selecting
+    Later in :any:`get_started_toc` we will discuss considerations for selecting
     :ref:`which_api_to_use`
 
 To avoid naming confusion between PJSIP as organization name (as in 

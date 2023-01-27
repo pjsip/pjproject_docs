@@ -75,7 +75,7 @@ Use Non-standard Ports for VoIP Services
 
         Note that for SIP, there is a problem with using non-standard port, as described below: 
         
-        #. According to SIP spec (`RFC 3261 <http://tools.ietf.org/html/rfc3261>`__), port number is not allowed to appear in From and To headers. See Table 1 in Section 19.1.1 (`page 152 <http://tools.ietf.org/html/rfc3261#page-152>`__). 
+        #. According to SIP spec (:rfc:`3261`), port number is not allowed to appear in From and To headers. See Table 1 in Section 19.1.1 (`page 152 <http://tools.ietf.org/html/rfc3261#page-152>`__). 
         #. For example, your domain is **example.org** and you set your server to listen at port **5070**, all SIP requests will have the **From** header without the port number in its URI part, e.g. **From: sip:alice@example.org**. 
         #. The receiver of such message may want to save the sender address of a request, for example, to add a new buddy from an incoming MESSAGE request. 
         #. Problem arises when that client wants to send a request to the new buddy; in that case, the request will be sent to default port instead of to the non-standard port (because the original From header was missing port number).

@@ -3,34 +3,34 @@ NAT Traversal
 
 -  :ref:`ice`:
 
-   -  `RFC 5245 <https://datatracker.ietf.org/doc/html/rfc5245>`__
+   -  :rfc:`5245`
    -  host, srflx, and relayed candidates
    -  aggressive and regular nomination
-   -  ICE option tag (`RFC 5768 <https://datatracker.ietf.org/doc/html/rfc5768>`__)
+   -  ICE option tag (:rfc:`5768`)
    -  IPv4, IPv6, NAT64 support
    -  `Trickle ICE <https://github.com/pjsip/pjproject/pull/2588>`__, with support for the following standards:
 
-      * Trickle ICE (`RFC 8838 <https://datatracker.ietf.org/doc/html/rfc8838>`__)
-      * Trickle ICE on SIP: (`RFC 8840 <https://datatracker.ietf.org/doc/html/rfc8840>`__)
-      * SIP INFO Package (`RFC 6086 <https://datatracker.ietf.org/doc/html/rfc6086>`__)
-      * SDP for ICE (`RFC 8839 <https://datatracker.ietf.org/doc/html/rfc8839>`__)
-      * SDP media ID (`RFC 5888 <https://datatracker.ietf.org/doc/html/rfc5888>`__)
+      * Trickle ICE (:rfc:`8838`)
+      * Trickle ICE on SIP: (:rfc:`8840`)
+      * SIP INFO Package (:rfc:`6086`)
+      * SDP for ICE (:rfc:`8839`)
+      * SDP media ID (:rfc:`5888`)
 
 -  :ref:`TURN <turn>`:
 
-   -  `RFC 5766 <https://datatracker.ietf.org/doc/html/rfc5766>`__
+   -  :rfc:`5766`
    -  DNS SRV resolution
    -  UDP, TCP, :doc:`TLS </specific-guides/security/ssl>` client connection
    -  TCP allocations, `accept <https://github.com/pjsip/pjproject/issues/2197>`__ and 
       `connect <https://github.com/pjsip/pjproject/pull/2754>`__ mode 
-      (`RFC 6062 <https://datatracker.ietf.org/doc/html/rfc6062>`__)
+      (:rfc:`6062`)
    - IPv4/IPv6 allocations
 
 -  :ref:`uPnP <upnp>`
 -  :ref:`STUN <stun>`:
 
-   -  `RFC 5389 <https://datatracker.ietf.org/doc/html/rfc5389>`__
-   -  Some `RFC 3489 <https://datatracker.ietf.org/doc/html/rfc3489>`__
+   -  :rfc:`5389`
+   -  Some :rfc:`3489`
       compatibility
    -  DNS SRV resolution
    -  short/long term authentication
@@ -38,7 +38,7 @@ NAT Traversal
 
 -  :ref:`NAT type detection <nat_detect>`:
 
-   -  legacy `RFC 3489 <https://datatracker.ietf.org/doc/html/rfc3489>`__
+   -  legacy :rfc:`3489`
 
 -  Other:
 

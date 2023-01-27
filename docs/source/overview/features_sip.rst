@@ -10,11 +10,11 @@ List of supported SIP features and link to the relevant PJSIP documentation and/
 Base specs
 ~~~~~~~~~~~~~~~~~
 
-- Core methods: `RFC 3261 <https://datatracker.ietf.org/doc/html/rfc3261>`__:
+- Core methods: :rfc:`3261`:
   INVITE, CANCEL, BYE, REGISTER, OPTIONS, INFO
-- Digest authentication (`RFC 2617 <https://datatracker.ietf.org/doc/html/rfc2617>`__)
+- Digest authentication (:rfc:`2617`)
 - Encoding and parsing of Bearer authenticaion (OAuth 2.0)
-  (`RFC 8898 <https://datatracker.ietf.org/doc/html/rfc8898>`__)
+  (:rfc:`8898`)
 
 Transports
 ~~~~~~~~~~~~~~
@@ -25,81 +25,81 @@ Transports
 
 Routing/NAT
 ~~~~~~~~~~~~~~~
-- rport (`RFC 3581 <https://datatracker.ietf.org/doc/html/rfc3581>`__)
-- Service-Route header (`RFC 3608 <https://datatracker.ietf.org/doc/html/rfc3608>`__)
-- SIP outbound for TCP/TLS (`RFC 5626 <https://datatracker.ietf.org/doc/html/rfc5626>`__)
-- Path header (with SIP outbound) (`RFC 3327 <https://datatracker.ietf.org/doc/html/rfc3327>`__)
-- ICE option tag (`RFC 5768 <https://datatracker.ietf.org/doc/html/rfc5768>`__)
-- Trickle ICE on SIP: (`RFC 8840 <https://datatracker.ietf.org/doc/html/rfc8840>`__)
+- rport (:rfc:`3581`)
+- Service-Route header (:rfc:`3608`)
+- SIP outbound for TCP/TLS (:rfc:`5626`)
+- Path header (with SIP outbound) (:rfc:`3327`)
+- ICE option tag (:rfc:`5768`)
+- Trickle ICE on SIP: (:rfc:`8840`)
 
 
 Call
 ~~~~~~~~~~~~~~~~
--  Offer/answer (`RFC 3264 <https://datatracker.ietf.org/doc/html/rfc3264>`__)
+-  Offer/answer (:rfc:`3264`)
 -  hold, unhold
 -  `redirection <SIP_Redirection>`__
 -  transfer/REFER (attended and unattended):
 
-   -  Base (`RFC 3515 <https://datatracker.ietf.org/doc/html/rfc3515>`__)
-   -  replaces (`RFC 3891 <https://datatracker.ietf.org/doc/html/rfc3891>`__)
-   -  Referred-by (`RFC 3892 <https://datatracker.ietf.org/doc/html/rfc3892>`__)
+   -  Base (:rfc:`3515`)
+   -  replaces (:rfc:`3891`)
+   -  Referred-by (:rfc:`3892`)
 
--  sipfrag support (`RFC 3420 <https://datatracker.ietf.org/doc/html/rfc3420>`__)
--  norefersub (`RFC 4488 <https://datatracker.ietf.org/doc/html/rfc4488>`__)
--  UPDATE (`RFC 3311 <https://datatracker.ietf.org/doc/html/rfc3311>`__)
--  100rel/PRACK (`RFC 3262 <https://datatracker.ietf.org/doc/html/rfc3262>`__)
--  tel: URI (`RFC 3966 <https://datatracker.ietf.org/doc/html/rfc3966>`__)
--  Session Timers (`RFC 4028 <https://datatracker.ietf.org/doc/html/rfc4028>`__)
--  Reason header (`RFC 3326 <https://datatracker.ietf.org/doc/html/rfc3326>`__,
+-  sipfrag support (:rfc:`3420`)
+-  norefersub (:rfc:`4488`)
+-  UPDATE (:rfc:`3311`)
+-  100rel/PRACK (:rfc:`3262`)
+-  tel: URI (:rfc:`3966`)
+-  Session Timers (:rfc:`4028`)
+-  Reason header (:rfc:`3326`,
    :ref:`partially supported <guide_adding_custom_header>`)
--  P-Header (`RFC 3325 <https://datatracker.ietf.org/doc/html/rfc3325>`__,
+-  P-Header (:rfc:`3325`,
    :ref:`partially supported <guide_adding_custom_header>`)
 
 SDP
 ~~~~~~~~~~~~~
-- `RFC 2327 <https://datatracker.ietf.org/doc/html/rfc2327>`__ (obsoleted by
-  `RFC 4566 <https://datatracker.ietf.org/doc/html/rfc4566>`__)
-- RTCP attribute (`RFC 3605 <https://datatracker.ietf.org/doc/html/rfc3605>`__)
-- IPv6 support (`RFC 3266 <https://datatracker.ietf.org/doc/html/rfc3266>`__)
-- SDP media ID (`RFC 5888 <https://datatracker.ietf.org/doc/html/rfc5888>`__)
-- SDP for ICE (`RFC 8839 <https://datatracker.ietf.org/doc/html/rfc8839>`__)
+- :rfc:`2327` (obsoleted by
+  :rfc:`4566`)
+- RTCP attribute (:rfc:`3605`)
+- IPv6 support (:rfc:`3266`)
+- SDP media ID (:rfc:`5888`)
+- SDP for ICE (:rfc:`8839`)
 
    
 Presence and IM
 ~~~~~~~~~~~~~~~~~~~~~
--  Event framework (SUBSCRIBE, NOTIFY) (`RFC 3265 <https://datatracker.ietf.org/doc/html/rfc3265>`__)
--  Event publication (PUBLISH) (`RFC 3903 <https://datatracker.ietf.org/doc/html/rfc3903>`__)
--  MESSAGE (`RFC 3428 <https://datatracker.ietf.org/doc/html/rfc3428>`__)
--  typing indication (`RFC 3994 <https://datatracker.ietf.org/doc/html/rfc3994>`__)
--  pidf+xml (`RFC 3856 <https://datatracker.ietf.org/doc/html/rfc3856>`__, 
-   `RFC 3863 <https://datatracker.ietf.org/doc/html/rfc3863>`__)
+-  Event framework (SUBSCRIBE, NOTIFY) (:rfc:`3265`)
+-  Event publication (PUBLISH) (:rfc:`3903`)
+-  MESSAGE (:rfc:`3428`)
+-  typing indication (:rfc:`3994`)
+-  pidf+xml (:rfc:`3856`, 
+   :rfc:`3863`)
 -  xpidf+xml 
--  RPID (subset) (`RFC 4480 <https://datatracker.ietf.org/doc/html/rfc4480>`__)
+-  RPID (subset) (:rfc:`4480`)
 
 
 Other extensions
 ~~~~~~~~~~~~~~~~~~~~~~~~
--  INFO (`RFC 2976 <https://datatracker.ietf.org/doc/html/rfc2976>`__)
--  AKA, AKA-v2 authentication (`RFC 3310 <https://datatracker.ietf.org/doc/html/rfc3310>`__, 
-   `RFC 4169 <https://datatracker.ietf.org/doc/html/rfc4169>`__)
--  ICE option tag (`RFC 5768 <https://datatracker.ietf.org/doc/html/rfc5768>`__)
+-  INFO (:rfc:`2976`)
+-  AKA, AKA-v2 authentication (:rfc:`3310`, 
+   :rfc:`4169`)
+-  ICE option tag (:rfc:`5768`)
 -  `Message summary/message waiting indication <https://github.com/pjsip/pjproject/issues/982>`__ 
-   (MWI, `RFC 3842 <https://datatracker.ietf.org/doc/html/rfc3842>`__)
--  Multipart (`RFC 2046 <https://datatracker.ietf.org/doc/html/rfc2046>`__, 
-   `RFC 5621 <https://datatracker.ietf.org/doc/html/rfc5621>`__)
+   (MWI, :rfc:`3842`)
+-  Multipart (:rfc:`2046`, 
+   :rfc:`5621`)
 
 
 Compliance, best current practices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--  Issues with Non-INVITE transaction (`RFC 4320 <https://datatracker.ietf.org/doc/html/rfc4320>`__)
--  Issues with INVITE transaction (`RFC 4321 <https://datatracker.ietf.org/doc/html/rfc4321>`__)
--  Multiple dialog usages (`RFC 5057 <https://datatracker.ietf.org/doc/html/rfc5057>`__)
--  SIP torture messages (`RFC 4475 <https://datatracker.ietf.org/doc/html/rfc4475>`__, tested when
+-  Issues with Non-INVITE transaction (:rfc:`4320`)
+-  Issues with INVITE transaction (:rfc:`4321`)
+-  Multiple dialog usages (:rfc:`5057`)
+-  SIP torture messages (:rfc:`4475`, tested when
    applicable)
--  SIP torture for IPv6 (`RFC 5118 <https://datatracker.ietf.org/doc/html/rfc5118>`__)
--  Message Body Handling (`RFC 5621 <https://datatracker.ietf.org/doc/html/rfc5621>`__. 
+-  SIP torture for IPv6 (:rfc:`5118`)
+-  Message Body Handling (:rfc:`5621`. 
    Partial compliance: multipart is supported, but *Content-Disposition* header is not
    handled)
--  The use of SIPS (`RFC 5630 <https://datatracker.ietf.org/doc/html/rfc5630>`__. 
+-  The use of SIPS (:rfc:`5630`. 
    Partial compliance: SIPS is supported, but still make use of *transport=tls*
    parameter)

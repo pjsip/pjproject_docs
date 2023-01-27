@@ -28,6 +28,10 @@ patches to PJSIP:
 * Use `K & R style <http://en.wikipedia.org/wiki/1_true_brace_style#K.26R_style>`__, 
   which is the only correct style anyway.
 
+The PJSIP distribution includes an ``.editorconfig`` file to set indentation to 
+4 spaces. Check https://editorconfig.org/ to see if your editor supports it or
+if a plugin needs to be downloaded.
+
 .. note::
 
    PJSIP indentation scheme was changed to use spaces only since version 2.13.

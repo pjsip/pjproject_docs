@@ -30,7 +30,7 @@ Audio Features
 
 - Port concept (framework for media processing component)
 - Audio conferencing (in client)
-- DTMF (`RFC 4733 <http://tools.ietf.org/html/rfc4733>`__/`RFC
+- DTMF (:rfc:`4733`/`RFC
   2833 <http://tools.ietf.org/html/rfc2833>`__)
 - echo cancellation (WebRTC, Speex, suppressor, or native)
 
@@ -105,9 +105,9 @@ Transports
       3611 <http://tools.ietf.org/html/rfc3611>`__)
    -  UDP, STUN, ICE
    -  IPv6 (UDP only)
-   -  SRTP (`RFC 3711 <http://tools.ietf.org/html/rfc3711>`__), SRTP
-      SDES (`RFC 4568 <http://tools.ietf.org/html/rfc4568>`__), and
-      DTLS-SRTP (`RFC 5763 <http://tools.ietf.org/html/rfc5763>`__)
+   -  SRTP (:rfc:`3711`), SRTP
+      SDES (:rfc:`4568`), and
+      DTLS-SRTP (:rfc:`5763`)
    -  `QoS <QoS>`__ (DSCP, WMM)
    -  Symmetric RTP/RTCP (`RFC
       4961 <http://tools.ietf.org/html/rfc4961>`__)

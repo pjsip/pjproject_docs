@@ -172,6 +172,7 @@ extlinks = {
     'issue': ('https://github.com/pjsip/pjproject/issues/%s', '#%s'),
     'sourcedir' : ('https://github.com/pjsip/pjproject/tree/master/%s', '%s'),
     'source': ('https://github.com/pjsip/pjproject/blob/master/%s', '%s'),
+    'rfc': ('https://datatracker.ietf.org/doc/html/rfc%s', 'RFC %s'),
 }
 
 # -- Options for HTML output -------------------------------------------------

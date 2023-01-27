@@ -118,7 +118,7 @@ PJSUA2 includes :cpp:class:`pj::PersistentObject` class to provide functionality
 to read/write data from/to a document (string or file). The data can be simple 
 data types such as boolean, number, string, and string arrays, or a user defined 
 object. Currently the implementation supports reading and writing from/to JSON 
-document (`RFC 4627 <https://datatracker.ietf.org/doc/html/rfc4627>`__), 
+document (:rfc:`4627`), 
 but the framework allows application to extend the API to support other document formats.
 
 As such, classes which inherit from PersistentObject, such as 

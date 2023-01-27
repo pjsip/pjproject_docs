@@ -40,7 +40,9 @@ Heading convention
 
         (I prefer ~~~ for H3 since it's less conspicuous)
 
-        It's not recommended to have H4 and beyond; just use bold font.
+        H4
+        ``````````````
+        
 
 
 Typography conventions
@@ -236,6 +238,7 @@ First create the link target (analogous to ``<A name>``). Don't forget the under
 
 Then to reference the target, use `my_secret_target`_ or :ref:`With a text <my_secret_target>` (note: there's no underscore).
 
+See https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#ref-role for more info.
 
 
 Linking to GitHub
@@ -249,6 +252,12 @@ Linking to GitHub
 .. note::
 
    In practice ``:issue:`` or ``:pr:`` can be used interchangeably since GitHub will redirect to correct URL, but it's best to use the correct construct to avoid unnecessary redirect.
+
+
+RFC link
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use ``:rfc:\`3711\``` which will be rendered as :rfc:`3711`.
 
 
 External links
