@@ -8,5 +8,6 @@ have high performance, and very flexible.
    :caption: Table of Contents
    :maxdepth: 1
    
+   guide
    ref
    samples
