@@ -98,13 +98,17 @@ Creating account
 ----------------
 Configure :cpp:class:`pj::AccountConfig` and call :cpp:func:`pj::Account::create()` 
 to create the account. At the very minimum, only account ID is required, which is 
-an URI to identify the account. Below is an example:
+an URI to identify the account. Note that the URI can also be enclosed in ``name-addr``
+form (``[ display-name ] <SIP/SIPS URI>``) (this is also applicable for all URI parameters
+used in PJSIP library, such as when making a call, adding a buddy, etc). Below is an example:
 
 
 .. code-block:: c++
 
     AccountConfig acc_cfg;
     acc_cfg.idUri = "sip:test1@pjsip.org";
+    // This is also valid
+    // acc_cfg.idUri = "Test <sip:test1@pjsip.org>";
 
     MyAccount *acc = new MyAccount;
     try {
