@@ -39,8 +39,9 @@ for more info.
 Making outgoing calls
 --------------------------------------
 Make outgoing call is by invoking :cpp:func:`pj::Call::makeCall()` with the destination URI
-string (something like "sip:alice@example.com"). Note that an account instance is required
-to create a call instance:
+string (something like "sip:alice@example.com"). The URI can also be enclosed in ``name-addr``
+form (``[ display-name ] <SIP/SIPS URI>``) (such as "Alice <sip:alice@example.com;transport=tcp>").
+Note that an account instance is required to create a call instance:
 
 .. code-block:: c++
 
