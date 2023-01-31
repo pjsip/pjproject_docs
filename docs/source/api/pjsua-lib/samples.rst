@@ -21,6 +21,8 @@ PJSUA-LIB Samples
        especially the audio subsystem, such as playback test, recording test, measuring audio 
        device performance such as bursts, latency, and drifts, AEC performance, as well as
        displaying basic audio system information.
+
+       See :any:`/specific-guides/audio/checks/pjsystest`
    * - `vidgui <https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/vidgui/>`_
      - PJSUA-LIB
      - GUI user agent supporting video. Requires Qt toolkit.

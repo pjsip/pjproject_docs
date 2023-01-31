@@ -1,4 +1,4 @@
-Getting Around Blocked, Filtered, or Mangled VoIP Network
+Getting around blocked, filtered, or mangled VoIP network
 =========================================================
 
 .. contents:: Table of Contents

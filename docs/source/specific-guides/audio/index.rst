@@ -10,20 +10,6 @@ Audio device tuning
 Audio latency benchmark
 =========================================
 
-Audio quality troubleshooting
-=========================================
-
-If you experience any problem with the audio quality, you may want to try the steps below:
-
-1. Follow the guide: `Test the sound device using pjsystest`_.
-2. Identify the sound problem and troubleshoot it using the steps described in: `Checking for sound problems`_.
-
-.. _`Checking for sound problems`: http://trac.pjsip.org/repos/wiki/sound-problems
-.. _`Test the sound device using pjsystest`: http://trac.pjsip.org/repos/wiki/Testing_Audio_Device_with_pjsystest
-
-It is probably easier to do the testing using lower level API such as PJSUA since we already have a built-in pjsua sample app located in pjsip-apps/bin to do the testing. However, you can also do the testing in your application using PJSUA2 API such as local audio loopback, recording to WAV file as explained in the Media chapter previously.
-
-
 Integrating 3rd party media
 =========================================
 

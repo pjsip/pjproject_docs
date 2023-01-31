@@ -131,6 +131,8 @@ microphone?
    the bridge above) when the bridge collects frames from all ports and
    mix the signal.
 
+.. _snd_dev_burst:
+
 Sound device timing problem
 -------------------------------------------
 Ideally, :cpp:any:`rec_cb <pjmedia_aud_rec_cb>` and :cpp:any:`play_cb <pjmedia_aud_play_cb>` should be
