@@ -277,6 +277,9 @@ Conference and Media commands [**audio**]
    * - **adjust_vol**
      - **V**
      - Adjust volume
+   * - **speakertog** 
+     - 
+     - Toggle audio output route  
    * - **codec_prio**
      - **Cp**
      - Arrange codec priorities
