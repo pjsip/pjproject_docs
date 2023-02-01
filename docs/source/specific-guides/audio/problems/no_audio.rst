@@ -1,4 +1,4 @@
-Unable to hear voice in local speaker
+No audio is heard in local speaker
 ========================================
 
 Checklists:

@@ -15,7 +15,7 @@ Checklists:
 #. :any:`/specific-guides/audio/checks/dangling_pbx_call`. A dangling call is call that 
    is left active in the PBX because previous (*pjsua*) application has terminated
    abruptly.
-#. :any:`/specific-guides/audio/checks/rx_quality`. Check for high network jitter, packet loss, etc.
+#. :any:`Check for high network jitter, packet loss, etc. </specific-guides/audio/checks/rx_quality>`. 
 #. Check if audio is breaking up when playing file locally:
    :any:`/specific-guides/audio/checks/play_wav`
 #. Check if the breakup is coming from the sound device:
