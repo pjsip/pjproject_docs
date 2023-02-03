@@ -25,7 +25,7 @@ Objectives
 
 The objectives are: 
 
-- to eliminate audio device impairments as explained in :any:`/specific-guides/audio/checks/dev_quality`
+- to eliminate audio device impairments as explained in :any:`/specific-guides/audio-troubleshooting/checks/dev_quality`
 - to minimize audio latency
 
 Using pjsystest

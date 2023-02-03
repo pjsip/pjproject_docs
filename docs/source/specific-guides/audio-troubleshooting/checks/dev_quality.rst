@@ -8,8 +8,8 @@ Checking the quality of the sound device
 In some cases, some of the audio problems may come from the sound
 device itself, causing problems such as:
 
-- :any:`/specific-guides/audio/problems/stutter`, 
-- :any:`/specific-guides/audio/problems/breaking_up`
+- :any:`/specific-guides/audio-troubleshooting/problems/stutter`, 
+- :any:`/specific-guides/audio-troubleshooting/problems/breaking_up`
 
 It may not be the sound device itself that is causing the problem, but
 could be the operating system driver for the device. For example, on
@@ -85,7 +85,7 @@ device may deliver a little less or more than 8000 samples per second.
 Testing the Sound Device
 ------------------------
 Use **pjsystest** to test the performance of the sound device. See
-:any:`/specific-guides/audio/checks/pjsystest` for more information.
+:any:`/specific-guides/audio-troubleshooting/checks/pjsystest` for more information.
 
 Specifically, run *pjsystest* **Device Test** (menu **01**) to test
 the audio device's burst and clock drifts problem. Below is a sample 

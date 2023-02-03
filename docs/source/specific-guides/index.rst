@@ -16,6 +16,18 @@ Audio
    
    audio/*
 
+.. _audio_troubleshooting_toc:
+
+Audio Troubleshooting
+*****************************************
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   
+   audio-troubleshooting/problems/*
+   audio-troubleshooting/checklist
+
 .. _build_int_guide_toc:
 
 Build & Integration

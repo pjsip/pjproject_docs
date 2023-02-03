@@ -3,7 +3,7 @@ Soft/quiet noise
 Checklists:
 
 #. Check that you're using the latest (git) version of the libraries.
-#. :any:`Check whether you have this noise when looping the microphone to the speaker locally </specific-guides/audio/checks/loopback>`: 
+#. :any:`Check whether you have this noise when looping the microphone to the speaker locally </specific-guides/audio-troubleshooting/checks/loopback>`: 
    If yes, then the noise is
    probably introduced by your sound device (it's quite common with onboard sound 
    adapters).
