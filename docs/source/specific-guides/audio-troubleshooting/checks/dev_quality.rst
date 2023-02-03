@@ -8,8 +8,8 @@ Checking the quality of the sound device
 In some cases, some of the audio problems may come from the sound
 device itself, causing problems such as:
 
-- :any:`/specific-guides/audio-troubleshooting/problems/stutter`, 
-- :any:`/specific-guides/audio-troubleshooting/problems/breaking_up`
+- :any:`/specific-guides/audio-troubleshooting/problems/audio_dropouts`, 
+- :any:`/specific-guides/audio-troubleshooting/problems/audio_breaking_up`
 
 It may not be the sound device itself that is causing the problem, but
 could be the operating system driver for the device. For example, on
