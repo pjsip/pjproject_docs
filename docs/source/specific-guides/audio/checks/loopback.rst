@@ -1,4 +1,4 @@
-Check that microphone and speaker are functioning properly
+Check by looping back microphone to speaker
 =================================================================
 The easiest way to check if both microphone and speaker are functioning properly is 
 by using **pjsua** and looping the microphone to the speaker in the conference bridge: 
