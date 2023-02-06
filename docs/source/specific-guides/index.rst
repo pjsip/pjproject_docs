@@ -25,6 +25,7 @@ Audio Troubleshooting
    :maxdepth: 1
    :glob:
    
+   audio-troubleshooting/problems/how_to_record
    audio-troubleshooting/problems/*
    audio-troubleshooting/checklist
 
@@ -50,6 +51,8 @@ Development & Programming
    :glob:
 
    develop/*
+   ../api/pjsip/guide
+
 
 
 .. _media_guide_toc:
@@ -106,6 +109,7 @@ SIP
    :maxdepth: 1
    :glob:
 
+   ../api/pjsip/guide
    sip/*
 
 .. _video_guide_toc:
