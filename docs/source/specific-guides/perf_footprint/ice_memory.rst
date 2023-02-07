@@ -3,7 +3,7 @@ ICE Heap Usage
 
 .. note::
 
-   Although this article is very old (last updated 2010), the result may still be useful
+   Although this article is very old (last updated in 2010), the result may still be useful
    to get a general idea about the heap size.
 
 .. contents:: Table of Contents

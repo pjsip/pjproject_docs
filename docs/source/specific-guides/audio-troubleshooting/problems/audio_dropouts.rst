@@ -5,9 +5,6 @@ The symptom is audio is sounding like it's skipping some frames.
 For a sample audio, play this `stutter.wav <../../../_static/stutter.wav>`__ file [1]_. 
 Hear the stutters at 2.5, 3.8, and 8.8 second.
 
-.. [1] audio file courtesy of Chen Huan <chenhuan at sict.ac.cn> who managed to convince his 
-       girlfriend to record the audio for testing :)
-
 
 Checklists:
 
@@ -24,3 +21,6 @@ Checklists:
    where the sound quality doesn't break.
 #. :doc:`/specific-guides/audio-troubleshooting/checks/dev_under_overflow`
 
+
+.. [1] audio file courtesy of Chen Huan <chenhuan at sict.ac.cn> who managed to convince his 
+       girlfriend to record the audio for testing :)

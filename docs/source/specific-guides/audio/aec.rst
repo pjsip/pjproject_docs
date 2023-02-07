@@ -1,13 +1,8 @@
 Accoustic Echo Cancellation (AEC)
 ==================================
 
-multichannel capable, supporting both built-in HW AEC and several software EC implementations 
+Multichannel capable, supporting both built-in HW AEC and several software EC implementations 
 such as WebRTC AEC3, Speex AEC, as well as our own echo suppressor.
-
-TBD:
-
-- features
-- how to use
 
 See:
 

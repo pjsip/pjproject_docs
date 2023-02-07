@@ -3,7 +3,7 @@ Media Performance (MIPS test)
 
 .. note::
 
-   Although this article is very old (last updated 2008), the listed PJMEDIA algorithms
+   Although this article is very old (last updated in 2008), the listed PJMEDIA algorithms
    haven't changed very much, hence the result may still be useful.
 
 
