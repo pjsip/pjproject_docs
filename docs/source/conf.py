@@ -92,7 +92,7 @@ if is_in_rtd:
 # -- Project information -----------------------------------------------------
 
 project = 'PJSIP Project'
-copyright = '2022, Teluu'
+copyright = '2023, Teluu'
 author = 'Teluu Team'
 
 # Find pjproject directory to open version.mak

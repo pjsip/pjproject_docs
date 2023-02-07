@@ -59,9 +59,9 @@ the settings in :any:`config_site.h`:
    clock rate, disable resampling by setting
    :c:macro:`PJMEDIA_HAS_LIBRESAMPLE` to 0, to reduce executable size by **45 KB**.
 #. **Disable unused codecs**. For example, 
-   disable speex by declaring  :c:macro:`PJMEDIA_HAS_SPEEX_CODEC` to 0, 
+   disable speex by declaring :c:macro:`PJMEDIA_HAS_SPEEX_CODEC` to 0, 
    disable iLBC by declaring :c:macro:`PJMEDIA_HAS_ILBC_CODEC` to 0, 
-   disable GSM codec by declaring:c:macro:`PJMEDIA_HAS_GSM_CODEC` to 0, and
+   disable GSM codec by declaring :c:macro:`PJMEDIA_HAS_GSM_CODEC` to 0, and
    disable L16 codecs by declaring :c:macro:`PJMEDIA_HAS_L16_CODEC` to 0.
    This will reduce executable size by approximately **114 KB**. 
 
@@ -171,7 +171,8 @@ we can apply these settings to **reduce heap memory usage**:
       #   define PJSUA_MAX_CALLS          31
 
    For reference: see :c:macro:`PJSIP_MAX_TSX_COUNT`, 
-   :c:macro:`PJSIP_MAX_DIALOG_COUNT`, :c:macro:`PJSUA_MAX_CALLS`.
+   :c:macro:`PJSIP_MAX_DIALOG_COUNT`, :c:macro:`PJSUA_MAX_CALLS` in
+   :source:`pjsip/include/pjsip/sip_config.h`
 
 #. **Optimize pool sizes**. These settings not only will reduce heap
    memory usage, but will also prevent the libraries from allocating too
@@ -214,3 +215,4 @@ we can apply these settings to **reduce heap memory usage**:
 
 
 At this stage, the heap usage is about 150 KB for two calls, which should be affordable.
+

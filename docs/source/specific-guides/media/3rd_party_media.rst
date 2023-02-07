@@ -12,7 +12,7 @@ By disabling PJMEDIA, the following features will not be available in PJSUA-LIB 
  - RTP and RTCP
  - WAV playback and recording
  - conference bridge
- - DTMF with RFC 2833
+ - DTMF with :rfc:`2833`
  - and so on, except explicitly mentioned below
 
 The following features will still be available:
@@ -25,14 +25,14 @@ The following features will still be available:
 
 Follow these steps to integrate third party media library with PJSUA-LIB:
 
- #. Declare this in ``pjlib/include/pj/config_site.h``:
+ #. Declare this in :any:`config_site.h`:
     
     .. code-block:: c
 
        #define PJSUA_MEDIA_HAS_PJMEDIA    0
   
     to exclude PJMEDIA specific implementation from PJSUA-LIB library. Understandably you will loose all media features in PJSUA-LIB (this will be handled by your third party media stack).
- #. Also copy suggested settings from ``pjsip-apps/src/3rdparty_media_sample/config_site.h`` into ``pjlib/include/pj/config_site.h``. These settings are mostly used to exclude unneeded media components from the link process.
+ #. Also copy suggested settings from :source:`pjsip-apps/src/3rdparty_media_sample/config_site.h` into :any:`config_site.h`. These settings are mostly used to exclude unneeded media components from the link process.
  #. Build the libraries, but this time using 
 
     .. code-block:: c
@@ -40,5 +40,5 @@ Follow these steps to integrate third party media library with PJSUA-LIB:
        $ make lib
   
     instead of just ``make`` or ``make all``. This is because most samples will no longer build due to missing media in PJSUA-LIB, hence normal ``make`` will fail on these apps. The ``make lib`` command only builds the libraries and unit tests for the libraries.
- #. Go to directory ``pjsip-apps/src/3rdparty_media_sample``. This is a sample application with hook points to integrate   third party media library. Fill in the media implementation in the ``alt_pjsua_xxx.c`` files, following the "TODO" notes.   Run ``make`` to build the application. Once it's built, run ``alt_pjsua`` just as you run the usual ``pjsua`` application (it's essentially the same app!).
+ #. Go to directory :sourcedir:`pjsip-apps/src/3rdparty_media_sample`. This is a sample application with hook points to integrate   third party media library. Fill in the media implementation in the ``alt_pjsua_xxx.c`` files, following the "TODO" notes.   Run ``make`` to build the application. Once it's built, run ``alt_pjsua`` just as you run the usual ``pjsua`` application (it's essentially the same app!).
 

@@ -8,5 +8,5 @@ Support for Intel IPP codecs has been deprecated.
 For historical information, see:
 
 - Trac: https://trac.pjsip.org/repos/wiki/Intel_IPP_Codecs
-- :issue:1227
-- :issue:583
+- Ticket :issue:`1227`
+- Ticket :issue:`583`
