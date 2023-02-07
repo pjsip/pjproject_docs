@@ -234,7 +234,7 @@ Note that the information below applies to current PJSIP release (version 1.1 as
 Keep-alive
 ~~~~~~~~~~
 
-Once the *ice_strans* is created, the STUN and TURN keep-alive will be done automatically and internally. The default STUN keep-alive period is 15 seconds (:cpp:any:`PJ_STUN_KEEP_ALIVE_SEC`), and TURN is also 15 seconds (:cpp:any:`PJ_TURN_KEEP_ALIVE_SEC`).
+Once the *ice_strans* is created, the STUN and TURN keep-alive will be done automatically and internally. The default STUN keep-alive period is 15 seconds (:c:macro:`PJ_STUN_KEEP_ALIVE_SEC`), and TURN is also 15 seconds (:c:macro:`PJ_TURN_KEEP_ALIVE_SEC`).
 
 
 IP address change

@@ -66,7 +66,7 @@ Locking the group lock temporarily increases
 the reference counter to prevent it from being destroyed. The side
 effect is, the :cpp:any:`pj_grp_lock_release()` may cause the group to be
 destroyed, if it is the last one that holds the reference counter. In
-that case, it returns :cpp:any:`PJ_EGONE`.
+that case, it returns :c:macro:`PJ_EGONE`.
 
 Destroy
 ~~~~~~~
@@ -105,7 +105,7 @@ This API manages the reference counter of the group:
 - :cpp:any:`pj_grp_lock_add_ref()`
 - :cpp:any:`pj_grp_lock_dec_ref()`
 
-The :cpp:any:`pj_grp_lock_dec_ref()` returns :cpp:any:`PJ_EGONE` when that operation
+The :cpp:any:`pj_grp_lock_dec_ref()` returns :c:macro:`PJ_EGONE` when that operation
 causes the group lock to be destroyed (because the reference counter
 reaches zero).
 
@@ -187,7 +187,7 @@ close the old lock.
 Debugging
 ---------
 
-To enable debugging, declare :cpp:any:`PJ_GRP_LOCK_DEBUG` to non-zero in your
+To enable debugging, declare :c:macro:`PJ_GRP_LOCK_DEBUG` to non-zero in your
 :any:`config_site.h`. With this, now every call to
 :cpp:any:`pj_grp_lock_dec_ref()` will cause the group lock state to be printed
 to log at level four. This info includes the current value of the
@@ -199,7 +199,7 @@ Note though that each :cpp:any:`pj_grp_lock_acquire()` and
 counter, hence they will also cause info to be dump.
 
 If you after this find out that the leaking reference is caused by
-timer, you can enable timer heap debugging by setting :cpp:any:`PJ_TIMER_DEBUG`
+timer, you can enable timer heap debugging by setting :c:macro:`PJ_TIMER_DEBUG`
 to non-zero and call :cpp:any:`pj_timer_heap_dump()` to dump the state of the
 timer heap including information about the source file and line number
 of code that registered currently active timer entries.

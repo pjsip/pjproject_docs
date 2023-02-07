@@ -40,7 +40,7 @@ Build PJSIP with TLS Support
 
 SIP TLS transport is implemented based on PJLIB's 
 :doc:`SSL Socket API </api/generated/pjlib/group/group__PJ__SSL__SOCK>`,
-and its availability is based on :cpp:any:`PJ_HAS_SSL_SOCK` macro value. For
+and its availability is based on :c:macro:`PJ_HAS_SSL_SOCK` macro value. For
 *autoconf* build system, the value is automatically detected based on
 OpenSSL availability. For other platforms such as Windows and Symbian,
 please declare this in your :ref:`config_site.h`:
@@ -51,8 +51,8 @@ please declare this in your :ref:`config_site.h`:
 
 Note: 
 
-- The :cpp:any:`PJSIP_HAS_TLS_TRANSPORT` default value will be set to
-  :cpp:any:`PJ_HAS_SSL_SOCK` setting. 
+- The :c:macro:`PJSIP_HAS_TLS_TRANSPORT` default value will be set to
+  :c:macro:`PJ_HAS_SSL_SOCK` setting. 
 
 
 Configuring SIP TLS transport

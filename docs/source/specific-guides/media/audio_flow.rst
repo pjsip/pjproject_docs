@@ -143,11 +143,11 @@ and then followed by burst of :cpp:any:`play_cb <pjmedia_aud_play_cb>` calls.
 
 The internal sound device queue buffer in the 
 conference bridge is large enough to store about 150 ms worth of audio,
-and this is controlled by :cpp:any:`PJMEDIA_SOUND_BUFFER_COUNT` macro 
+and this is controlled by :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` macro 
 (see :source:`pjmedia/src/pjmedia/conference.c`).
 
 It is possible that a very very bad sound device may overrun this buffer, which in this case it
-would be necessary to enlarge the :cpp:any:`PJMEDIA_SOUND_BUFFER_COUNT` number
+would be necessary to enlarge the :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` number
 in your :any:`config_site.h`.
 
 

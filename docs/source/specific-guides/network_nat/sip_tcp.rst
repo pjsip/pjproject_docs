@@ -8,7 +8,7 @@ Using SIP TCP Transport
 Enabling TCP support
 -------------------------------
 
-TCP support must be enabled in the build by setting :cpp:any:`PJ_HAS_TCP` to non-zero. This is enabled by default, hence normally there's no specific step to do to enable this. You must then instantiate SIP TCP transport in your application, e.g.:
+TCP support must be enabled in the build by setting :c:macro:`PJ_HAS_TCP` to non-zero. This is enabled by default, hence normally there's no specific step to do to enable this. You must then instantiate SIP TCP transport in your application, e.g.:
 
 .. code-block:: c
 
@@ -119,7 +119,7 @@ This TCP switching feature can be disabled as follows:
 * at run-time by setting ``pjsip_cfg()->endpt.disable_tcp_switch`` to PJ_TRUE.
 * at-compile time by setting ``PJSIP_DONT_SWITCH_TO_TCP`` to non-zero
 
-You can also tweak the 1300 threshold by setting :cpp:any:`PJSIP_UDP_SIZE_THRESHOLD` to the appropriate value.
+You can also tweak the 1300 threshold by setting :c:macro:`PJSIP_UDP_SIZE_THRESHOLD` to the appropriate value.
 
 Additional Info about Registration
 ------------------------------------------

@@ -100,7 +100,7 @@ libsrtp is always built by default, from ``third_party/build/srtp``
 directory.
 
 Support for SRTP is enabled by default in PJMEDIA and PJSUA-LIB. To
-**disable** this feature, declare :cpp:any:`PJMEDIA_HAS_SRTP` as zero in your :any:`config_site.h`:
+**disable** this feature, declare :c:macro:`PJMEDIA_HAS_SRTP` as zero in your :any:`config_site.h`:
 
 .. code-block:: c
 
@@ -142,7 +142,7 @@ The :cpp:any:`pjsua_config::use_srtp` and :cpp:any:`pjsua_acc_config::use_srtp` 
   mandatory, and the call can only proceed if secure media can be
   established. 
      
-The default value for this option is :cpp:any:`PJSUA_DEFAULT_USE_SRTP`, which is zero (disabled).
+The default value for this option is :c:macro:`PJSUA_DEFAULT_USE_SRTP`, which is zero (disabled).
 
 srtp_secure_signaling
 ```````````````````````````
@@ -153,7 +153,7 @@ The :cpp:any:`pjsua_config::srtp_secure_signaling` and :cpp:any:`pjsua_acc_confi
 - 1: SRTP requires secure transport such as TLS to be used. 
 - 2: SRTP requires secure end-to-end transport (``sips:`` URI scheme) to be used. 
 
-The default value for this option is :cpp:any:`PJSUA_DEFAULT_SRTP_SECURE_SIGNALING`, 
+The default value for this option is :c:macro:`PJSUA_DEFAULT_SRTP_SECURE_SIGNALING`, 
 which is 1 (require TLS transport).
 
 pjsua

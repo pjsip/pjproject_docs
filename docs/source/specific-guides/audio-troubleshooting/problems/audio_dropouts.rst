@@ -18,7 +18,7 @@ Checklists:
    abruptly.
 #. :any:`Check for high network jitter, packet loss, etc. </specific-guides/audio-troubleshooting/checks/rx_quality>`
 #. :any:`/specific-guides/audio-troubleshooting/checks/cpu`
-#. Try to enlarge :cpp:any:`PJMEDIA_SOUND_BUFFER_COUNT` value by setting it in your 
+#. Try to enlarge :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` value by setting it in your 
    :any:`config_site.h`. Increase it to, say, 16, and see if it fixes the problem. But be 
    aware that enlarging this buffer will increase the audio latency, so find a minimum value
    where the sound quality doesn't break.

@@ -111,7 +111,7 @@ Modifications in :cpp:any:`pj_ice_strans_cfg`:
 - Deprecated ``stun`` and ``turn`` fields, but for backward compatibility, those fields will still be used only if ``stun_tp_cnt`` and/or ``turn_tp_cnt`` is set to zero. 
 - Added ``stun_tp`` and ``turn_tp`` as replacement of ``stun`` and ``turn`` respectively, and they are array so application can have multiple STUN/TURN transports. 
 - Added function :cpp:any:`pj_ice_strans_stun_cfg_default()` and :cpp:any:`pj_ice_strans_stun_cfg_default()` to initialize ``stun_tp`` and ``turn_tp`` respectively with default values. 
-- Added compile-time settings :cpp:any:`PJ_ICE_MAX_STUN` and :cpp:any:`PJ_ICE_MAX_TURN` to specify maximum number of STUN/TURN transports in each ICE component.
+- Added compile-time settings :c:macro:`PJ_ICE_MAX_STUN` and :c:macro:`PJ_ICE_MAX_TURN` to specify maximum number of STUN/TURN transports in each ICE component.
 
 
 Enabling IPv6 support in application using PJSUA-LIB

@@ -113,7 +113,7 @@ The following table summarizes the availability/accessability of various QoS set
 
 Notes:
  1) Via PJSUA2 API :cpp:any:`pj::TransportConfig::qosType` and :cpp:any:`pj::TransportConfig::qosParams` fields.
- 2) On win32, sock_qos_dummy.c is used by default. Set :cpp:any:`PJ_QOS_IMPLEMENTATION` to :cpp:any:`PJ_QOS_BSD` to enable the use of sock_qos_bsd.c.
+ 2) On win32, sock_qos_dummy.c is used by default. Set :c:macro:`PJ_QOS_IMPLEMENTATION` to :c:macro:`PJ_QOS_BSD` to enable the use of sock_qos_bsd.c.
  3) In our test, setting SO_PRIORITY showed no error, but wireshark traffic revealed that it's not set.
 
 Linux

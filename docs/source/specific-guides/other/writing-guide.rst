@@ -49,12 +49,23 @@ Typography conventions
 ----------------------------------------------
 
 - For PJSIP symbols, use breathe-apidoc constructs, e.g.:
-   - macro: :cpp:any:`PJ_HAS_TCP`
-   - C API: :cpp:any:`pjsua_handle_ip_change()`
-   - C struct: :cpp:any:`pjsua_ip_change_param`
-   - C field: :cpp:any:`pjsua_callback::on_call_state`
-   - PJSUA2 class: :cpp:any:`pj::AccountConfig`
-   - PJSUA2 method: :cpp:any:`pj::Account::create()`
+
+   - **Special for macros**, use ``:c:macro:`MACRO``` construct:
+
+     - PJLIB: ``:c:macro:`PJ_HAS_TCP``` --> :c:macro:`PJ_HAS_TCP`
+     - PJLIB-UTIL: ``:c:macro:`PJ_DNS_RESOLVER_MAX_TTL``` --> :c:macro:`PJ_DNS_RESOLVER_MAX_TTL`
+     - PJNATH: ``:c:macro:`PJ_STUN_MAX_PKT_LEN``` --> :c:macro:`PJ_STUN_MAX_PKT_LEN`
+     - PJMEDIA: ``:c:macro:`PJMEDIA_CONF_USE_AGC``` --> :c:macro:`PJMEDIA_CONF_USE_AGC`
+     - PJSIP: ``:c:macro:`PJSIP_MAX_URL_SIZE``` --> :c:macro:`PJSIP_MAX_URL_SIZE`
+
+   - For everything else, use ``:cpp:any:`SYMBOL``` construct:
+
+      - C API: ``:cpp:any:`pjsua_handle_ip_change()``` --> :cpp:any:`pjsua_handle_ip_change()`
+      - C struct: ``:cpp:any:`pjsua_ip_change_param``` --> :cpp:any:`pjsua_ip_change_param`
+      - C field: ``:cpp:any:`pjsua_callback::on_call_state``` --> :cpp:any:`pjsua_callback::on_call_state`
+      - PJSUA2 class: ``:cpp:any:`pj::AccountConfig``` --> :cpp:any:`pj::AccountConfig`
+      - PJSUA2 method: ``:cpp:any:`pj::Account::create()``` --> :cpp:any:`pj::Account::create()`
+
 - For other identifier: ``identifier``
 - ``command``
 - ``file name``
@@ -64,7 +75,9 @@ Typography conventions
 
 .. note::
 
-   - Sometomes macros wouldn't resolve (sometimes it resolves in development machine, but not in RTD site, or the other way around). Not sure why yet.
+   - Sometimes macros wouldn't resolve, e.g. :c:macro:`PJ_HAS_TCP`. Many PJLIB macros
+     won't resolve. Could it be because some macros are declared in CFLAGS by
+     ``configure`` (so they are not picked up by Doxygen)?
    - nested struct member wouldn't resolve, e.g.: :cpp:any:`pjsua_acc_config::ip_change_cfg::hangup_calls`, so you need to break it down into separate parts, e.g. :cpp:any:`hangup_calls <pjsua_ip_change_acc_cfg::hangup_calls>` of :cpp:any:`pjsua_acc_config::ip_change_cfg`
    - For full reference see https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cpp-domain
 

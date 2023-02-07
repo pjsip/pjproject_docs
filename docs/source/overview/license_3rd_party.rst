@@ -58,8 +58,8 @@ Alaw/Ulaw Converter
    * - License
      - Free and unrestricted use, see the source code for details.
    * - Usage
-     - This software is not used by default unless :cpp:any:`PJMEDIA_HAS_ALAW_ULAW_TABLE` is disabled. 
-       When :cpp:any:`PJMEDIA_HAS_ALAW_ULAW_TABLE` is enabled (the default setting), a table based 
+     - This software is not used by default unless :c:macro:`PJMEDIA_HAS_ALAW_ULAW_TABLE` is disabled. 
+       When :c:macro:`PJMEDIA_HAS_ALAW_ULAW_TABLE` is enabled (the default setting), a table based 
        alaw/ulaw conversion will be used instead. 
 
 
@@ -152,7 +152,7 @@ G.722 Codec
        by calling :cpp:any:`pjmedia_codec_g722_init()`. Note that if PJSUA-LIB is used, then this call is 
        made by PJSUA-LIB, hence causing your application to be linked with the software. The 
        software can be explicitly disabled from the link process by defining 
-       :cpp:any:`PJMEDIA_HAS_G722_CODEC` to zero. 
+       :c:macro:`PJMEDIA_HAS_G722_CODEC` to zero. 
 
 
 
@@ -205,9 +205,9 @@ Resample
      - LGPL: :source:`third_party/resample/COPYING`
    * - Usage
      - This resampling software is used by the conference bridge. This software is used 
-       when the :cpp:any:`PJMEDIA_RESAMPLE_IMP` macro is set to :cpp:any:`PJMEDIA_RESAMPLE_LIBRESAMPLE`, 
+       when the :c:macro:`PJMEDIA_RESAMPLE_IMP` macro is set to :c:macro:`PJMEDIA_RESAMPLE_LIBRESAMPLE`, 
        which is the default. Other options for resampling backends include Speex and 
-       Secret Rabbit Code (which is dual licensed). Please see :cpp:any:`PJMEDIA_RESAMPLE_IMP` 
+       Secret Rabbit Code (which is dual licensed). Please see :c:macro:`PJMEDIA_RESAMPLE_IMP` 
        documentation for more info. 
 
 
@@ -232,7 +232,7 @@ GSM Codec 06.10
        GSM library by calling :cpp:any:`pjmedia_codec_gsm_init()`. Note that if PJSUA-LIB 
        is used, then this call is made by PJSUA-LIB, hence causing your application 
        to be linked with the software. The software can be explicitly disabled from 
-       the link process by defining :cpp:any:`PJMEDIA_HAS_GSM_CODEC` to zero. 
+       the link process by defining :c:macro:`PJMEDIA_HAS_GSM_CODEC` to zero. 
 
 
 Speex
@@ -257,14 +257,14 @@ Speex
          Note that if PJSUA-LIB is used, then this call is made by PJSUA-LIB, 
          hence causing your application to be linked with the software. The 
          software can be explicitly disabled from the link process by defining 
-         :cpp:any:`PJMEDIA_HAS_SPEEX_CODEC` to zero.
+         :c:macro:`PJMEDIA_HAS_SPEEX_CODEC` to zero.
 
        - **Speex AEC**: Speex accoustic echo cancellation is enabled by default for 
          the sound device. Application can disable this by setting 
-         :cpp:any:`PJMEDIA_HAS_SPEEX_AEC` to zero.
+         :c:macro:`PJMEDIA_HAS_SPEEX_AEC` to zero.
 
        - **Speex sample rate converter**: Speex sample rate converter is only used 
-         when :cpp:any:`PJMEDIA_HAS_SPEEX_RESAMPLE` macro is set to non-zero. The 
+         when :c:macro:`PJMEDIA_HAS_SPEEX_RESAMPLE` macro is set to non-zero. The 
          default is disabled.
 
 
@@ -322,7 +322,7 @@ iLBC Codec
        PJSUA-LIB is used, then this call is made by PJSUA-LIB, hence causing 
        your application to be linked with the software. The software can be 
        explicitly disabled from the link process by defining 
-       :cpp:any:`PJMEDIA_HAS_ILBC_CODEC` to zero. 
+       :c:macro:`PJMEDIA_HAS_ILBC_CODEC` to zero. 
 
 
 G.722.1/C (aka Siren7 and Siren14) codecs
@@ -350,7 +350,7 @@ G.722.1/C (aka Siren7 and Siren14) codecs
        became Poly the original link disappeared). 
    * - Usage
      - This software is by default disabled, due to the licensing restriction above. 
-       The software can be explicitly enabled by defining :cpp:any:`PJMEDIA_HAS_G7221_CODEC`
+       The software can be explicitly enabled by defining :c:macro:`PJMEDIA_HAS_G7221_CODEC`
        to one.
 
 
@@ -403,7 +403,7 @@ libSRTP
    * - Usage
      - Copy of libSRTP is included in PJSIP distribution, and it is built by 
        default on all supported platforms. SRTP functionality is also enabled 
-       by default. If you wish to disable SRTP, declare :cpp:any:`PJMEDIA_HAS_SRTP`
+       by default. If you wish to disable SRTP, declare :c:macro:`PJMEDIA_HAS_SRTP`
        macro to zero. 
 
 
@@ -430,7 +430,7 @@ DirectShow Base Classes Microsoft SDK Sample
 
    * - Usage
      - Used in DirectShow device driver for video capture support on Windows platform. 
-       If you wish to disable it define macro :cpp:any:`PJMEDIA_VIDEO_DEV_HAS_DSHOW` to 0. 
+       If you wish to disable it define macro :c:macro:`PJMEDIA_VIDEO_DEV_HAS_DSHOW` to 0. 
        This will disable video capture on Windows. 
 
 
@@ -453,7 +453,7 @@ libYUV
    * - Usage
      - Libyuv may be detected and enabled by the configure script, either automatically 
        or manually via ``--with-libyuv`` option. It may be forcefully disabled by 
-       defining :cpp:any:`PJMEDIA_HAS_LIBYUV` to 0 in :any:`config_site.h`. 
+       defining :c:macro:`PJMEDIA_HAS_LIBYUV` to 0 in :any:`config_site.h`. 
 
 
 WebRTC
@@ -476,7 +476,7 @@ WebRTC
    * - Usage
      - WebRTC AEC is by default enabled, but can be disabled by passing 
        ``--disable-webrtc`` to the configure script or defining 
-       :cpp:any:`PJMEDIA_HAS_WEBRTC_AEC` to 0 in :any:`config_site.h`.
+       :c:macro:`PJMEDIA_HAS_WEBRTC_AEC` to 0 in :any:`config_site.h`.
 
 
 WebRTC AEC3
