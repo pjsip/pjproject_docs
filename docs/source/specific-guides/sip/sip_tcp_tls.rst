@@ -1,4 +1,4 @@
-Using SIP TCP/TLS Transport
+TCP/TLS Transport
 ==============================
 See:
 

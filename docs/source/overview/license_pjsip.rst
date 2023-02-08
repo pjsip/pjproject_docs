@@ -55,6 +55,7 @@ the GPL Compliance Guide for what this means). Copy of GNU General Public Licens
 available on the http://www.gnu.org. More information about GPL can be found in
 `GPL FAQ <http://www.gnu.org/licenses/gpl-faq.html>`__.
 
+.. _alt_license:
 
 Alternative license
 ------------------------
