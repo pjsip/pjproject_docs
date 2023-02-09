@@ -141,13 +141,24 @@ unfortunately this is not always the case; in many low-end sound cards,
 it is quite common to have several consecutive/burst of :cpp:any:`rec_cb <pjmedia_aud_rec_cb>` callbacks
 and then followed by burst of :cpp:any:`play_cb <pjmedia_aud_play_cb>` calls. 
 
-The internal sound device queue buffer in the 
-conference bridge is large enough to store about 150 ms worth of audio,
-and this is controlled by :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` macro 
-(see :source:`pjmedia/src/pjmedia/conference.c`).
+Another less common problem with the sound device is when the total number of
+samples played and/or recorded by the sound device does not match the requested
+clock rate. This is what we call audio *clock drift*.
 
-It is possible that a very very bad sound device may overrun this buffer, which in this case it
-would be necessary to enlarge the :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` number
+Both of these problems can be analyzed with
+:any:`/specific-guides/audio-troubleshooting/checks/pjsystest`.
+
+The conference bridge handles these problems by using
+:doc:`Adaptive Delay Buffer </api/generated/pjmedia/group/group__PJMED__DELAYBUF>`.
+The delay buffer continuously learns the optimal delay to be applied to the audio flow at run-time,
+and may expand or shrink the buffer without distorting the audio quality. The
+drawback of using this buffer, however, is increased latency. The latency
+increases according to the jitter/bursts characteristics of the sound device.
+
+The maximum (sound device) jitter that can be accomodated by the conference bridge's
+is controlled by :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` macro, which default value is around
+150 ms. It is possible that a very very bad sound device may overrun this buffer,
+which in this case it would be necessary to enlarge the :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` number
 in your :any:`config_site.h`.
 
 
