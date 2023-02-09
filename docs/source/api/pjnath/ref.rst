@@ -39,10 +39,10 @@ Session Traversal Utilities for NAT (:rfc:`5389`)
   - :doc:`STUN Client Transaction </api/generated/pjnath/group/group__PJNATH__STUN__TRANSACTION>`
 
 
-TURN
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. _turn:
 
+TURN
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Traversal Using Relays around NAT
 
 - :doc:`Introduction </api/generated/pjnath/group/group__PJNATH__TURN>`
@@ -50,11 +50,14 @@ Traversal Using Relays around NAT
 - :doc:`Transport-independent TURN Client Session </api/generated/pjnath/group/group__PJNATH__TURN__SESSION>`
 
 
-uPnP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. _upnp:
 
-- :doc:`uPnP </api/generated/pjnath/group/group__PJNATH__UPNP>`
+uPnP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Universal Plug and Play support.
+
+- See ticket :pr:`3184` for build and use instructions.
+- :doc:`uPnP API reference </api/generated/pjnath/group/group__PJNATH__UPNP>`
 
 
 NAT Type Detection

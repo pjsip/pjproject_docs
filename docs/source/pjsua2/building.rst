@@ -96,14 +96,4 @@ Building Java SWIG Module
 
 Building C# SWIG Module
 ======================================
-1. Install SWIG as shown above.
-2. Install .. (TBD)
-3. Build:
-
-   .. code-block:: shell
-
-      cd pjsip-apps/src/swig/csharp
-      make
-      make install
-
-   TBD.
+See ticket :issue:`2086` (Add C# binding using SWIG, and support for Xamarin).
