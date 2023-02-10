@@ -16,14 +16,14 @@ Build Preparation
 ------------------
 
 #. :doc:`Getting the source code </get-started/getting>` if you haven't already.
-#. Set your :ref:`config_site.h <dev_start>` to the following:
+#. Set your :ref:`config_site.h` to the following:
 
    .. code-block:: c
 
       #define PJ_CONFIG_IPHONE 1
       #include <pj/config_site_sample.h>
 
-  This will activate iPhone specific settings in the ``config_site_sample.h``.
+  This will activate iPhone specific settings in the :source:`pjlib/include/pj/config_site_sample.h`.
 
 Building PJSIP
 ---------------
@@ -49,7 +49,7 @@ See :doc:`CLI Manual </specific-guides/other/cli_cmd>` for commands available.
    * The ``./configure-iphone`` is a wrapper that calls the standard ``./configure`` 
      script with settings suitable for iPhone target.
    * The latest iPhone SDK version will be selected by default. You may change 
-     this by setting **IPHONESDK** environment variable to the desired SDK path. 
+     this by setting ``IPHONESDK`` environment variable to the desired SDK path. 
      For ipjsua, select Project-Edit Project Settings-Base SDK and Targets-ipjsua-Get 
      Info-Base SDK to change the SDK version.
    * You may pass standard ``./configure`` options to this script too.
@@ -78,7 +78,7 @@ For example:
 Setting minimum supported iOS version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you want to specify the minimum supported iOS version, you can set **MIN_IOS** 
+If you want to specify the minimum supported iOS version, you can set ``MIN_IOS`` 
 environment variable before running ``configure-iphone``, for example:
 
 .. code-block:: shell
@@ -86,7 +86,7 @@ environment variable before running ``configure-iphone``, for example:
    export MIN_IOS="-miphoneos-version-min=8.0"
 
 The default setting is iOS 7.0. If you don't want to specify this flag, you can 
-set **MIN_IOS** to a single space instead (**export MIN_IOS=" "**) 
+set ``MIN_IOS`` to a single space instead (``export MIN_IOS=" "``) 
 
 .. note:: 
 
@@ -170,12 +170,12 @@ Video Support
 
 Features
 ^^^^^^^^
+Some of the highlighted features include:
 
-* native capture
-* native preview
-* native OpenGL ES renderer
-* H.264 codec (using native !VideoToolbox framework or OpenH264 library, 
-  see below)
+* :ref:`native capture <avfoundation>`
+* :ref:`native preview <avfoundation>`
+* :ref:`native OpenGL ES renderer <opengl>`
+* :ref:`native H.264 <videotoolbox>` or via :ref:`openh264` (see below)
 
 Requirements
 ^^^^^^^^^^^^
@@ -186,6 +186,8 @@ libyuv
 #. If you are using 2.5.5 or newer, libyuv should be built and enabled 
    automatically, see :pr:`1937` for more info.
 #. If you are using 2.5.1 or older, follow the instructions in :pr:`1776`.
+
+.. _videotoolbox:
 
 OpenH264 or **VideoToolbox** (if you need H264 codec, choose one of them)
 ``````````````````````````````````````````````````````````````````````````
@@ -237,8 +239,8 @@ To send video in the proper orientation (i.e. head always up regardless of the
 device orientation), application needs to do the following:
 
 #. Setup the device to get orientation change notification 
-   (by calling the API **UIDevice.beginGeneratingDeviceOrientationNotifications** 
-   and add a callback to receive **UIDeviceOrientationDidChangeNotification**).
+   (by calling the API ``UIDevice.beginGeneratingDeviceOrientationNotifications`` 
+   and add a callback to receive ``UIDeviceOrientationDidChangeNotification``).
 #. Inside the callback, call PJSUA API
 
 .. code-block:: c
@@ -248,7 +250,7 @@ device orientation), application needs to do the following:
 to set the video device to the correct orientation.
 
 For sample usage, please refer to :source:`ipjsuaAppDelegate.m <pjsip-apps/src/pjsua/ios/ipjsua/ipjsuaAppDelegate.m>`. 
-:pr:`1861` explains this feature in detail.
+Ticket :pr:`1861` explains this feature in detail.
 
 .. _ios_openssl:
 
@@ -302,7 +304,7 @@ below to enable TLS transport by using OpenSSL:
 
    #. In ``Group & Files`` pane, expand ``ipjsua``, then right click ``Libraries``, 
       and select ``Add -> Existing Files...``.
-   #. Find **libssl.a** and **libcrypto.a** from OpenSSL ARM directory 
-      (for example, **${HOME}/openssl/openssl_arm**) and add them to the project.
+   #. Find ``libssl.a`` and ``libcrypto.a`` from OpenSSL ARM directory 
+      (for example, ``${HOME}/openssl/openssl_arm``) and add them to the project.
 
 #. Build the app

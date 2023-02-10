@@ -18,10 +18,11 @@ Base specs
 
 Transports
 ~~~~~~~~~~~~~~
--  UDP, TCP, TLS (server or mutual)
--  DNS SRV resolution (`RFC  3263 <https://datatracker.ietf.org/doc/html/rfc3263>`__)
--  IPv6
--  `QoS <QoS>`__ (DSCP, WMM)
+-  UDP, :any:`TCP </specific-guides/network_nat/sip_tcp>`, 
+   :any:`TLS (server or mutual) </specific-guides/security/ssl>`
+-  DNS SRV resolution (:rfc:`3263`)
+-  :any:`IPv6 </specific-guides/network_nat/ipv6>`
+-  :any:`QoS </specific-guides/network_nat/qos>` (DSCP, WMM)
 
 Routing/NAT
 ~~~~~~~~~~~~~~~
@@ -30,14 +31,14 @@ Routing/NAT
 - SIP outbound for TCP/TLS (:rfc:`5626`)
 - Path header (with SIP outbound) (:rfc:`3327`)
 - ICE option tag (:rfc:`5768`)
-- Trickle ICE on SIP: (:rfc:`8840`)
+- :any:`Trickle ICE </specific-guides/network_nat/trickle_ice>` on SIP: (:rfc:`8840`)
 
 
 Call
 ~~~~~~~~~~~~~~~~
 -  Offer/answer (:rfc:`3264`)
 -  hold, unhold
--  `redirection <SIP_Redirection>`__
+-  :any:`redirection </specific-guides/sip/redirection>`
 -  transfer/REFER (attended and unattended):
 
    -  Base (:rfc:`3515`)
@@ -60,7 +61,7 @@ SDP
 - :rfc:`2327` (obsoleted by
   :rfc:`4566`)
 - RTCP attribute (:rfc:`3605`)
-- IPv6 support (:rfc:`3266`)
+- :any:`IPv6 support </specific-guides/network_nat/ipv6>` (:rfc:`3266`)
 - SDP media ID (:rfc:`5888`)
 - SDP for ICE (:rfc:`8839`)
 

@@ -52,7 +52,7 @@ as well as getting involved in negotiation of suitable transport in SDP. Media t
 can also be chained in a pipeline (for example, SRTP+ICE).
 
 - :doc:`Media Transport API </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT>`
-- :doc:`SRTP - Secure RTP (SDES and DTLS) </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__SRTP>`
+- :any:`SRTP - Secure RTP (SDES and DTLS) </specific-guides/security/srtp>`
 - :doc:`ICE - Interactive Connectivity Establishment </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__ICE>`
 - :doc:`UDP </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__UDP>`
 - :doc:`Loopback </api/generated/pjmedia/group/group__PJMEDIA__TRANSPORT__LOOP>`
@@ -104,7 +104,6 @@ Codec Framework
 - :doc:`Codec Registration </api/generated/pjmedia/group/group__PJMEDIA__CODEC__REGISTER__ALL>`
 - :doc:`Codec constants </api/generated/pjmedia/group/group__pjmedia__codec__types>`
 - :doc:`Audio Codec Framework </api/generated/pjmedia/group/group__PJMEDIA__CODEC>`
-- :doc:`G.711 </api/generated/pjmedia/group/group__PJMED__G711>`
 - :doc:`Video Codec Framework </api/generated/pjmedia/group/group__PJMEDIA__VID__CODEC>`
 
   .. note::
@@ -119,19 +118,19 @@ SDP
 - `SDP SSRC attribute <https://github.com/pjsip/pjproject/issues/2098>`__ 
   (:rfc:`5576`)
 - `RTP and RTCP multiplexing <https://github.com/pjsip/pjproject/issues/2087>`_
-  `(RFC 5761) <https://datatracker.ietf.org/doc/html/rfc5761>`_
+  (:rfc:`5761`)
 
 RTP and RTCP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 - :doc:`RTP Session and Encapsulation </api/generated/pjmedia/group/group__PJMED__RTP>`
-  `(RFC 3350) <https://datatracker.ietf.org/doc/html/rfc3350>`_
+  (:rfc:`3350`)
 - :doc:`RTCP Session and Encapsulation </api/generated/pjmedia/group/group__PJMED__RTCP>`
-  `(RFC 3350) <https://datatracker.ietf.org/doc/html/rfc3350>`_
+  (:rfc:`3350`)
 - `RTP and RTCP multiplexing <https://github.com/pjsip/pjproject/issues/2087>`_
-  `(RFC 5761) <https://datatracker.ietf.org/doc/html/rfc5761>`_
+  (:rfc:`5761`)
 - :doc:`RTCP Feedback mechanism </specific-guides/media/rtcp_fb>`
 - :doc:`RTCP XR </api/generated/pjmedia/group/group__PJMED__RTCP__XR>`
-  `(RFC 3611) <https://datatracker.ietf.org/doc/html/rfc3611>`_
+  (:rfc:`3611`)
 - `SSRC synchronization via SDP <https://github.com/pjsip/pjproject/issues/2098>`__ 
   (:rfc:`5576`)
 - `RTCP CNAME guideline <https://github.com/pjsip/pjproject/issues/2098>`__ 

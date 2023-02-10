@@ -91,19 +91,21 @@ Video Support
 Features
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Video on Android will be supported since PJSIP version 2.4. It has the following 
-features:
+Video on Android has been supported since PJSIP version 2.4. Some of the highlighted
+features include:
 
-* native capture
-* native OpenGL ES 2.0 renderer (requires Android 2.2 (API level 8) or higher).
-* H.264 codec (via OpenH264 library or AMediaCodec, see below)
+* :ref:`native capture <android_cam>`
+* :ref:`native OpenGL ES 2.0 renderer <opengl>` (requires Android 2.2 (API level 8) or higher).
+* :ref:`native AMR-NB/WB codecs <amediacodec>`
+* :ref:`native H264 AVC and VP8/VP9 codecs <amediacodec>`
+* :ref:`openh264`
 
 Requirements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**OpenH264 (this is recommended if you need H264 codec)**
+**OpenH264 (optional)**
 
-#. For general information see :ref:`openh264`
+#. For general information on OpenH264 integration see :ref:`openh264`
 #. Copy all library .so files into your Android application project directory, 
    for example:
 
@@ -128,7 +130,7 @@ See :ref:`amediacodec`
 Configuring
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To enable video, append this into ``config_site.h``:
+To enable video, append this into :any:`config_site.h`:
 
 .. code-block:: c
 
@@ -181,7 +183,7 @@ in ``PjCameraInfo2`` before using the camera, e.g:
 
 Using Video API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Please check :doc:`Video User's Guide </pjsua2/using/media_video>`.
+Please check :doc:`Working with Video </pjsua2/using/media_video>` (PJSUA2 Guide).
 
 Video capture orientation support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

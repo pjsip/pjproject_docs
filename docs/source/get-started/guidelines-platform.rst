@@ -29,7 +29,7 @@ Detailed iPhone/iOS guide is in :doc:`Getting Started for iPhone/iOS  </get-star
 
 Windows Desktop
 ----------------
-Windows is supported from Windows 2000 up to the recent Windows 10 and beyond. All features are expected 
+Windows is supported from Windows 2000 up to Windows 10 and beyond. All features are expected 
 to work. 64bit is supported. Development is based on Visual Studio. Considerations for 
 this platform include:
 
@@ -118,7 +118,8 @@ Symbian
 -------
 .. note::
 
-   Symbian is no longer supported
+   Symbian is no longer supported. For historical information see
+   https://trac.pjsip.org/repos/wiki/Getting-Started/Symbian
 
 Symbian has been supported for a long time. In general all features (excluding video) are expected to 
 work, but we're not going to do Symbian specific development anymore. Other considerations for Symbian:
@@ -131,7 +132,7 @@ BlackBerry 10
 -------------
 .. note::
 
-   BB10 is no longer supported
+   BB10 is no longer supported. For historical information see https://trac.pjsip.org/repos/wiki/Getting-Started/BB10
 
 BlackBerry 10 (BB10) is supported since PJSIP version 2.2. Some considerations for BB10 platform include:
 
@@ -141,6 +142,11 @@ BlackBerry 10 (BB10) is supported since PJSIP version 2.2. Some considerations f
 
 Windows Mobile
 --------------
+.. note::
+
+   Windows Mobile is no longer supported. For historical information see
+   https://trac.pjsip.org/repos/wiki/Getting-Started/Windows-Mobile
+
 This is the old Windows Mobile platform that is based on WinCE. This platform has been supported for a 
 long time. We expect all features except video to work, but there may be some errors every now and then 
 because this target is not actively maintained. No new development will be done for this platform.

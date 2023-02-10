@@ -9,8 +9,8 @@
 
 - Community supported:
 
-   - `MinGW-w64 <https://github.com/pjsip/pjproject/pull/2598>`_
-   - `Embox RTOS <https://github.com/pjsip/pjproject/pull/2643>`_
+   - `MinGW-w64 <https://github.com/pjsip/pjproject/pull/2598>`__
+   - `Embox RTOS <https://github.com/pjsip/pjproject/pull/2643>`__
    - OpenBSD
    - FreeBSD
    - Solaris
@@ -18,7 +18,7 @@
 
 - Deprecated platforms:
 
-   - Windows Mobile/Windows CE
-   - Symbian S60 3rd Edition and 5th Edition
-   - BlackBerry (BB10)
+   - `Windows Mobile/Windows CE <https://trac.pjsip.org/repos/wiki/Getting-Started/Windows-Mobile>`__
+   - `Symbian S60 3rd Edition and 5th Edition <https://trac.pjsip.org/repos/wiki/Getting-Started/Symbian>`__
+   - `BlackBerry (BB10) <https://trac.pjsip.org/repos/wiki/Getting-Started/BB10>`__
 

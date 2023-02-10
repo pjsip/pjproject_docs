@@ -9,11 +9,13 @@ Let's have a look at the libraries architecture again:
 
 PJSIP, PJMEDIA, and PJNATH Level
 --------------------------------
-At the lowest level we have the individual **C** libraries, which 
+At the lower level there are collection of **C** libraries, which 
 consist of :doc:`PJSIP </api/pjsip/index>`, :doc:`PJMEDIA </api/pjmedia/index>`, and 
 :doc:`PJNATH </api/pjnath/index>`, with :doc:`PJLIB-UTIL </api/pjlib-util/index>` and 
 :doc:`PJLIB </api/pjlib/index>` as support libraries. This level provides the most flexibility, but 
-it's also the hardest to use. The only reason you'd want to use this level is if:
+it's also more low level.
+
+Some of the reasons for wanting to use libraries at this level are:
 
 #. You only need the individual library (say, PJNATH)
 #. You need to be very very tight in footprint (say when things need to be measured in Kilobytes instead 
@@ -78,7 +80,7 @@ information. Thanks to SWIG, other language bindings may be generated relatively
 The PJSUA2 API for non-native code is effectively the same as PJSUA2 C++ API. You can peek at the 
 :doc:`Hello world </pjsua2/hello_world>` section to see how these look like. However, unlike C++, 
 you cannot access PJSUA-LIB and the underlying C libraries from the scripting language, hence you are 
-limited to what pjsua2 provides. 
+limited to what PJSUA2 provides. 
 
 You can use this API if native application development is not available in target platform (such as Android), 
 or if you prefer to develop with non-native code instead of C/C++.

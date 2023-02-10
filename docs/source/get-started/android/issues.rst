@@ -1,9 +1,9 @@
-Important Issue(s) when Developing Android Apps
+Common issues when developing Android apps
 ***********************************************
 
 *  **Unable to Make or Receive Call (Problem with sending and receiving large (INVITE) requests over TCP)**
 
-   The issue is documented in :pr:`1488`. The solution is to try using port other 
+   The issue is documented in :issue:`1488`. The solution is to try using port other 
    than 5060 in **both** client and server, and/or reducing the SIP message size.
 
 *  **Garbage Collector May Crash Your App (Pjsua2 API)**
@@ -22,7 +22,7 @@ Important Issue(s) when Developing Android Apps
 
    Currently, the only workaround is to use PJSIP's Android JNI sound device instead 
    (one way to do this is by defining 
-   ``PJMEDIA_AUDIO_DEV_HAS_ANDROID_JNI`` to 1 and ``PJMEDIA_AUDIO_DEV_HAS_OPENSL`` to 0).
+   :c:macro:`PJMEDIA_AUDIO_DEV_HAS_ANDROID_JNI` to 1 and :c:macro:`PJMEDIA_AUDIO_DEV_HAS_OPENSL` to 0).
 
 *  **Bad audio recording quality on some devices**
 

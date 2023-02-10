@@ -500,6 +500,7 @@ then when device orientation is changed, application **must not** update the vid
 
 
 
+.. _guide_vidconf:
 
 
 Video Conference
@@ -568,6 +569,27 @@ On Mac OS X, our video implementation uses Cocoa frameworks, which require handl
        // this will free the main thread to handle GUI events and drawing
        return pj_run_app(&main_func, argc, argv, 0);
    }
+
+
+.. _vid_key:
+
+Video key frame transmission
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Sending/receiving missing video keyframe indication using the following techniques:
+
+  * SIP INFO with XML Schema for Media Control (:rfc:`5168#section-7.1`), using:
+
+     - Full Intra Request (:rfc:`5104#section-3.5.1`)
+     - Picture Loss Indication feedback (:rfc:`4585#section-6.3.1`)
+     - See issue :issue:`1234` for more info
+
+  * RTCP Picture Loss Indication feedback (:rfc:`4585#section-6.3.1`):
+
+     - See issue :issue:`1437` for more info
+
+- Key frame at the start of the call (see issue :issue:`1910`)
+- See also RTCP key frame request
+
 
 .. _vid_ug_api_ref:
 

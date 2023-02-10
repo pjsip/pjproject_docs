@@ -23,12 +23,12 @@ Coding Style
 Below is the PJSIP coding style. You need to follow it if you are submitting 
 patches to PJSIP:
 
-* Indent by 4 characters and use spaces only.
+* Indent by 4 characters and **use spaces only**.
 * All public API in header file must be documented in Doxygen format.
 * Use `K & R style <http://en.wikipedia.org/wiki/1_true_brace_style#K.26R_style>`__, 
   which is the only correct style anyway.
 
-The PJSIP distribution includes an ``.editorconfig`` file to set indentation to 
+The PJSIP distribution includes an :source:`.editorconfig` file to set indentation to 
 4 spaces. Check https://editorconfig.org/ to see if your editor supports it or
 if a plugin needs to be downloaded.
 
@@ -47,8 +47,12 @@ Deployment
 
 config_site.h
 ---------------------
-You need to create ``pjlib/include/pj/config_site.h`` file. This file contains compile-time
-customizations for your application.
+Depending on the platform, you may need to create ``pjlib/include/pj/config_site.h`` file. 
+This file contains compile-time customizations that are specific for your application, hence this
+file is not included in PJSIP distribution.
+
+If you're using GNU make build system, the ``./configure`` script will create an empty
+``config_site.h`` if it doesn't exist. 
 
 It is recommended to start with default settings in :source:`pjlib/include/pj/config_site_sample.h`,
 by including this file in your ``config_site.h``, i.e.:

@@ -160,7 +160,8 @@ And rebuild the Visual Studio project.
 
 WASAPI (Windows Audio Session API)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+WASAPI will be used by following the instructions in
+:any:`Getting started for Windows Phone</get-started/windows-phone/build_instructions>`.
 
 
 No longer supported devices:
@@ -205,10 +206,15 @@ Follow these guides below to enable PA support in PJMEDIA:
 
 Blackberry BB10
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+See https://trac.pjsip.org/repos/wiki/Getting-Started/BB10
+
 
 Nokia APS/VAS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+See https://trac.pjsip.org/repos/wiki/APS
+
 
 Symbian MMF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+See https://trac.pjsip.org/repos/wiki/Getting-Started/Symbian
 

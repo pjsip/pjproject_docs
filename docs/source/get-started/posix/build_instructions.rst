@@ -48,31 +48,31 @@ The following components are needed for video:
 #. `SDL <http://www.libsdl.org/>`__ **version 2.0**
 #. For format conversion and video manipulation, you can use one of the following:
 
-   * libyuv (Recommended) for format conversion and video manipulation. 
+   * :any:`libyuv <guide_libyuv>` (recommended) for format conversion and video manipulation. 
      If you are using PJSIP 2.5.5 or newer, libyuv should be built and enabled 
      automatically.
-   * :ref:`ffmpeg`.
+   * :ref:`FFMPEG <ffmpeg>`.
   
 #. For video codecs:
 
    * H263.
      
-     Get :ref:`ffmpeg`.
+     Get :ref:`FFMPEG <ffmpeg>`.
    
    * H264. 
     
      You can use one of the following:
 
-     * OpenH264 (Recommended): Follow the instructions in ticket :pr:`1947`. 
+     * OpenH264 (Recommended): Follow the instructions in :ref:`openh264`. 
        Alternatively, you can use **VideoToolbox** (only for Mac) or ffmpeg as 
        explained below.
-     * For Mac only: **VideoToolbox** (supported since PJSIP version 2.7). Define this in your ``config_site.h``: 
+     * For Mac only: **VideoToolbox** (supported since PJSIP version 2.7). Define this in your :any:`config_site.h`: 
 
        .. code-block:: c
 
           #define PJMEDIA_HAS_VID_TOOLBOX_CODEC 1
 
-     * Get :ref:`ffmpeg` development library, using libx264. We tested with ffmpeg 
+     * Get :ref:`FFMPEG <ffmpeg>` development library, using libx264. We tested with ffmpeg 
        version 1.x (1.2.5) to 0.x (from 0.5.1 (from circa 2009) to 0.10). 
        
        Since :pr:`1897` we have added support for ffmpeg 2.8, however note that 
@@ -101,10 +101,7 @@ The following components are needed for video:
              $ ./configure --enable-static      # add options if needed, e.g: optimization, install dir, search path
              $ make && make install-lib-static  # default install dir is /usr/local
 
-   * VP8 and VP9.
-
-     Get `libvpx <https://www.webmproject.org/code/>`__. Download, build, and 
-     make install.             
+   * VP8 and VP9, see :ref:`libvpx`
 
 #. Linux: Video4Linux2 (v4l2) development library.
 #. Optional: `Qt development SDK <http://qt.nokia.com/downloads/>`__ for building 

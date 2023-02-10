@@ -8,7 +8,7 @@ NAT Traversal
    -  aggressive and regular nomination
    -  ICE option tag (:rfc:`5768`)
    -  IPv4, IPv6, NAT64 support
-   -  `Trickle ICE <https://github.com/pjsip/pjproject/pull/2588>`__, with support for the following standards:
+   -  :any:`Trickle ICE </specific-guides/network_nat/trickle_ice>`, with support for the following standards:
 
       * Trickle ICE (:rfc:`8838`)
       * Trickle ICE on SIP: (:rfc:`8840`)
@@ -27,6 +27,9 @@ NAT Traversal
    - IPv4/IPv6 allocations
 
 -  :ref:`uPnP <upnp>`
+   
+   - Universal Plug and Play support for SIP UDP and media UDP transports
+
 -  :ref:`STUN <stun>`:
 
    -  :rfc:`5389`

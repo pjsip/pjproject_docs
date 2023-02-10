@@ -4,7 +4,7 @@
    This file is shared by both the Features (Datasheet) page and PJMEDIA API
    reference page.
 
-PJMEDIA-Audiodev supports the following platforms/devices:
+:any:`PJMEDIA-Audiodev </api/pjmedia/pjmedia-audiodev>` supports the following platforms/devices:
 
 - :ref:`alsa`
 - :ref:`opensl`
@@ -18,7 +18,7 @@ PJMEDIA-Audiodev supports the following platforms/devices:
 
 Older devices that are no longer supported:
 
-- Blackberry BB10
-- Symbian audio streaming/multimedia framework (MMF) implementation
-- Nokia Audio Proxy Server (APS) implementation
+- `Blackberry BB10 <https://trac.pjsip.org/repos/wiki/Getting-Started/BB10>`__
+- `Symbian audio streaming/multimedia framework (MMF) <https://trac.pjsip.org/repos/wiki/Getting-Started/Symbian>`__
+- `Nokia Audio Proxy Server (APS) <https://trac.pjsip.org/repos/wiki/APS>`__
 - null-audio implementation

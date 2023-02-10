@@ -54,7 +54,7 @@ Traversal Using Relays around NAT
 
 uPnP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Universal Plug and Play support.
+Universal Plug and Play support for SIP UDP and media UDP transports.
 
 - See ticket :pr:`3184` for build and use instructions.
 - :doc:`uPnP API reference </api/generated/pjnath/group/group__PJNATH__UPNP>`
