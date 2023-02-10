@@ -59,7 +59,8 @@ available on the http://www.gnu.org. More information about GPL can be found in
 
 Alternative license
 ------------------------
-If you can't comply with GPL, an alternative licensing scheme may be arranged.
+If you can't comply with GPL, an alternative licensing scheme may be arranged. The alternative
+license also comes with technical support directly from PJSIP authors.
 
 If you still have questions, just email licensing@pjsip.org and we'll help you sort it out.
 
