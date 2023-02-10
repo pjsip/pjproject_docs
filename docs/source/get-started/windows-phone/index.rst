@@ -6,3 +6,4 @@ Windows Phone
    :caption: Table of Contents
 
    build_instructions
+   winrt
