@@ -161,6 +161,9 @@ is controlled by :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` macro, which default valu
 which in this case it would be necessary to enlarge the :c:macro:`PJMEDIA_SOUND_BUFFER_COUNT` number
 in your :any:`config_site.h`.
 
+The untimely nature of the sound device may also contribute to overal jitter 
+seen by the jitter buffer. See :any:`/specific-guides/audio/jitter_buffer` for more information.
+
 
 Incoming RTP/RTCP Packets
 -------------------------------------------

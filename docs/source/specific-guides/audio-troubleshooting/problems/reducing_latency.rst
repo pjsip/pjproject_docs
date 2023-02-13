@@ -95,6 +95,8 @@ The jitter buffer algorithm is constantly trying to get the best latency for
 the current jitter conditions, hence usually there is no tuning needed to get
 better latency.
 
+See :any:`/specific-guides/audio/jitter_buffer` for more information.
+
 For reference, jitter buffer settings are in :cpp:any:`pjsua_media_config`
 and :cpp:any:`pj::MediaConfig` (look for settings with ``jb`` prefix).
 

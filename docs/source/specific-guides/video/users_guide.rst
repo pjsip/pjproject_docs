@@ -1,12 +1,19 @@
 Video User's Guide
 ========================
 
+Video is available on PJSIP version 2.0 and later (2.3 support video for
+iOS, 2.4 support video for Android). This document describes how to use
+the video feature, mostly with PJSUA-LIB.
+
+.. tip::
+
+   For PJSUA2 video tutorial, please see :any:`/pjsua2/using/media_video`.
+
 .. contents:: Table of Contents
    :depth: 4
 
-Video is available on PJSIP version 2.0 and later (2.3 support video for
-iOS, 2.4 support video for Android). This document describes how to use
-the video feature with PJSIP.
+
+
 
 Building with Video Support
 ---------------------------
@@ -155,11 +162,11 @@ However, if you wish, you may alter the incoming video stream with
 UPDATE to be sent to negotiate the new SDP. The relevant operation to
 control incoming video with :cpp:any:`pjsua_call_set_vid_strm()` are: 
 
-- :cpp:any:`PJSUA_CALL_VID_STRM_CHANGE_DIR`: change the media direction (e.g. to
+- :cpp:any:`PJSUA_CALL_VID_STRM_CHANGE_DIR <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_CHANGE_DIR>`: change the media direction (e.g. to
   "sendonly", or even "inactive") 
-- :cpp:any:`PJSUA_CALL_VID_STRM_REMOVE`: remove
-   the media stream altogether by settings its port to zero 
-- :cpp:any:`PJSUA_CALL_VID_STRM_ADD`: add new video media stream
+- :cpp:any:`PJSUA_CALL_VID_STRM_REMOVE <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_REMOVE>`: remove
+  the media stream altogether by settings its port to zero 
+- :cpp:any:`PJSUA_CALL_VID_STRM_ADD <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_ADD>`: add new video media stream
 
 Since :cpp:any:`pjsua_call_set_vid_strm()` will result in renegotiation of the
 SDP in a re-INVITE or UPDATE transaction, the result of this operation
@@ -214,18 +221,17 @@ Controlling Video Stream
 Application uses :cpp:any:`pjsua_call_set_vid_strm()` API to control video
 stream on a call.
 
-- :cpp:any:`PJSUA_CALL_VID_STRM_ADD`: add a new video
+- :cpp:any:`PJSUA_CALL_VID_STRM_ADD <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_ADD>`: add a new video
   stream 
-- :cpp:any:`PJSUA_CALL_VID_STRM_REMOVE`: remove video stream (set port to
+- :cpp:any:`PJSUA_CALL_VID_STRM_REMOVE <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_REMOVE>`: remove video stream (set port to
   zero) 
-- :cpp:any:`PJSUA_CALL_VID_STRM_CHANGE_DIR`: change direction or deactivate
+- :cpp:any:`PJSUA_CALL_VID_STRM_CHANGE_DIR <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_CHANGE_DIR>`: change direction or deactivate
   (i.e. set direction to "inactive") 
-- :cpp:any:`PJSUA_CALL_VID_STRM_CHANGE_CAP_DEV`: change capture device 
-- :cpp:any:`PJSUA_CALL_VID_STRM_START_TRANSMIT`: start previously stopped
+- :cpp:any:`PJSUA_CALL_VID_STRM_CHANGE_CAP_DEV <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_CHANGE_CAP_DEV>`: change capture device 
+- :cpp:any:`PJSUA_CALL_VID_STRM_START_TRANSMIT <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_START_TRANSMIT>`: start previously stopped
   transmission 
-- :cpp:any:`PJSUA_CALL_VID_STRM_STOP_TRANSMIT`: stop transmission
+- :cpp:any:`PJSUA_CALL_VID_STRM_STOP_TRANSMIT <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_STOP_TRANSMIT>`: stop transmission
 
-See :cpp:any:`pjsua_call_vid_strm_op` for more information.
 
 Some of the video operations above require re-INVITE or UPDATE to be
 sent, hence the result will not be available immediately. In that case,
