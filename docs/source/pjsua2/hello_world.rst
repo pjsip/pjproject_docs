@@ -74,7 +74,7 @@ registers to our pjsip.org SIP server, and quit.
 
 .. tip::
 
-  View this file `on GitHub <https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/samples/pjsua2_hello_reg.cpp>`_
+  View this file: :source:`pjsip-apps/src/samples/pjsua2_hello_reg.cpp`
 
 The C++ sample app above is built along with standard build, you can run the executable
 from ``pjsip-apps/bin/samples/..`` directory.

@@ -6,6 +6,11 @@ Working with video media
     :depth: 2
 
 
+.. tip::
+
+    For using video with PJSUA-LIB, see :any:`/specific-guides/video/users_guide`
+
+
 Video media is similar to audio media in many ways. The class :cpp:class:`pj::VideoMedia` is
 also derived from :cpp:class:`pj::Media` class. Its object types also consist of capture &
 playback devices, and call stream. The video conference bridge shares the same
@@ -42,7 +47,7 @@ can start/stop the transmission to a destination by using the API
     A video media object registered to the conference bridge will be given a port ID number that
     identifies the object in the bridge. Application can use the API :cpp:func:`pj::VideoMedia::getPortId()` 
     to retrieve the port ID. Normally, application should not need to worry about the conference 
-    bridge and its port ID (as all will be taken care of by the ``Media`` class) unless application 
+    bridge and its port ID (as all will be taken care of by the :cpp:any:`pj::Media` class) unless application 
     wants to create its own custom video media.
 
     In the video conference bridge, the port zero is not special like in audio, which is designated
@@ -304,3 +309,4 @@ we need to establish bidirectional video media between them:
     vid_dec_med2.startTransmit(vid_enc_med1);
 
 Now the three parties (us and both remote parties) will be able to see each other.
+

@@ -42,7 +42,7 @@ Using PJSIP in applications
       Replace ``PJDIR`` with path to pjproject source tree.
 
    Alternatively, if ``make install`` was run (on PJSIP) and if **pkg-config** tool is available,
-   you can use ``pkg-config --cflags`` and ``pkg-config --libs`` as usual.
+   you can use ``pkg-config --cflags --libs --static libpjproject``
 
 #. Run ``make``.
 

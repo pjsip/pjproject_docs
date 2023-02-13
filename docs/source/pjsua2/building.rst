@@ -21,7 +21,7 @@ Common Requirements
 
       CFLAGS += -fPIC
 
-   or you can specify it when calling ``configure``:
+   or you can specify it when calling :any:`configure`:
 
    .. code-block:: shell
 

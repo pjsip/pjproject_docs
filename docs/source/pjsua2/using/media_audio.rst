@@ -41,7 +41,7 @@ a destination by using the API :cpp:func:`pj::AudioMedia::startTransmit()` and
     An audio media object registered to the conference bridge will be given a port ID number that 
     identifies the object in the bridge. Application can use the API :cpp:func:`pj::AudioMedia::getPortId()` 
     to retrieve the port ID. Normally, application should not need to worry about the conference 
-    bridge and its port ID (as all will be taken care of by the ``Media`` class) unless application 
+    bridge and its port ID (as all will be taken care of by the :cpp:any:`pj::Media` class) unless application 
     wants to create its own custom audio media.
 
     As a convention in PJSUA-LIB API, port zero of the conference bridge is denoted for
@@ -68,7 +68,7 @@ See :cpp:class:`pj::AudioMediaPlayer` and :cpp:func:`pj::Endpoint::audDevManager
 for reference.
 
 By default, the WAV file will be played in a loop. To disable the loop, specify 
-``PJMEDIA_FILE_NO_LOOP`` when creating the player:
+:cpp:any:`PJMEDIA_FILE_NO_LOOP` when creating the player:
 
 .. code-block:: c++
 
@@ -77,7 +77,7 @@ By default, the WAV file will be played in a loop. To disable the loop, specify
 Without looping, silence will be played once the playback has reached the end of the WAV file.
 
 If application wants to be notified on playback EOF event, it can subclass 
-``AudioMediaPlayer`` and implement :cpp:func:`pj::AudioMediaPlayer::onEof2()` callback.
+:cpp:any:`pj::AudioMediaPlayer` and implement :cpp:func:`pj::AudioMediaPlayer::onEof2()` callback.
 
 Once application is done with the playback, just call :cpp:func:`pj::AudioMedia::stopTransmit()` 
 to stop the playback:
@@ -89,7 +89,7 @@ to stop the playback:
     } catch(Error& err) {
     }
 
-Resuming the transmission (by calling ``startTransmit()``) after the playback is stopped will 
+Resuming the transmission (by calling :cpp:func:`pj::AudioMedia::startTransmit()`) after the playback is stopped will 
 resume playback from the last play position. Use :cpp:func:`pj::AudioMediaPlayer::setPos()` to 
 set playback position to a desired location.
 
@@ -112,7 +112,7 @@ The example below starts recording audio from the microphone to a WAV file, by u
 See :cpp:class:`pj::AudioMediaRecorder` and :cpp:func:`pj::Endpoint::audDevManager()`
 for reference.
 
-Media will flow from the sound device to the WAV recorder as soon as ``startTransmit()``
+Media will flow from the sound device to the WAV recorder as soon as :cpp:func:`pj::AudioMedia::startTransmit()`
 is called. As usual, to stop or pause recording, just call :cpp:func:`pj::AudioMedia::stopTransmit()`:
 
 .. code-block:: c++

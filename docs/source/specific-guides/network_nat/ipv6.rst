@@ -219,8 +219,7 @@ experience problems with IPv4-only server or clients, because there are
 IPv6 address literals in the SIP/SDP fields (Via, Contact, SDP), which
 the IPv4 instance cannot understand.
 
-According to `RFC 6157, IPv6 Transition in the Session Initiation
-Protocol (SIP) <http://tools.ietf.org/html/6157>`__: 
+According to :rfc:`6157` (IPv6 Transition in the Session Initiation Protocol (SIP)): 
 
 * Section 3.1:
 

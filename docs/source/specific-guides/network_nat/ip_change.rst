@@ -54,7 +54,7 @@ When invoked, the stack will:
    You can either hangup or maintain the ongoing/active calls. If you intend to maintain the active calls, updating dialog's contact URI is required. This can be done by specifying :cpp:any:`pjsua_callback::PJSUA_CALL_UPDATE_CONTACT` to the reinvite flags. Note that, hanging up calls might be inevitable on some cases, please see
    **Network change to the same IP address type. (IPv4 to IPv4) or (IPv6 to IPv6)** section below.
 
-   ref: ``ip_change_cfg.hangup_calls`` and ``ip_change_cfg.reinvite_flags`` in :cpp:class:`pjsua_acc_config`.
+   ref: :cpp:any:`pjsua_ip_change_acc_cfg::hangup_calls` and :cpp:any:`pjsua_ip_change_acc_cfg::reinvite_flags` in :cpp:class:`pjsua_acc_config::ip_change_cfg`
 
 
 Notes and limitations
