@@ -19,7 +19,6 @@ Installation
 PJMEDIA by default supports FFMPEG version 2.8 or newer (see :issue:`1897`). Using older version of
 FFMPEG is possible, see the ticket for information.
 
-The instructions to install the above development packages vary.
 
 Android
 ^^^^^^^^^^^^^^^^^
@@ -47,8 +46,26 @@ Debian based distributions
 
 
 Windows
-^^^^^^^^^^^^^^
-TBD.
+^^^^^^^^^^^^^^^^^^^^^^
+See :any:`ffmpeg_windows`
+
+
+Others
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* Configure and build:
+
+  .. code-block:: shell
+
+      $ ./configure --enable-shared --disable-static
+      $ make && make install
+
+* If H.264 support is needed:
+
+  .. code-block:: shell
+
+     $ ./configure --enable-shared --disable-static --enable-gpl --enable-libx264
+     $ make && make install
+
 
 
 Building PJPROJECT with FFMPEG support

@@ -6,4 +6,4 @@
 
 .. tip::
 
-   See also :any:`Video User's Guide </specific-guides/video/video_users_guide>`
+   See also :any:`Video User's Guide </specific-guides/video/users_guide>`

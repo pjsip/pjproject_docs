@@ -1,21 +1,24 @@
 Common issues when developing iOS apps
-*********************************************
+===========================================
 
-* **PushKit guide, to accept calls in the background after kCFStreamNetworkServiceTypeVoIP is deprecated (iOS 10/iOS 9)**
+.. contents:: Table of Contents
+    :depth: 2
 
-  Starting in iOS 9, 
-  `kCFStreamNetworkServiceTypeVoIP <https://developer.apple.com/library/ios/documentation/CoreFoundation/Reference/CFSocketStreamRef/index.html#//apple_ref/doc/constant_group/Stream_Service_Types>`__ is deprecated. 
-  Apple recommends that applications use VoIP Push Notifications 
-  (using **PushKit** framework) to avoid persistent connections as described in 
-  the `Apple's official doc <https://developer.apple.com/library/ios/documentation/Performance/Conceptual/EnergyGuide-iOS/OptimizeVoIP.html>`__. 
-  
-  This will require application to implement the setup and handling of push 
-  notifications in the application layer (for more details, you can refer to 
-  :pr:`1941`). For now, PJSIP will still use **kCFStreamNetworkServiceTypeVoIP**, 
-  if you want to disable it right away, you can set 
-  :c:macro:`PJ_IPHONE_OS_HAS_MULTITASKING_SUPPORT` to 0.
+Accepting calls in the background with PushKit (iOS 9 or later)
+----------------------------------------------------------------
+Starting in iOS 9, 
+`kCFStreamNetworkServiceTypeVoIP <https://developer.apple.com/library/ios/documentation/CoreFoundation/Reference/CFSocketStreamRef/index.html#//apple_ref/doc/constant_group/Stream_Service_Types>`__ is deprecated. 
+Apple recommends that applications use VoIP Push Notifications 
+(using **PushKit** framework) to avoid persistent connections as described in 
+the `Apple's official doc <https://developer.apple.com/library/ios/documentation/Performance/Conceptual/EnergyGuide-iOS/OptimizeVoIP.html>`__. 
 
-  Starting from iOS 13, there's a new requirement:
+This will require application to implement the setup and handling of push 
+notifications in the application layer (for more details, you can refer to 
+:pr:`1941`). For now, PJSIP will still use **kCFStreamNetworkServiceTypeVoIP**, 
+if you want to disable it right away, you can set 
+:c:macro:`PJ_IPHONE_OS_HAS_MULTITASKING_SUPPORT` to 0.
+
+Starting from iOS 13, there's a new requirement:
 
      *Apps receving VoIP pushes must post an incoming call (via CallKit or IncomingCallNotifications) 
      in the same run loop as pushRegistry:didReceiveIncomingPushWithPayload:forType:[withCompletionHandler:] 
@@ -23,32 +26,32 @@ Common issues when developing iOS apps
      reason: 'Killing app because it never posted an incoming call to the system 
      after receiving a PushKit VoIP push callback.'*
 
-  In order to make it work with the normal SIP flow which may require you to wait 
-  for some time to receive the INVITE message, please look at Apple's recommendation 
-  in its `developer forum <https://forums.developer.apple.com/thread/117939>`__.
+In order to make it work with the normal SIP flow which may require you to wait 
+for some time to receive the INVITE message, please look at Apple's recommendation 
+in its `developer forum <https://forums.developer.apple.com/thread/117939>`__.
 
-* **CallKit integration and audio session (AVAudioSession) management (iOS 10)**
+CallKit integration and audio session (AVAudioSession) management (iOS 10)
+-----------------------------------------------------------------------------
+**CallKit** requires application to configure audio session and start the call 
+audio at specific times. Thus, to ensure a smooth integration, we disable the 
+setup of audio session in our sound device wrapper to avoid conflict with 
+application's audio session setting.  
+Starting from :pr:`1941`, application needs to set its own audio session 
+category, mode, and activation/deactivation.
 
-  **CallKit** requires application to configure audio session and start the call 
-  audio at specific times. Thus, to ensure a smooth integration, we disable the 
-  setup of audio session in our sound device wrapper to avoid conflict with 
-  application's audio session setting.  
-  Starting from :pr:`1941`, application needs to set its own audio session 
-  category, mode, and activation/deactivation.
-
-  Here could be used as a quick start reference:
+Here could be used as a quick start reference:
 
   * `Apple's AVAudioSession doc <https://developer.apple.com/reference/avfoundation/avaudiosession>`_
 
-* **Crash after calling PJLIB APIs using Grand Central Dispatch (GCD)**
+Crash after calling PJLIB APIs using Grand Central Dispatch (GCD)
+----------------------------------------------------------------------
+PJLIB API should be called from a registered thread, otherwise it will raise 
+assertion such as   *"Calling pjlib from unknown/external thread..."*. 
+With GCD, we cannot really be sure of which thread executing the PJLIB function. 
 
-  PJLIB API should be called from a registered thread, otherwise it will raise 
-  assertion such as   *"Calling pjlib from unknown/external thread..."*. 
-  With GCD, we cannot really be sure of which thread executing the PJLIB function. 
-  
-  Registering that thread to PJLIB seems to be a simple and easy solution, 
-  however it potentially introduces a random crash which is harder to debug. 
-  Here are few possible crash scenarios:
+Registering that thread to PJLIB seems to be a simple and easy solution, 
+however it potentially introduces a random crash which is harder to debug. 
+Here are few possible crash scenarios:
 
   * PJLIB's :cpp:any:`pj_thread_desc` should remain valid until the registered thread 
     stopped, otherwise crash of invalid pointer access may occur, 
@@ -56,19 +59,19 @@ Common issues when developing iOS apps
   * Some compatibility problems between GCD and PJLIB, see :pr:`1837` for more 
     info.
 
-  If you want to avoid any possibility of blocking operation by PJLIB (or any 
-  higher API layer such as PJMEDIA, PJNATH, PJSUA that usually calls PJLIB), 
-  instead of dispatching the task using GCD, the safest way is to create and 
-  manage your own thread pool and register that thread pool to PJLIB. 
-  Or alternatively, simply use PJSUA timer mechanism (with zero delay), 
-  see :cpp:any:`pjsua_schedule_timer()`/:cpp:any:`pjsua_schedule_timer2()` for more info.
+If you want to avoid any possibility of blocking operation by PJLIB (or any 
+higher API layer such as PJMEDIA, PJNATH, PJSUA that usually calls PJLIB), 
+instead of dispatching the task using GCD, the safest way is to create and 
+manage your own thread pool and register that thread pool to PJLIB. 
+Or alternatively, simply use PJSUA timer mechanism (with zero delay), 
+see :cpp:any:`pjsua_schedule_timer()`/:cpp:any:`pjsua_schedule_timer2()` for more info.
 
-* **Audio lost or other issues with interruption (by a phone call or an alarm), headset plug/unplug, or Bluetooth input**
+Audio lost or other issues with interruption (by a phone call or an alarm), headset plug/unplug, or Bluetooth input
+------------------------------------------------------------------------------------------------------------------------
+It has been reported that any time an audio interruption happens, 
+audio is lost until the application is killed/restarted.
 
-  It has been reported that any time an audio interruption happens, 
-  audio is lost until the application is killed/restarted.
-
-  Here is the reported working solution:
+Here is the reported working solution:
 
   * Application should be configured to receive interruption events, see 
     `Apple's AVAudioSession doc <https://developer.apple.com/reference/avfoundation/avaudiosession>`__.
@@ -79,9 +82,9 @@ Common issues when developing iOS apps
     for pjsua, or :cpp:any:`pj::AudDevManager::setPlaybackDev()` and
     :cpp:any:`pj::AudDevManager::setCaptureDev()` for pjsua2.
 
-  Also note this is the recommended outline of the normal flow for audio interruption:
-  
-  * on interruption begin
+Also note this is the recommended outline of the normal flow for audio interruption:
+
+* on interruption begin
   
     #. hold the calls
     #. stop any other media if any (i.e. disconnect all connections in the bridge)
@@ -90,7 +93,7 @@ Common issues when developing iOS apps
        shutdown the sound device.
 
 
-  * on interruption end
+* on interruption end
 
     #. unhold the calls
     #. resume any other media if any
@@ -100,16 +103,16 @@ Common issues when developing iOS apps
 
 .. _ios_bg:
 
-* **SIP transport keepalive while in background**
+SIP transport keepalive while in background
+----------------------------------------------
+As the process is normally suspended when application is in the background, 
+the worker thread that handles TCP keepalive timer is also suspended. 
+So basically application needs to schedule periodic wakeup to allow the 
+library send TCP keep-alive. 
 
-  As the process is normally suspended when application is in the background, 
-  the worker thread that handles TCP keepalive timer is also suspended. 
-  So basically application needs to schedule periodic wakeup to allow the 
-  library send TCP keep-alive. 
-  
-  Sample code:
+Sample code:
 
-  .. code-block::
+.. code-block::
 
      - (void)keepAlive {
         /* Register this thread if not yet */
@@ -139,24 +142,24 @@ Common issues when developing iOS apps
         }];
      }
 
-  Make sure that keepalive feature of SIP transport is not disabled, see 
-  :c:macro:`PJSIP_TCP_KEEP_ALIVE_INTERVAL`  and :c:macro:`PJSIP_TLS_KEEP_ALIVE_INTERVAL`,
-  and the keepalive interval is set to less than 600s.
+Make sure that keepalive feature of SIP transport is not disabled, see 
+:c:macro:`PJSIP_TCP_KEEP_ALIVE_INTERVAL`  and :c:macro:`PJSIP_TLS_KEEP_ALIVE_INTERVAL`,
+and the keepalive interval is set to less than 600s.
 
-  Alternatively, configuring server to send keepalive ping packet, if possible, 
-  and client responds back by sending keepalive pong to the server, 
-  so we have two-way traffic. As there is no way to detect incoming ping 
-  from server, currently application can just always send pong packet whenever 
-  it becomes active (application will be woken up when receiving TCP packet), 
-  e.g: send pong packet in ``UIApplication::applicationDidBecomeActive()``.
+Alternatively, configuring server to send keepalive ping packet, if possible, 
+and client responds back by sending keepalive pong to the server, 
+so we have two-way traffic. As there is no way to detect incoming ping 
+from server, currently application can just always send pong packet whenever 
+it becomes active (application will be woken up when receiving TCP packet), 
+e.g: send pong packet in ``UIApplication::applicationDidBecomeActive()``.
 
-* **Unable to accept incoming call in background mode (iOS 8 or before)**
+Unable to accept incoming call in background mode (iOS 8 or older)
+-----------------------------------------------------------------------
+Starting in iOS 9, this method to accept incoming call in bg is deprecated, 
+please have a look at :ref:`this <ios_bg>`.
 
-  Starting in iOS 9, this method to accept incoming call in bg is deprecated, 
-  please have a look at :ref:`this <ios_bg>`.
-
-  If while in the background, ipjsua (or your application) is unable to detect 
-  if there is an incoming call and display the local notification:
+If while in the background, ipjsua (or your application) is unable to detect 
+if there is an incoming call and display the local notification:
 
   #. Note that background feature only works with TCP.
   #. Make sure that voip is included in the required background modes 
@@ -167,6 +170,6 @@ Common issues when developing iOS apps
      foreground. If yes, make sure that the incoming call request comes from the 
      wrapped TCP socket (check the log for the INVITE request).
 
-  .. note:: 
+.. note:: 
 
      See also :any:`audio_troubleshooting_toc`.

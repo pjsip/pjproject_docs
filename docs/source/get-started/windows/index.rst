@@ -6,4 +6,5 @@ Windows
    :caption: Table of Contents
 
    build_instructions
+   using
    issues

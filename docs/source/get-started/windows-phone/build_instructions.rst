@@ -34,7 +34,7 @@ Build Preparation
 ------------------
 
 #. :doc:`Getting the source code </get-started/getting>` if you haven't already.
-#. Set your :ref:`config_site.h <dev_start>` to the following:
+#. Set your :ref:`config_site.h` to the following:
 
 .. code-block:: c
 
@@ -82,7 +82,7 @@ Windows Phone 8.x
 Follow the steps below to build the libraries and sample application using 
 Visual Studio 2015:
 
-#. Using any text editor, open ``build\vs\pjproject-vs14-api-def.props`` 
+#. Using any text editor, open :source:`build/vs/pjproject-vs14-api-def.props` 
    and set ``API_Family`` to **Winphone8**, i.e:
 
    .. code-block:: 
@@ -120,7 +120,7 @@ To Debug managed(C#) part of the application:
 Assert Problem on Debugging Native Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As described `<here http://blogs.msdn.com/b/andypennell/archive/2013/06/17/native-code-on-windows-phone-8-the-assert-problem.aspx>`, 
+As described `here <http://blogs.msdn.com/b/andypennell/archive/2013/06/17/native-code-on-windows-phone-8-the-assert-problem.aspx>`__, 
 assertion will cause process exiting (instead of just stopping). 
 Adding the following code in the application would make process stopping on 
 assertion:

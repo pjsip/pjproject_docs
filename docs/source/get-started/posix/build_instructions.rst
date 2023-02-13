@@ -13,7 +13,7 @@ for the following targets:
 
 * Linux/uC-Linux (i386, Opteron, Itanium, MIPS, PowerPC, etc.),
 * MacOS X (PowerPC, Intel, Apple M),
-* mingw/mingw-w64(i386),
+* :any:`mingw/mingw-w64 </specific-guides/build_int/mingw>`
 * FreeBSD and maybe other BSD's (i386, Opteron, etc.),
 * RTEMS with cross compilation (ARM, powerpc),
 * etc.
@@ -34,13 +34,12 @@ In order to use PJSIP's GNU build system, these typical GNU tools are needed:
 In addition, the following libraries are optional, but they will be used if they 
 are present:
 
-* (For Linux): ALSA header files/libraries (optional) if ALSA support is wanted. 
-  To install, use the command: ``apt-get install libasound2-dev`` 
-  or ``apt-get install alsa-lib-devel`` (depending on the distribution).
-* OpenSSL header files/libraries (optional) if TLS support is wanted.
+* (For Linux): ALSA (recommended). See :ref:`alsa`.
+* SSL libraries such as OpenSSL, GnuTLS, or BoringSSL (Mac/iOS can use
+  native SSL). See :any:`/specific-guides/security/ssl`
 
 
-Video Support (for 2.0 and above)
+Video Support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following components are needed for video:
@@ -48,58 +47,24 @@ The following components are needed for video:
 #. `SDL <http://www.libsdl.org/>`__ **version 2.0**
 #. For format conversion and video manipulation, you can use one of the following:
 
-   * :any:`libyuv <guide_libyuv>` (recommended) for format conversion and video manipulation. 
-     If you are using PJSIP 2.5.5 or newer, libyuv should be built and enabled 
-     automatically.
+   * libyuv (recommended). See :any:`libyuv <guide_libyuv>`.
+     Alternatively, you can use ffmpeg below.
    * :ref:`FFMPEG <ffmpeg>`.
   
 #. For video codecs:
 
-   * H263.
-     
-     Get :ref:`FFMPEG <ffmpeg>`.
-   
-   * H264. 
+   * H263: get :ref:`FFMPEG <ffmpeg>`.
+   * H264: choose one of the following:
     
-     You can use one of the following:
-
-     * OpenH264 (Recommended): Follow the instructions in :ref:`openh264`. 
-       Alternatively, you can use **VideoToolbox** (only for Mac) or ffmpeg as 
-       explained below.
-     * For Mac only: **VideoToolbox** (supported since PJSIP version 2.7). Define this in your :any:`config_site.h`: 
+     * :ref:`openh264`. 
+     * **VideoToolbox** (for Mac and iOS only). Define this in your :any:`config_site.h`: 
 
        .. code-block:: c
 
           #define PJMEDIA_HAS_VID_TOOLBOX_CODEC 1
 
-     * Get :ref:`FFMPEG <ffmpeg>` development library, using libx264. We tested with ffmpeg 
-       version 1.x (1.2.5) to 0.x (from 0.5.1 (from circa 2009) to 0.10). 
-       
-       Since :pr:`1897` we have added support for ffmpeg 2.8, however note that 
-       on applying the ticket, older ffmpeg will no longer be supported. 
-       To enable H.264 support in ffmpeg (this is not required if you already 
-       have H.264 codec (via OpenH264 or **VideoToolbox**)):
-       
-       * You need newer releases (October 2011 onwards), and it needs libz too. 
-         On Mac OS X: You may need to rebuild libbz2 if you have an old libbz2 
-         for older system.
-       * Build with at least:
-
-         .. code-block:: shell
-
-            $ ./configure --enable-shared --disable-static --enable-memalign-hack
-            # add other options if needed, e.g: optimization, install dir, search path 
-            # particularly CFLAGS and LDFLAGS for x264
-            # to enable H264, add "--enable-gpl --enable-libx264"
-            $ make && make install
-        
-     * Get `libx264 <http://www.videolan.org/developers/x264.html>`__. We tested 
-       with the latest from git (as of October 2011):
-
-          .. code-block:: shell
-
-             $ ./configure --enable-static      # add options if needed, e.g: optimization, install dir, search path
-             $ make && make install-lib-static  # default install dir is /usr/local
+     * :ref:`FFMPEG <ffmpeg>`
+     * `libx264 <http://www.videolan.org/developers/x264.html>`__
 
    * VP8 and VP9, see :ref:`libvpx`
 
@@ -112,6 +77,11 @@ The following components are needed for video:
 
       Without this you can still enjoy video with pjsua console application
 
+   .. tip:: 
+
+      For more information about using the video, see :any:`/specific-guides/video/users_guide`
+
+
 Host requirements
 ^^^^^^^^^^^^^^^^^
 
@@ -119,22 +89,12 @@ The build system is known to work on the following hosts:
 
 * Linux, many types of distributions.
 * MacOS X 10.2
-* mingw/mingw-w64 (Win2K, XP)
+* :any:`mingw/mingw-w64 </specific-guides/build_int/mingw>`
 * FreeBSD (must use gmake instead of make)
-
-Building Win32 applications with Cygwin is currently not supported by the 
-autoconf script (there are some conflicts with Windows headers), but one can 
-still use the old configure script by calling ``./configure-legacy``. 
-
-More over, cross-compilations might also work with Cygwin using this build 
-system.
-
-Mingw-w64 is supported since 2.11, including video with DirectShow camera, 
-please check :pr:`2598` for more info.
 
 .. _configure:
 
-``./configure``
+./configure
 ------------------
 
 Running ``./configure``.
@@ -159,7 +119,7 @@ settings for the host:
 Configure with Video Support
 `````````````````````````````
 
-Add this to your ``config_site.h``:
+Add this to your :any:`config_site.h`:
 
 .. code-block:: c
 
@@ -217,8 +177,7 @@ found OpenH264, libyuv, and ffmpeg packages (libavformat, libavcodec, etc).
 Features Customization
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-With the new autoconf based build system, most configuration/customization can 
-be specified as configure arguments. 
+Configuration/customization can be specified as configure arguments. 
 The list of customizable features can be viewed by running ``./configure --help`` 
 command:
 
@@ -227,28 +186,132 @@ command:
    $ cd pjproject
    $ ./configure --help
 
-Optional Features:
+The following shows output from PJSIP version 2.13:
 
-.. code-block:: shell
+::
 
-   --disable-floating-point   Disable floating point where possible
-   --disable-sound            Exclude sound (i.e. use null sound)
-   --disable-small-filter     Exclude small filter in resampling
-   --disable-large-filter     Exclude large filter in resampling
-   --disable-g711-plc         Exclude G.711 Annex A PLC
-   --disable-speex-aec        Exclude Speex Acoustic Echo Canceller/AEC
-   --disable-g711-codec       Exclude G.711 codecs from the build
-   --disable-l16-codec        Exclude Linear/L16 codec family from the build
-   --disable-gsm-codec 	      Exclude GSM codec in the build
-   --disable-speex-codec      Exclude Speex codecs in the build
-   --disable-ilbc-codec       Exclude iLBC codec in the build
-   --disable-ssl              Force excluding TLS support (default is autodetected based on OpenSSL availability)
-   --disable-sdl              Disable SDL (default: not disabled)
-   --disable-ffmpeg           Disable ffmpeg (default: not disabled)
-   --disable-v4l2             Disable Video4Linux2 (default: not disabled)
-   --disable-openh264         Disable OpenH264 (default: not disabled)
-   --disable-libyuv           Exclude libyuv in the build
-	
+   Optional Features:
+      --disable-option-checking  ignore unrecognized --enable/--with options
+      --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+      --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+      --disable-libuuid       Exclude libuuid(default: autodetect)
+      --disable-floating-point
+                              Disable floating point where possible
+      --enable-kqueue         Use kqueue ioqueue on macos/BSD (experimental)
+      --enable-epoll          Use /dev/epoll ioqueue on Linux (experimental)
+      --enable-shared         Build shared libraries
+      --disable-pjsua2        Exclude pjsua2 library and application from the
+                              build
+      --disable-upnp          Disable UPnP (default: not disabled)
+      --disable-resample      Disable resampling implementations
+      --disable-sound         Exclude sound (i.e. use null sound)
+      --disable-video         Disable video feature
+      --enable-ext-sound      PJMEDIA will not provide any sound device backend
+      --disable-small-filter  Exclude small filter in resampling
+      --disable-large-filter  Exclude large filter in resampling
+      --disable-speex-aec     Exclude Speex Acoustic Echo Canceller/AEC
+      --disable-g711-codec    Exclude G.711 codecs from the build
+      --disable-l16-codec     Exclude Linear/L16 codec family from the build
+      --disable-gsm-codec     Exclude GSM codec in the build
+      --disable-g722-codec    Exclude G.722 codec in the build
+      --disable-g7221-codec   Exclude G.7221 codec in the build
+      --disable-speex-codec   Exclude Speex codecs in the build
+      --disable-ilbc-codec    Exclude iLBC codec in the build
+      --enable-libsamplerate  Link with libsamplerate when available.
+      --enable-resample-dll   Build libresample as shared library
+      --enable-speex-resample Enable Speex resample
+      --disable-sdl           Disable SDL (default: not disabled)
+      --disable-ffmpeg        Disable ffmpeg (default: not disabled)
+      --disable-v4l2          Disable Video4Linux2 (default: not disabled)
+      --disable-openh264      Disable OpenH264 (default: not disabled)
+      --disable-vpx           Disable VPX (default: not disabled)
+      --enable-ipp            Enable Intel IPP support. Specify the Intel IPP
+                              package and samples location using IPPROOT and
+                              IPPSAMPLES env var or with --with-ipp and
+                              --with-ipp-samples options
+      --disable-android-mediacodec
+                              Exclude Android MediaCodec (default: autodetect)
+      --disable-darwin-ssl    Exclude Darwin SSL (default: autodetect)
+      --disable-ssl           Exclude SSL support the build (default: autodetect)
+
+      --disable-opencore-amr  Exclude OpenCORE AMR support from the build
+                              (default: autodetect)
+
+      --disable-silk          Exclude SILK support from the build (default:
+                              autodetect)
+
+      --disable-opus          Exclude OPUS support from the build (default:
+                              autodetect)
+
+      --disable-bcg729        Disable bcg729 (default: not disabled)
+      --disable-libsrtp       Exclude libsrtp in the build
+      --disable-libyuv        Exclude libyuv in the build
+      --disable-libwebrtc     Exclude libwebrtc in the build
+      --enable-libwebrtc-aec3 Build libwebrtc-aec3 that's included in PJSIP
+
+   Optional Packages:
+      --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+      --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+      --with-upnp=DIR         Specify alternate libupnp prefix
+      --with-external-speex   Use external Speex development files, not the one in
+                              "third_party" directory. When this option is set,
+                              make sure that Speex is accessible to use (hint: use
+                              CFLAGS and LDFLAGS env var to set the include/lib
+                              paths)
+      --with-external-gsm     Use external GSM codec library, not the one in
+                              "third_party" directory. When this option is set,
+                              make sure that the GSM include/lib files are
+                              accessible to use (hint: use CFLAGS and LDFLAGS env
+                              var to set the include/lib paths)
+      --with-external-srtp    Use external SRTP development files, not the one in
+                              "third_party" directory. When this option is set,
+                              make sure that SRTP is accessible to use (hint: use
+                              CFLAGS and LDFLAGS env var to set the include/lib
+                              paths)
+      --with-external-yuv     Use external libyuv development files, not the one
+                              in "third_party" directory. When this option is set,
+                              make sure that libyuv is accessible to use (hint:
+                              use CFLAGS and LDFLAGS env var to set the
+                              include/lib paths)
+      --with-external-webrtc  Use external webrtc development files, not the one
+                              in "third_party" directory. When this option is set,
+                              make sure that webrtc is accessible to use (hint:
+                              use CFLAGS and LDFLAGS env var to set the
+                              include/lib paths)
+      --with-external-webrtc-aec3
+                              Use external webrtc AEC3 development files, not the
+                              one in "third_party" directory. When this option is
+                              set, make sure that webrtc is accessible to use
+                              (hint: use CFLAGS and LDFLAGS env var to set the
+                              include/lib paths)
+      --with-external-pa      Use external PortAudio development files. When this
+                              option is set, make sure that PortAudio is
+                              accessible to use (hint: use CFLAGS and LDFLAGS env
+                              var to set the include/lib paths)
+      --with-oboe             Enable Android Oboe audio device backend.
+      --with-sdl=DIR          Specify alternate libSDL prefix
+      --with-ffmpeg=DIR       Specify alternate FFMPEG prefix
+      --with-openh264=DIR     Specify alternate OpenH264 prefix
+      --with-vpx=DIR          Specify alternate VPX prefix
+      --with-ipp=DIR          Specify the Intel IPP location
+      --with-ipp-samples=DIR  Specify the Intel IPP samples location
+      --with-ipp-arch=ARCH    Specify the Intel IPP ARCH suffix, e.g. "64" or
+                              "em64t. Default is blank for IA32"
+      --with-ssl=DIR          Specify alternate SSL library prefix. This option
+                              will try to find OpenSSL first, then if not found,
+                              GnuTLS. To skip OpenSSL finding, use --with-gnutls
+                              option instead.
+      --with-gnutls=DIR       Specify alternate GnuTLS prefix
+      --with-opencore-amrnb=DIR
+                              This option is obsolete and replaced by
+                              --with-opencore-amr=DIR
+      --with-opencore-amr=DIR Specify alternate libopencore-amr prefix
+      --with-opencore-amrwbenc=DIR
+                              Specify alternate libvo-amrwbenc prefix
+      --with-silk=DIR         Specify alternate SILK prefix
+      --with-opus=DIR         Specify alternate OPUS prefix
+      --with-bcg729=DIR       Specify alternate bcg729 prefix	
+
 Configuring Debug Version and Other Customizations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -266,15 +329,7 @@ Below is an example of specifying CFLAGS in configure:
 Configuring TLS Support
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-By default, TLS support is configured based on the availability of OpenSSL 
-header files and libraries. If OpenSSL is available at the default include and 
-library path locations, TLS will be enabled by the configure script.
-
-You can explicitly disable TLS support by giving the configure script ``--disable-ssl`` 
-option.
-
-For MacOS or iOS platforms, native SSL backend using Network framework is also 
-supported, please check :pr:`2482` for more info.
+See :any:`/specific-guides/security/ssl`
 
 Cross Compilation
 ------------------
@@ -326,7 +381,7 @@ invoking these commands:
 
 .. note:: 
    
-   **gmake** may need to be specified instead of **make** for some hosts, to 
+   **gmake** may need to be specified instead of **make** for some hosts to 
    invoke GNU **make** instead of the native **make**. 
 
 Description of all make targets supported by the Makefile's:
@@ -356,9 +411,9 @@ Build Customizations
 Build features can be customized by specifying the options when running 
 ``./configure`` as described in Running Configure above.
 
-In addition, additional CFLAGS and LDFLAGS options can be put in user.mak file 
+In addition, additional CFLAGS and LDFLAGS options can be put in ``user.mak`` file 
 in PJ root directory (this file may need to be created if it doesn't exist). 
-Below is a sample of ``user.mak`` file contents:
+See an example in :source:`user.mak.sample` file:
 
 .. code-block:: shell
 
@@ -368,7 +423,7 @@ Below is a sample of ``user.mak`` file contents:
 Optional: Installing PJSIP
 ---------------------------
 
-Run ``make install`` to install the header and library files to the targt directory. 
+Run ``make install`` to install the header and library files to the target directory. 
 The default target directory can be customized by specifying ``--prefix=DIR`` 
 option to ``configure`` script.
 
@@ -376,67 +431,3 @@ option to ``configure`` script.
 
    $ make install
 
-Using pjsip libraries in your applications
--------------------------------------------
-
-Steps for Building Your Application that Uses PJSIP/PJMEDIA:
-
-#. First, build ``pjproject`` libraries as described above. This normally is 
-   accomplished by executing these commands:
-
-   .. code-block:: shell
-
-      $ ./configure && make dep && make
-
-#. Create a directory outside the PJSIP sources for your project and place your 
-   source files there.
-#. Create a file named **Makefile** in your source directory:
- 
-   -  After you run ``make install``, **and** you have **pkg-config** tool, 
-      you can use this template for your Makefile:
-
-      .. code-block:: makefile
-
-         # If your application is in a file named myapp.cpp or myapp.c
-         # this is the line you will need to build the binary.
-         all: myapp
-
-         myapp: myapp.cpp
-            $(CC) -o $@ $< `pkg-config --cflags --libs libpjproject`
-
-         clean:
-            rm -f myapp.o myapp
-
-#. There few things to note when making the **Makefile** above:
-
-   #. First, make sure that you replace **PJBASE** with the location of PJSIP 
-      sources in your computer.
-   #. If you notice there are spaces towards the bottom of the file 
-      (before ``$(CC)`` and ``rm``, these are a single tab, not spaces. 
-      **This is important**, or otherwise **make** command will fail
-      with "**missing separator**" error.
-   #. Change ``myapp.cpp`` to your source filename.
-
-#. Create ``myapp.cpp`` in the same directory as your ``Makefile``. At minimum, 
-   it may look like this:
-
-   .. code-block:: c
-
-      #include <pjlib.h>
-      #include <pjlib-util.h>
-      #include <pjmedia.h>
-      #include <pjmedia-codec.h>
-      #include <pjsip.h>
-      #include <pjsip_simple.h>
-      #include <pjsip_ua.h>
-      #include <pjsua-lib/pjsua.h>
-
-      int main()
-      {
-            return 0;
-      }
-
-#. Last, run **make** in your source directory.
-
-You can also go to `Video Users Guide <http://trac.pjsip.org/repos/wiki/Video_Users_Guide>`__ 
-for video usage instructions for pjsip version 2.x.

@@ -1,6 +1,9 @@
 Windows Runtime (WinRT) Overview
 ================================
 
+.. contents:: Table of Contents
+    :depth: 2
+
 This document is compiled from various sources in hopes to give better
 understanding in regards to WinRT and specifically its relation to
 Windows RT and Windows Phone.
@@ -93,7 +96,7 @@ developers are given the choice of using WinRT API or WPRT API. Existing
 app from WP8 (using WPRT) can reuse their code by upgrading their app to
 Windows phone silverlight 8.1 app.
 
-Reference:
+References
 ----------
 
 1. `WinRT overview 1 <http://en.wikipedia.org/wiki/Windows_Runtime>`__

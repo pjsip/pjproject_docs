@@ -15,7 +15,7 @@ The TLS support in PJSIP requires one of the following:
 - OpenSSL
 - BoringSSL: :pr:`2856`
 - GnuTLS: :issue:`2082`
-- Mac/iOS native backend: :issue:`2185`
+- Mac/iOS native backend: :issue:`2482` and :issue:`2185`
 
 This page mostly describes TLS usage with OpenSSL. For other backends, please refer to the GitHub issues/PR above.
 

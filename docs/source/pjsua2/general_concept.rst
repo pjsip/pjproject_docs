@@ -90,6 +90,8 @@ Python, it is required to disable PJSUA2 internal worker threads by setting
 doesn't  like to be called by external thread (such as PJSIP's worker thread).
 
 
+.. _gc_problems:
+
 Problems with Garbage Collection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Garbage collection (GC) exists in run-time such as Java and Python, and there 

@@ -8,27 +8,33 @@ This page describes how to use Microsoft Visual Studio to build pjsip libraries:
 
 .. note::
    
-   You can also build for Windows using GNU tools such mingw. Follow the steps 
-   in :doc:`Building with GNU Tools/Autoconf </get-started/posix/build_instructions>`. 
-   Also note that video feature is currently only supported on Microsoft 
-   Visual Studio build tools because some video components, 
-   e.g: **DirectShow** video capture device, can only be built using 
-   Visual Studio and Windows SDK.
+   For building with mingw-w64 see :any:`/specific-guides/build_int/mingw`. 
 
 .. note:: 
 
-   We don't provide DLL projects for Windows, but please see 
+   PJSIP does not provide DLL projects for Windows, but please see 
    :doc:`Building Dynamic Link Libraries </api/generated/pjlib/group/group__pj__dll__target>` 
-   page in PJLIB documentation on how to build these DLL yourself.
+   page in PJLIB documentation on how to build these DLL.
 
 Build Preparation
 ------------------
 
 #. :doc:`Getting the source code </get-started/getting>` if you haven't already.
-#. Create :ref:`config_site.h <dev_start>`
+#. Customize :ref:`config_site.h`
 
 Requirements
 -------------
+
+Host requirements
+^^^^^^^^^^^^^^^^^
+
+Windows NT, 2000, XP, 2003, Vista, Windows 7, Windows 10, or later.
+
+
+Windows on ARM Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Please refer to :pr:`2807` for more information.
 
 Tools and SDKs
 ^^^^^^^^^^^^^^
@@ -45,20 +51,19 @@ The Visual Studio based project files can be used with one of the following tool
 
 .. note::
 
-   Microsoft Visual Studio 2010 **is currently unsupported**.
-
-   * This is because Visual Studio 2010 importer for our VS2005 solution files 
-     is broken. Use Visual Studio 2012 instead.
-   * Workaround tips: `#1 <http://lists.pjsip.org/pipermail/pjsip_lists.pjsip.org/2012-February/014139.html>`__ 
-     and `#2 <http://lists.pjsip.org/pipermail/pjsip_lists.pjsip.org/2013-April/016083.html>`__
+   Microsoft Visual Studio 2010 **is unsupported** as it does not import
+   PJSIP's VS2005 solution files properly.
 
 In addition, the following SDK's are needed:
 
-    * Essential for other than Windows 8/Visual Studio 2012: DirectX SDK 
-      (tested with DirectX version 8 and 9). After installing DirectX, add the 
-      paths to the include files and the library to Visual Studio.
-    * Optional if not using Visual Studio 2008: Platform SDK (tested with 
-      Platform SDK for Windows Server 2003 SP1).
+    * Essential for other than Windows 8/Visual Studio 2012: 
+    
+      - DirectX SDK (tested with DirectX version 8 and 9). After installing DirectX, add the 
+        include and library paths to Visual Studio.
+
+    * Optional if not included in Visual Studio: 
+    
+      - Platform SDK (tested with Platform SDK for Windows Server 2003 SP1).
   
       .. hint:: 
 
@@ -67,15 +72,14 @@ In addition, the following SDK's are needed:
          (`ref <https://en.wikipedia.org/wiki/Microsoft_Windows_SDK>`__ and 
          `ref <https://docs.microsoft.com/en-us/windows/win32/directx-sdk--august-2009=>`__). 
 
-    * Optional: OpenSSL development kit is needed if TLS support is wanted.
+    * Optional: one of SSL library, as specified in :any:`/specific-guides/security/ssl` (see below
+      for installing OpenSSL)
 
 
 .. _windows_openssl:
 
 Installing OpenSSL
 ^^^^^^^^^^^^^^^^^^^^^^^^
-If TLS support is wanted, then OpenSSL SDK must be installed in the development host.
-
 To install OpenSSL SDK from the Win32 binary distribution:
 
 #. Install OpenSSL SDK to any folder (e.g. C:\OpenSSL)
@@ -92,10 +96,10 @@ To install OpenSSL SDK from the Win32 binary distribution:
       If you compile PJSIP with Multithreaded Debug (/MTd), you need to use the same 
       run-time option when compiling the library. Please consult the library's doc for more details.
 
-Then to enable TLS transport support in PJSIP, please check :any:`guide_ssl`.
+Then to enable TLS transport support in PJSIP, please check :any:`/specific-guides/security/ssl`.
 
 
-Video support (2.0 and above only)
+Video support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Additional requirements
@@ -111,48 +115,11 @@ Additional requirements
      using `MS Knowledge Base 949009 <http://support.microsoft.com/kb/949009/>`_
 
 #. `SDL <http://www.libsdl.org/>`__ **version 2.0**
-#. libyuv (Recommended): Follow the instructions in :pr:`1937`. 
-   Alternatively, you can use ffmpeg as explained below.
-#. OpenH264 (Recommended): Follow the instructions in :pr:`1947`. Alternatively, 
-   you can use ffmpeg as explained below.
-#. `ffmpeg <http://ffmpeg.org/>`__ development library. ffmpeg is used for format 
-   conversion and video manipulation as well as video codecs: 
-   H.264 (together with libx264) and H263P/H263-1998.   
-   So, if you already use libyuv AND OpenH264, and you don't need H.263, 
-   then this is optional. 
-   
-   We tested with ffmpeg version 1.x (1.2.5) to 0.x (from 0.5.1 (from circa 2009) to 0.10). 
-   Since :pr:`1897` we have added support for ffmpeg 2.8, 
-   however note that on applying the ticket, older ffmpeg will no longer be supported.
+#. libyuv (recommended). See :any:`libyuv <guide_libyuv>`. 
 
-   .. note::
-
-      For H.264 support, you need newer releases (October 2011 onwards), and it needs libz too.
-   
-   * You may be able to use the binary distributions (such as from 
-     `Zeranoe <http://ffmpeg.zeranoe.com/builds/>`__ - get the 'dev' builds). 
-     It compiles fine, however we haven't tested them thoroughly.
-   * Otherwise, get `MSYS|MinGW <http://www.mingw.org/wiki/MSYS>`__ for building 
-     libx264 and ffmpeg. 
-     
-     .. note:: 
-
-       * It is recommended to use gcc 4 or above to build ffmpeg.
-       * To avoid problems, put MSYS, libx264, and ffmpeg in folders that do not 
-         contain space, e.g: **C:\\msys, C:\\devlib\\ffmpeg**.
-       * To use ffmpeg with VS, **inttypes.h** and **stdint.h** will be needed, 
-         check `here <https://code.google.com/p/msinttypes/downloads/detail?name=msinttypes-r26.zip&can=2&q=>`__.
-
-   * In MSYS, build with at least:
-  
-     .. code-block:: shell
-
-        $ ./configure --enable-shared --disable-static --enable-memalign-hack
-        # add other options if needed, e.g: optimization, install dir, search path 
-        # particularly CFLAGS and LDFLAGS for x264
-        # to enable H264, add "--enable-gpl --enable-libx264"
-        $ make && make install
-
+#. OpenH264 (recommended): Follow the instructions in :ref:`openh264`.
+#. FFMPEG development library (alternative), see :ref:`ffmpeg_windows` (below) for instructions. 
+   If H.263 is not needed, libyuv **and** OpenH264 can be used instead.
 #. Optional for H.264: `libx264 <http://www.videolan.org/developers/x264.html>`__. 
    We tested with the latest from git (as of October 2011). In MSYS console:
 
@@ -174,6 +141,50 @@ Additional requirements
    building the video GUI sample. We tested with version 4.6 or later.
    
    * without this you can still enjoy video with pjsua console application
+
+
+.. _ffmpeg_windows:
+
+Getting/building ffmpeg on Windows
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FFMPEG is used for format conversion and video manipulation as well as video codecs such as
+H.264 (together with libx264) and H263P/H263-1998.   
+If H.263 is not needed, libyuv AND OpenH264 can be used instead.
+   
+PJMEDIA by default supports FFMPEG version 2.8 or newer (see :issue:`1897`). Using older version of
+FFMPEG is possible, see the ticket for information.
+
+.. note::
+
+   For H.264 support, you need newer releases (October 2011 onwards), and it needs libz too.
+
+* You may be able to use the binary distributions (such as from 
+  `Zeranoe <http://ffmpeg.zeranoe.com/builds/>`__ - get the 'dev' builds). 
+  It compiles fine, however we haven't tested them thoroughly.
+* For building FFMPEG on Windows, use MSYS|MinGW. Please see :any:`/specific-guides/build_int/mingw`.
+      
+  .. note:: 
+
+     * It is recommended to use gcc 4 or above to build ffmpeg.
+     * To avoid problems, put MSYS, libx264, and ffmpeg in folders that do not 
+       contain space, e.g: **C:\\msys, C:\\devlib\\ffmpeg**.
+     * To use ffmpeg with VS, **inttypes.h** and **stdint.h** will be needed, 
+       check `here <https://code.google.com/p/msinttypes/downloads/detail?name=msinttypes-r26.zip&can=2&q=>`__.
+
+* Configure and build:
+
+  .. code-block:: shell
+
+     $ ./configure --enable-shared --disable-static
+     $ make && make install
+
+* If H.264 support is needed:
+
+  .. code-block:: shell
+
+     $ ./configure --enable-shared --disable-static --enable-gpl --enable-libx264
+     $ make && make install
+
 
 Additional configuration
 ````````````````````````
@@ -209,14 +220,6 @@ Additional configuration
 
       #define PJMEDIA_HAS_VPX_CODEC         1    //by default VP8 codec is enabled
       #define PJMEDIA_HAS_VPX_CODEC_VP9     1    //enable VP9 codec
-
-Host requirements
-^^^^^^^^^^^^^^^^^
-
-For the host, the following are required:
-
-* Windows NT, 2000, XP, 2003, Vista, Windows 7, Windows 10, or later.
-* Windows 95/98 should work too, but this has not been tested,
 
 Building the Projects
 ---------------------
@@ -290,58 +293,3 @@ To setup debugging using ``sample_debug`` project:
 #. Select Debug build.
 #. Build and debug the project.
 
-Using pjproject libraries for your own application
----------------------------------------------------
-
-#. Put these include directories in the include search path of your project:
-
-   * pjlib/include
-   * pjlib-util/include
-   * pjnath/include
-   * pjmedia/include
-   * pjsip/include
-
-#. Put the combined library directory **lib** (located in the root directory of 
-   pjproject source code) in the library search path
-#. Include the relevant PJ header files in the application source file. 
-   For example, using these would include ALL APIs exported by PJ:
-
-   .. code-block:: c
-
-      #include <pjlib.h>
-      #include <pjlib-util.h>
-      #include <pjnath.h>
-      #include <pjsip.h>
-      #include <pjsip_ua.h>
-      #include <pjsip_simple.h>
-      #include <pjsua-lib/pjsua.h>
-      #include <pjmedia.h>
-      #include <pjmedia-codec.h>
-
-   .. note::
-
-      The documentation of the relevant libraries should say which header files 
-      should be included to get the declaration of the APIs).
-
-#. Declare PJ_WIN32=1 macro in the project settings (declaring the macro in the 
-   source file may not be sufficient).
-
-#. Link with the main pjproject library ``libpjproject``. It includes all the 
-   libraries provided. 
-
-   .. note::
-
-      The actual library names will be appended with the target name and the 
-      build configuration. For example: The actual library names will look 
-      like ``libpjproject-i386-win32-vc6-debug.lib`` depending on whether 
-      we are building the Debug or Release version of the library.
-
-#. Link with system specific libraries such as: wsock32.lib, ws2_32.lib, ole32.lib, 
-   dsound.lib
-
-#. If you want to use video API see `Video Users Guide <http://trac.pjsip.org/repos/wiki/Video_Users_Guide>`_
-
-Windows on ARM Support
-----------------------
-
-Please refer to :pr:`2807` for more information.
