@@ -80,16 +80,18 @@ The C++ sample app above is built along with standard build, you can run the exe
 from ``pjsip-apps/bin/samples/..`` directory.
 
 
-Python
+Python3
 ===========================
-The equivalence of the C++ sample code above in Python is as follows:
+The equivalence of the C++ sample code above in Python3 is as follows:
 
 .. code-block:: python
+
+  import pjsua2 as pj
 
   # Subclass to extend the Account and get notifications etc.
   class Account(pj.Account):
     def onRegState(self, prm):
-        print "***OnRegState: " + prm.reason
+        print("***OnRegState: " + prm.reason)
 
   # pjsua2 test function
   def pjsua2_test():
