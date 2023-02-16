@@ -138,7 +138,7 @@ Linear/PCM 8/16bit mono/stereo
 
 OpenCore AMR NB/WB
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- Installation: :ref:`guide_opencore_amr`
+- Installation: :any:`/specific-guides/audio/opencore-amr`
 - Code documentation: :doc:`OpenCore AMR NB/WB</api/generated/pjmedia/group/group__PJMED__OC__AMR>`
 
 .. _openh264:
@@ -150,10 +150,19 @@ Provides video codec H.264, alternatively you can use ffmpeg (together with
 libx264).
 
 - Supports Windows, Posix (Mac OS X, Linux), iOS, Android.
+- You may install from the binaries packages if they are available for your platform.
+
+  - Debian/Ubuntu:
+
+    .. code-block:: shell
+
+       $ sudo apt-get install libopenh264-dev
+
+  See https://www.openh264.org/ for installation instructions for other platforms.
 - OpenH264 may be detected and enabled by the ``configure`` script, either 
   automatically or manually via ``--with-openh264`` option. It may be forcefully 
   disabled by defining ``PJMEDIA_HAS_OPENH264_CODEC`` to 0 in ``config_site.h``
-- Detailed instructions: :issue:`1947`
+- More detailed instructions: see issue :issue:`1947`
 - Code documentation: :doc:`OpenH264 </api/generated/pjmedia/group/group__PJMEDIA__CODEC__OPENH264>`
 
 
@@ -164,7 +173,15 @@ Opus
 Opus is a totally open, royalty-free, highly versatile audio codec.
 
 - Supports Windows, Posix (Mac OS X, Linux), iOS, Android.
-- Build instructions: https://github.com/pjsip/pjproject/issues/1904
+- You may install from the binaries packages if they are available for your platform.
+
+  - Debian/Ubuntu:
+
+    .. code-block:: shell
+
+        $ sudo apt-get install libopus-dev
+
+- Build instructions: see issue :issue:`1904`
 - Code documentation: :doc:`OPUS </api/generated/pjmedia/group/group__PJMED__OPUS>`
 
 .. _passthrough:
@@ -203,6 +220,14 @@ Speex
 
 VP8 and VP9 (libvpx)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- On Debian/Ubuntu it is provided by *libvpx-dev*:
+  package:
+
+  .. code-block:: shell
+
+    $ sudo apt-get install libvpx-dev
+
+  See `webm website <https://www.webmproject.org/code/>`__ for installation instructions for other platforms.
 - Build instructions: :issue:`2253`
 - Code documentation: :doc:`VP8 and VP9 </api/generated/pjmedia/group/group__PJMEDIA__CODEC__VPX>`
 

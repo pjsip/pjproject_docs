@@ -16,8 +16,22 @@ This instruction applies for **all platforms** that OpenCORE supports, **includi
 
 We tested building the OpenCORE libraries for Linux, MacOS X, Windows (MinGW), and BlackBerry 10 (BB10).
 
-Building and installing OpenCORE AMR library
+Installing OpenCore binaries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You may install from the binaries packages if they are available for your platform.
+
+**Debian/Ubuntu:**
+
+.. code-block:: shell
+
+   $ sudo apt-get install libopencore-amrnb-dev libopencore-amrwb-dev libvo-amrwbenc-dev
+
+
+Building and installing from source
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If binaries are not available or preferred, you must build and install OpenCore libraries
+from the source:
+
  #. Download the latest `opencore-amr <http://sourceforge.net/projects/opencore-amr/files/opencore-amr/>`__ tarball. We tested with version 0.1.3.
  #. Unpack the tarballs to a directory:
  
@@ -94,7 +108,8 @@ Adding AMR Support in PJSIP
 ----------------------------------
 Make Build System (MacOS X, Linux, BB10, etc.)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#. In the pjproject directory, run ``configure`` script, specifying the installation directory of OpenCORE codec to the ``--with-opencore-amr`` option:
+#. In the pjproject directory, run ``configure`` script, optionally specifying the installation
+   directory of OpenCORE codec with ``--with-opencore-amr`` option:
 
    .. code-block:: shell
 

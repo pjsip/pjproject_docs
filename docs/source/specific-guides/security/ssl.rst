@@ -26,9 +26,15 @@ Installing  OpenSSL
 For OpenSSL installation, refer to the following guides:
 
 - :any:`windows_openssl` (for Windows)
-- :any:`posix_openssl` (for MacOS X, Linux, Unix)
 - :any:`ios_openssl` (for iOS/iPhone)
 - :any:`android_openssl` (for Android)
+- For Debian/Ubuntu:
+
+  .. code-block:: shell
+
+     $ sudo apt-get install libssl-dev
+
+- Note that native SSL backend is available for Mac/iOS, see :pr:`2482`.
 - (deprecated) *BB10: using bundled OpenSSL*
 - (deprecated) TLS support on Symbian is implemented natively using CSecureSocket,
   hence it doesn’t require OpenSSL development kit. Please see *Configuring TLS on Symbian* for the
