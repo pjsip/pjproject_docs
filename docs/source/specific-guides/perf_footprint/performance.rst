@@ -143,8 +143,9 @@ There are few settings to tweak:
    available, to avoid this problem. If you encounter this problem, please
    check if ``libuuid`` is available for ``./configure`` on your system.
 
-If you are using PJUS-LIB, then the maximum number of calls supported is
+If you are using PJSUA-LIB, then the maximum number of calls supported is
 configurable from :cpp:any:`pjsua_config::max_calls` (default is 4). When
 increasing the limit, compile time options :c:macro:`PJSUA_MAX_CALLS` and
 :c:macro:`PJ_IOQUEUE_MAX_HANDLES` also needs to be changed accordingly (set the
 later to approximately 3 times :c:macro:`PJSUA_MAX_CALLS`).
+More info can be found `here <https://trac.pjsip.org/repos/wiki/FAQ#pjsua-lib-perf>`__.
