@@ -72,7 +72,7 @@ Application can start the camera (or any capture device in general) preview usin
         try {
             // Set the video capture device format.
 	    VidDevManager &mgr = Endpoint::instance().vidDevManager();
-            MediaFormatVideo format = mgr.getFormat(device_id);
+            MediaFormatVideo format = mgr.getDevInfo(device_id).fmt[0];
 	    format.width    = width;
 	    format.height   = height;
 	    format.fpsNum   = fps;
