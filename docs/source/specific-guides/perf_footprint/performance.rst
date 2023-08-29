@@ -128,7 +128,7 @@ There are few settings to tweak:
 
 #. First apply the CPU reduction techniques above to maximize the performance. 
 #. Do not use PJSUA-LIB. PJSUA-LIB is designed for building client application.
-#. By default, PJSIP is configured to handle only 16384 simultaneous SIP transactions and
+#. By default, PJSIP is configured to handle only limited simultaneous SIP transactions and
    dialogs. This can be enlarged according to the requirement, by
    setting both :c:macro:`PJSIP_MAX_TSX_COUNT` and :c:macro:`PJSIP_MAX_DIALOG_COUNT` to
    the appropriate values (for example, ``640*1024-1``). 
