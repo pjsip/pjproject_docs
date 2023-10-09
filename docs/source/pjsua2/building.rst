@@ -97,3 +97,6 @@ Building Java SWIG Module
 Building C# SWIG Module
 ======================================
 See ticket :issue:`2086` (Add C# binding using SWIG, and support for Xamarin).
+
+For Windows, check: :issue:`3217` (Add two VS2015 projects for CSharp: SWIG binding builder & sample app).
+
