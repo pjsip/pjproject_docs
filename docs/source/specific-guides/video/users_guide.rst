@@ -323,7 +323,8 @@ a. For encoding direction, configured via ``det.vid.size`` field of :cpp:any:`pj
 b. For decoding direction, two steps are needed:
 
    1. The ``det.vid.size`` field of :cpp:any:`pjmedia_vid_codec_param::dec_fmt` should be set to the highest value expected for incoming video size.
-   2. signalling to remote, configured via codec specific SDP format parameter (fmtp): :cpp:any:`pjmedia_vid_codec_param::dec_fmtp`.
+   2. If the resolution exceeds the supported maximum specified in the video codecs, you need to modify it (``MAX_RX_WIDTH`` and ``MAX_RX_HEIGHT`` in ``openh264.cpp``, ``vid_toolbox.m``, or ``and_vid_mediacodec.cpp``, or ``MAX_RES`` in ``vpx.c`` or ``ffmpeg_vid_codecs.c``).
+   3. signalling to remote, configured via codec specific SDP format parameter (fmtp): :cpp:any:`pjmedia_vid_codec_param::dec_fmtp`.
 
        - H263-1998, e.g:
 
