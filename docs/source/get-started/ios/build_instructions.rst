@@ -57,7 +57,7 @@ See :doc:`CLI Manual </specific-guides/other/cli_cmd>` for commands available.
    * Other customizations are similar to what is explained in 
      :doc:`Building with GNU </get-started/posix/build_instructions>` page.
 
-Supporting multiple architectures (armv6, armv7, armv7s, arm64, and so on)
+Supporting multiple architectures (armv7, armv7s, arm64, and so on)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You need to compile separately for each architecture by setting ``ARCH`` environment 
@@ -68,12 +68,19 @@ For example:
 
    export ARCH="-arch arm64"
 
-Then you need to combine the resulting libraries using the **lipo** command. 
-For example:
+(Optional) Next, you can bundle the resulting libraries into an `XCFramework <https://developer.apple.com/documentation/xcode/creating-a-multi-platform-binary-framework-bundle#Generate-the-XCFramework-bundle>`__ with all the platforms you wish to support, such as MacOS, iOS Simulator, etc.
 
 .. code-block:: shell
 
-   lipo -arch armv6 lib/armv6/libpjlib.a -arch armv7 lib/armv7/libpjlib.a -create -output lib/libpjlib.a
+  xcodebuild -create-xcframework -library lib/ios/libpj.a -headers pjlib/include \
+  -library lib/mac/libpj.a -headers pjlib/include \
+  -output libpj.xcframework
+
+Alternatively, you can combine the resulting libraries using the **lipo** command (this only works if there are no duplicate architectures, such as Mac arm64 and iOS arm64):
+
+.. code-block:: shell
+
+   lipo -arch x86_64 lib/x86_64/libpj.a -arch arm64 lib/arm64/libpj.a -create -output lib/libpj.a
 
 Setting minimum supported iOS version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
