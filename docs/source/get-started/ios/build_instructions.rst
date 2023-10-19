@@ -112,12 +112,12 @@ To configure the build system for the iPhone simulator:
 .. code-block:: shell
 
    export DEVPATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer
-   # arm64 simulator
-   ARCH="-arch arm64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
    # x86_64 simulator
    ARCH="-arch x86_64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
    # or 32-bit
-   ARCH="-arch i386" CFLAGS="-O2 -m32" LDFLAGS="-O2 -m32" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
+   ARCH="-arch i386" CFLAGS="-O2 -m32" LDFLAGS="-O2 -m32" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone 
+   # In the case that you need arm64 simulator
+   # ARCH="-arch arm64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
    make dep && make clean && make
 
 .. note::
