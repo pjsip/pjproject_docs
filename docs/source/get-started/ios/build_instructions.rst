@@ -57,30 +57,16 @@ See :doc:`CLI Manual </specific-guides/other/cli_cmd>` for commands available.
    * Other customizations are similar to what is explained in 
      :doc:`Building with GNU </get-started/posix/build_instructions>` page.
 
-Supporting multiple architectures (armv7, armv7s, arm64, and so on)
+Supporting multiple architectures (e.g. armv7, arm64)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You need to compile separately for each architecture by setting ``ARCH`` environment 
-variable to the desired architecture before running ``configure-iphone``. 
+variable to the desired architecture before running ``configure-iphone``.
 For example:
 
 .. code-block:: shell
 
    export ARCH="-arch arm64"
-
-(Optional) Next, you can bundle the resulting libraries into an `XCFramework <https://developer.apple.com/documentation/xcode/creating-a-multi-platform-binary-framework-bundle#Generate-the-XCFramework-bundle>`__ with all the platforms you wish to support, such as MacOS, iOS Simulator, etc.
-
-.. code-block:: shell
-
-  xcodebuild -create-xcframework -library lib/ios/libpj.a -headers pjlib/include \
-  -library lib/mac/libpj.a -headers pjlib/include \
-  -output libpj.xcframework
-
-Alternatively, you can combine the resulting libraries using the **lipo** command (this only works if there are no duplicate architectures, such as Mac arm64 and iOS arm64):
-
-.. code-block:: shell
-
-   lipo -arch x86_64 lib/x86_64/libpj.a -arch arm64 lib/arm64/libpj.a -create -output lib/libpj.a
 
 Setting minimum supported iOS version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -112,17 +98,43 @@ To configure the build system for the iPhone simulator:
 .. code-block:: shell
 
    export DEVPATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer
+   # arm64 simulator
+   ARCH="-arch arm64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
    # x86_64 simulator
    ARCH="-arch x86_64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
    # or 32-bit
    ARCH="-arch i386" CFLAGS="-O2 -m32" LDFLAGS="-O2 -m32" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone 
-   # In the case that you need arm64 simulator
-   # ARCH="-arch arm64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
    make dep && make clean && make
 
 .. note::
    
    The exact paths may vary according to your SDK version.
+
+Creating a framework to support multiple platforms and architectures
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For each platform you wish to support, you can combine the PJSIP libraries that were built for different architectures using the **lipo** command:
+
+.. code-block:: shell
+
+   # Combine iOS armv7 and arm64 build
+   lipo -arch armv7 ios-armv7/libpj.a -arch arm64 ios-arm64/libpj.a -create -output ios/libpj.a
+   # Combine iOS Simulator x86_64 and arm64 build
+   lipo -arch x86_64 sim-x86_64/libpj.a -arch arm64 sim-arm64/libpj.a -create -output sim/libpj.a
+   # Combine MacOS x86_64 and arm64 build
+   lipo -arch x86_64 mac-x86_64/libpj.a -arch arm64 mac-arm64/libpj.a -create -output mac/libpj.a
+
+
+Next, you bundle the resulting libraries above into an `XCFramework <https://developer.apple.com/documentation/xcode/creating-a-multi-platform-binary-framework-bundle#Generate-the-XCFramework-bundle>`__:
+
+.. code-block:: shell
+
+   # Delete any existing framework
+   rm -rf libpj.xcframework
+   # Create binary framework for iOS, iOS Simulator, and MacOS
+   xcodebuild -create-xcframework -library ios/libpj.a -headers pjlib/include -library sim/libpj.a -headers pjlib/include -library mac/libpj.a -headers pjlib/include -output libpj.xcframework
+
+As a result, you will get a binary framework with the name ``libpj.xcframework`` that contains the directories ``ios-arm64_armv7``, ``ios-arm64_x86_64-simulator``, and ``macos-arm64_x86_64``.
 
 Bitcode
 ^^^^^^^^
