@@ -22,3 +22,6 @@ PJSUA2 Samples
      - PJSUA2 (SWIG, Java)
      - TBD. This requires the Java SWIG module. After building the SWIG module, run ``make test`` 
        from this directory to run the app.
+   * - `iOS Swift sample <https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/pjsua2/ios-swift-pjsua2>`_
+     - PJSUA2 (iOS, Swift)
+     - Simple iOS app to make an audio and video call.
