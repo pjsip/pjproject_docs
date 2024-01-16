@@ -174,15 +174,15 @@ In the bridging header file, add all the C headers that you need,
 for example: ``#import <PJSIP/pjsua.h>``. 
 You can then directly call any PJSIP C API declared in those headers. 
 
+Please check ``ipjsua-swift.xcodeproj`` located in
+:source:`pjsip-apps/src/pjsua/ios-swift` for an example.
+
 If you want to use C++ API such as PJSUA2 however, you need to create your own 
-Objective-C wrapper. For a sample Swift app, please check ``ipjsua-swift.xcodeproj`` 
-located in :source:`pjsip-apps/src/pjsua/ios-swift` 
+Objective-C wrapper. For a sample pjsua2-Swift app, please check :source:`pjsip-apps/src/pjsua2/ios-swift-pjsua2`.
 
 .. note:: 
 
-   This sample Swift app requires video support.
-
-Refer to :pr:`2636` for swift sample application.
+   The Swift sample apps require video support.
 
 Video Support
 -------------
