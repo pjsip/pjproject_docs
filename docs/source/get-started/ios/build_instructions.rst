@@ -277,7 +277,7 @@ TLS/OpenSSL Support
 -------------------
 
 Native TLS backend for iOS and MacOS, i.e: using Network framework, is supported, 
-please check :pr:`2482` for more info.
+please check :pr:`2482` for more info. Note that currently this backend is still in experimental phase.
 
 Alternatively, using OpenSSL backend is also supported. Follow the instructions 
 below to enable TLS transport by using OpenSSL:
