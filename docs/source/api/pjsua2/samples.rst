@@ -15,9 +15,12 @@ PJSUA2 Samples
    * - `confbot <https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/confbot>`_
      - PJSUA2 (Python)
      - Simple audio conference and chatroom server
-   * - :source:`Android Pjsua2 <pjsip-apps/src/swig/java/android>`
+   * - :source:`Android Java Pjsua2 <pjsip-apps/src/swig/java/android>`
      - PJSUA2 (Android, Java)
      - Java GUI application supporting audio/video calls. See :ref:`android_pjsua2`.
+   * - :source:`Android Kotlin Pjsua2 <pjsip-apps/src/swig/java/android>`
+     - PJSUA2 (Android, Kotlin)
+     - Kotlin GUI application supporting audio/video calls. See :ref:`android_pjsua2`.
    * - `Java sample <https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/swig/java>`_
      - PJSUA2 (SWIG, Java)
      - TBD. This requires the Java SWIG module. After building the SWIG module, run ``make test`` 
