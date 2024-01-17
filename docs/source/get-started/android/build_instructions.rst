@@ -284,14 +284,14 @@ first we need to setup the target device:
 
 .. _android_pjsua2:
 
-Building and running pjsua2 sample application
+Building and running pjsua2 sample applications (Java & Kotlin)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A sample application using :doc:`pjsua2 API </api/pjsua2/ref>` with SWIG Java binding, 
+Sample applications using :doc:`pjsua2 API </api/pjsua2/ref>` with SWIG Java binding 
 is located under :source:`pjsip-apps/src/swig/java/android`. It is not built by 
 default, and you need `SWIG <http://www.swig.org/download.html>`__ to build it.
 
-Follow these steps to build pjsua2 sample application:
+Follow these steps to build pjsua2 sample applications:
 
 #. Make sure SWIG is in the build environment PATH.
 #. Run ``make`` from directory :source:`pjsip-apps/src/swig` (note that the 
@@ -305,7 +305,7 @@ Follow these steps to build pjsua2 sample application:
 
    This step should produce:
 
-   * native library ``libpjsua2.so`` in ``pjsip-apps/src/swig/java/android/app/src/main/jniLibs/armeabi``
+   * native library ``libpjsua2.so`` in ``pjsip-apps/src/swig/java/android/pjsua2/src/main/jniLibs/arm64-v8a``
 
      .. note::
  
@@ -315,19 +315,23 @@ Follow these steps to build pjsua2 sample application:
         for target ABI directory names.
 
    * pjsua2 Java interface (a lot of ``.java`` files) in 
-     `pjsip-apps/src/swig/java/android/app/src/main/java/org/pjsip/pjsua2`
+     `pjsip-apps/src/swig/java/android/pjsua2/src/main/java/org/pjsip/pjsua2`
 
 #. Make sure any library dependencies are copied to 
-   ``pjsip-apps/src/swig/java/android/app/src/main/jniLibs/armeabi``
+   ``pjsip-apps/src/swig/java/android/pjsua2/src/main/jniLibs/arm64-v8a``
    (or the appropriate target ABI directory), e.g: ``libopenh264.so`` for video 
    support.
-#. Open pjsua2 app project in Android Studio, it is located in 
+#. Open pjsua2 project in Android Studio, it is located in 
    :source:`pjsip-apps/src/swig/java/android`.
-#. Run it.
+   It will contain three modules:
+   - pjsua2 Java interface: :source:`pjsip-apps/src/swig/java/android/pjsua2`
+   - Java sample app: :source:`pjsip-apps/src/swig/java/android/app`
+   - Kotlin sample app: :source:`pjsip-apps/src/swig/java/android/app-kotlin`
+#. Run sample app.
 
 **Log output**
 
-The pjsua2 sample application will write log messages to **LogCat** window.
+The pjsua2 sample applications will write log messages to **LogCat** window.
 
 .. _android_create_app:
 
