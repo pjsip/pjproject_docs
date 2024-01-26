@@ -116,13 +116,16 @@ Creating a framework to support multiple platforms and architectures
 For each platform you wish to support, you can combine the PJSIP libraries that were built for different architectures using the **lipo** command:
 
 .. code-block:: shell
+   # For each architecture, combine the PJSIP libraries into one
+   libtool -static -o [arch]/libPJSIP.a pjsip-apps/src/pjsua/ios/*.a
 
+   # For each platform, combine all the architectures
    # Combine iOS armv7 and arm64 build
-   lipo -arch armv7 ios-armv7/libpj.a -arch arm64 ios-arm64/libpj.a -create -output ios/libpj.a
+   lipo -arch armv7 ios-armv7/libPJSIP.a -arch arm64 ios-arm64/libPJSIP.a -create -output ios/libPJSIP.a
    # Combine iOS Simulator x86_64 and arm64 build
-   lipo -arch x86_64 sim-x86_64/libpj.a -arch arm64 sim-arm64/libpj.a -create -output sim/libpj.a
+   lipo -arch x86_64 sim-x86_64/libPJSIP.a -arch arm64 sim-arm64/libPJSIP.a -create -output sim/libPJSIP.a
    # Combine MacOS x86_64 and arm64 build
-   lipo -arch x86_64 mac-x86_64/libpj.a -arch arm64 mac-arm64/libpj.a -create -output mac/libpj.a
+   lipo -arch x86_64 mac-x86_64/libPJSIP.a -arch arm64 mac-arm64/libPJSIP.a -create -output mac/libPJSIP.a
 
 
 Next, you bundle the resulting libraries above into an `XCFramework <https://developer.apple.com/documentation/xcode/creating-a-multi-platform-binary-framework-bundle#Generate-the-XCFramework-bundle>`__:
@@ -130,11 +133,12 @@ Next, you bundle the resulting libraries above into an `XCFramework <https://dev
 .. code-block:: shell
 
    # Delete any existing framework
-   rm -rf libpj.xcframework
+   rm -rf libPJSIP.xcframework
+   # Put all PJSIP headers into one directory [path_to_PJSIP_headers]
    # Create binary framework for iOS, iOS Simulator, and MacOS
-   xcodebuild -create-xcframework -library ios/libpj.a -headers pjlib/include -library sim/libpj.a -headers pjlib/include -library mac/libpj.a -headers pjlib/include -output libpj.xcframework
+   xcodebuild -create-xcframework -library ios/libPJSIP.a -headers [path_to_PJSIP_headers] -library sim/libPJSIP.a -headers [path_to_PJSIP_headers] -library mac/libPJSIP.a -headers [path_to_PJSIP_headers] -output libPJSIP.xcframework
 
-As a result, you will get a binary framework with the name ``libpj.xcframework`` that contains the directories ``ios-arm64_armv7``, ``ios-arm64_x86_64-simulator``, and ``macos-arm64_x86_64``.
+As a result, you will get a binary framework with the name ``libPJSIP.xcframework`` that contains the directories ``ios-arm64_armv7``, ``ios-arm64_x86_64-simulator``, and ``macos-arm64_x86_64``.
 
 Bitcode
 ^^^^^^^^
