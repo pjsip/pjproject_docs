@@ -116,6 +116,7 @@ Creating a framework to support multiple platforms and architectures
 For each platform you wish to support, you can combine the PJSIP libraries that were built for different architectures using the **lipo** command:
 
 .. code-block:: shell
+
    # For each architecture, combine the PJSIP libraries into one
    libtool -static -o [arch]/libPJSIP.a pjsip-apps/src/pjsua/ios/*.a
 
