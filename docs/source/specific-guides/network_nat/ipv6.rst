@@ -157,15 +157,22 @@ Here is sample code for IPv6 SIP transport initializations.
         ...
 
 
-**Adding SIP Account**
+**SIP Account**
 
-As described in :pr:`1926`, it is recommended to explicitly bind an IPv6
+Starting from PJSIP 2.14, you can configure your account's settings
+:cpp:any:`pjsua_acc_config::ipv6_sip_use` and
+:cpp:any:`pjsua_acc_config::ipv6_media_use` to specify your IP address preference. The options are:
+:cpp:any:`PJSUA_IPV6_DISABLED`, :cpp:any:`PJSUA_IPV6_ENABLED_NO_PREFERENCE`,
+:cpp:any:`PJSUA_IPV6_ENABLED_PREFER_IPV4`, :cpp:any:`PJSUA_IPV6_ENABLED_PREFER_IPV6`,
+:cpp:any:`PJSUA_IPV6_ENABLED_USE_IPV6_ONLY`.
+
+If you are using PJSIP before version 2.14, it is recommended to explicitly bind an IPv6
 account to an IPv6 SIP transport, i.e: via
 :cpp:any:`pjsua_acc_config::transport_id` or :cpp:any:`pjsua_acc_set_transport()`.
 Also, IPv6 usage must be explicitly set for media transport, i.e: via
 :cpp:any:`pjsua_acc_config::ipv6_media_use`.
 
-Here is sample code for setting up account using IPv6 SIP server.
+Here is sample code for setting up account using IPv6 SIP server (for PJSIP earlier than 2.14).
 
 .. code-block:: c
 
@@ -256,8 +263,13 @@ Therefore, to support IPv6-IPv4 interoperability in NAT64 environment:
         tp_type = PJSIP_TRANSPORT_UDP6; 
         status = pjsua_transport_create(tp_type, &tp_cfg, &udp6_tp_id);
 
-        acc_cfg.transport_id = udp6_tp_id; // or tcp6_tp_id or tls6_tp_id
-        acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED;
+        // For PJSIP 2.14 and above
+        acc_cfg.ipv6_sip_use = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
+        acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
+
+        // For PJSIP earlier than 2.14
+        // acc_cfg.transport_id = udp6_tp_id; // or tcp6_tp_id or tls6_tp_id
+        // acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED;
 
         acc_cfg.nat64_opt = PJSUA_NAT64_ENABLED;
 
