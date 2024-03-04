@@ -107,12 +107,22 @@ In this case, forcefully disconnect the call is recommended.
                                         &transport_id);
         ...
 
+        // For PJSIP earlier than 2.14
         // bind account to IPv6 transport
-        pjsua_acc_set_transport(acc_id, transport_id);
+        // pjsua_acc_set_transport(acc_id, transport_id);
 
         // modify specific IPv6 account configuration
         pjsua_acc_get_config(acc_id, app_config.pool, &acc_cfg);
-        acc_cfg.ipv6_media_use = PJ_TRUE;
+
+        // For PJSIP 2.14 and above
+        // Set SIP and media use to PJSUA_IPV6_ENABLED_PREFER_IPV6
+        // (alternatively, you can use PJSUA_IPV6_ENABLED_USE_IPV6_ONLY
+        // if you don't want to fallback to IPv4)
+        acc_cfg.ipv6_sip_use = PJSUA_IPV6_ENABLED_PREFER_IPV6;
+        acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED_PREFER_IPV6;
+        // For PJSIP earlier than 2.14
+        // acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED;
+
         acc_cfg.ip_change_cfg.hangup_calls = PJ_TRUE;	
         pjsua_acc_modify(acc_id, &acc_cfg);
 
