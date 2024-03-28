@@ -86,48 +86,51 @@ Update contact process (re-Registration) and call handling (hang-up or continue 
 Network change to a different IP address type. (IPv4 to IPv6) or (IPv6 to IPv4)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As you already know, IPv6 needs specific account configuration as described [wiki:IPv6 here].
+As you already know, IPv6 needs specific account configuration as described [wiki:ipv6 here].
 On the case of IP address type change, then additional steps are required from application.
 
 #. Once application detects a network with IP address type change, a new transport might need to be created.
 
-#. Once the transport is available, app can bind the account to the new transport, change the account configuration needed for IPv6/IPv4, and call :cpp:func:`pjsua_handle_ip_change()`.
-
-Notes: to maintain ongoing calls, update to RTP/RTCP address and update dialog's Contact is needed using re-INVITE. However sending re-INVITE might fail when route set is still using IPv4 (e.g: Record-route returned contains IPv4).
-In this case, forcefully disconnect the call is recommended. 
+#. Once the transport is available, modify account's transport preference setting if necessary by calling :cpp:func:`pjsua_acc_modify()`, and then call :cpp:func:`pjsua_handle_ip_change()`.
 
 .. code-block:: c
 
     static void ip_change_to_ip6()
     {
         ...
-        //create new ipv6 transport, if it's not yet available. e.g: UDP6
-        status = pjsua_transport_create(PJSIP_TRANSPORT_UDP6,
-                                        &udp_cfg,
-                                        &transport_id);
+        // Create new IPv6 transport, if it's not yet available. e.g: TLS6
+        status = pjsua_transport_create(PJSIP_TRANSPORT_TLS6,
+                                        &tp_cfg, &transport_id);
         ...
 
         // For PJSIP earlier than 2.14
-        // bind account to IPv6 transport
+        // Bind account to IPv6 transport
         // pjsua_acc_set_transport(acc_id, transport_id);
 
-        // modify specific IPv6 account configuration
+        // Modify account configuration
         pjsua_acc_get_config(acc_id, app_config.pool, &acc_cfg);
 
-        // For PJSIP 2.14 and above
-        // Set SIP and media use to PJSUA_IPV6_ENABLED_PREFER_IPV6
-        // (alternatively, you can use PJSUA_IPV6_ENABLED_USE_IPV6_ONLY
-        // if you don't want to fallback to IPv4)
-        acc_cfg.ipv6_sip_use = PJSUA_IPV6_ENABLED_PREFER_IPV6;
-        acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED_PREFER_IPV6;
-        // For PJSIP earlier than 2.14
+        // ******************************************************
+        // ** For PJSIP 2.14 and above:
+        // Set SIP use to PJSUA_IPV6_ENABLED_USE_IPV6_ONLY
+        // Important: if you use PREFER_IPV6, existing calls that
+        // use IPv4 will still use IPv4.
+        acc_cfg.ipv6_sip_use = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
+        // Set media use to USE_IPV6_ONLY or PREFER_IPV6.
+        acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
+        // ** For PJSIP earlier than 2.14:
         // acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED;
+        // ******************************************************
 
-        acc_cfg.ip_change_cfg.hangup_calls = PJ_TRUE;	
+        // acc_cfg.ip_change_cfg.hangup_calls = PJ_TRUE;
+
+        // Available in #3910, to prevent pjsua_acc_modify()
+        // to prematurely send registration
+        acc_cfg.disable_reg_on_modify = PJ_TRUE;
         pjsua_acc_modify(acc_id, &acc_cfg);
 
         ...
-        // handle ip change
+        // Handle ip change
         pjsua_ip_change_param_default(&param);
         pjsua_handle_ip_change(param);
     }
