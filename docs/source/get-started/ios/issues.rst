@@ -4,44 +4,31 @@ Common issues when developing iOS apps
 .. contents:: Table of Contents
     :depth: 2
 
-Accepting calls in the background with PushKit (iOS 9 or later)
-----------------------------------------------------------------
+Accepting calls in the background with PushKit
+----------------------------------------------
 Starting in iOS 9, 
 `kCFStreamNetworkServiceTypeVoIP <https://developer.apple.com/library/ios/documentation/CoreFoundation/Reference/CFSocketStreamRef/index.html#//apple_ref/doc/constant_group/Stream_Service_Types>`__ is deprecated. 
 Apple recommends that applications use VoIP Push Notifications 
 (using **PushKit** framework) to avoid persistent connections as described in 
-the `Apple's official doc <https://developer.apple.com/library/ios/documentation/Performance/Conceptual/EnergyGuide-iOS/OptimizeVoIP.html>`__. 
+the `Apple's official doc <https://developer.apple.com/library/ios/documentation/Performance/Conceptual/EnergyGuide-iOS/OptimizeVoIP.html>`__.
 
-This will require application to implement the setup and handling of push 
-notifications in the application layer (for more details, you can refer to 
-:pr:`1941`). For now, PJSIP will still use **kCFStreamNetworkServiceTypeVoIP**, 
-if you want to disable it right away, you can set 
-:c:macro:`PJ_IPHONE_OS_HAS_MULTITASKING_SUPPORT` to 0.
+This will require application to handle push notifications and integrate CallKit
+in the application layer. Please check `Apple's doc
+<https://developer.apple.com/documentation/pushkit/responding-to-voip-notifications-from-pushkit>`__ for more details.
 
-Starting from iOS 13, there's a new requirement:
+For an example, you can check ipjsua sample app, and refer to :pr:`1941`.
 
-     *Apps receving VoIP pushes must post an incoming call (via CallKit or IncomingCallNotifications) 
-     in the same run loop as pushRegistry:didReceiveIncomingPushWithPayload:forType:[withCompletionHandler:] 
-     without delay. Terminating app due to uncaught exception 'NSInternalInconsistencyException', 
-     reason: 'Killing app because it never posted an incoming call to the system 
-     after receiving a PushKit VoIP push callback.'*
-
-In order to make it work with the normal SIP flow which may require you to wait 
-for some time to receive the INVITE message, please look at Apple's recommendation 
-in its `developer forum <https://forums.developer.apple.com/thread/117939>`__.
-
-CallKit integration and audio session (AVAudioSession) management (iOS 10)
------------------------------------------------------------------------------
+CallKit integration and audio session (AVAudioSession) management
+-----------------------------------------------------------------
 **CallKit** requires application to configure audio session and start the call 
 audio at specific times. Thus, to ensure a smooth integration, we disable the 
 setup of audio session in our sound device wrapper to avoid conflict with 
-application's audio session setting.  
+application's audio session setting.
 Starting from :pr:`1941`, application needs to set its own audio session 
 category, mode, and activation/deactivation.
 
-Here could be used as a quick start reference:
-
-  * `Apple's AVAudioSession doc <https://developer.apple.com/reference/avfoundation/avaudiosession>`_
+For an example of CallKit integration for incoming calls, please check
+ipjsua sample app.
 
 Crash after calling PJLIB APIs using Grand Central Dispatch (GCD)
 ----------------------------------------------------------------------
