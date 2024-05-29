@@ -8,9 +8,9 @@ DTMF
 Overview
 ------------------
 :doc:`PJSUA2 </api/pjsua2/index>` and :doc:`PJSUA-LIB </api/pjsua-lib/index>` 
-support sending DTMF digits as inband tone, RTP events (:rfc:`2833`), 
+support sending DTMF digits as inband tone, RTP events (:rfc:`4733`/:rfc:`2833`), 
 or SIP INFO. On the receiving side, the libraries support reporting DTMF digits sent as
-RTP events (:rfc:`2833`) and SIP INFO. Note that detection of inband DTMF tone
+RTP events (:rfc:`4733`/:rfc:`2833`) and SIP INFO. Note that detection of inband DTMF tone
 is currently not implemented.
 
 PJSUA-LIB (and inherently PJSUA2) will only send RFC 2833 DTMF if remote party
