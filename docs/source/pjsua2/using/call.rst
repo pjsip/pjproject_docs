@@ -113,7 +113,7 @@ Usually this happens once the call has been established, although media can acti
 called early media), and established call can have no media (such as when it is being put on-hold).
 
 The changes to the call's media state is reported in :cpp:func:`pj::Call::onCallMediaState()` callback. 
-Only when the call's audio media state is ready (or active) the function :cpp:func:`pj::Call::getMedia()` 
+Only when the call's audio media state is ready (or active) the function :cpp:func:`pj::Call::getAudioMedia()` 
 will return a valid audio media.
 
 Below is a sample code to connect the call to the sound device when the media is active:
@@ -125,13 +125,18 @@ Below is a sample code to connect the call to the sound device when the media is
         CallInfo ci = getInfo();
 
         for (unsigned i = 0; i < ci.media.size(); i++) {
-            if (ci.media[i].type==PJMEDIA_TYPE_AUDIO && getMedia(i)) {
-                AudioMedia *aud_med = (AudioMedia *)getMedia(i);
+            if (ci.media[i].type==PJMEDIA_TYPE_AUDIO) {
+                try {
+                    AudioMedia aud_med = getAudioMedia(i);
 
-                // Connect the call audio media to sound device
-                AudDevManager& mgr = Endpoint::instance().audDevManager();
-                aud_med->startTransmit(mgr.getPlaybackDevMedia());
-                mgr.getCaptureDevMedia().startTransmit(*aud_med);
+                    // Connect the call audio media to sound device
+                    AudDevManager& mgr = Endpoint::instance().audDevManager();
+                    aud_med.startTransmit(mgr.getPlaybackDevMedia());
+                    mgr.getCaptureDevMedia().startTransmit(aud_med);
+                }
+                catch(const Error &e) {
+                  // Handle invalid or not audio media error here
+                }
             }
         }
     }
