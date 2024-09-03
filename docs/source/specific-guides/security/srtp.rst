@@ -28,6 +28,18 @@ The SRTP functionality in PJSIP has the following features:
 
   - AES_CM_128_HMAC_SHA1_80 
   - AES_CM_128_HMAC_SHA1_32 
+  - AES_256_CM_HMAC_SHA1_80
+  - AES_256_CM_HMAC_SHA1_80
+  - AES_192_CM_HMAC_SHA1_80 [1]_
+  - AES_192_CM_HMAC_SHA1_32 [1]_
+  - AEAD_AES_256_GCM [2]_
+  - AEAD_AES_256_GCM_8 [2]_
+  - AEAD_AES_128_GCM [2]_
+  - AEAD_AES_128_GCM_8 [2]_
+
+  .. [1] Working on some libSRTP versions only & need OpenSSL, see :issue:`1943`
+  .. [2] Need OpenSSL, see :issue:`1943` and :ref:`AES-GCM support` below
+
 - Secure RTCP (SRTCP) is supported.
 
 Negotiation of crypto session parameters in SDP is currently not
