@@ -45,6 +45,17 @@ Just run:
 This will build armV64 target, to build for other targets such as ``armeabi-v7a, x86`` 
 see next section.
 
+Supporting 16 KB page sizes (Android 15)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+As described in `Android's official doc <https://developer.android.com/guide/practices/page-sizes>`__, starting from Android 15, it supports devices that are configured to use a page size of 16 KB (16 KB devices).
+
+In order for PJSIP to support flexible page sizes (both 4 and 16 KB), you need to use NDK r27 or later and apply https://github.com/pjsip/pjproject/pull/4068. Alternatively, you can manually specify the build flags to the configure script:
+
+.. code-block:: shell
+
+    CFLAGS="-D__BIONIC_NO_PAGE_SIZE_MACRO" LDFLAGS="-Wl,-z,max-page-size=16384" ./configure-android
+
+
 Building for other architectures
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
