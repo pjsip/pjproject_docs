@@ -300,6 +300,13 @@ below to enable TLS transport by using OpenSSL:
       make
       make install
 
+#. Specify OpenSSL location when running ``configure-iphone``, for example: 
+   (change the openssl path folder)
+
+   .. code-block:: shell
+
+      ./configure-iphone --with-ssl=[your_openssl_path]
+
    And check that OpenSSL is detected by the configure script:
 
    .. code-block::
