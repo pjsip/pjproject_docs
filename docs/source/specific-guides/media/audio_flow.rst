@@ -139,7 +139,85 @@ Ideally, :cpp:any:`rec_cb <pjmedia_aud_rec_cb>` and :cpp:any:`play_cb <pjmedia_a
 called one after another, in turn and consecutively, by the sound device. But
 unfortunately this is not always the case; in many low-end sound cards,
 it is quite common to have several consecutive/burst of :cpp:any:`rec_cb <pjmedia_aud_rec_cb>` callbacks
-and then followed by burst of :cpp:any:`play_cb <pjmedia_aud_play_cb>` calls. 
+and then followed by burst of :cpp:any:`play_cb <pjmedia_aud_play_cb>` calls.
+
+So with 20ms ptime for example, rather than having one frame every 20ms, these devices
+would give PJMEDIA three or four frames every 60ms or 80ms. Since RTP packets are transmitted
+as soon as audio frame is available from the sound card, this would cause PJMEDIA to transmit
+RTP packets at (what looks like) irregular interval.
+
+This should be fine, as the remote endpoint should be able to accommodate this with its jitter buffer.
+However, if you rather want PJMEDIA to transmit RTP packets at good interval, you can install a
+:doc:`master clock </api/generated/pjmedia/group/group__PJMEDIA__MASTER__PORT>` port between sound device
+and conference bridge, so that the master port will drive the media clock instead.
+A master clock port uses an internal thread to drive the media flow, so it should provide better timing
+on most platforms.
+
+Fortunately, using PJSUA/PJSUA2 API this is made simple by instantiating extra audio device :issue:`2077`.
+
+Sample code using PJSUA
+
+.. code-block:: c
+
+   enum { EXTRA_SND_DEV_ID  = 3; };
+
+   pjmedia_snd_port_param ext_param;
+   pjsua_ext_snd_dev *ext_snd_dev;
+   pjsua_conf_port_id ext_id;
+
+   /* Generate params (with default values) */
+   status = pjmedia_snd_port_param_default(&ext_param);
+   status = pjmedia_aud_dev_default_param(EXTRA_SND_DEV_ID, &ext_param.base);
+
+   /* Create the extra audio device */
+   status = pjsua_ext_snd_dev_create(&ext_param, &ext_snd_dev);
+   ext_id = pjsua_ext_snd_dev_get_conf_port(ext_snd_dev);
+
+   /* Connect extra audio dev mic to main audio dev */
+   status = pjsua_conf_connect(ext_id, 0);
+
+   /* Connect main audio dev mic to extra audio dev */
+   status = pjsua_conf_connect(0, ext_id);
+
+   ...
+
+   /* Destroy extra audio dev (after no longer used) */
+   pjsua_ext_snd_dev_destroy(ext_snd_dev);
+
+Sample code using PJSUA2
+
+.. code-block:: c++
+
+   ep.audDevManager().setNullDev();
+
+   /* Install extra audio device */
+   ExtraAudioDevice *auddev2 = new ExtraAudioDevice(-1, -1);
+   try {
+      auddev2->open();
+   } catch (...) {
+      std::cout << "Extra sound device failed" << std::endl;
+   }
+
+   /* Create WAV player and play the WAV to extra audio speaker */
+   AudioMediaPlayer amp;
+   amp.createPlayer(PATH_TO_WAV_FILE);
+   if (auddev2->isOpened())
+      amp.startTransmit(*auddev2);
+
+   /* Wait for the WAV playback */
+   pj_thread_sleep(5000);
+
+   ...
+
+   /* Destroy extra audio device (after no longer used) */
+   delete auddev2;
+
+.. note::
+
+   Some sound device features will be unavailable by enabling the above:
+
+   - auto close on idle
+   - stereo mode
 
 Another less common problem with the sound device is when the total number of
 samples played and/or recorded by the sound device does not match the requested
