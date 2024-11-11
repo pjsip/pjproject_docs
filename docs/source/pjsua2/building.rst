@@ -65,7 +65,7 @@ Building Python SWIG Module
 
       If you're currently on a **virtualenv**, run ``python setup.py install`` instead.
 
-   For Windows, you need to use GNU tools, e.g: `mingw/mingw-w64`, and follow the instructions above. Note that some video features may not work such as DirectShow renderer.
+   For Windows, you need to use GNU tools, e.g: `mingw/mingw-w64`, and follow the `instructions to build PJSIP with GNU Build Systems <https://docs.pjsip.org/en/latest/get-started/posix/build_instructions.html>`__. Note that some video features may not work such as DirectShow renderer.
 
 4. Test the installation:
 
