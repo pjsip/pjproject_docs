@@ -50,8 +50,6 @@ Building Python SWIG Module
    .. code-block:: shell
 
       sudo apt-get install python3-dev
-   
-   For other platforms, TBD.
 
 3. Build:
 
@@ -67,7 +65,7 @@ Building Python SWIG Module
 
       If you're currently on a **virtualenv**, run ``python setup.py install`` instead.
 
-   
+   For Windows, you need to use GNU tools, e.g: `mingw/mingw-w64`, and follow the instructions above. Note that some video features may not work such as DirectShow renderer.
 
 4. Test the installation:
 
