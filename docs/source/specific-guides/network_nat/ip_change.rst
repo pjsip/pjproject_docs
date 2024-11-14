@@ -72,8 +72,9 @@ Related to maintaining a call during IP change, there are some scenarios that ar
 #. Update Contact header, so remote endpoint can send its SDP answer to our new contact address, i.e: use UPDATE without SDP offer (:cpp:any:`PJSUA_CALL_NO_SDP_OFFER` flag). Note that, not every endpoint supports UPDATE. Contact is used by remote to resolve target before sending new requests. If proxy is used, then you can probably skip this.
 #. Update local media transport after SDP answer is received, by sending UPDATE/re-INVITE with :cpp:any:`PJSUA_CALL_REINIT_MEDIA` flag.
 
-If IP change occurs before a call is confirmed, the call will be disconnected and reported to application via :cpp:any:`pjsua_callback::on_call_state`.
-
+If IP change occurs before a call is confirmed:
+- For outgoing call, the call will be disconnected and reported to application via :cpp:any:`pjsua_callback::on_call_state`.
+- For incoming call however, itwill continue to be active. Application can manually hangup the call if desired.
 
 IP change scenarios
 ----------------------
