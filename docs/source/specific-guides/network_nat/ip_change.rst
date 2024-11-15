@@ -73,8 +73,8 @@ Related to maintaining a call during IP change, there are some scenarios that ar
 #. Update local media transport after SDP answer is received, by sending UPDATE/re-INVITE with :cpp:any:`PJSUA_CALL_REINIT_MEDIA` flag.
 
 If IP change occurs before a call is confirmed:
-- For outgoing call, the call will be disconnected and reported to application via :cpp:any:`pjsua_callback::on_call_state`.
-- For incoming call however, itwill continue to be active. Application can manually hangup the call if desired.
+ - For outgoing call, the call will be disconnected and reported to application via :cpp:any:`pjsua_callback::on_call_state`.
+ - For incoming call however, it will continue to be active. Application can manually hangup the call if desired.
 
 IP change scenarios
 ----------------------
