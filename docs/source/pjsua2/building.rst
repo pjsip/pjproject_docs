@@ -19,7 +19,7 @@ Common Requirements
 
    .. code-block::
 
-      CFLAGS += -fPIC
+      export CFLAGS += -fPIC
 
    or you can specify it when calling :any:`configure`:
 
@@ -42,14 +42,22 @@ Common Requirements
 
 Building Python SWIG Module
 ======================================
-1. Install SWIG as shown above.
-2. Install Python development package:
+1. Install SWIG as shown above, and Python development package:
 
    For Debian based distributions (such as Ubuntu):
 
    .. code-block:: shell
 
-      sudo apt-get install python3-dev
+      sudo apt-get install swig python3-dev
+
+   For Windows (on MinGW/MinGW-w64 + MSYS2):
+
+   .. code-block:: shell
+
+      pacman -S swig python python-setuptools
+
+   .. note::
+      Make sure there's no existing Python installation to avoid conflicts
 
 3. Build:
 
@@ -65,7 +73,7 @@ Building Python SWIG Module
 
       If you're currently on a **virtualenv**, run ``python setup.py install`` instead.
 
-   For Windows, you need to use GNU tools, e.g: `mingw/mingw-w64`, and follow the `instructions to build PJSIP with GNU Build Systems <https://docs.pjsip.org/en/latest/get-started/posix/build_instructions.html>`__. Note that some video features may not work such as DirectShow renderer.
+   For Windows, you need to use GNU tools, e.g: `MinGW/MinGW-w64`, and follow the above `instructions to build PJSIP on Unix <https://docs.pjsip.org/en/latest/pjsua2/building.html#common-requirements>`__. Note that some video features may not work such as DirectShow renderer.
 
 4. Test the installation:
 
