@@ -155,69 +155,13 @@ on most platforms.
 
 Fortunately, using PJSUA/PJSUA2 API this is made simple by instantiating extra audio device :issue:`2077`.
 
-Sample code using PJSUA
-
-.. code-block:: c
-
-   enum { EXTRA_SND_DEV_ID  = 3; };
-
-   pjmedia_snd_port_param ext_param;
-   pjsua_ext_snd_dev *ext_snd_dev;
-   pjsua_conf_port_id ext_id;
-
-   /* Generate params (with default values) */
-   status = pjmedia_snd_port_param_default(&ext_param);
-   status = pjmedia_aud_dev_default_param(EXTRA_SND_DEV_ID, &ext_param.base);
-
-   /* Create the extra audio device */
-   status = pjsua_ext_snd_dev_create(&ext_param, &ext_snd_dev);
-   ext_id = pjsua_ext_snd_dev_get_conf_port(ext_snd_dev);
-
-   /* Connect extra audio dev mic to main audio dev */
-   status = pjsua_conf_connect(ext_id, 0);
-
-   /* Connect main audio dev mic to extra audio dev */
-   status = pjsua_conf_connect(0, ext_id);
-
-   ...
-
-   /* Destroy extra audio dev (after no longer used) */
-   pjsua_ext_snd_dev_destroy(ext_snd_dev);
-
-Sample code using PJSUA2
-
-.. code-block:: c++
-
-   ep.audDevManager().setNullDev();
-
-   /* Install extra audio device */
-   ExtraAudioDevice *auddev2 = new ExtraAudioDevice(-1, -1);
-   try {
-      auddev2->open();
-   } catch (...) {
-      std::cout << "Extra sound device failed" << std::endl;
-   }
-
-   /* Create WAV player and play the WAV to extra audio speaker */
-   AudioMediaPlayer amp;
-   amp.createPlayer(PATH_TO_WAV_FILE);
-   if (auddev2->isOpened())
-      amp.startTransmit(*auddev2);
-
-   /* Wait for the WAV playback */
-   pj_thread_sleep(5000);
-
-   ...
-
-   /* Destroy extra audio device (after no longer used) */
-   delete auddev2;
-
 .. note::
-
-   Some sound device features will be unavailable by enabling the above:
+   Some sound device features will be unavailable on extra audio device:
 
    - auto close on idle
    - stereo mode
+
+***Update***: since 2.15, there is a simpler & better approach, see :pr:`4149`.
 
 Another less common problem with the sound device is when the total number of
 samples played and/or recorded by the sound device does not match the requested
