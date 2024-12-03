@@ -96,6 +96,13 @@ Building for other architectures
         :doc:`Building with GNU Tools/Autoconf </get-started/posix/build_instructions>` 
         page.
 
+
+Enable Oboe
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Oboe offers low latency audio and some other benefits, please check `here <https://developer.android.com/games/sdk/oboe>`__ for more info.
+Oboe is supported since PJSIP version 2.12. To enable Oboe, please follow steps described in :pr:`2707`.
+
+
 Video Support
 -------------------
 
