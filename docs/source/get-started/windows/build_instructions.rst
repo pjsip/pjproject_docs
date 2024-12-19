@@ -239,6 +239,7 @@ Follow the steps below to build the libraries/application using Visual Studio:
 #. For Visual Studio 14 (VS 2015): open ``pjproject-vs14.sln`` solution file.
 #. For Visual Studio 15 (VS 2017): open ``pjproject-vs14.sln`` solution file.
 #. For Visual Studio 16 (VS 2019): open ``pjproject-vs14.sln`` solution file.
+#. For Visual Studio 17 (VS 2022): open ``pjproject-vs14.sln`` solution file.
 #. Set ``pjsua`` as Active or Startup Project.
 #. Set ``Win32`` as the platform.
 #. Select ``Debug`` or ``Release`` build as appropriate.
@@ -246,6 +247,12 @@ Follow the steps below to build the libraries/application using Visual Studio:
    needed by ``pjsua``.
 #. After successful build, the pjsua application will be placed in ``pjsip-apps/bin`` 
    directory, and the libraries in lib directory under each projects.
+
+.. note::
+
+   For Visual Studio 14/15/16/17, you can specify the ``BuildToolset`` used from
+   :source:`pjproject-vs14-common-config.props <build/vs/pjproject-vs14-common-config.props#L26>`.
+   By default it is set to ``v143``.
 
 To build the samples:
 
