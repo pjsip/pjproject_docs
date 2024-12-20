@@ -59,7 +59,7 @@ Building Python SWIG Module
    .. note::
       Make sure there's no existing Python installation to avoid conflicts
 
-3. Build:
+2. Build:
 
    .. code-block:: shell
 
@@ -75,7 +75,7 @@ Building Python SWIG Module
 
    For Windows, you need to use GNU tools, e.g: `MinGW/MinGW-w64`, and follow the above `instructions to build PJSIP on Unix <https://docs.pjsip.org/en/latest/pjsua2/building.html#common-requirements>`__. Note that some video features may not work such as DirectShow renderer.
 
-4. Test the installation:
+3. Test the installation:
 
    .. code-block:: shell
 
