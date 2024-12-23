@@ -97,12 +97,6 @@ Building for other architectures
         page.
 
 
-Enable Oboe
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Oboe offers low latency audio and some other benefits, please check `here <https://developer.android.com/games/sdk/oboe>`__ for more info.
-Oboe is supported since PJSIP version 2.12. To enable Oboe, please follow steps described in :pr:`2707`.
-
-
 Video Support
 -------------------
 
@@ -287,6 +281,13 @@ OpenSSL Support
    .. code-block:: shell
 
       export LIBS += "-ldl -lz"
+
+
+Low latency audio device
+------------------------
+Oboe offers low latency audio and some other benefits, please check `here <https://developer.android.com/games/sdk/oboe>`__ for more info.
+Oboe is supported since PJSIP version 2.12. To enable Oboe, please follow steps described in :pr:`2707`.
+
 
 Trying our sample application and creating your own
 ---------------------------------------------------------
