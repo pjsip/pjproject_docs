@@ -429,7 +429,7 @@ Follow these steps to build pjsua:
    address to operate the application. See 
    :doc:`CLI Manual </specific-guides/other/cli_cmd>`.
 
-Kotlin Support
---------------
 
-Have a look at :pr:`2648`
+Kotlin Support
+^^^^^^^^^^^^^^
+To develop PJSIP app using Kotlin, please take a look at :pr:`2648`
