@@ -108,7 +108,6 @@ features include:
 
 * :ref:`native capture <android_cam>`
 * :ref:`native OpenGL ES 2.0 renderer <opengl>` (requires Android 2.2 (API level 8) or higher).
-* :ref:`native AMR-NB/WB codecs <amediacodec>`
 * :ref:`native H264 AVC and VP8/VP9 codecs <amediacodec>`
 * :ref:`openh264`
 
