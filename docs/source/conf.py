@@ -157,6 +157,9 @@ breathe_projects = {
 html_theme_options = {
     'navigation_depth': 3,
     'collapse_navigation': False,
+
+    # Google Analytics
+    'analytics_id': 'G-P9HXGF45PJ',
 }
 
 # Add any paths that contain templates here, relative to this directory.
