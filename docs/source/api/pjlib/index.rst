@@ -182,3 +182,8 @@ Application Microframework
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 - :doc:`main() </api/generated/pjlib/group/group__PJ__APP__OS>`
 
+
+Unit Testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- :doc:`Unit Testing Framework </api/generated/pjlib/group/group__PJ__UNITTEST>`
+
