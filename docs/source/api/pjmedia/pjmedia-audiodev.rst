@@ -98,8 +98,11 @@ like this::
 
 .. _opensl:
 
-Android OpenSL
+Android OpenSL (deprecated)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note that Android OpenSL ES has been deprecated in favor of :ref:`oboe`.
+
 
 .. _jnisound:
 

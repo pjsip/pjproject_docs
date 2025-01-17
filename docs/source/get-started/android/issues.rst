@@ -1,4 +1,4 @@
-Common issues when developing Android apps
+Common Issues when Developing Android SIP Client
 ===============================================
 
 .. contents:: Table of Contents

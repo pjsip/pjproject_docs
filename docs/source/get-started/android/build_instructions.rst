@@ -1,53 +1,95 @@
-Build Instructions
-===================
+Build PJSIP for Android
+==================================
 
-.. contents:: Table of Contents
-    :depth: 3
+.. contents:: In this page:
+   :depth: 2
+   :local:
 
-Requirements
--------------
 
-* You need the `Android NDK <http://developer.android.com/tools/sdk/ndk/index.html>`__.
-* Optional if you want to build and and run the sample applications (i.e: pjsua2 
-  and pjsua):
-  
-  * `SWIG <http://www.swig.org/download.html>`_
-  * `Android Studio <https://developer.android.com/studio/index.html>`_
+Create *config_site.h*
+-----------------------------------
 
-Build Preparation
-------------------
-#. :doc:`Getting the source code </get-started/getting>` if you haven't already.
-#. Set your :ref:`config_site.h <dev_start>` to the following:
+Create :ref:`pjlib/include/pj/config_site.h <dev_start>` file with a text editor and set the
+contents to the following:
 
 .. code-block:: c
 
    /* Activate Android specific settings in the 'config_site_sample.h' */
    #define PJ_CONFIG_ANDROID 1
    #include <pj/config_site_sample.h>
-  
-Building PJSIP
----------------
 
-Just run:
+   #define PJMEDIA_HAS_VIDEO 1
+
+
+The rest of the configurations will be set by the configure script below.
+
+  
+Configuring PJSIP
+---------------------------------
+Using ``OPENSSL_DIR`` and ``OBOE_DIR`` environment variables that we set earlier in the previous
+page, run the configure commands below, replacing the Android NDK path with the correct path:
 
 .. code-block:: shell
 
-   $ cd /path/to/your/pjsip/dir
-   $ export ANDROID_NDK_ROOT=/path_to_android_ndk_dir 
-   $ ./configure-android
-   $ make dep && make clean && make
+   $ cd /path/to/your/pjproject/dir
+   $ export ANDROID_NDK_ROOT=/home/whoever/Android/android-sdk/ndk/28.0.12916984
+   $ ./configure-android -with-ssl=$OPENSSL_DIR --with-oboe=$OBOE_DIR
 
 .. tip::
 
    On MinGW32/MSys, use absolute path format ``D:/path/to/android/ndk`` 
    instead of ``/D/path/to/android/ndk`` for setting ``ANDROID_NDK_ROOT``.
 
-This will build armV64 target, to build for other targets such as ``armeabi-v7a, x86`` 
+The default setting builds armV64 target. To build for other targets such as ``armeabi-v7a, x86`` 
 see next section.
 
+.. note:: 
+
+   * The ``./configure-android`` is a wrapper that calls the standard ``./configure`` 
+     script with settings suitable for Android target. Standard ``./configure`` 
+     options should be applicable to this script too.
+   * Please check ``./configure-android --help`` for more info.
+   * Other customizations are similar to what is explained in 
+     :doc:`Building with GNU Tools/Autoconf </get-started/posix/build_instructions>` 
+     page.
+
+
+Verifying configuration
+---------------------------------
+Now we need to check that all the intended features are detected by observing the configure output:
+
+* Check that OpenSSL is detected and enabled:
+
+.. code-block::
+
+   checking for OpenSSL installations..
+   checking for openssl/ssl.h... yes
+   checking for ERR_load_BIO_strings in -lcrypto... yes
+   checking for SSL_CTX_new in -lssl... yes
+   OpenSSL library found, SSL support enabled
+
+* Check that Oboe is detected and enabled:
+
+.. code-block::
+
+   checking Oboe usability... yes
+   Checking sound device backend... Oboe
+
+
+Building PJSIP
+---------------------------------
+Now we can build PJSIP with:
+
+.. code-block:: shell
+
+   $ make dep && make clean && make
+
+
+
 Supporting 16 KB page sizes (Android 15)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-As described in `Android's official doc <https://developer.android.com/guide/practices/page-sizes>`__, starting from Android 15, it supports devices that are configured to use a page size of 16 KB (16 KB devices).
+----------------------------------------------
+As described in `Android official doc <https://developer.android.com/guide/practices/page-sizes>`__,
+starting from Android 15, it supports devices that are configured to use a page size of 16 KB (16 KB devices).
 
 In order for PJSIP to support flexible page sizes (both 4 and 16 KB), you need to use NDK r27 or later and apply https://github.com/pjsip/pjproject/pull/4068. Alternatively, you can manually specify the build flags to the configure script:
 
@@ -57,7 +99,7 @@ In order for PJSIP to support flexible page sizes (both 4 and 16 KB), you need t
 
 
 Building for other architectures
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
 
 * Make sure to cleanup all existing binary and intermediate files, e.g:
   
@@ -86,66 +128,13 @@ Building for other architectures
    and `library packaging path <https://developer.android.com/ndk/guides/abis.html#am>`__ 
    (see also :pr:`1803`).
 
-   .. note:: 
-
-      * The ``./configure-android`` is a wrapper that calls the standard ``./configure`` 
-        script with settings suitable for Android target. Standard ``./configure`` 
-        options should be applicable to this script too.
-      * Please check ``./configure-android --help`` for more info.
-      * Other customizations are similar to what is explained in 
-        :doc:`Building with GNU Tools/Autoconf </get-started/posix/build_instructions>` 
-        page.
-
 
 Video Support
 -------------------
 
-Features
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Video on Android has been supported since PJSIP version 2.4. Some of the highlighted
-features include:
-
-* :ref:`native capture <android_cam>`
-* :ref:`native OpenGL ES 2.0 renderer <opengl>` (requires Android 2.2 (API level 8) or higher).
-* :ref:`native H264 AVC and VP8/VP9 codecs <amediacodec>`
-* :ref:`openh264`
-
-Requirements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-**OpenH264 (optional)**
-
-#. For general information on OpenH264 integration see :ref:`openh264`
-#. Copy all library .so files into your Android application project directory, 
-   for example:
-
-   .. code-block:: shell
-
-     cp /Users/me/openh264/android/*.so /Users/me/pjproject-2.0/pjsip-apps/src/swig/java/android/libs/armeabi
-
-
-**libvpx (if you need VP8 or VP9 codec)**
-
-See :ref:`libvpx`
-
-**ffmpeg (optional)**
-
-See :doc:`/specific-guides/build_int/ffmpeg`
-
-**AMediaCodec, native Android codecs (experimental)**
-
-See :ref:`amediacodec`
-
 
 Configuring
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To enable video, append this into :any:`config_site.h`:
-
-.. code-block:: c
-
-   #define PJMEDIA_HAS_VIDEO 1
 
 Specify third-party video libraries when invoking ``./configure-android``, e.g:
 
