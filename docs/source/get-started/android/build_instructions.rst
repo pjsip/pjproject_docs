@@ -1,5 +1,10 @@
-Build PJSIP for Android
-==================================
+Configure and build PJSIP for Android
+=======================================
+
+In this section, we will configure and build PJSIP as a native library for Android, and
+:doc:`PJSUA2 API </api/pjsua2/index>` Java/JNI interface that can be used by Android Java and
+Kotlin applications.
+
 
 .. contents:: In this page:
    :depth: 2
@@ -31,19 +36,19 @@ page, run the configure commands below, replacing the Android NDK path with the 
 
 .. code-block:: shell
 
-   $ cd /path/to/your/pjproject/dir
+   $ cd /path/to/pjproject
    $ export ANDROID_NDK_ROOT=/home/whoever/Android/android-sdk/ndk/28.0.12916984
    $ ./configure-android -with-ssl=$OPENSSL_DIR --with-oboe=$OBOE_DIR
 
-.. tip::
+Using the default setting will build NDK's default target architecture (currently **arm64-v8a**). See next
+section for building other targets.
+
+.. tip:: 
 
    On MinGW32/MSys, use absolute path format ``D:/path/to/android/ndk`` 
-   instead of ``/D/path/to/android/ndk`` for setting ``ANDROID_NDK_ROOT``.
+   instead of ``/D/path/to/android/ndk`` for ``ANDROID_NDK_ROOT``.
 
-The default setting builds armV64 target. To build for other targets such as ``armeabi-v7a, x86`` 
-see next section.
-
-.. note:: 
+.. tip:: 
 
    * The ``./configure-android`` is a wrapper that calls the standard ``./configure`` 
      script with settings suitable for Android target. Standard ``./configure`` 
@@ -54,9 +59,47 @@ see next section.
      page.
 
 
+Configuring for other architectures (including emulator)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you have built PJSIP for other architecture, it's recommended to clean it up first:
+
+.. code-block:: shell
+
+   $ cd /path/to/pjproject
+   $ make distclean
+
+Specify the target arch in ``TARGET_ABI`` and run it with ``--use-ndk-cflags``. For example,
+for targetting the emulator:
+
+.. code-block:: shell
+
+   TARGET_ABI=x86_64 ./configure-android --use-ndk-cflags ...
+
+.. note::
+
+   If you build third party libraries from the source (such as OpenSSL), you need to rebuild them
+   for the same architecture as well.
+
+
+
+Supporting 16 KB page sizes (Android 15)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+As described in `Android official doc <https://developer.android.com/guide/practices/page-sizes>`__,
+Android from version 15 onwards supports devices that are configured to use a page size of 16 KB
+(16 KB devices).
+
+In order for PJSIP to support flexible page sizes (both 4 and 16 KB), you need to use NDK r27 or later and apply https://github.com/pjsip/pjproject/pull/4068. Alternatively, you can manually specify the build flags to the configure script:
+
+.. code-block:: shell
+
+    CFLAGS="-D__BIONIC_NO_PAGE_SIZE_MACRO" LDFLAGS="-Wl,-z,max-page-size=16384" ./configure-android
+
+
 Verifying configuration
 ---------------------------------
-Now we need to check that all the intended features are detected by observing the configure output:
+Now we need to check that all the intended features are detected by ``./configure-android`` script
+by observing the configure output:
 
 * Check that OpenSSL is detected and enabled:
 
@@ -86,338 +129,78 @@ Now we can build PJSIP with:
 
 
 
-Supporting 16 KB page sizes (Android 15)
-----------------------------------------------
-As described in `Android official doc <https://developer.android.com/guide/practices/page-sizes>`__,
-starting from Android 15, it supports devices that are configured to use a page size of 16 KB (16 KB devices).
+Building PJSIP Java interface with SWIG
+-----------------------------------------------------
 
-In order for PJSIP to support flexible page sizes (both 4 and 16 KB), you need to use NDK r27 or later and apply https://github.com/pjsip/pjproject/pull/4068. Alternatively, you can manually specify the build flags to the configure script:
-
-.. code-block:: shell
-
-    CFLAGS="-D__BIONIC_NO_PAGE_SIZE_MACRO" LDFLAGS="-Wl,-z,max-page-size=16384" ./configure-android
-
-
-Building for other architectures
----------------------------------
-
-* Make sure to cleanup all existing binary and intermediate files, e.g:
-  
-   .. code-block:: shell
-
-      $ cd /path/to/your/pjsip/dir
-      $ make clean
-
-      # cleanup pjsua sample app
-      $ cd pjsip-apps/src/pjsua/android/jni
-      $ make clean
-
-      # also cleanup pjsua2 sample app (SWIG)
-      $ cd /path/to/your/pjsip/dir
-      $ cd pjsip-apps/src/swig
-      $ make clean
-
-* Specify the target arch in ``TARGET_ABI`` and run it with ``--use-ndk-cflags``, 
-  for example: 
+#. Set ``JAVA_HOME`` environment variable to the directory containing ``javac`` executable. Since
+   we have installed Android Studio, I find this to be the easiest:
 
    .. code-block:: shell
 
-      TARGET_ABI=arm64-v8a ./configure-android --use-ndk-cflags
-
-   Also you should adjust `Application.mk <https://developer.android.com/ndk/guides/abis.html#gc>`__ 
-   and `library packaging path <https://developer.android.com/ndk/guides/abis.html#am>`__ 
-   (see also :pr:`1803`).
+      $ export JAVA_HOME=/path/to/android-studio/jbr/bin
 
 
-Video Support
--------------------
-
-
-Configuring
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Specify third-party video libraries when invoking ``./configure-android``, e.g:
-
-.. code-block:: shell
-
-   $ ./configure-android --with-openh264=/Users/me/openh264/android
-
-Make sure openh264 is detected by ``./configure-android``:
-
-.. code-block:: shell
-
-   ...
-   Using OpenH264 prefix... /Users/me/openh264/android
-   checking OpenH264 availability... ok
-   ...
-
-.. note:: 
-
-   If you use PJSIP before version 2.6, you need to specify external libyuv via 
-   the configure script param ``--with-libyuv``, check :pr:`1776` for more info.
-
-Adding Video Capture Device to Your Application
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Copy the java part of PJSIP Android capture device to the application's source 
-directory:
-
-.. code-block:: shell
-
-   cp pjmedia/src/pjmedia-videodev/android/PjCamera*.java [your_app]/src/org/pjsip/
-
-
-Since 2.12, the capture device uses ``Camera2`` API (see also :pr:`2797` for 
-more info), application need to configure the ``CameraManager`` instance 
-in ``PjCameraInfo2`` before using the camera, e.g:
-
-.. code-block:: java
-
-   @Override protected void onCreate(Bundle savedInstanceState)
-   {
-      //..
-      CameraManager cm = (CameraManager)getSystemService(Context.CAMERA_SERVICE);
-      PjCameraInfo2.SetCameraManager(cm);
-      //..
-   }
-
-Using Video API
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Please check :doc:`Working with Video </pjsua2/using/media_video>` (PJSUA2 Guide).
-
-Video capture orientation support
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To send video in the proper orientation (i.e. head always up regardless of the 
-device orientation), application needs to do the following:
-
-#. Setup the application to get orientation change notification 
-   (by adding ``android:configChanges="orientation|keyboardHidden|screenSize"`` 
-   in the application manifest file and override the callback ``onConfigurationChanged()``).
-#. Inside the callback, call PJSUA2 API ``VidDevManager::setCaptureOrient()`` 
-   to set the video device to the correct orientation.
-
-For sample usage, please refer to pjsua2 sample app. Ticket :pr:`1861` explains 
-this feature in detail.
-
-.. _android_openssl:
-
-OpenSSL Support
--------------------
-#. Build OpenSSL (tested with OpenSSL 1.0.2s) for Android.
-   The instruction provided here is specifically for arm64. 
-   For other architectures, modify accordingly. 
-
-   Please visit `this page <https://github.com/openssl/openssl/blob/master/NOTES-ANDROID.md>`__ 
-   for reference and some examples. 
-
-   .. note:: 
-
-      You need to change the NDK path and the API platform level below.
+#. Build the SWIG interface:
 
    .. code-block:: shell
 
-      cd openssl-3.0.4
-
-      export ANDROID_NDK_ROOT=[your_android_ndk_path]
-
-      # Change the host as required (e.g: linux -> darwin)
-      PATH=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin:$ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:$PATH
-
-      ./Configure android-arm64 -D__ANDROID_API__=29
-
-      make
-
-   Then copy the libraries into lib folder:
-
-   .. code-block:: shell
-
-      mkdir lib
-      cp lib*.a lib/
-
-#. Specify OpenSSL location when running ``configure-android``, for example 
-   (with Bash): (change the openssl path folder)
-
-   .. code-block:: shell
-
-      TARGET_ABI=arm64-v8a ./configure-android --use-ndk-cflags --with-ssl=[your_openssl_path]
-
-   And check that OpenSSL is detected by the configure script:
-
-   .. code-block::
-
-      ...
-      checking for OpenSSL installations..
-      checking openssl/ssl.h usability... yes
-      checking openssl/ssl.h presence... no
-      aconfigure: WARNING: openssl/ssl.h: accepted by the compiler, rejected by the preprocessor!
-      aconfigure: WARNING: openssl/ssl.h: proceeding with the compiler's result
-      checking for openssl/ssl.h... yes
-      checking for ERR_load_BIO_strings in -lcrypto... yes
-      checking for SSL_library_init in -lssl... yes
-      OpenSSL library found, SSL support enabled
-      ...
-
-#. Build the libraries:
-
-   .. code-block:: shell
-
-      make dep && make
-
-   If you encounter linking errors, you need to add this in ``user.mak``:
-
-   .. code-block:: shell
-
-      export LIBS += "-ldl -lz"
-
-
-Low latency audio device
-------------------------
-Oboe offers low latency audio and some other benefits, please check `here <https://developer.android.com/games/sdk/oboe>`__ for more info.
-Oboe is supported since PJSIP version 2.12. To enable Oboe, please follow steps described in :pr:`2707`.
-
-
-Trying our sample application and creating your own
----------------------------------------------------------
-
-Setting up the target device
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To run or debug application (such as the sample applications below), 
-first we need to setup the target device: 
-
-* using virtual device: http://developer.android.com/tools/devices/index.html
-* using real device: http://developer.android.com/tools/device.html
-
-.. _android_pjsua2:
-
-Building and running pjsua2 sample applications (Java & Kotlin)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Sample applications using :doc:`pjsua2 API </api/pjsua2/ref>` with SWIG Java binding 
-is located under :source:`pjsip-apps/src/swig/java/android`. It is not built by 
-default, and you need `SWIG <http://www.swig.org/download.html>`__ to build it.
-
-Follow these steps to build pjsua2 sample applications:
-
-#. Make sure SWIG is in the build environment PATH.
-#. Run ``make`` from directory :source:`pjsip-apps/src/swig` (note that the 
-   Android NDK root should be in the PATH), e.g:
-
-   .. code-block:: shell
-
-      $ cd /path/to/your/pjsip/dir
+      # In pjproject dir
       $ cd pjsip-apps/src/swig
       $ make
 
-   This step should produce:
 
-   * native library ``libpjsua2.so`` in ``pjsip-apps/src/swig/java/android/pjsua2/src/main/jniLibs/arm64-v8a``
+This produces the following artefacts:
 
-     .. note::
- 
-        If you are building for other target ABI, you'll need to manually move ``libpjsua2.so`` 
-        to the appropriate target ABI directory, e.g: ``jniLibs/armeabi-v7a``, 
-        please check `here <https://developer.android.com/ndk/guides/abis.html#am>`__ 
-        for target ABI directory names.
+::
 
-   * pjsua2 Java interface (a lot of ``.java`` files) in 
-     `pjsip-apps/src/swig/java/android/pjsua2/src/main/java/org/pjsip/pjsua2`
+    pjsip-apps/src/swig/java/android/pjsua2/src/main
+    ├── jniLibs/<ARCH>
+    │   ├── libpjsua2.so
+    │   └── libc++_shared.so
+    ├── java/org/pjsip/pjsua2
+    │   └── *.java
 
-#. Make sure any library dependencies are copied to 
-   ``pjsip-apps/src/swig/java/android/pjsua2/src/main/jniLibs/arm64-v8a``
-   (or the appropriate target ABI directory), e.g: ``libopenh264.so`` for video 
-   support.
-#. Open pjsua2 project in Android Studio, it is located in 
-   :source:`pjsip-apps/src/swig/java/android`.
-   It will contain three modules:
-   - pjsua2 Java interface: :source:`pjsip-apps/src/swig/java/android/pjsua2`
-   - Java sample app: :source:`pjsip-apps/src/swig/java/android/app`
-   - Kotlin sample app: :source:`pjsip-apps/src/swig/java/android/app-kotlin`
-#. Run sample app.
 
-**Log output**
+.. _android_copy_3rd_party_libs:
 
-The pjsua2 sample applications will write log messages to **LogCat** window.
+Copy third party native libraries
+-----------------------------------------------------
+You need to manually copy third party native libraries that are used by PJSIP to **jniLibs/$ARCH** 
+directory so that they are packaged with the application. So far we have added OpenSSL and Oboe
+as our dependencies, so we will copy them. Follow the steps below.
 
-.. _android_create_app:
-
-Creating your own application
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For developing Android application, you should use :doc:`pjsua2 API </api/pjsua2/ref>` 
-whose Java interface available via SWIG Java binding.
-
-#. First, build ``pjproject`` libraries as described above.
-#. Also build ``pjsua2 sample application`` as described above, this step is 
-   required to generate the pjsua2 Java interface and the native library.
-#. Create Android application outside the PJSIP sources for your project.
-#. Get pjsua2 Java interface and native library from pjsua2 sample application:
-
-   #. Copy pjsua2 Java interface files from 
-      ```pjsip-apps/src/swig/java/android/app/src/main/java`` to your 
-      project's ``app/src/main/java`` folder, e.g:
-
-      .. code-block:: shell
-
-         $ cd $YOUR_PROJECT_DIR/app/src/main/java
-         $ cp -r $PJSIP_DIR/pjsip-apps/src/swig/java/android/app/src/main/java .
-
-         # Cleanup excess pjsua2 application sources.
-         $ rm -r org/pjsip/pjsua2/app
-
-   #. Copy native library ``libpjsua2.so`` from 
-      ``pjsip-apps/src/swig/java/android/app/src/main/jniLibs`` to your 
-      project's ``app/src/main/jniLibs`` folder:
-
-      .. code-block:: shell
-
-         $ cd $YOUR_PROJECT_DIR/app/src/main/jniLibs
-         $ cp -r $PJSIP_DIR/{pjsip-apps/src/swig/java/android/app/src/main/jniLibs .
-
-#. Start writing your application, please check 
-   `pjsua2 docs <http://www.pjsip.org/docs/book-latest/html/index.html>`__ for 
-   reference.
-
-Pjsua sample application with telnet interface
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-There is also the usual `pjsua <http://www.pjsip.org/pjsua.htm>`__ with telnet 
-command line user interface, which is located under :source:`pjsip-apps/src/pjsua/android`. 
-It is not built by default and you need `SWIG <http://www.swig.org/download.html>`__ 
-to build it. Application flow and user interface are handled mainly in the native 
-level, so it doesn't use pjsua2 API with Java interface.
-
-Follow these steps to build pjsua:
-
-#. Make sure that pjsua app is included on the build.
-   
-   Call this before calling ``configure-android``
+1. Set the arch which you want to copy.
 
    .. code-block:: shell
 
-      EXPORT EXCLUDE_APP=0
+      # Replace ARCH with arm64-v8a, x86_64, or whatever arch
+      $ export ARCH=x86_64
+      $ cd pjsip-apps/src/swig/java/android/pjsua2/src/main/jniLibs/$ARCH
 
-#. Proceed to normal build by calling ``configure-android``, ``make dep``, ``make``
-#. Make sure SWIG is in the build environment PATH.
-   Alternatively, update SWIG path in :source:`pjsip-apps/src/pjsua/android/jni/Makefile` 
-   file.
-#. Run ``make`` from directory :source:`pjsip-apps/src/pjsua/android/jni`. 
-   The Android NDK root should be in the PATH, e.g:
-   
+2. Copy OpenSSL libs:
+
    .. code-block:: shell
 
-      $ cd /path/to/your/pjsip/dir
-      $ cd pjsip-apps/src/pjsua/android/jni
-      $ make
+      $ cp -v $OPENSSL_DIR/lib/*.so .
+      '/home/whoever/Android/openssl-3.4.0/lib/libcrypto.so' -> './libcrypto.so'
+      '/home/whoever/Android/openssl-3.4.0/lib/libssl.so' -> './libssl.so'
 
-#. Open pjsua2 app project in Android Studio, it is located in 
-   :source:`pjsip-apps/src/pjsua/android`.
-#. Run it.
-#. You will see telnet instructions on the device's screen. Telnet to this 
-   address to operate the application. See 
-   :doc:`CLI Manual </specific-guides/other/cli_cmd>`.
+3. Copy Oboe libs:
+
+   .. code-block:: shell
+
+      $ cp -v $OBOE_DIR/prefab/modules/oboe/libs/android.$ARCH/*.so .
+      '/home/whoever/Android/oboe-1.9....oid.arm64-v8a/liboboe.so' -> './liboboe.so'
+
+4. Check the libraries to be packaged:
+
+   .. code-block:: shell
+
+      $ ls
+      libcrypto.so  libc++_shared.so  liboboe.so  libpjsua2.so  libssl.so
 
 
-Kotlin Support
-^^^^^^^^^^^^^^
-To develop PJSIP app using Kotlin, please take a look at :pr:`2648`
+What's next
+---------------------------
+The PJSIP library, the JNI interface, and the third party libraries are ready. Now we are ready do build
+the sample applications.

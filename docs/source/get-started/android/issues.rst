@@ -1,8 +1,94 @@
-Common Issues when Developing Android SIP Client
-===============================================
+Common issues when developing Android SIP client
+==================================================
 
-.. contents:: Table of Contents
-    :depth: 2
+.. contents:: Common issues:
+   :local:
+   :depth: 2
+
+
+Pjsua2 keeps stopping during startup
+------------------------------------------------------------------
+
+
+Failed to load native library pjsua2
+------------------------------------------------------------------
+
+::
+
+  W  Failed to load native library pjsua2
+  W  java.lang.UnsatisfiedLinkError: dlopen failed: library "libpjsua2.so" not found
+
+There can be several reasons for that, below are some that are quite common:
+
+* If it is your own application, check that you have copied the native libraries to directory
+  **<YOUR-APP>/src/main/jniLibs/<ARCH>**. At the very minimum, you need to copy:
+
+  * **libpjsua2.so**
+  * **libc++_shared.so**
+
+* If you have enabled additional/optional features when building PJSIP, you need to copy the relevant
+  shared libraries to the directory above, or otherwise ``libpjsua2.so`` will fail to load.
+  For example:
+
+  * **libcrypto.so** and **libssl.so** for OpenSSL, 
+  * **liboboe.so** for OBOE sound device, 
+  * **libopenh264.so** for OpenH264 codecs.
+
+* On Linux, you can check what libraries ``libpjsua2.so`` depends on by executing this command:
+
+  ::
+
+      $ readelf --dynamic libpjsua2.so | grep NEEDED
+
+* Of course you need to build PJSIP for the correct architecture, otherwise ``libpjsua2.so``
+  will fail to load (rather misleadingly with *"not found"* exception). For example, it might
+  worth mentioning that the Android Studio emulator's architecture is ``x86_64``, not ``arm64-v8a``.
+* You can check that the correct libraries are packaged correctly by opening the **.apk** file
+  with an archiver and look at the libraries in the **lib** directory, under the correct
+  architecture. If it is not there, check the Gradle script or other packaging script that you
+  use.
+
+
+Failed to load native library libssl.so
+------------------------------------------------------------------
+Follow the instructions in :ref:`android_copy_3rd_party_libs`.
+
+
+Failed to load native library libcrypto.so
+------------------------------------------------------------------
+Follow the instructions in :ref:`android_copy_3rd_party_libs`.
+
+
+Failed to load native library liboboe.so
+------------------------------------------------------------------
+Follow the instructions in :ref:`android_copy_3rd_party_libs`.
+
+
+Failed to load native library openh264
+------------------------------------------------------------------
+
+::
+
+  W  Failed to load native library openh264
+  W  java.lang.UnsatisfiedLinkError: dlopen failed: library "libopenh264.so" not found
+  I  This could be safely ignored if you don't use OpenH264 video codec.
+
+
+As the message says, you can ignore it if you're not using OpenH264. Otherwise follow the OpenH264
+installation instructions to install it properly.
+
+
+No implementation found for void org.pjsip.pjsua2.pjsua2JNI.swig_module_init()
+-------------------------------------------------------------------------------
+This usually is the follow up error of *Failed to load native library pjsua2* error above.
+
+
+Find library dependencies
+------------------------------------------------------------------
+::
+
+  $ readelf --dynamic libpjsua.so | grep NEEDED
+
 
 Unable to make or receive call due to large message size
 ------------------------------------------------------------------
