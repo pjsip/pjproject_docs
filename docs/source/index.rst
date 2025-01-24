@@ -61,7 +61,7 @@ PJSIP Project Online Documentation
    api/pjnath/index
    api/pjlib-util/index
    api/pjlib/index
-   api/samples
+   samples/index
 
 
 

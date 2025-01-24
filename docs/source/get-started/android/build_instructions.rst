@@ -166,18 +166,20 @@ This produces the following artefacts:
 Copy third party native libraries
 -----------------------------------------------------
 You need to manually copy third party native libraries that are used by PJSIP to **jniLibs/$ARCH** 
-directory so that they are packaged with the application. So far we have added OpenSSL and Oboe
+directory of the Android application so that they are packaged with the application. So far we have added OpenSSL and Oboe
 as our dependencies, so we will copy them. Follow the steps below.
 
-1. Set the arch which you want to copy.
+1. Assuming you're already in the directory of your Android application (the directory that has
+   ``build.gradle`` file and that needs the native libs), for example :source:`pjsip-apps/src/swig/java/android/pjsua2/`.
+2. Set the arch which you want to copy.
 
    .. code-block:: shell
 
       # Replace ARCH with arm64-v8a, x86_64, or whatever arch
       $ export ARCH=x86_64
-      $ cd pjsip-apps/src/swig/java/android/pjsua2/src/main/jniLibs/$ARCH
+      $ cd src/main/jniLibs/$ARCH
 
-2. Copy OpenSSL libs:
+3. Copy OpenSSL libs:
 
    .. code-block:: shell
 
@@ -185,14 +187,14 @@ as our dependencies, so we will copy them. Follow the steps below.
       '/home/whoever/Android/openssl-3.4.0/lib/libcrypto.so' -> './libcrypto.so'
       '/home/whoever/Android/openssl-3.4.0/lib/libssl.so' -> './libssl.so'
 
-3. Copy Oboe libs:
+4. Copy Oboe libs:
 
    .. code-block:: shell
 
       $ cp -v $OBOE_DIR/prefab/modules/oboe/libs/android.$ARCH/*.so .
       '/home/whoever/Android/oboe-1.9....oid.arm64-v8a/liboboe.so' -> './liboboe.so'
 
-4. Check the libraries to be packaged:
+5. Check the libraries to be packaged:
 
    .. code-block:: shell
 
@@ -204,3 +206,4 @@ What's next
 ---------------------------
 The PJSIP library, the JNI interface, and the third party libraries are ready. Now we are ready do build
 the sample applications.
+
