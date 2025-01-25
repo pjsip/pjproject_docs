@@ -15,14 +15,14 @@ menu on the left (if you're on desktop).
    :maxdepth: 1
    :caption: Table of Contents
 
-   sip-sdk-features
    sip-client-overview
+   sip-sdk-features
    requirements
    build_instructions
    java-sip-client
    kotlin-sip-client
    cli-sip-client
-   optional-features
+   additional-guides
    issues
 
 

@@ -6,10 +6,10 @@ client applications supporting voice/VoIP calls, video, and secure communication
 secure RTP (SRTP).
 
 We tried to present the minimum and optimum features in this tutorial. You can install other,
-optional features by following :doc:`optional-features` tutorial at the end of this guide.
+optional features by clicking the feature in :doc:`sip-sdk-features` page.
 
 
-.. contents:: In this page:
+.. contents:: Installation steps:
    :depth: 2
    :local:
 
@@ -59,40 +59,55 @@ Download and extract Oboe
 We recommend Oboe for Android audio device:
 
 - download Oboe prefab package (`.aar` file) from https://github.com/google/oboe/releases
-- extract it somewhere in your system, take note of the location, e.g.
+- extract it somewhere in your system, save the location to **OBOE_DIR** environment variable
+  (we will refer to it later).
 
-.. code-block:: shell
+  .. code-block:: shell
 
-  $ export OBOE_DIR=/home/whoever/Android/oboe-1.9.3
+    $ export OBOE_DIR=/home/whoever/Android/oboe-1.9.3
 
 For additional information, see :ref:`oboe`.
 
+
+.. _android_openssl:
 
 Install OpenSSL
 -------------------------------------------
 
 Let's use TLS in our demo as a good security practice. To install it:
 
-- download OpenSSL release from https://github.com/openssl/openssl/releases (we tested with
-  version 3.4)
-- extract to some directory
-- follow the instructions in `Notes-ANDROID <https://github.com/openssl/openssl/blob/master/NOTES-ANDROID.md>`__
-  to build it for Android
-- copy the libraries to ``lib`` directory:
+1. Download OpenSSL release from https://github.com/openssl/openssl/releases (we tested with
+   versions from 1.0.2s to 3.4)
+2. Extract to some directory
+3. follow the instructions in `Notes-ANDROID <https://github.com/openssl/openssl/blob/master/NOTES-ANDROID.md>`__
+   to build it for Android. Sample commands:
 
-.. code-block:: shell
+   .. code-block:: shell
 
-  # in OpenSSL directory
-  $ mkdir lib
-  $ cp lib*.a lib/
-  $ ls lib
-  libcrypto.a  libssl.a
+    # in OpenSSL directory
+    $ export ANDROID_NDK_ROOT=[your_android_ndk_path]
+    $ PATH=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin:$ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:$PATH
+    $ ./Configure android-arm64 -D__ANDROID_API__=29
+    $ make
 
-- take note of the location, e.g.
+   There is no need to run **make install**.
 
-.. code-block:: shell
+4. Create a ``lib`` directory and copy the libraries to it:
 
-  $ export OPENSSL_DIR=/home/whoever/Android/openssl-3.4.0
+   .. code-block:: shell
+
+    # in OpenSSL directory
+    $ mkdir lib
+    $ cp lib*.a lib/
+    $ ls lib
+    libcrypto.a  libssl.a
+
+5. Save the location to **OPENSSL_DIR** environment variable (we will refer to it later).
+
+   .. code-block:: shell
+
+    $ export OPENSSL_DIR=/home/whoever/Android/openssl-3.4.0
+
 
 
 Download PJSIP

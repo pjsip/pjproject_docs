@@ -85,6 +85,8 @@ This usually is the follow up error of *Failed to load native library pjsua2* er
 
 Find library dependencies
 ------------------------------------------------------------------
+Command to see what shared libraries are needed by **libpjsua.so**:
+
 ::
 
   $ readelf --dynamic libpjsua.so | grep NEEDED

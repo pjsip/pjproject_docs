@@ -40,6 +40,11 @@ We assume that PJPROJECT has been set up and built for Android, by follwing the
    The command above will/should also copy ``libpjsua.so`` and ``libc++_shared.so``
    to ``pjsip-apps/src/pjsua/android/app/src/main/jniLibs/$ARCH`` directory.
 
+   .. note::
+
+    This library is **libpjsua.so**, while the library used by the Java and Kotlin sample apps
+    is **libpjsua2.so**.
+
 
 Copy the third party native libraries
 ----------------------------------------
@@ -50,14 +55,14 @@ directory (the application directory) to ``pjsip-apps/src/pjsua/android/app/``.
 
 Open in Android Studio
 ----------------------------------------
-Open pjsua2 app project in Android Studio, it is located in :source:`pjsip-apps/src/pjsua/android``
-Once opened, you will probably like the screenshot below on your project tree:
+Open pjsua CLI app project in Android Studio, it is located in :source:`pjsip-apps/src/pjsua/android``
+Once opened, you will probably see display like the screenshot below on your project tree:
 
 .. image:: images/pjsua-cli-android-studio-project-import.png
   :width: 350px
   :alt: pjsua CLI Android Studio project
 
-The **Build** tab:
+And some errors on the **Build** tab:
 
 ::
 
@@ -94,10 +99,9 @@ Once the upgrades are successful, the project will look something like this:
   :width: 350px
   :alt: pjsua CLI Android Studio project
 
-.. note::
 
-    Check the contents of **jniLibs/$ARCH** folder in the project view, it should contains at least
-    five shared libraries as shown in the above screenshot.
+Expand and check the contents of **jniLibs/$ARCH** folder in the project view as shown above, it
+should contain at least five shared libraries as shown in the above screenshot.
 
 
 Build the project
@@ -174,5 +178,5 @@ What's next
 This concludes our tutorial about building, opening, installing, running, and debugging SIP
 sample applications for Android.
 
-In the next guides, we will guide you how to install optional Android features and how to deal
-with common errors.
+Next is the guide to create your own SIP Android application based on PJSIP and how to install
+optional Android features.

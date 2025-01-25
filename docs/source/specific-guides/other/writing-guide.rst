@@ -214,7 +214,6 @@ Currenty available cross-references:
    api/pjmedia/pjmedia-codec.rst:.. _silk:
    api/pjmedia/pjmedia-codec.rst:.. _speex:
    api/pjmedia/pjmedia-codec.rst:.. _libvpx:
-   get-started/android/build_instructions.rst:.. _android_pjsua2:
    get-started/android/build_instructions.rst:.. _android_create_app:
    get-started/ios/issues.rst:.. _ios_bg:
    get-started/guidelines-development.rst:.. _dev_start:

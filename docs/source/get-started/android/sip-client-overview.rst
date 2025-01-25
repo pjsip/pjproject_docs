@@ -16,9 +16,6 @@ This **Getting Started for Android guide** gives step by step tutorial to build 
 client applications supporting voice/VoIP calls, video, and secure communication using TLS and
 secure RTP (SRTP) using PJSIP.
 
-We present the minimum and optimum features in this tutorial. You can add other,
-optional features by following :doc:`optional-features` section at the end of this tutorial.
-
 
 
 Task outline
@@ -31,6 +28,4 @@ You can follow along by clicking the **Next** button at the bottom of each page.
 
 What's next
 -----------------
-
-Coming up, we will install the required libraries and tools to build our Android SIP VoIP and
-video call client application.
+Coming up we will entice you with all the features that PJSIP for Android supports.

@@ -57,9 +57,9 @@ Below are other settings that are used. To further customize the application, fo
 :doc:`PJSUA2 guide </pjsua2/using/index>` and :doc:`PJSUA2 API reference </api/pjsua2/index>`:
 
 - SIP transports: UDP, TLS
-- Video codecs: H.264, VP8, VP9
+- Video codecs: H.264, VP8, VP9 (native codecs)
 - Video resolution and bandwidth: 480x640, 1 Mbps (avg), 5 Mbps (max)
-- Audio codecs: Speex NB/WB/UWB, AMR NB/WB, iLBC, GSM, PCMU, PCMA, G.722
+- Audio codecs: AMR WB/NB (native codecs), Speex NB/WB/UWB, iLBC, GSM, PCMU, PCMA, G.722
 - ICE: -
 - STUN: -
 
@@ -85,6 +85,11 @@ Once started, you will see the minimalistic UI like the following:
 .. image:: images/pjsua2-kotlin-started.png
   :width: 350px
   :alt: Pjsua2 Android Kotlin SIP dialer
+
+
+Start the library
+------------------------------
+Press START to start the library.
 
 
 Making and receiving calls

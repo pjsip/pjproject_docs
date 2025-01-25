@@ -6,7 +6,7 @@ In this section, we will configure and build PJSIP as a native library for Andro
 Kotlin applications.
 
 
-.. contents:: In this page:
+.. contents:: Configuration and build steps:
    :depth: 2
    :local:
 
@@ -62,13 +62,6 @@ section for building other targets.
 Configuring for other architectures (including emulator)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you have built PJSIP for other architecture, it's recommended to clean it up first:
-
-.. code-block:: shell
-
-   $ cd /path/to/pjproject
-   $ make distclean
-
 Specify the target arch in ``TARGET_ABI`` and run it with ``--use-ndk-cflags``. For example,
 for targetting the emulator:
 
@@ -81,6 +74,13 @@ for targetting the emulator:
    If you build third party libraries from the source (such as OpenSSL), you need to rebuild them
    for the same architecture as well.
 
+If you have built PJSIP for other architecture, it's recommended to clean it up first before running
+configure above:
+
+.. code-block:: shell
+
+   $ cd /path/to/pjproject
+   $ make distclean
 
 
 Supporting 16 KB page sizes (Android 15)
@@ -129,7 +129,7 @@ Now we can build PJSIP with:
 
 
 
-Building PJSIP Java interface with SWIG
+Building PJSUA2 Java interface with SWIG
 -----------------------------------------------------
 
 #. Set ``JAVA_HOME`` environment variable to the directory containing ``javac`` executable. Since
@@ -169,14 +169,14 @@ You need to manually copy third party native libraries that are used by PJSIP to
 directory of the Android application so that they are packaged with the application. So far we have added OpenSSL and Oboe
 as our dependencies, so we will copy them. Follow the steps below.
 
-1. Assuming you're already in the directory of your Android application (the directory that has
+1. Go to the directory of your Android application (the directory that has
    ``build.gradle`` file and that needs the native libs), for example :source:`pjsip-apps/src/swig/java/android/pjsua2/`.
 2. Set the arch which you want to copy.
 
    .. code-block:: shell
 
       # Replace ARCH with arm64-v8a, x86_64, or whatever arch
-      $ export ARCH=x86_64
+      $ export ARCH=arm64-v8a
       $ cd src/main/jniLibs/$ARCH
 
 3. Copy OpenSSL libs:
