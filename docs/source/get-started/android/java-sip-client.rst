@@ -49,9 +49,18 @@ Once loaded properly, the project tree will look something like this:
 
 It contains three modules:
 
-- **app**, Pjsua2 sample app: :source:`pjsip-apps/src/swig/java/android/app`
-- **app-kotlin**, Kotlin sample app: :source:`pjsip-apps/src/swig/java/android/app-kotlin`
-- **pjsua2**, pjsua2 Java interface: :source:`pjsip-apps/src/swig/java/android/pjsua2`
+- **app**, Pjsua2 sample app: :source:`pjsip-apps/src/swig/java/android/app`,
+
+  the application being discussed by this guide,
+
+- **app-kotlin**, Kotlin sample app: :source:`pjsip-apps/src/swig/java/android/app-kotlin`,
+
+  the Kotlin sample application, to be discussed in next tutorial,
+
+- **pjsua2**, pjsua2 Java interface: :source:`pjsip-apps/src/swig/java/android/pjsua2`,
+
+  the module containing Java PJSUA2 API and JNI interface to access native PJSIP libraries, and
+  also the native shared libraries themselves.
 
 
 
