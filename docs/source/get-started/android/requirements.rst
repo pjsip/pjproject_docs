@@ -6,7 +6,7 @@ client applications supporting voice/VoIP calls, video, and secure communication
 secure RTP (SRTP).
 
 We tried to present the minimum and optimum features in this tutorial. You can install other,
-optional features by clicking the feature in :doc:`sip-sdk-features` page.
+optional features by clicking the relevant feature in :doc:`sip-sdk-features` page.
 
 
 .. contents:: Installation steps:
@@ -32,7 +32,7 @@ on *Ubuntu 22.04*.
 Install SWIG
 -------------------------------------------
 
-SWIG is used to create high level language bindings (such as Java, C#) for
+SWIG is used to create high level language bindings (such as Java, C#, Python) for
 :doc:`PJSUA2 API </api/pjsua2/index>`.
 
 To install it, follow the instructions from `SWIG <http://www.swig.org/download.html>`__ homepage.
@@ -77,7 +77,7 @@ Install OpenSSL
 Let's use TLS in our demo as a good security practice. To install it:
 
 1. Download OpenSSL release from https://github.com/openssl/openssl/releases (we tested with
-   versions from 1.0.2s to 3.4)
+   versions from 1.1.0 to 3.4)
 2. Extract to some directory
 3. follow the instructions in `Notes-ANDROID <https://github.com/openssl/openssl/blob/master/NOTES-ANDROID.md>`__
    to build it for Android. Sample commands:

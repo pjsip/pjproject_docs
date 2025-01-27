@@ -8,7 +8,20 @@ Common issues when developing Android SIP client
 
 Pjsua2 keeps stopping during startup
 ------------------------------------------------------------------
+First of all, if this happens, I suggest launching the application with **Debug** instead of **Run**
+so that you have control over the application's running.
 
+It's always good idea to check the log (**View > Tool Windows > Logcat**) for any error messages.
+And then see if the issue has been addressed by this page.
+
+If there is no error messages, it could be that the error occurs before logging connection can be
+established with the host machine. Since the error potentially happens during application
+initialization, I can only guess that probably it's related to native shared library loading,
+so check that all native shared libraries have been packaged properly.
+See :ref:`android_copy_3rd_party_libs`.
+
+
+.. _android_failed_to_load_pjsua2:
 
 Failed to load native library pjsua2
 ------------------------------------------------------------------
@@ -40,28 +53,31 @@ There can be several reasons for that, below are some that are quite common:
 
       $ readelf --dynamic libpjsua2.so | grep NEEDED
 
-* Of course you need to build PJSIP for the correct architecture, otherwise ``libpjsua2.so``
-  will fail to load (rather misleadingly with *"not found"* exception). For example, it might
+* Of course you need to build PJSIP for the correct architecture, **and** copy it to correct architecture
+  directory under ``jniLibs``, otherwise ``libpjsua2.so`` will fail to load (rather misleadingly with
+  *"not found"* exception). This applies for all other  native shared libraries as well. It might
   worth mentioning that the Android Studio emulator's architecture is ``x86_64``, not ``arm64-v8a``.
 * You can check that the correct libraries are packaged correctly by opening the **.apk** file
   with an archiver and look at the libraries in the **lib** directory, under the correct
-  architecture. If it is not there, check the Gradle script or other packaging script that you
-  use.
+  architecture. If it is not there, check the procedures above.
 
 
 Failed to load native library libssl.so
 ------------------------------------------------------------------
-Follow the instructions in :ref:`android_copy_3rd_party_libs`.
+Follow the instructions in :ref:`android_copy_3rd_party_libs`. Also see
+:ref:`android_failed_to_load_pjsua2` above.
 
 
 Failed to load native library libcrypto.so
 ------------------------------------------------------------------
-Follow the instructions in :ref:`android_copy_3rd_party_libs`.
+Follow the instructions in :ref:`android_copy_3rd_party_libs`. Also see
+:ref:`android_failed_to_load_pjsua2` above.
 
 
 Failed to load native library liboboe.so
 ------------------------------------------------------------------
-Follow the instructions in :ref:`android_copy_3rd_party_libs`.
+Follow the instructions in :ref:`android_copy_3rd_party_libs`. Also see
+:ref:`android_failed_to_load_pjsua2` above.
 
 
 Failed to load native library openh264
@@ -74,8 +90,12 @@ Failed to load native library openh264
   I  This could be safely ignored if you don't use OpenH264 video codec.
 
 
-As the message says, you can ignore it if you're not using OpenH264. Otherwise follow the OpenH264
-installation instructions to install it properly.
+As the message says, you can ignore it if you're not using OpenH264. 
+
+Otherwise you **do** intent to use :ref:`openh264`, follow the :ref:`OpenH264
+installation instructions <openh264>` to install it properly, follow the instructions in
+:ref:`android_copy_3rd_party_libs` to copy third party libraries, and also see
+:ref:`android_failed_to_load_pjsua2` above.
 
 
 No implementation found for void org.pjsip.pjsua2.pjsua2JNI.swig_module_init()
@@ -83,7 +103,7 @@ No implementation found for void org.pjsip.pjsua2.pjsua2JNI.swig_module_init()
 This usually is the follow up error of *Failed to load native library pjsua2* error above.
 
 
-Find library dependencies
+Tip: find library dependencies
 ------------------------------------------------------------------
 Command to see what shared libraries are needed by **libpjsua.so**:
 
@@ -99,7 +119,7 @@ The issue is documented in :issue:`1488`. The solution is to try using port othe
 than 5060 in **both** client and server, and/or reducing the SIP message size,
 as explained in :any:`/specific-guides/sip/reducing_size`.
 
-Garbage Collector May Crash Your App (Pjsua2 API)
+Garbage collector may crash your app (Pjsua2 API)
 ------------------------------------------------------
 Please check this PJSUA2 section: :any:`gc_problems`.
 

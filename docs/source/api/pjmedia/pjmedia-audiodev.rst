@@ -108,6 +108,13 @@ Note that Android OpenSL ES has been deprecated in favor of :ref:`oboe`.
 
 Android JNI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The JNI sound device implementation is the default audio device for Android. It is accessing
+Android Java API `AudioTrack <https://developer.android.com/reference/android/media/AudioTrack>`__ and
+`AudioRecord <https://developer.android.com/reference/android/media/AudioRecord>`__ via JNI.
+
+The JNI sound device device implementation was kindly donated by `Regis Montoya <https://www.r3gis.fr>`__
+from his `CSIPSimple <https://code.google.com/p/csipsimple/>`__ project.
+
 
 .. _oboe:
 
