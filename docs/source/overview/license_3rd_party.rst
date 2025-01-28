@@ -241,7 +241,7 @@ Speex
    :header-rows: 0
 
    * - Software
-     - Speex codec, accoustic echo cancellation, and sampling rate conversion.
+     - Speex codec, acoustic echo cancellation, and sampling rate conversion.
    * - Author
      - https://speex.org/
    * - Location
@@ -259,7 +259,7 @@ Speex
          software can be explicitly disabled from the link process by defining 
          :c:macro:`PJMEDIA_HAS_SPEEX_CODEC` to zero.
 
-       - **Speex AEC**: Speex accoustic echo cancellation is enabled by default for 
+       - **Speex AEC**: Speex acoustic echo cancellation is enabled by default for 
          the sound device. Application can disable this by setting 
          :c:macro:`PJMEDIA_HAS_SPEEX_AEC` to zero.
 
