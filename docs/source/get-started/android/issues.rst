@@ -55,7 +55,7 @@ There can be several reasons for that, below are some that are quite common:
 
 * Of course you need to build PJSIP for the correct architecture, **and** copy it to correct architecture
   directory under ``jniLibs``, otherwise ``libpjsua2.so`` will fail to load (rather misleadingly with
-  *"not found"* exception). This applies for all other  native shared libraries as well. It might
+  *"not found"* exception). This applies to all other  native shared libraries as well. It might
   worth mentioning that the Android Studio emulator's architecture is ``x86_64``, not ``arm64-v8a``.
 * You can check that the correct libraries are packaged correctly by opening the **.apk** file
   with an archiver and look at the libraries in the **lib** directory, under the correct
@@ -92,7 +92,7 @@ Failed to load native library openh264
 
 As the message says, you can ignore it if you're not using OpenH264. 
 
-Otherwise you **do** intent to use :ref:`openh264`, follow the :ref:`OpenH264
+Otherwise you **do** intend to use :ref:`openh264`, follow the :ref:`OpenH264
 installation instructions <openh264>` to install it properly, follow the instructions in
 :ref:`android_copy_3rd_party_libs` to copy third party libraries, and also see
 :ref:`android_failed_to_load_pjsua2` above.
