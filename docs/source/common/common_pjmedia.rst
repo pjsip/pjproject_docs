@@ -21,7 +21,7 @@ Audio Features
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Some audio processing algorithms implemented in PJMEDIA.
 
-- :doc:`Accoustic Echo Cancellation </specific-guides/audio/aec>` 
+- :doc:`Acoustic Echo Cancellation </specific-guides/audio/aec>` 
 - :doc:`Adaptive Delay Buffer </api/generated/pjmedia/group/group__PJMED__DELAYBUF>`
 - :doc:`Adaptive Jitter Buffer </api/generated/pjmedia/group/group__PJMED__JBUF>`
 - :doc:`Adaptive Silence Detection </api/generated/pjmedia/group/group__PJMEDIA__SILENCEDET>`

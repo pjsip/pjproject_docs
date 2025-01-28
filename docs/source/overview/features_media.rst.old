@@ -17,7 +17,7 @@ These are the core considerations for such design:
 Audio Features
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- :doc:`Accoustic Echo Cancellation API </api/generated/pjmedia/group/group__PJMEDIA__Echo__Cancel>`
+- :doc:`Acoustic Echo Cancellation API </api/generated/pjmedia/group/group__PJMEDIA__Echo__Cancel>`
 - :doc:`Adaptive Delay Buffer </api/generated/pjmedia/group/group__PJMED__DELAYBUF>`
 - :doc:`Adaptive Jitter Buffer </api/generated/pjmedia/group/group__PJMED__JBUF>`
 - :doc:`Adaptive Silence Detection </api/generated/pjmedia/group/group__PJMEDIA__SILENCEDET>`
