@@ -17,10 +17,10 @@ PJSUA2 Samples
      - Simple audio conference and chatroom server
    * - :source:`Android Java Pjsua2 <pjsip-apps/src/swig/java/android>`
      - PJSUA2 (Android, Java)
-     - Java GUI application supporting audio/video calls. See :ref:`android_pjsua2`.
+     - Java GUI application supporting audio/video calls. See :doc:`/get-started/android/java-sip-client`.
    * - :source:`Android Kotlin Pjsua2 <pjsip-apps/src/swig/java/android>`
      - PJSUA2 (Android, Kotlin)
-     - Kotlin GUI application supporting audio/video calls. See :ref:`android_pjsua2`.
+     - Kotlin GUI application supporting audio/video calls. See :doc:`/get-started/android/java-sip-client`.
    * - `Java sample <https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/swig/java>`_
      - PJSUA2 (SWIG, Java)
      - This requires the Java SWIG module. After building the SWIG module, run ``make test`` 

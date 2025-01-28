@@ -11,7 +11,7 @@ PJSUA-LIB Samples
      - This small app (~200 LoC) is a fully functional SIP user agent, supporting 
        registration and audio call (P.S. you need to modify credentials in the source code to
        register). Use this sample to study the general pattern and flow of PJSUA-LIB.
-   * - `pjsua <https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/pjsua/>`_
+   * - :doc:`/samples/pjsua`
      - PJSUA-LIB
      - This is the reference implementation of PJSIP, demonstrating everything that PJSIP
        has to offer. We use this for any testing and for actual communications as well.

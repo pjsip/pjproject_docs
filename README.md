@@ -11,7 +11,7 @@
 The PJSIP docs at **https://docs.pjsip.org** is hosted by the *Read the Docs* (RTD) service. It contains:
 1. reference manuals (was at [pjsip.org/docs/latest/...](https://www.pjsip.org/docs/latest/pjlib/docs/html/index.htm)
 2. pjsua2 book (was at [pjsip.org/docs/book-latest](https://www.pjsip.org/docs/book-latest/html/index.html))
-3. (in progress) wiki (previously at https://trac.pjsip.org/repos/) 
+3. wiki (previously at https://trac.pjsip.org/repos/) 
 
 The PJSIP's RTD settings page is at https://readthedocs.org/projects/pjsip/. This page controls various aspects of the RTD page. Some will be explained below.
 
@@ -381,7 +381,7 @@ You need at least Doxygen 1.8.1 because Doxygen 1.5.1 is not suitable for Breath
 
 #### 2. Install Python
 
-We need Python version 3.7 or newer. It's also recommended co create `virtualenv` environment to avoid cluttering your main Python installation.
+We need Python version 3.7 or newer. It's also recommended to create `virtualenv` environment to avoid cluttering your main Python installation.
 
 #### 3. Clone pjproject_docs with the submodules
 
@@ -412,6 +412,13 @@ $ sphinx-build --version
 $ breathe-apidoc --version
 ```
 
+Below are the versions in my installations, just for reference:
+
+```
+1.9.1
+sphinx-build 5.1.0
+Breathe (breathe-apidoc) 4.34.0
+```
 
 #### 6. Generate documentation locally
 
@@ -420,7 +427,7 @@ Follow instructions in [Generating documentation locally](#generating-documentat
 #### 7. Serving the documentation
 
 ```sh
-$ cd pjproject_docs
+$ cd docs/build/html
 $ python -m http.server
 ```
 

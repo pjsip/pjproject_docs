@@ -1,5 +1,5 @@
-SRTP
-=====================
+SRTP - Secure RTP (SDES and DTLS)
+=========================================
 
 .. contents:: Table of Contents
     :depth: 2
