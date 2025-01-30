@@ -131,6 +131,29 @@ braces is multiline
     }
 
 
+Multiline function arguments
+------------------------------
+Parameters should be aligned when they are broken into multiple lines, like this:
+
+.. code-block:: c
+
+    PJ_DECL(void) pj_array_insert(void *array,
+                                  unsigned elem_size,
+                                  unsigned count,
+                                  ...);
+
+
+instead of this:
+
+.. code-block:: c
+
+    PJ_DECL(void) pj_array_insert(void *array,
+        unsigned elem_size,
+        unsigned count,
+        ...);
+
+
+
 Multiline comment indentation
 ------------------------------
 Multiline comments should be indented tididy.
