@@ -2,7 +2,7 @@ Coding Style
 ======================
 If you intend to submit patches to PJSIP, please be informed that we do have the following
 coding style. Please do not see this as something that we guard religiously, but
-it's just **the** conventions that has been established for the past couple of decades in the
+it's just **the** convention that has been established for the past couple of decades in the
 existing hundreds of thousand lines of code and we think it's just nice if new codes could follow these
 conventions.
 
@@ -28,7 +28,7 @@ if a plugin needs to be downloaded.
 Limit line length
 -----------------------
 We usually limit the line length to 80 characters, especially in the header files.
-A few violations in the ``.c`` file are usually tolerated, especially in the test files
+A **few** violations in the ``.c`` file are usually tolerated, especially in the test files
 where the audience is limited, but usually they are less than 90 characters too.
 
 
@@ -70,7 +70,7 @@ We would appreciate if you could avoid it too.
 
 Use Doxygen comments for API
 ------------------------------
-All public API in header file must be documented in Doxygen format. This includes structs, enums,
+All public API in header files must be documented in Doxygen format. This includes structs, enums,
 and their members, functions, their arguments, macros, etc.
 
 Please see example in the next section on how to indent the comments.
@@ -78,7 +78,7 @@ Please see example in the next section on how to indent the comments.
 
 Use K&R style brace placement
 --------------------------------
-Braces are on their own lines for **function, struct, and enum definitions**:
+Braces are on their own lines for **struct, enum, and function definitions**:
 
 .. code-block:: c
 
@@ -130,6 +130,45 @@ braces is multiline
     {
     }
 
+
+Multiline comment indentation
+------------------------------
+Multiline comments should be indented tididy.
+
+For doxygen documentation, should be like this:
+
+.. code-block:: c
+
+    /**
+     * First line describing the function.
+     * Second line describing the function.
+     */
+
+And **not** like this:
+
+.. code-block:: c
+
+    /** First line describing the function.
+     * Second line describing the function.
+     * Alas, they don't align!
+     */
+
+For multiline comments in the code, should be like this:
+
+.. code-block:: c
+
+    /* First line describing something.
+     * Second line describing the something.
+     */
+
+And **not** like this:
+
+.. code-block:: c
+
+    /* First line describing something.
+    * Second line describing the something.
+    * Alas, they don't align!
+    */
 
 
 Please observe existing code
