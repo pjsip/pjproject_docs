@@ -52,6 +52,7 @@ Development & Programming
 
    develop/*
    ../api/pjsip/guide
+   /get-started/coding-style.rst
 
 
 

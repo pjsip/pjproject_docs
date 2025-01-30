@@ -1,7 +1,7 @@
 Coding Style
 ======================
 If you intend to submit patches to PJSIP, please be informed that we do have the following
-coding style. Please do not see this as something that we guard religiously, but
+coding style in place. Please do not see this as something that we guard religiously, but
 it's just **the** convention that has been established for the past couple of decades in the
 existing hundreds of thousand lines of code and we think it's just nice if new codes could follow these
 conventions.
