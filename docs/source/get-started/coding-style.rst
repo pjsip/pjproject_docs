@@ -40,9 +40,9 @@ in **gcc** you can activate this with ``-std=gnu99`` option.
 
 
 
-C++ style comment
+Use C style comment
 ---------------------
-We use C++ ``//`` style comment when we want some part of
+Use C style comment. We only use C++ ``//`` style comment when we want some part of
 disabled code to draw more attention than normal comment, and as a reminder in the
 future that we used to have that code (and it was disabled for a reason). For example:
 
@@ -57,10 +57,13 @@ future that we used to have that code (and it was disabled for a reason). For ex
 
 No declaration after statement
 ----------------------------------
-We don't use declaration after statement because our compiler did not support it back then and
-this is not allowed by C90 (or so we thought). But somewhat it is allowed by current
-``gcc -std=c90`` and ``gcc -std=gnu89``, though you can get gcc to warn you about it with
-``-Wdeclaration-after-statement``.
+We don't use declaration after statement because our compiler did not support it back then
+(even Visual Studio 2005 still did not support it) and this is not allowed by C90 (or so we thought).
+
+.. note::
+
+    But somewhat it is allowed by current ``gcc -std=c90`` and ``gcc -std=gnu89``,
+    though you can get gcc to warn you about it with ``-Wdeclaration-after-statement``.
 
 We would appreciate if you could avoid it too.
 
@@ -70,21 +73,50 @@ Use Doxygen comments for API
 All public API in header file must be documented in Doxygen format. This includes structs, enums,
 and their members, functions, their arguments, macros, etc.
 
-Please see existing codes on how to indent the comments.
+Please see example in the next section on how to indent the comments.
 
 
 Use K&R style brace placement
 --------------------------------
-For functions, braces are on their own lines:
+Braces are on their own lines for **function, struct, and enum definitions**:
 
 .. code-block:: c
 
-    int my_func(int a)
+    /** Doxygen comment */
+    typedef struct some_type
+    {
+        /** Doxygen comment */
+        int   member_a;
+
+        /** Doxygen comment */
+        char  member_b;
+    } some_type;
+    
+    /** Doxygen comment */
+    enum some_constant_t
+    {
+        /** Doxygen comment */
+        CONSTANT_1,
+
+        /** Doxygen comment */
+        CONSTANT_2;
+    };
+
+    /**
+     * Doxygen comment describing the function.
+     *
+     * @param a     First parameter
+     * @param b     Second parameter, same indentation as other params.
+     *
+     * @return      Zero on success or ..., indentation aligned with above too.
+     */
+    int my_func(int a, int b)
     {
         return 0;
     }
 
-For other blocks, opening braces are on the same line:
+For other blocks, opening braces are on the same line, except if the statement preceeding the
+braces is multiline
 
 .. code-block:: c
 
@@ -92,39 +124,16 @@ For other blocks, opening braces are on the same line:
         ...
     }
 
-See `K & R style <http://en.wikipedia.org/wiki/1_true_brace_style#K.26R_style>`__ for some more info.
+    /* multiline example */
+    while (imagine_long_expression_here > 0 &&
+           another_condition_is_true)
+    {
+    }
 
-
-Whitespace placement
-------------------------------
-This is not a major thing, but we do have convention about this.
-
-This is how we usually place whitespaces:
-
-.. code-block:: c
-
-    int a=10, i;
-    void *p;
-    int *q;
-
-    for (i=0; i<a; ++i)
-        ;
-
-And not this:
-
-.. code-block:: c
-
-    int a = 10, i;
-    void* p;
-    int * q;
-
-    for (i = 0; i < a; ++i)
-        ;
-
-If you'd like to know this in more detail, we follow K&R style.
 
 
 Please observe existing code
 ------------------------------
+Those are the main things about coding style that we wish new code would follow.
 This document will be too terse if we have to mention all the little bits about style.
 For everything else, please observe existing codes and adjust the style accordingly.
