@@ -20,21 +20,7 @@ Development
 
 Coding Style
 -------------
-Below is the PJSIP coding style. You need to follow it if you are submitting 
-patches to PJSIP:
-
-* Indent by 4 characters and **use spaces only**.
-* All public API in header file must be documented in Doxygen format.
-* Use `K & R style <http://en.wikipedia.org/wiki/1_true_brace_style#K.26R_style>`__, 
-  which is the only correct style anyway.
-
-The PJSIP distribution includes an :source:`.editorconfig` file to set indentation to 
-4 spaces. Check https://editorconfig.org/ to see if your editor supports it or
-if a plugin needs to be downloaded.
-
-.. note::
-
-   PJSIP indentation scheme was changed to use spaces only since version 2.13.
+Our coding style will be discussed in the :doc:`next section <coding-style>`.
 
 
 Deployment
