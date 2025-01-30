@@ -156,7 +156,7 @@ instead of this:
 
 Multiline comment indentation
 ------------------------------
-Multiline comments should be indented tididy.
+Multiline comments should be indented neatly.
 
 For doxygen documentation, should be like this:
 
