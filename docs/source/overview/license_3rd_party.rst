@@ -525,14 +525,14 @@ bcg729
    :header-rows: 0
 
    * - Software
-     - http://www.linphone.org/technical-corner/bcg729
+     - https://github.com/BelledonneCommunications/bcg729
    * - Location
      - - :source:`pjmedia/include/pjmedia-codec/bcg729.h`
        - :source:`pjmedia/src/pjmedia-codec/bcg729.c`
    * - Description
      - G.729 codec using backend implementation from bcg729
    * - License
-     - Please consult the bcg729 website
+     - https://github.com/BelledonneCommunications/bcg729?tab=readme-ov-file#licensing
    * - Usage
      - See :ref:`bcg729`
 
