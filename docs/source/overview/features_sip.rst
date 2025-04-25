@@ -13,7 +13,7 @@ Base specs
 - Core methods: :rfc:`3261`:
   INVITE, CANCEL, BYE, REGISTER, OPTIONS, INFO
 - Digest authentication (:rfc:`2617`)
-- Encoding and parsing of Bearer authenticaion (OAuth 2.0)
+- Encoding and parsing of Bearer authentication (OAuth 2.0)
   (:rfc:`8898`)
 
 Transports
