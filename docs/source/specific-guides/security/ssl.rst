@@ -17,6 +17,7 @@ The TLS support in PJSIP requires one of the following:
 - GnuTLS: :issue:`2082`
 - Mac/iOS native backend: :issue:`2482` and :issue:`2185`
 - Windows native SChannel SSP backend: :issue:`3867`
+- Mbed TLS for embedded systems: :issue:`4295`
 
 This page mostly describes TLS usage with OpenSSL. For other backends, please refer to the GitHub issues/PR above.
 

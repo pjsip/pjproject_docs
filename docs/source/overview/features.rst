@@ -9,5 +9,6 @@ Features (Datasheet)
    features_nat
    features_media
    features_video
+   features_security
    features_codec
    features_media_devs
