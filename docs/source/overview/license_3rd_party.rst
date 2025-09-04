@@ -247,7 +247,7 @@ Speex
    * - Location
      - :sourcedir:`third_party/speex/`
    * - Description
-     - PJMEDIA uses Speex codec version 1.1.12. Speex is a high quality, Open source, 
+     - PJMEDIA uses Speex codec version 1.2beta3. Speex is a high quality, Open source, 
        patent free codec implementation developed by open source community.
    * - License
      - :source:`third_party/speex/COPYING`
