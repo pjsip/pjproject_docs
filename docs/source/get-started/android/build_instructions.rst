@@ -64,7 +64,7 @@ Specify the Android API level target in ``APP_PLATFORM``. For example:
 
 .. code-block:: shell
 
-   APP_PLATFORM=23 ./configure-android --use-ndk-cflags ...
+   APP_PLATFORM=23 ./configure-android --with-ssl=$OPENSSL_DIR --with-oboe=$OBOE_DIR
 
 .. note::
 
