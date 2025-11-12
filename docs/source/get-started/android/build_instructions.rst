@@ -58,6 +58,34 @@ section for building other targets.
      :doc:`Building with GNU Tools/Autoconf </get-started/posix/build_instructions>` 
      page.
 
+Specifying Android API level
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Specify the Android API level target in ``APP_PLATFORM``. For example:
+
+.. code-block:: shell
+
+   APP_PLATFORM=23 ./configure-android --use-ndk-cflags ...
+
+.. note::
+
+   Some features may require a specific minimum API level. For example:
+
+   * Third party libraries that use ``stdout`` and ``stderr`` (e.g: OpenSSL, OpenH264) may not
+     be detected properly by the configure on API level below 23.
+   * Native Android audio & video codecs require API level 28 or higher.
+
+.. note::
+
+   * If you build third party libraries from the source (such as OpenSSL), you need to rebuild them
+     for the same API level as well.
+
+   * If you have built PJSIP for other API level, it's recommended to clean it up first before running
+     configure above:
+
+     .. code-block:: shell
+
+        $ cd /path/to/pjproject
+        $ make distclean
 
 Configuring for other architectures (including emulator)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -71,16 +99,16 @@ for targetting the emulator:
 
 .. note::
 
-   If you build third party libraries from the source (such as OpenSSL), you need to rebuild them
-   for the same architecture as well.
+   * If you build third party libraries from the source (such as OpenSSL), you need to rebuild them
+     for the same architecture as well.
 
-If you have built PJSIP for other architecture, it's recommended to clean it up first before running
-configure above:
+   * If you have built PJSIP for other architecture, it's recommended to clean it up first before running
+     configure above:
 
-.. code-block:: shell
+     .. code-block:: shell
 
-   $ cd /path/to/pjproject
-   $ make distclean
+        $ cd /path/to/pjproject
+        $ make distclean
 
 
 Supporting 16 KB page sizes (Android 15)
@@ -206,4 +234,5 @@ What's next
 ---------------------------
 The PJSIP library, the JNI interface, and the third party libraries are ready. Now we are ready do build
 the sample applications.
+
 
