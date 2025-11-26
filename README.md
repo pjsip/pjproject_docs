@@ -90,6 +90,9 @@ your system (Linux, Mac, or Windows).
 ```
 $ docker pull pjsip/pjproject-docs
 $ docker run -dit -p 8000:8000 --name=pjproject-docs pjsip/pjproject-docs
+(use `docker run -dit --platform=linux/amd64 -p 8000:8000 --name=pjproject-docs pjsip/pjproject-docs`
+if you use a non-amd64 machine (The requested image's platform (linux/amd64) does not match
+the detected host platform))
 ```
 
 ### Viewing local RTD
@@ -128,13 +131,14 @@ Below are steps to generate the docs. Perform these steps in the Docker containe
 
 ```sh
 $ cd pjproject_docs
+(skip above if you are already in /root/pjproject_docs)
 $ git pull --recurse-submodules
 $ git submodule update --remote
 ```
 
 Note:
 
-- if directory `source/pjproject` is still empty, run:
+- if directory `docs/source/pjproject` is still empty, run:
 
 ```
 $ git submodule update --init --recursive
@@ -228,7 +232,7 @@ $ git submodule update --remote
 
 Note:
 
-- if directory `source/pjproject` is still empty, run:
+- if directory `docs/source/pjproject` is still empty, run:
 
 ```
 $ git submodule update --init --recursive
@@ -265,7 +269,8 @@ Then open `docs/build/html/index.html` to preview the result.
 #### 4. Git commit (but don't push yet)
 
 ```sh
-$ cd pjproject_docs
+$ cd ..
+(You should be in `pjproject_docs` directory now)
 $ git add -u
 $ git commit -m 'Setting pjproject version to 2.10'
 ```
