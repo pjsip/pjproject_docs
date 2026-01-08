@@ -80,10 +80,15 @@ It could be the case that the initial request is sent with TCP, but the
 subsequent ones are with UDP. In this case, check the URI in the *Route*
 or *Record-Route* or *Contact* header of the 18x or 2xx response that is
 sent by the remote party. Chances are this header lacks the
-``“;transport=tcp"`` parameter in the URI; in this case, you can either
-configure the other end to use TCP, or configure your proxy to
-*record-route* (i.e. to force itself to be within the request path of
-the call).
+``“;transport=tcp"`` parameter in the URI; in this case, you can take one
+of the following measures:
+
+ - Configure the other end to use TCP,
+ - Configure your proxy to *record-route* (i.e. to force itself to be
+   within the request path of the call).
+ - Configure the transport of the accounts to have explicit control
+   (:cpp:any:`AccountSipConfig::transportId`/:cpp:any:`Account::setTransport()`
+   or :cpp:any:`pjsua_acc_config::transport_id`/:cpp:any:`pjsua_acc_set_transport()`).
 
 Automatic Switch to TCP if Request is Larger than 1300 bytes
 -----------------------------------------------------------------------
