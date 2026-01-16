@@ -24,7 +24,7 @@ CLI mode is enabled/disabled by running pjsua with these options:
    * - **--use-cli**
      - Enables CLI mode
    * - **--cli-telnet-port=PORT**
-     - elnet port, set 0 to disable telnet (default=0)
+     - Telnet port, set to 0 to disable telnet (default=0)
    * - **--no-cli-console**
      - Disable console interface
 
