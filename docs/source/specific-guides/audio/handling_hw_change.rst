@@ -6,16 +6,9 @@ by capturing the hot-plug event and reinitialize the audio subsytem when the eve
 is detected.
 
 The method to detect audio device insertion/removal varies according to the platform,
-and it is outside the scope of PJSIP. For Windows XP for example, we can use a sample
-generic hardware detection procedure in http://www.codeproject.com/KB/system/HwDetect.aspx,
-replacing the device interface class ID with audio device interface below (use any of it): 
-
-.. code-block:: c
-
-    GUID = { 0x65E8773D, 0x8F56, 0x11D0, {0xA3, 0xB9, 0x00, 0xA0, 0xC9, 0x22, 0x31, 0x96} };
-    //{ 0x65E8773E, 0x8F56, 0x11D0, {0xA3, 0xB9, 0x00, 0xA0, 0xC9, 0x22, 0x31, 0x96} },
-    //{ 0x6994AD04, 0x93EF, 0x11D0, {0xA3, 0xCC, 0x00, 0xA0, 0xC9, 0x22, 0x31, 0x96} }
-
+and it is outside the scope of PJSIP. For example, the Windows Core Audio APIs provide
+a mechanism to listen for device events:
+https://learn.microsoft.com/en-us/windows/win32/coreaudio/device-events.
 
 Once a device change event is detected, call :cpp:any:`pjmedia_aud_dev_refresh()` to cause
 PJMEDIA to refresh its sound device list. While the API says that it won't affect active
