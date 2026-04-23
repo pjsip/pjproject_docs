@@ -4,6 +4,8 @@ Asynchronous SIP Authentication
 .. contents:: Table of Contents
     :depth: 3
 
+Available since 2.17 (:pr:`4816`).
+
 
 Overview
 ------------------
