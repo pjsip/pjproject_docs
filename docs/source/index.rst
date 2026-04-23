@@ -29,6 +29,7 @@ PJSIP Project Online Documentation
    get-started/posix/index
    get-started/windows/index
    get-started/windows-phone/index
+   get-started/cmake/index
 
 .. toctree::
    :maxdepth: 1
