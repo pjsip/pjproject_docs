@@ -33,7 +33,7 @@ When invoked, the stack will:
 1. Restart the SIP transport listener
 
    This will restart TCP/TLS listener no matter whether they are enabled or not when the transport were created. If you don't have any use of the listener, you can disable this.
-   However, if you do need this, then on some platform (e.g: on IOS), some delay is needed when restarting the the listener.
+   However, if you do need this, then on some platform (e.g: on iOS), some delay is needed when restarting the listener.
 
    ref: :cpp:any:`pjsua_ip_change_param::restart_listener` and :cpp:any:`pjsua_ip_change_param::restart_lis_delay`.
 
@@ -51,7 +51,7 @@ When invoked, the stack will:
 
 4. Hangup active calls or continue the call by sending re-INVITE
 
-   You can either hangup or maintain the ongoing/active calls. If you intend to maintain the active calls, updating dialog's contact URI is required. This can be done by specifying :cpp:any:`pjsua_callback::PJSUA_CALL_UPDATE_CONTACT` to the reinvite flags. Note that, hanging up calls might be inevitable on some cases, please see
+   You can either hangup or maintain the ongoing/active calls. If you intend to maintain the active calls, updating dialog's contact URI is required. This can be done by specifying :cpp:any:`PJSUA_CALL_UPDATE_CONTACT` to the reinvite flags. Note that, hanging up calls might be inevitable on some cases, please see
    **Network change to the same IP address type. (IPv4 to IPv4) or (IPv6 to IPv6)** section below.
 
    ref: :cpp:any:`pjsua_ip_change_acc_cfg::hangup_calls` and :cpp:any:`pjsua_ip_change_acc_cfg::reinvite_flags` in :cpp:class:`pjsua_acc_config::ip_change_cfg`
@@ -68,7 +68,6 @@ To monitor the progress of IP change handling, application can use :cpp:member:`
 
 Related to maintaining a call during IP change, there are some scenarios that are currently not implemented by IP change mechanism, so application needs to handle manually: If IP change occurs during SDP negotiation (and it is not completed yet, so there cannot be another SDP offer), updating such call needs to be done in two steps:
 
-#. Update Contact header, so remote endpoint can send its SDP answer to our new contact address, i.e: use UPDATE without SDP offer (:cpp:any:`PJSUA_CALL_NO_SDP_OFFER` :flag). Note that, not every endpoint supports UPDATE. Contact is used by remote to resolve target before sending new requests. If proxy is used, then you can probably skip this.
 #. Update Contact header, so remote endpoint can send its SDP answer to our new contact address, i.e: use UPDATE without SDP offer (:cpp:any:`PJSUA_CALL_NO_SDP_OFFER` flag). Note that, not every endpoint supports UPDATE. Contact is used by remote to resolve target before sending new requests. If proxy is used, then you can probably skip this.
 #. Update local media transport after SDP answer is received, by sending UPDATE/re-INVITE with :cpp:any:`PJSUA_CALL_REINIT_MEDIA` flag.
 
@@ -87,12 +86,19 @@ Update contact process (re-Registration) and call handling (hang-up or continue 
 Network change to a different IP address type. (IPv4 to IPv6) or (IPv6 to IPv4)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As you already know, IPv6 needs specific account configuration as described [wiki:ipv6 here].
-On the case of IP address type change, then additional steps are required from application.
+IPv6 needs specific account configuration — see
+:ref:`IPv6 modes and defaults <ipv6_modes>` in the
+:doc:`IPv6 and NAT64 guide <ipv6>` for the mode reference.
+On the case of IP address type change, additional steps are required
+from the application:
 
 #. Once application detects a network with IP address type change, a new transport might need to be created.
 
-#. Once the transport is available, modify account's transport preference setting if necessary by calling :cpp:func:`pjsua_acc_modify()`, and then call :cpp:func:`pjsua_handle_ip_change()`.
+#. Once the transport is available, modify the account's IP version
+   preferences if necessary by calling :cpp:func:`pjsua_acc_modify()`,
+   and then call :cpp:func:`pjsua_handle_ip_change()`.
+
+PJSUA-LIB:
 
 .. code-block:: c
 
@@ -113,11 +119,7 @@ On the case of IP address type change, then additional steps are required from a
 
         // ******************************************************
         // ** For PJSIP 2.14 and above:
-        // Set SIP use to PJSUA_IPV6_ENABLED_USE_IPV6_ONLY
-        // Important: if you use PREFER_IPV6, existing calls that
-        // use IPv4 will still use IPv4.
-        acc_cfg.ipv6_sip_use = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
-        // Set media use to USE_IPV6_ONLY or PREFER_IPV6.
+        acc_cfg.ipv6_sip_use   = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
         acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
         // ** For PJSIP earlier than 2.14:
         // acc_cfg.ipv6_media_use = PJSUA_IPV6_ENABLED;
@@ -125,8 +127,8 @@ On the case of IP address type change, then additional steps are required from a
 
         // acc_cfg.ip_change_cfg.hangup_calls = PJ_TRUE;
 
-        // Available in #3910, to prevent pjsua_acc_modify()
-        // to prematurely send registration
+        // Available since #3910, prevents pjsua_acc_modify() from
+        // prematurely sending a REGISTER on the old (dead) transport.
         acc_cfg.disable_reg_on_modify = PJ_TRUE;
         pjsua_acc_modify(acc_id, &acc_cfg);
 
@@ -135,6 +137,38 @@ On the case of IP address type change, then additional steps are required from a
         pjsua_ip_change_param_default(&param);
         pjsua_handle_ip_change(param);
     }
+
+PJSUA2 (keep your own ``AccountConfig`` around since the class doesn't
+expose a getter):
+
+.. code-block:: c++
+
+    void ip_change_to_ip6(Account *acc, AccountConfig &acc_cfg)
+    {
+        // Create new IPv6 transport if needed; e.g. TLS6
+        Endpoint &ep = Endpoint::instance();
+        TransportConfig tp_cfg;
+        ep.transportCreate(PJSIP_TRANSPORT_TLS6, tp_cfg);
+
+        acc_cfg.sipConfig.ipv6Use   = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
+        acc_cfg.mediaConfig.ipv6Use = PJSUA_IPV6_ENABLED_USE_IPV6_ONLY;
+
+        // Prevent modify() from sending a REGISTER on the old transport.
+        acc_cfg.regConfig.disableRegOnModify = true;
+        acc->modify(acc_cfg);
+
+        IpChangeParam param;
+        ep.handleIpChange(param);
+    }
+
+.. note::
+
+   The example forces ``USE_IPV6_ONLY`` to tear down existing IPv4
+   state entirely. If you set ``ipv6_sip_use = PREFER_IPV6`` instead,
+   the account is dual-stack and **existing calls that were negotiated
+   over IPv4 continue to run over IPv4** — the new preference only
+   affects subsequent outgoing offers/requests. Choose
+   ``USE_IPV6_ONLY`` when the old family is truly gone.
 
 
 
