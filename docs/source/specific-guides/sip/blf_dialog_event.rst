@@ -117,7 +117,7 @@ The library refreshes the subscription periodically. To force an
 immediate refresh (e.g. after the user presses a "refresh" button),
 call :cpp:any:`pjsua_buddy_update_dlg_event()`.
 
-**Fields on `pjsua_buddy_dlg_event_info`**
+**Fields on ``pjsua_buddy_dlg_event_info``**
 
 Beyond the URI and subscription state, the structure surfaces the
 top-level ``dialog-info`` element (``dialog_info_state``,
@@ -260,7 +260,9 @@ Known limitations
   ``NOTIFY`` requests when they change; there is no
   ``pjsip_dlg_event_create_uas()``. An application acting as a
   dialog-event source would have to construct the XML itself and use
-  raw :cpp:any:`pjsip_evsub_create_uas()` / ``_notify()``.
+  raw :cpp:any:`pjsip_evsub_create_uas()` together with
+  :cpp:any:`pjsip_evsub_notify()` or
+  :cpp:any:`pjsip_evsub_current_notify()`.
 - **PJSUA2 info getter is missing.** See the warning under the PJSUA2
   section — use the C API in the meantime.
 - **Single-``<dialog>`` cap in the PJSUA-LIB struct.** The
