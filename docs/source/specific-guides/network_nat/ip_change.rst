@@ -33,7 +33,7 @@ When invoked, the stack will:
 1. Restart the SIP transport listener
 
    This will restart TCP/TLS listener no matter whether they are enabled or not when the transport were created. If you don't have any use of the listener, you can disable this.
-   However, if you do need this, then on some platform (e.g: on IOS), some delay is needed when restarting the listener.
+   However, if you do need this, then on some platform (e.g: on iOS), some delay is needed when restarting the listener.
 
    ref: :cpp:any:`pjsua_ip_change_param::restart_listener` and :cpp:any:`pjsua_ip_change_param::restart_lis_delay`.
 

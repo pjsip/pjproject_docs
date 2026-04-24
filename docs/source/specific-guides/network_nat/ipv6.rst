@@ -149,9 +149,10 @@ and media usually traverse different paths:
   endpoint talks to (typically dual-stack).
 
 Because of this split, it is common and valid to have, for example,
-IPv6-only signalling (``USE_IPV6_ONLY``) to a cloud SIP provider while
-media stays dual-stack (``PREFER_IPV4`` or ``PREFER_IPV6``) so calls
-to legacy IPv4 peers still work.
+IPv6-only signalling (``PJSUA_IPV6_ENABLED_USE_IPV6_ONLY``) to a cloud
+SIP provider while media stays dual-stack
+(``PJSUA_IPV6_ENABLED_PREFER_IPV4`` or ``PJSUA_IPV6_ENABLED_PREFER_IPV6``)
+so calls to legacy IPv4 peers still work.
 
 The :cpp:any:`pjsua_ipv6_use` enum values:
 
@@ -177,6 +178,13 @@ The :cpp:any:`pjsua_ipv6_use` enum values:
    * - ``PJSUA_IPV6_ENABLED_USE_IPV6_ONLY``
      - IPv6 only; IPv4 addresses/candidates are not used. Required for
        NAT64-only networks.
+
+.. note::
+
+   For brevity the rest of this page refers to each value by its
+   suffix, e.g. ``USE_IPV6_ONLY`` for
+   ``PJSUA_IPV6_ENABLED_USE_IPV6_ONLY`` and ``DISABLED`` for
+   ``PJSUA_IPV6_DISABLED``. Use the full identifier names in code.
 
 Preference only applies to the **outgoing** direction. For incoming
 messages or offers, PJSIP accepts whichever IP version the remote
@@ -434,7 +442,7 @@ According to :rfc:`6157` (IPv6 Transition in the Session Initiation Protocol (SI
 Therefore, to support IPv6-IPv4 interoperability in NAT64 environment:
 
 #. Our RECOMMENDATION is that when the client is put with an IPv6-only connectivity, the SIP server must also support IPv6  connectivity. For  the media, user needs a "dual stack" TURN (a TURN server which supports IPv6 connectivity and able to provide an IPv4 relay address upon request). Then all the application needs to do is enable ICE and use TURN (support for dual stack TURN is only available in PJSIP 2.6 or later). 
-#. If 1) is not possible (no IPv6 server or not desirable to use TURN), we will need to replace all IPv6 occurences with IPv4 in the SIP messages and SDP. This feature is available in release 2.7.
+#. If 1) is not possible (no IPv6 server or not desirable to use TURN), we will need to replace all IPv6 occurrences with IPv4 in the SIP messages and SDP. This feature is available in release 2.7.
 
    a. Set :cpp:any:`pjsua_config::stun_try_ipv6` so PJSIP will resolve
       the STUN server(s) via AAAA as well as A.
