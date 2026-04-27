@@ -103,7 +103,8 @@ A video-calling application should at minimum hook the following:
   least handle:
 
   - :cpp:any:`PJMEDIA_EVENT_FMT_CHANGED <pjmedia_event_type::PJMEDIA_EVENT_FMT_CHANGED>` —
-    show the renderer window (see below) and resize your container to
+    show the renderer window (see :ref:`vid_ug_show_window`) and
+    resize your container to
     match the reported size.
   - :cpp:any:`PJMEDIA_EVENT_KEYFRAME_FOUND <pjmedia_event_type::PJMEDIA_EVENT_KEYFRAME_FOUND>` /
     :cpp:any:`PJMEDIA_EVENT_KEYFRAME_MISSING <pjmedia_event_type::PJMEDIA_EVENT_KEYFRAME_MISSING>` —
