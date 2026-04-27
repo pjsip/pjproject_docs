@@ -55,6 +55,8 @@ To disable inter-media synchronization on a specific call, set the
 PJSUA-LIB will skip synchronizer creation, or destroy an existing one
 if the flag is set on a re-INVITE/UPDATE.
 
+**PJSUA-LIB (C):**
+
 .. code-block:: c
 
    pjsua_call_setting opt;
@@ -63,6 +65,15 @@ if the flag is set on a re-INVITE/UPDATE.
    opt.flag |= PJSUA_CALL_NO_MEDIA_SYNC;
 
    pjsua_call_make_call(acc_id, &dst, &opt, NULL, NULL, &call_id);
+
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   CallOpParam prm(true);
+   prm.opt.flag |= PJSUA_CALL_NO_MEDIA_SYNC;
+
+   call.makeCall("sip:peer@example.com", prm);
 
 You normally don't want this — disabling sync trades lipsync for
 streams running independently at their own rates. Reasons one might

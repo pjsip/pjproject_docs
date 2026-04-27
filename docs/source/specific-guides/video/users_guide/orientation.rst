@@ -18,15 +18,16 @@ peer. Steps:
    ``UIDeviceOrientationDidChangeNotification``, Android display
    rotation callbacks).
 2. Inside the callback, tell the capture device about the new
-   orientation, using either PJSUA-LIB's
-   :cpp:any:`pjsua_vid_dev_set_setting()`:
+   orientation:
+
+   **PJSUA-LIB (C):**
 
    .. code-block:: c
 
       pjsua_vid_dev_set_setting(dev_id, PJMEDIA_VID_DEV_CAP_ORIENTATION,
                                 &new_orient, PJ_TRUE);
 
-   or PJSUA2's :cpp:any:`pj::VidDevManager::setCaptureOrient()`:
+   **PJSUA2 (C++):**
 
    .. code-block:: c++
 
@@ -55,15 +56,27 @@ default codec parameters assume landscape; if the call should start in
 portrait, configure the encoder format to portrait dimensions
 (``width < height``):
 
+**PJSUA-LIB (C):**
+
 .. code-block:: c
 
    /* Sending 240 x 320 */
    param.enc_fmt.det.vid.size.w = 240;
    param.enc_fmt.det.vid.size.h = 320;
 
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   // Sending 240 x 320
+   param.encFmt.width  = 240;
+   param.encFmt.height = 320;
+
 …and tell the capture device the initial orientation **once**, after
 it is opened (e.g. by :cpp:any:`pjsua_vid_preview_start()` or implicitly
 by an outgoing/incoming video call):
+
+**PJSUA-LIB (C):**
 
 .. code-block:: c
 
@@ -75,6 +88,17 @@ by an outgoing/incoming video call):
 
    pjsua_vid_dev_set_setting(dev_id, PJMEDIA_VID_DEV_CAP_ORIENTATION,
                              &current_orient, PJ_TRUE);
+
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   // On Android, portrait corresponds to PJMEDIA_ORIENT_ROTATE_270DEG.
+   // On iOS, portrait corresponds to PJMEDIA_ORIENT_ROTATE_90DEG.
+   pjmedia_orient current_orient = PJMEDIA_ORIENT_ROTATE_90DEG;
+
+   Endpoint::instance().vidDevManager()
+                       .setCaptureOrient(dev_id, current_orient, true);
 
 After this initial setup, the application **must not** call
 ``pjsua_vid_dev_set_setting()`` / ``setCaptureOrient()`` on subsequent

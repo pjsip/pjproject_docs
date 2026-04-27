@@ -1,11 +1,16 @@
 Modifying Video Codec Parameters
 =================================
 
-Video codec parameters are specified in :cpp:any:`pjmedia_vid_codec_param`. The
-codec parameters provide separate settings for each direction, encoding
-and decoding. Any modifications on video codec parameters can be applied
-using :cpp:any:`pjsua_vid_codec_set_param()`, here is a sample code for
-reference:
+Video codec parameters are specified in
+:cpp:any:`pjmedia_vid_codec_param` (PJSUA-LIB) or
+:cpp:any:`pj::VidCodecParam` (PJSUA2). Both expose separate settings for
+the encoding and decoding directions. Read with
+:cpp:any:`pjsua_vid_codec_get_param()` /
+:cpp:func:`pj::Endpoint::getVideoCodecParam()`, modify, and write back
+with :cpp:any:`pjsua_vid_codec_set_param()` /
+:cpp:func:`pj::Endpoint::setVideoCodecParam()`.
+
+**PJSUA-LIB (C):**
 
 .. code-block:: c
 
@@ -19,18 +24,49 @@ reference:
 
    pjsua_vid_codec_set_param(&codec_id, &param);
 
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   VidCodecParam param = Endpoint::instance().getVideoCodecParam("H264");
+
+   // Modify param here
+   ...
+
+   Endpoint::instance().setVideoCodecParam("H264", param);
+
+The PJSUA-LIB struct uses ``param.enc_fmt.det.vid.size.{w,h}``,
+``fps.{num,denum}``, ``avg_bps``, and ``max_bps``; the equivalent
+PJSUA2 fields on :cpp:any:`pj::VidCodecParam::encFmt` (which is a
+:cpp:any:`pj::MediaFormatVideo`) are ``width``, ``height``, ``fpsNum``,
+``fpsDenum``, ``avgBps``, ``maxBps``. The same names apply on the
+``decFmt`` side. The fmtp parameter list (``dec_fmtp`` /
+``decFmtp``) has the same shape in both APIs.
+
 
 Size or resolution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Specify video picture dimension.
 
-a. For encoding direction, configured via ``det.vid.size`` field of :cpp:any:`pjmedia_vid_codec_param::enc_fmt`, e.g:
+a. For the encoding direction, configure the size field of
+   :cpp:any:`pjmedia_vid_codec_param::enc_fmt` (PJSUA-LIB) or
+   :cpp:any:`pj::VidCodecParam::encFmt` (PJSUA2):
+
+   **PJSUA-LIB (C):**
 
    .. code-block:: c
 
       /* Sending 1280 x 720 */
       param.enc_fmt.det.vid.size.w = 1280;
       param.enc_fmt.det.vid.size.h = 720;
+
+   **PJSUA2 (C++):**
+
+   .. code-block:: c++
+
+      // Sending 1280 x 720
+      param.encFmt.width  = 1280;
+      param.encFmt.height = 720;
 
    .. note::
 
@@ -89,13 +125,25 @@ Framerate
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Specify number of frames processed per second.
 
-a. For encoding direction, configured via ``det.vid.fps`` of :cpp:any:`pjmedia_vid_codec_param::enc_fmt`, e.g:
+a. For the encoding direction, configure the fps field of
+   :cpp:any:`pjmedia_vid_codec_param::enc_fmt` (PJSUA-LIB) or
+   :cpp:any:`pj::VidCodecParam::encFmt` (PJSUA2):
+
+   **PJSUA-LIB (C):**
 
    .. code-block:: c
 
       /* Sending @30fps */
       param.enc_fmt.det.vid.fps.num   = 30;
       param.enc_fmt.det.vid.fps.denum = 1;
+
+   **PJSUA2 (C++):**
+
+   .. code-block:: c++
+
+      // Sending @30fps
+      param.encFmt.fpsNum   = 30;
+      param.encFmt.fpsDenum = 1;
 
    .. note::
 
@@ -130,13 +178,25 @@ Bitrate
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Specify bandwidth requirement for video payloads stream delivery.
 
-This is configurable via ``det.vid.avg_bps`` and ``det.vid.max_bps`` fields of :cpp:any:`pjmedia_vid_codec_param::enc_fmt`, e.g:
+This is configurable via ``avg_bps`` and ``max_bps`` on
+:cpp:any:`pjmedia_vid_codec_param::enc_fmt` (PJSUA-LIB) or
+:cpp:any:`pj::VidCodecParam::encFmt` (PJSUA2):
+
+**PJSUA-LIB (C):**
 
 .. code-block:: c
 
    /* Bitrate range preferred: 512-1024kbps */
    param.enc_fmt.det.vid.avg_bps = 512000;
    param.enc_fmt.det.vid.max_bps = 1024000;
+
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   // Bitrate range preferred: 512-1024 kbps
+   param.encFmt.avgBps = 512000;
+   param.encFmt.maxBps = 1024000;
 
 .. note::
 

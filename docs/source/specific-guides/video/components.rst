@@ -123,10 +123,9 @@ enabled:
   ``put_frame()`` receives straight into the file. In a typical PJSIP
   pipeline that means **uncompressed video** (raw I420 from a call's
   decoder, or whatever raw format the source port emits) and
-  **16-bit linear PCM audio**. The audio strf header is hard-coded to
-  PCM in the writer, so feeding it G.711 (PCMA / PCMU) bytes will
-  produce a file that mis-declares its audio format and won't play
-  back correctly — write PCM only.
+  **16-bit linear PCM audio** only. Feeding the writer G.711 (PCMA /
+  PCMU) audio is not supported and will produce a file that doesn't
+  play back correctly.
 
 Build flags:
 

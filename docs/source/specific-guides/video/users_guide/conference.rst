@@ -213,10 +213,11 @@ Looking up slot IDs
 Slot IDs are obtained from the library as media objects are created:
 
 - For a call, the per-direction slots are exposed in
-  :cpp:any:`pjsua_call_info`: ``ci.media[i].stream.vid.enc_slot`` and
-  ``ci.media[i].stream.vid.dec_slot``. The convenience API
-  :cpp:any:`pjsua_call_get_vid_conf_port()` returns either slot
-  directly:
+  :cpp:any:`pjsua_call_info`. PJSUA-LIB exposes them as raw slot IDs;
+  PJSUA2 wraps them in :cpp:any:`pj::VideoMedia` objects that already
+  know how to transmit/stop:
+
+  **PJSUA-LIB (C):**
 
   .. code-block:: c
 
@@ -224,6 +225,18 @@ Slot IDs are obtained from the library as media objects are created:
 
      enc = pjsua_call_get_vid_conf_port(call_id, PJMEDIA_DIR_ENCODING);
      dec = pjsua_call_get_vid_conf_port(call_id, PJMEDIA_DIR_DECODING);
+
+  **PJSUA2 (C++):**
+
+  .. code-block:: c++
+
+     // Per-stream VideoMedia objects (each wraps a bridge slot).
+     VideoMedia enc = call.getEncodingVideoMedia(med_idx);
+     VideoMedia dec = call.getDecodingVideoMedia(med_idx);
+
+     // The underlying slot IDs, if you need them:
+     int enc_slot = enc.getPortId();
+     int dec_slot = dec.getPortId();
 
 - For a local capture preview started with
   :cpp:any:`pjsua_vid_preview_start()`, the slot is returned by
@@ -245,10 +258,20 @@ Connecting and disconnecting flows
 
 The two primitives are:
 
+**PJSUA-LIB (C):**
+
 .. code-block:: c
 
    pjsua_vid_conf_connect(source_slot, sink_slot, NULL);
    pjsua_vid_conf_disconnect(source_slot, sink_slot);
+
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   // VideoMedia exposes startTransmit/stopTransmit between slots.
+   source_vm.startTransmit(sink_vm, VideoMediaTransmitParam());
+   source_vm.stopTransmit(sink_vm);
 
 Both are unidirectional and both run **asynchronously** — see
 :ref:`async-notification <vid_conf_async>` below.
@@ -258,7 +281,9 @@ Three-party video conference
 ----------------------------
 
 Adding a third leg means cross-connecting two existing calls so their
-remote videos flow to each other in addition to the local participant:
+remote videos flow to each other in addition to the local participant.
+
+**PJSUA-LIB (C):**
 
 .. code-block:: c
 
@@ -276,6 +301,19 @@ remote videos flow to each other in addition to the local participant:
    /* Show call1's video to call2: */
    pjsua_vid_conf_connect(dec1, enc2, NULL);
 
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   VideoMedia enc1 = call1.getEncodingVideoMedia(med_idx);
+   VideoMedia dec1 = call1.getDecodingVideoMedia(med_idx);
+   VideoMedia enc2 = call2.getEncodingVideoMedia(med_idx);
+   VideoMedia dec2 = call2.getDecodingVideoMedia(med_idx);
+
+   // Show call2's video to call1, and call1's video to call2:
+   dec2.startTransmit(enc1, VideoMediaTransmitParam());
+   dec1.startTransmit(enc2, VideoMediaTransmitParam());
+
 Now both remote parties see each other in addition to the local
 participant. Because mixing happens on the *sink* side, neither remote
 needs special support — they each just receive a single mixed frame
@@ -283,10 +321,19 @@ that combines the local participant and the other remote.
 
 Tear it down by reversing the connects:
 
+**PJSUA-LIB (C):**
+
 .. code-block:: c
 
    pjsua_vid_conf_disconnect(dec2, enc1);
    pjsua_vid_conf_disconnect(dec1, enc2);
+
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   dec2.stopTransmit(enc1);
+   dec1.stopTransmit(enc2);
 
 
 Adding a custom port
@@ -294,7 +341,9 @@ Adding a custom port
 
 Any ``pjmedia_port`` (for example, the AVI player from
 :cpp:any:`pjmedia_avi_player_create_streams()`) can be registered with
-the bridge so it participates in the routing:
+the bridge so it participates in the routing.
+
+**PJSUA-LIB (C):**
 
 .. code-block:: c
 
@@ -306,8 +355,25 @@ the bridge so it participates in the routing:
    pjsua_vid_conf_connect(avi_slot, enc1, NULL);
    pjsua_vid_conf_connect(avi_slot, my_renderer_slot, NULL);
 
-When done, call :cpp:any:`pjsua_vid_conf_remove_port()` to unregister
-the port.
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   // Derive from VideoMedia and register the underlying pjmedia_port
+   // from the AVI player (or any custom port):
+   class MyVideoSource : public VideoMedia {};
+
+   MyVideoSource avi_src;
+   avi_src.registerMediaPort2(avi_port, pool);
+
+   // Forward into call1's encoder and a local renderer:
+   avi_src.startTransmit(call1.getEncodingVideoMedia(0),
+                         VideoMediaTransmitParam());
+   avi_src.startTransmit(my_renderer_vm, VideoMediaTransmitParam());
+
+When done, call :cpp:any:`pjsua_vid_conf_remove_port()` (or
+:cpp:func:`pj::Media::unregisterMediaPort()` in PJSUA2) to
+unregister the port.
 
 If the port's media format changes mid-session (for example, a video
 decoder learns new dimensions from incoming RTP), call
@@ -326,15 +392,15 @@ Asynchronous operations and completion callback
 ``disconnect``, and ``update_port`` all return as soon as the operation
 is *queued*. The actual work happens on a media thread.
 
-Apps that need to know when an operation has fully taken effect should
-implement
-:cpp:any:`pjsua_callback::on_vid_conf_op_completed`. The callback
-receives a :cpp:any:`pjmedia_vid_conf_op_info` whose
-``op_type`` identifies which operation completed and whose ``status``
-is the operation's result code (``PJ_SUCCESS`` on success, or an error
-code if the operation failed). The callback fires from a media thread,
-so keep the handler short — defer any long or blocking work to your
-own thread.
+Apps that need to know when an operation has fully taken effect
+should implement the bridge op-completion callback —
+:cpp:any:`pjsua_callback::on_vid_conf_op_completed` in PJSUA-LIB or
+:cpp:func:`pj::Endpoint::onVideoMediaOpCompleted()` in PJSUA2. The
+callback receives info identifying which operation completed and the
+operation's result code (``PJ_SUCCESS`` on success, or an error code
+if the operation failed). The callback fires from a media thread, so
+keep the handler short — defer any long or blocking work to your own
+thread.
 
 A common pattern: kick off a connect, mark the call/UI state as
 "pending", and let the completion callback transition it to "active".

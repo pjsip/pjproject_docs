@@ -32,12 +32,21 @@ By default, incoming video **is not** displayed automatically, since the
 app may want to seek user approval first. Use the following code to
 change this behavior on per account basis:
 
+**PJSUA-LIB (C):**
+
 .. code-block:: c
 
    pjsua_acc_config cfg;
 
    pjsua_acc_config_default(&cfg);
    cfg.vid_in_auto_show = PJ_TRUE;
+
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   AccountConfig cfg;
+   cfg.videoConfig.autoShowIncoming = true;
 
 
 
@@ -46,8 +55,14 @@ Show or Hide Incoming Video
 
 Regardless of the setting above, you can use the following steps to show or hide the display incoming video:
 
-1. Use :cpp:any:`pjsua_call_get_vid_stream_idx()` or enumerate the call's media stream to find the media index of the default video. If there are multiple video streams in a call, the default video is the first active video media in the call.
-2. Locate the media information of the specified stream index in the :cpp:any:`pjsua_call_info`, and acquire the window ID associated with the remote video. Sample code:
+1. Find the media index of the default video. If there are multiple
+   video streams in a call, the default video is the first active video
+   media in the call.
+2. Locate the media information of the specified stream index in the
+   call info, and acquire the window ID associated with the remote
+   video. Sample code:
+
+**PJSUA-LIB (C):**
 
 .. code-block:: c
 
@@ -59,15 +74,31 @@ Regardless of the setting above, you can use the following steps to show or hide
 
       pjsua_call_get_info(call_id, &ci);
       wid = ci.media[vid_idx].stream.vid.win_in;
+   }
 
+**PJSUA2 (C++):**
+
+.. code-block:: c++
+
+   CallInfo ci = call.getInfo();
+   for (unsigned i = 0; i < ci.media.size(); ++i) {
+       if (ci.media[i].type == PJMEDIA_TYPE_VIDEO &&
+           ci.media[i].videoIncomingWindowId != PJSUA_INVALID_ID)
+       {
+           VideoWindow win = ci.media[i].videoWindow;
+           // win.getInfo(), win.Show(true), etc.
+           break;
+       }
    }
 
 3. Using the video window ID, you may retrieve the associated
-   native video handle with :cpp:any:`pjsua_vid_win_get_info()` and then show or
+   native video handle with :cpp:any:`pjsua_vid_win_get_info()` (or
+   :cpp:func:`pj::VideoWindow::getInfo()` in PJSUA2) and then show or
    hide the video window using native API, or use
-   :cpp:any:`pjsua_vid_win_set_show()` to show/hide the window using PJSUA API.
-   See :any:`vid_ug_wvw` section below for information on
-   manipulating video windows.
+   :cpp:any:`pjsua_vid_win_set_show()` /
+   :cpp:func:`pj::VideoWindow::Show()` to show/hide the window
+   through PJSIP. See :any:`vid_ug_wvw` section below for information
+   on manipulating video windows.
 
 
 .. _vid_ug_civs:
@@ -222,11 +253,16 @@ Add or Remove Video
 
 There are two ways to add or remove video on an established call:
 
-#. Update :cpp:any:`pjsua_call_setting::vid_cnt` to the desired video
-   count and send a re-INVITE or UPDATE with the new setting using
-   :cpp:any:`pjsua_call_reinvite2()` or :cpp:any:`pjsua_call_update2()`
-   (the non-``2`` variants reuse the existing call setting and so cannot
-   change ``vid_cnt``). For example, to add a single video stream:
+#. Update the call setting's video count to the desired value and
+   send a re-INVITE or UPDATE with the new setting. In PJSUA-LIB, use
+   :cpp:any:`pjsua_call_reinvite2()` or
+   :cpp:any:`pjsua_call_update2()` (the non-``2`` variants reuse the
+   existing call setting and so cannot change ``vid_cnt``). In PJSUA2,
+   set the call setting on a :cpp:any:`pj::CallOpParam` and call
+   :cpp:func:`pj::Call::reinvite()` or :cpp:func:`pj::Call::update()`.
+   For example, to add a single video stream:
+
+   **PJSUA-LIB (C):**
 
    .. code-block:: c
 
@@ -237,17 +273,32 @@ There are two ways to add or remove video on an established call:
 
       pjsua_call_reinvite2(call_id, &opt, NULL);
 
+   **PJSUA2 (C++):**
+
+   .. code-block:: c++
+
+      CallOpParam prm;
+      prm.opt.videoCount = 1;   // set to 0 to remove video
+
+      call.reinvite(prm);
+
    The same call-setting path can also set or change the SDP direction
-   of individual media via :cpp:any:`pjsua_call_setting::media_dir`,
-   gated by the :cpp:any:`PJSUA_CALL_SET_MEDIA_DIR` flag. Each entry
-   ``media_dir[i]`` corresponds to the provisional media in
+   of individual media. In PJSUA-LIB this is
+   :cpp:any:`pjsua_call_setting::media_dir`, gated by the
+   :cpp:any:`PJSUA_CALL_SET_MEDIA_DIR` flag. In PJSUA2 it is
+   :cpp:any:`pj::CallSetting::mediaDir` (a ``MediaDirVector``) with the
+   same flag set on :cpp:any:`pj::CallSetting::flag`. Each entry
+   corresponds to the provisional media in
    :cpp:any:`pjsua_call_info::prov_media` (audios first, then videos);
    for example, in a call with one audio and one video, ``media_dir[0]``
    targets the audio and ``media_dir[1]`` targets the video. Once set,
    the direction *persists* for subsequent offers and answers (e.g. a
-   stream marked :cpp:any:`PJMEDIA_DIR_ENCODING` can only be sendonly or
-   inactive thereafter; it will not become sendrecv on its own). To send
-   only outgoing video while still accepting the rest of the offer:
+   stream marked :cpp:any:`PJMEDIA_DIR_ENCODING` can only be sendonly
+   or inactive thereafter; it will not become sendrecv on its own). To
+   send only outgoing video while still accepting the rest of the
+   offer:
+
+   **PJSUA-LIB (C):**
 
    .. code-block:: c
 
@@ -260,17 +311,36 @@ There are two ways to add or remove video on an established call:
 
       pjsua_call_reinvite2(call_id, &opt, NULL);
 
-   ``media_dir`` can be supplied in any API or callback that accepts
-   :cpp:any:`pjsua_call_setting`, including :cpp:any:`pjsua_call_make_call()`,
-   :cpp:any:`pjsua_call_answer2()`, the ``*_reinvite2``/``*_update2``
-   APIs, and inside :cpp:any:`pjsua_callback::on_call_rx_offer()` /
-   :cpp:any:`pjsua_callback::on_call_rx_reinvite()`.
+   **PJSUA2 (C++):**
+
+   .. code-block:: c++
+
+      CallOpParam prm;
+      prm.opt.flag |= PJSUA_CALL_SET_MEDIA_DIR;
+      prm.opt.mediaDir.push_back(PJMEDIA_DIR_ENCODING_DECODING);  // audio
+      prm.opt.mediaDir.push_back(PJMEDIA_DIR_ENCODING);           // video: sendonly
+
+      call.reinvite(prm);
+
+   ``media_dir`` / ``mediaDir`` can be supplied anywhere a call
+   setting is accepted, including
+   :cpp:any:`pjsua_call_make_call()` /
+   :cpp:func:`pj::Call::makeCall()`,
+   :cpp:any:`pjsua_call_answer2()` /
+   :cpp:func:`pj::Call::answer()`, the ``*_reinvite2`` / ``*_update2``
+   APIs (PJSUA-LIB) and ``Call::reinvite()`` / ``update()`` (PJSUA2),
+   and inside the re-offer callbacks (``on_call_rx_offer()`` /
+   ``on_call_rx_reinvite()`` / ``onCallRxOffer()`` /
+   ``onCallRxReinvite()``).
 
 #. Use :cpp:any:`pjsua_call_set_vid_strm()` with one of the stream
    operations described in :any:`vid_ug_civs` or :any:`vid_ug_cvs`
    above (e.g. ``PJSUA_CALL_VID_STRM_ADD`` to add a stream,
    ``PJSUA_CALL_VID_STRM_REMOVE`` to drop one,
-   ``PJSUA_CALL_VID_STRM_CHANGE_DIR`` to change direction).
+   ``PJSUA_CALL_VID_STRM_CHANGE_DIR`` to change direction). PJSUA2
+   exposes the same operations through :cpp:func:`pj::Call::vidSetStream()`,
+   which takes a :cpp:any:`pj::CallVidSetStreamParam` and a
+   :cpp:any:`pjsua_call_vid_strm_op` value.
 
 Both paths trigger SDP renegotiation. Monitor the result via
 :cpp:any:`pjsua_callback::on_call_media_state()`.
