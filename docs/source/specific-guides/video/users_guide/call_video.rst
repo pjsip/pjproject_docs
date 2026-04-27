@@ -227,23 +227,23 @@ video stream on a call. The available operations
 Operations split into two groups depending on whether they trigger SDP
 renegotiation:
 
-+--------------------------------------+-------------------------+
-| Operation                            | Effect                  |
-+======================================+=========================+
-| ``PJSUA_CALL_VID_STRM_ADD``          | Sends re-INVITE/UPDATE  |
-+--------------------------------------+-------------------------+
-| ``PJSUA_CALL_VID_STRM_REMOVE``       | Sends re-INVITE/UPDATE  |
-+--------------------------------------+-------------------------+
-| ``PJSUA_CALL_VID_STRM_CHANGE_DIR``   | Sends re-INVITE/UPDATE  |
-+--------------------------------------+-------------------------+
-| ``PJSUA_CALL_VID_STRM_CHANGE_CAP_DEV``| Local only              |
-+--------------------------------------+-------------------------+
-| ``PJSUA_CALL_VID_STRM_START_TRANSMIT``| Local only              |
-+--------------------------------------+-------------------------+
-| ``PJSUA_CALL_VID_STRM_STOP_TRANSMIT`` | Local only              |
-+--------------------------------------+-------------------------+
-| ``PJSUA_CALL_VID_STRM_SEND_KEYFRAME`` | Local only              |
-+--------------------------------------+-------------------------+
++----------------------------------------+-------------------------+
+| Operation                              | Effect                  |
++========================================+=========================+
+| ``PJSUA_CALL_VID_STRM_ADD``            | Sends re-INVITE/UPDATE  |
++----------------------------------------+-------------------------+
+| ``PJSUA_CALL_VID_STRM_REMOVE``         | Sends re-INVITE/UPDATE  |
++----------------------------------------+-------------------------+
+| ``PJSUA_CALL_VID_STRM_CHANGE_DIR``     | Sends re-INVITE/UPDATE  |
++----------------------------------------+-------------------------+
+| ``PJSUA_CALL_VID_STRM_CHANGE_CAP_DEV`` | Local only              |
++----------------------------------------+-------------------------+
+| ``PJSUA_CALL_VID_STRM_START_TRANSMIT`` | Local only              |
++----------------------------------------+-------------------------+
+| ``PJSUA_CALL_VID_STRM_STOP_TRANSMIT``  | Local only              |
++----------------------------------------+-------------------------+
+| ``PJSUA_CALL_VID_STRM_SEND_KEYFRAME``  | Local only              |
++----------------------------------------+-------------------------+
 
 For operations that send re-INVITE/UPDATE the result is not available
 immediately; the application can implement

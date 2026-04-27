@@ -213,10 +213,10 @@ Video Components and Backends page.
 API Reference
 ------------------------------------------
 
-The :doc:`sub-topic pages <../users_guide>` above describe the video
-APIs in context with usage examples. For the authoritative list of
-every PJSUA-LIB / PJSUA2 video function, struct, and enum — kept in
-sync with the source — see the auto-generated reference:
+The sub-topic pages listed above describe the video APIs in context
+with usage examples. For the authoritative list of every PJSUA-LIB /
+PJSUA2 video function, struct, and enum — kept in sync with the
+source — see the auto-generated reference:
 
 - PJSUA-LIB:
   :doc:`Video API reference </api/generated/pjsip/group/group__PJSUA__LIB__VIDEO>`

@@ -91,10 +91,10 @@ A video-calling application should at minimum hook the following:
 
 - :cpp:any:`pjsua_callback::on_call_media_state` /
   :cpp:func:`pj::Call::onCallMediaState` — fires every time the
-  call's media activates/deactivates. Read
-  :cpp:any:`pjsua_call_info::media[i]` to discover the per-stream
-  status, slot IDs, and incoming-video window ID. Use this to wire
-  up your UI state and the bridge connections (if you do any
+  call's media activates/deactivates. Read the ``media[]`` array on
+  :cpp:any:`pjsua_call_info` to discover the per-stream status, slot
+  IDs, and incoming-video window ID. Use this to wire up your UI
+  state and the bridge connections (if you do any
   manually).
 - :cpp:any:`pjsua_callback::on_call_media_event` /
   :cpp:func:`pj::Call::onCallMediaEvent` — receives the video

@@ -33,9 +33,9 @@ automatically and no API calls are required for the standard case:
   re-INVITE/UPDATEs that add streams reuse the same synchronizer; the
   synchronizer is destroyed when the call ends.
 - The synchronizer is created in *streaming mode*
-  (:cpp:any:`pjmedia_av_sync_setting::is_streaming = PJ_TRUE`), which
-  smooths the delay-adjustment values so already-running media don't
-  see surprise increases in delay.
+  (:cpp:any:`pjmedia_av_sync_setting::is_streaming` set to
+  ``PJ_TRUE``), which smooths the delay-adjustment values so
+  already-running media don't see surprise increases in delay.
 - Each stream calls :cpp:any:`pjmedia_av_sync_update_ref()` whenever
   it receives an RTCP SR packet (the SR's NTP and RTP timestamps
   become the reference point), and calls
