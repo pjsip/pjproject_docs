@@ -6,6 +6,14 @@ Asynchronous SIP Authentication
 
 Available since 2.17 (:pr:`4816`).
 
+.. tip::
+
+   This page covers only the asynchronous-challenge path. For the
+   underlying digest mechanism — selecting MD5 vs SHA-256 vs
+   SHA-512/256, advertising multiple credentials per realm,
+   server-side challenge issuance, AKA, and build prerequisites —
+   see :ref:`guide_digest_auth`.
+
 
 Overview
 ------------------
