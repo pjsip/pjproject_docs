@@ -67,6 +67,22 @@ Capture devices
 The AVI and Colorbar virtual devices are bundled and enabled by default; they
 are useful for testing without a real camera.
 
+The :ref:`AVI virtual device <avi_device>` reads media from an AVI file
+on disk and presents it as a capture source. The underlying file
+reader (:cpp:any:`pjmedia_avi_player_create_streams()`) accepts:
+
+- **Video**: raw I420 / IYUV / UYVY / YUY2 / DIB / RGB24 / RGB32, plus
+  the compressed formats MJPEG, H.264, and MPEG-4 (also recognised
+  under the FourCC aliases ``XVID`` / ``xvid`` / ``DIVX`` / ``FMP4`` /
+  ``DX50``). Compressed AVIs require a matching codec for downstream
+  processing — the conference bridge itself only handles raw video, so
+  you must connect the player to a codec port (or send the bitstream
+  directly into a call's encoder slot) rather than to a renderer.
+- **Audio**: 16-bit linear PCM, **A-law (G.711a, PCMA)**, and **μ-law
+  (G.711u, PCMU)**. Other compressed audio codings (Opus, AMR, etc.)
+  in an AVI file will be rejected by the reader with an
+  *"Unsupported audio stream"* warning.
+
 Build flags:
 
 - **CMake**: ``PJMEDIA_WITH_VIDEODEV_DSHOW``, ``PJMEDIA_WITH_VIDEODEV_V4L2``,
@@ -99,9 +115,18 @@ An additional renderer-side option exists at the *port* level (not as a
 registered video device), available on every platform when video is
 enabled:
 
-- **AVI writer** (``pjmedia_avi_writer_create_streams``) — writes the
-  incoming video (and optionally audio) frames to an AVI file. Useful for
-  recording a call or a local preview to disk.
+- **AVI writer** (:cpp:any:`pjmedia_avi_writer_create_streams()`) —
+  writes the incoming video (and optionally audio) frames to an AVI
+  file. Useful for recording a call or a local preview to disk.
+
+  The writer does not encode — it copies whatever bytes its
+  ``put_frame()`` receives straight into the file. In a typical PJSIP
+  pipeline that means **uncompressed video** (raw I420 from a call's
+  decoder, or whatever raw format the source port emits) and
+  **16-bit linear PCM audio**. The audio strf header is hard-coded to
+  PCM in the writer, so feeding it G.711 (PCMA / PCMU) bytes will
+  produce a file that mis-declares its audio format and won't play
+  back correctly — write PCM only.
 
 Build flags:
 
