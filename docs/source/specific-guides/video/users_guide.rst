@@ -97,43 +97,52 @@ Additional Info
 Using OpenGL with SDL
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-PJSIP supports OpenGL video rendering with SDL. Follow these steps to enable and use the OpenGL backend.
+PJSIP supports an OpenGL-backed renderer on top of SDL. To enable it:
 
-1. Install OpenGL development libraries for your system. The instructions vary, and some platforms may have OpenGL development libraries installed by default.
+1. Install the OpenGL development headers and the SDL2 development
+   package for your system. On Debian/Ubuntu (recent enough to ship
+   ``libsdl2-dev``):
 
-   - For Ubuntu 12.04, you can run the following:
+   .. code-block:: shell
 
-     .. code-block:: shell
+      $ sudo apt-get install libgl-dev libsdl2-dev
 
-        $ sudo apt-get install freeglut3 freeglut3-dev
-        $ sudo apt-get install binutils-gold
+   ``libsdl2-dev`` already pulls in OpenGL on most distributions, so
+   the ``libgl-dev`` line is usually optional. Other platforms
+   typically install OpenGL via the system SDK and SDL2 from
+   `libsdl.org <https://www.libsdl.org/>`__.
 
-   - Alternatively, you can use libgl-dev which is smaller. Please note that since Ubuntu 14.04 LTS, libsdl2-dev is available which comes with libgl-dev automatically, so it might not be needed anymore.
-
-      .. code-block:: shell
-
-         $ sudo apt-get install libgl-dev
-
-2. Enable SDL OpenGL support in PJSIP, by declaring this in your :any:`config_site.h`:
+2. Enable SDL OpenGL support in PJSIP by declaring this in your
+   :any:`config_site.h`:
 
    .. code-block:: c
 
       #define PJMEDIA_VIDEO_DEV_SDL_HAS_OPENGL    1
 
-3. If you're not using Visual Studio, add OpenGL library in your application's input library list. If you're using GNU tools, you can add this in **user.mak** file in root PJSIP directory:
-
+3. Link the OpenGL library into your application. With the GNU build
+   system, add to ``user.mak`` in the root PJSIP directory:
 
    .. code-block::
 
       export LDFLAGS += -lGL
 
-4. Rebuild PJSIP
-5. Now **"SDL openGL renderer"** device should show up in video device list. Simply just use this device.
+4. Rebuild PJSIP. The **"SDL OpenGL renderer"** device will then show
+   up in the video device list — just use it as the renderer.
 
 
 Mac OS X Video Threading Issue
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-On Mac OS X, our video implementation uses Cocoa frameworks, which require handling user events and drawing window content to be done in the main thread. Hence, to avoid deadlock, application should not call any PJSIP API which can potentially block from the main thread. We provide an API :cpp:any:`pj_run_app()` to simplify creating a GUI app on Mac OS X, please refer to *pjsua* app located in :sourcedir:`pjsip-apps/src/pjsua` for sample usage. Basically, :cpp:any:`pj_run_app()` will setup an event loop management in the main thread and create a multi-threading environment, allowing PJSIP to be called from another thread.
+
+On Mac OS X, the video implementation uses Cocoa frameworks, which
+require user-event handling and window drawing to happen on the main
+thread. To avoid deadlock, the application **must not** call any
+potentially-blocking PJSIP API from the main thread.
+
+PJLIB provides :cpp:any:`pj_run_app()` as a convenience: it sets up an
+event-loop manager in the main thread and creates a worker thread for
+your real ``main_func``, so PJSIP calls can run from the worker
+without blocking the GUI. The pjsua sample app at
+:sourcedir:`pjsip-apps/src/pjsua` uses this pattern.
 
 .. code-block:: c
 
@@ -154,20 +163,48 @@ On Mac OS X, our video implementation uses Cocoa frameworks, which require handl
 
 Video key frame transmission
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- Sending/receiving missing video keyframe indication using the following techniques:
 
-  * SIP INFO with XML Schema for Media Control (:rfc:`5168#section-7.1`), using:
+PJSIP supports both ends of video keyframe-request signalling so that
+a peer that loses the decoder state can ask the sender for an IDR
+frame.
 
-     - Full Intra Request (:rfc:`5104#section-3.5.1`)
-     - Picture Loss Indication feedback (:rfc:`4585#section-6.3.1`)
-     - See issue :issue:`1234` for more info
+- **Outgoing keyframe request** (we lost decode state and need a
+  fresh IDR from the peer). Two transports:
 
-  * RTCP Picture Loss Indication feedback (:rfc:`4585#section-6.3.1`):
+  - **SIP INFO with XML Schema for Media Control**
+    (:rfc:`5168#section-7.1`), carrying either Full Intra Request
+    (:rfc:`5104#section-3.5.1`) or Picture Loss Indication
+    (:rfc:`4585#section-6.3.1`). See ticket :issue:`1234` for the
+    integration history.
+  - **RTCP Picture Loss Indication** (:rfc:`4585#section-6.3.1`).
+    See ticket :issue:`1437`.
 
-     - See issue :issue:`1437` for more info
+  Which transports are allowed for a given call is controlled by
+  :cpp:any:`pjsua_call_setting::req_keyframe_method` (a bitmask of
+  :cpp:any:`pjsua_vid_req_keyframe_method`). The default is
+  ``PJSUA_VID_REQ_KEYFRAME_SIP_INFO | PJSUA_VID_REQ_KEYFRAME_RTCP_PLI``.
 
-- Key frame at the start of the call (see issue :issue:`1910`)
-- See also RTCP key frame request
+- **Incoming keyframe request** — when the peer asks us via SIP INFO
+  or RTCP PLI/FIR, the encoder is told to emit a keyframe on the next
+  frame. Applications can also force an outgoing keyframe explicitly
+  via the :cpp:any:`PJSUA_CALL_VID_STRM_SEND_KEYFRAME
+  <pjsua_call_vid_strm_op::PJSUA_CALL_VID_STRM_SEND_KEYFRAME>` stream
+  operation passed to :cpp:any:`pjsua_call_set_vid_strm()`.
+
+- **Keyframe at the start of a stream** is configurable via
+  :cpp:any:`pjsua_acc_config::vid_stream_sk_cfg` (a
+  :cpp:any:`pjmedia_vid_stream_sk_config`) — count and interval of
+  keyframes the encoder sends right after the stream is created. See
+  ticket :issue:`1910` for the rationale.
+
+The associated media events
+(:cpp:any:`PJMEDIA_EVENT_KEYFRAME_FOUND
+<pjmedia_event_type::PJMEDIA_EVENT_KEYFRAME_FOUND>` and
+:cpp:any:`PJMEDIA_EVENT_KEYFRAME_MISSING
+<pjmedia_event_type::PJMEDIA_EVENT_KEYFRAME_MISSING>`) are listed in
+the :doc:`Media events
+</specific-guides/video/components>` section of the
+Video Components and Backends page.
 
 
 .. _vid_ug_api_ref:
@@ -187,35 +224,50 @@ Device enumeration API
 - :cpp:any:`pjsua_vid_dev_count()`
 - :cpp:any:`pjsua_vid_dev_get_info()`
 - :cpp:any:`pjsua_vid_enum_devs()`
+- :cpp:any:`pjsua_vid_dev_set_setting()` /
+  :cpp:any:`pjsua_vid_dev_get_setting()`
 
 In addition, the :any:`PJMEDIA videodev </api/generated/pjmedia/group/group__video__device__reference>`
-also provides this API to detect change in device availability:
+provides this API to detect change in device availability:
 
-- - :cpp:any:`pjmedia_vid_dev_refresh()`
+- :cpp:any:`pjmedia_vid_dev_refresh()`
 
 Video preview API
 ~~~~~~~~~~~~~~~~~
 
-The video preview API can be used to show the output of capture device
-to a video window:
+The video preview API can be used to show the output of a capture
+device in a video window:
 
 - struct :cpp:any:`pjsua_vid_preview_param`
 - :cpp:any:`pjsua_vid_preview_start()`
-- :cpp:any:`pjsua_vid_preview_get_win()`
 - :cpp:any:`pjsua_vid_preview_stop()`
+- :cpp:any:`pjsua_vid_preview_get_win()`
+- :cpp:any:`pjsua_vid_preview_get_vid_conf_port()`
+- :cpp:any:`pjsua_vid_preview_has_native()`
 
 Video Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Video is enabled/disabled on :cpp:any:`pjsua_call_setting`.
+Video is enabled/disabled per call on :cpp:any:`pjsua_call_setting`:
 
-Video settings are mostly configured on the :cpp:any:`pjsua_acc_config` with the
-following fields:
+- :cpp:any:`pjsua_call_setting::vid_cnt`
+- :cpp:any:`pjsua_call_setting::req_keyframe_method`
+- :cpp:any:`pjsua_call_setting::media_dir` (gated by
+  :cpp:any:`PJSUA_CALL_SET_MEDIA_DIR`)
+- :cpp:any:`PJSUA_CALL_NO_MEDIA_SYNC` flag — see
+  :doc:`users_guide/av_sync`
+
+Per-account video settings live on :cpp:any:`pjsua_acc_config`:
 
 - :cpp:any:`pjsua_acc_config::vid_in_auto_show`
 - :cpp:any:`pjsua_acc_config::vid_out_auto_transmit`
 - :cpp:any:`pjsua_acc_config::vid_cap_dev`
 - :cpp:any:`pjsua_acc_config::vid_rend_dev`
+- :cpp:any:`pjsua_acc_config::vid_wnd_flags`
+- :cpp:any:`pjsua_acc_config::vid_stream_rc_cfg` — encoder-side rate
+  control (see :doc:`users_guide/codec_params`)
+- :cpp:any:`pjsua_acc_config::vid_stream_sk_cfg` — start-of-stream
+  keyframe count/interval
 
 
 .. _vid_ug_vcm:
@@ -224,50 +276,79 @@ Video Call Manipulation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The default video behavior for a call is controlled by the account
-settings above. On top of that, the application can manipulate video of
-an already-going call by using :cpp:any:`pjsua_call_set_vid_strm()` API.
+settings above. On top of that, the application can manipulate the
+video of an already-going call:
 
-Use :cpp:any:`pjsua_call_get_vid_stream_idx()` to get the media stream index of
-the default video stream in the call.
+- :cpp:any:`pjsua_call_set_vid_strm()` — operates on
+  :cpp:any:`pjsua_call_vid_strm_op` (ADD, REMOVE, CHANGE_DIR,
+  CHANGE_CAP_DEV, START_TRANSMIT, STOP_TRANSMIT, SEND_KEYFRAME)
+- :cpp:any:`pjsua_call_get_vid_stream_idx()` — get the default video
+  stream's media index
+- :cpp:any:`pjsua_call_reinvite2()` /
+  :cpp:any:`pjsua_call_update2()` — re-INVITE / UPDATE with a new
+  :cpp:any:`pjsua_call_setting`
 
 
 Video Call Information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Video media information are available in :cpp:any:`pjsua_call_info`.
+Video media information lives on :cpp:any:`pjsua_call_info` (see
+``ci.media[i].stream.vid``: window ID, encoding/decoding bridge slot
+IDs, and capture device).
 
 
 Video Call Stream Information and Statistic
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Use the following API to query call's stream information and statistic.
 
+Use the following API to query a call's stream information and
+statistics:
 
 - :cpp:any:`pjsua_call_get_stream_info()`
 - :cpp:any:`pjsua_call_get_stream_stat()`
 - :cpp:any:`pjsua_call_get_med_transport_info()`
 
-.. note::
-
-   The :cpp:any:`pjsua_call_get_media_session()` has been deprecated since its use is unsafe.
-
 
 Video Window API
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-A video window is a rectangular area in your monitor to display video
-content. The video content may come from remote stream, local camera (in
-case of preview), AVI playback, or any other video playback. Application
-mostly will be interested in the native handle of the video window so
-that it can embed it in its application window, however we also provide
-simple and commonly used API for manipulating the window.
+A video window is a rectangular area on screen that displays video
+content. The content may come from a remote stream, a local camera
+preview, AVI playback, or any other video playback. Most applications
+are interested in the underlying native handle so they can embed the
+window in their own GUI; PJSUA-LIB also provides a small set of
+manipulation APIs for non-native windows. See
+:any:`vid_ug_wvw` for the details.
 
-See:
-
+- :cpp:any:`pjsua_call_get_vid_win()` — convenience to get a call's
+  incoming-video window
 - :cpp:any:`pjsua_vid_enum_wins()`
 - :cpp:any:`pjsua_vid_win_get_info()`
 - :cpp:any:`pjsua_vid_win_set_show()`
 - :cpp:any:`pjsua_vid_win_set_pos()`
 - :cpp:any:`pjsua_vid_win_set_size()`
+- :cpp:any:`pjsua_vid_win_rotate()`
+- :cpp:any:`pjsua_vid_win_set_fullscreen()` (SDL only)
+- :cpp:any:`pjsua_vid_win_set_win()` (Android only)
+
+
+Video Conference API
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The video conference bridge moves frames between calls, capture
+devices, renderers, and arbitrary :cpp:any:`pjmedia_port` objects. See
+:doc:`users_guide/conference` for the model and routing patterns.
+
+- :cpp:any:`pjsua_call_get_vid_conf_port()`
+- :cpp:any:`pjsua_vid_preview_get_vid_conf_port()`
+- :cpp:any:`pjsua_vid_conf_get_active_ports()`
+- :cpp:any:`pjsua_vid_conf_enum_ports()`
+- :cpp:any:`pjsua_vid_conf_get_port_info()`
+- :cpp:any:`pjsua_vid_conf_add_port()`
+- :cpp:any:`pjsua_vid_conf_remove_port()`
+- :cpp:any:`pjsua_vid_conf_connect()`
+- :cpp:any:`pjsua_vid_conf_disconnect()`
+- :cpp:any:`pjsua_vid_conf_update_port()`
+- :cpp:any:`pjsua_callback::on_vid_conf_op_completed`
 
 
 Video Codec API
