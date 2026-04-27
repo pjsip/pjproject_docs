@@ -210,154 +210,17 @@ Video Components and Backends page.
 
 .. _vid_ug_api_ref:
 
-Video API Reference (pjsua-lib)
+API Reference
 ------------------------------------------
 
-This section explains and lists the Video API as it was available when
-this document is written. For a richer and more up to date list, please
-see :doc:`Video API reference </api/generated/pjsip/group/group__PJSUA__LIB__VIDEO>`
+The :doc:`sub-topic pages <../users_guide>` above describe the video
+APIs in context with usage examples. For the authoritative list of
+every PJSUA-LIB / PJSUA2 video function, struct, and enum — kept in
+sync with the source — see the auto-generated reference:
 
-The Video API is classified into the following categories.
-
-Device enumeration API
-~~~~~~~~~~~~~~~~~~~~~~
-
-- :cpp:any:`pjsua_vid_dev_count()`
-- :cpp:any:`pjsua_vid_dev_get_info()`
-- :cpp:any:`pjsua_vid_enum_devs()`
-- :cpp:any:`pjsua_vid_dev_set_setting()` /
-  :cpp:any:`pjsua_vid_dev_get_setting()`
-
-In addition, the :any:`PJMEDIA videodev </api/generated/pjmedia/group/group__video__device__reference>`
-provides this API to detect change in device availability:
-
-- :cpp:any:`pjmedia_vid_dev_refresh()`
-
-Video preview API
-~~~~~~~~~~~~~~~~~
-
-The video preview API can be used to show the output of a capture
-device in a video window:
-
-- struct :cpp:any:`pjsua_vid_preview_param`
-- :cpp:any:`pjsua_vid_preview_start()`
-- :cpp:any:`pjsua_vid_preview_stop()`
-- :cpp:any:`pjsua_vid_preview_get_win()`
-- :cpp:any:`pjsua_vid_preview_get_vid_conf_port()`
-- :cpp:any:`pjsua_vid_preview_has_native()`
-
-Video Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Video is enabled/disabled per call on :cpp:any:`pjsua_call_setting`:
-
-- :cpp:any:`pjsua_call_setting::vid_cnt`
-- :cpp:any:`pjsua_call_setting::req_keyframe_method`
-- :cpp:any:`pjsua_call_setting::media_dir` (gated by
-  :cpp:any:`PJSUA_CALL_SET_MEDIA_DIR`)
-- :cpp:any:`PJSUA_CALL_NO_MEDIA_SYNC` flag — see
-  :doc:`users_guide/av_sync`
-
-Per-account video settings live on :cpp:any:`pjsua_acc_config`:
-
-- :cpp:any:`pjsua_acc_config::vid_in_auto_show`
-- :cpp:any:`pjsua_acc_config::vid_out_auto_transmit`
-- :cpp:any:`pjsua_acc_config::vid_cap_dev`
-- :cpp:any:`pjsua_acc_config::vid_rend_dev`
-- :cpp:any:`pjsua_acc_config::vid_wnd_flags`
-- :cpp:any:`pjsua_acc_config::vid_stream_rc_cfg` — encoder-side rate
-  control (see :doc:`users_guide/codec_params`)
-- :cpp:any:`pjsua_acc_config::vid_stream_sk_cfg` — start-of-stream
-  keyframe count/interval
-
-
-.. _vid_ug_vcm:
-
-Video Call Manipulation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The default video behavior for a call is controlled by the account
-settings above. On top of that, the application can manipulate the
-video of an already-going call:
-
-- :cpp:any:`pjsua_call_set_vid_strm()` — operates on
-  :cpp:any:`pjsua_call_vid_strm_op` (ADD, REMOVE, CHANGE_DIR,
-  CHANGE_CAP_DEV, START_TRANSMIT, STOP_TRANSMIT, SEND_KEYFRAME)
-- :cpp:any:`pjsua_call_get_vid_stream_idx()` — get the default video
-  stream's media index
-- :cpp:any:`pjsua_call_reinvite2()` /
-  :cpp:any:`pjsua_call_update2()` — re-INVITE / UPDATE with a new
-  :cpp:any:`pjsua_call_setting`
-
-
-Video Call Information
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Video media information lives on :cpp:any:`pjsua_call_info` (see
-``ci.media[i].stream.vid``: window ID, encoding/decoding bridge slot
-IDs, and capture device).
-
-
-Video Call Stream Information and Statistic
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Use the following API to query a call's stream information and
-statistics:
-
-- :cpp:any:`pjsua_call_get_stream_info()`
-- :cpp:any:`pjsua_call_get_stream_stat()`
-- :cpp:any:`pjsua_call_get_med_transport_info()`
-
-
-Video Window API
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-A video window is a rectangular area on screen that displays video
-content. The content may come from a remote stream, a local camera
-preview, AVI playback, or any other video playback. Most applications
-are interested in the underlying native handle so they can embed the
-window in their own GUI; PJSUA-LIB also provides a small set of
-manipulation APIs for non-native windows. See
-:any:`vid_ug_wvw` for the details.
-
-- :cpp:any:`pjsua_call_get_vid_win()` — convenience to get a call's
-  incoming-video window
-- :cpp:any:`pjsua_vid_enum_wins()`
-- :cpp:any:`pjsua_vid_win_get_info()`
-- :cpp:any:`pjsua_vid_win_set_show()`
-- :cpp:any:`pjsua_vid_win_set_pos()`
-- :cpp:any:`pjsua_vid_win_set_size()`
-- :cpp:any:`pjsua_vid_win_rotate()`
-- :cpp:any:`pjsua_vid_win_set_fullscreen()` (SDL only)
-- :cpp:any:`pjsua_vid_win_set_win()` (Android only)
-
-
-Video Conference API
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-The video conference bridge moves frames between calls, capture
-devices, renderers, and arbitrary :cpp:any:`pjmedia_port` objects. See
-:doc:`users_guide/conference` for the model and routing patterns.
-
-- :cpp:any:`pjsua_call_get_vid_conf_port()`
-- :cpp:any:`pjsua_vid_preview_get_vid_conf_port()`
-- :cpp:any:`pjsua_vid_conf_get_active_ports()`
-- :cpp:any:`pjsua_vid_conf_enum_ports()`
-- :cpp:any:`pjsua_vid_conf_get_port_info()`
-- :cpp:any:`pjsua_vid_conf_add_port()`
-- :cpp:any:`pjsua_vid_conf_remove_port()`
-- :cpp:any:`pjsua_vid_conf_connect()`
-- :cpp:any:`pjsua_vid_conf_disconnect()`
-- :cpp:any:`pjsua_vid_conf_update_port()`
-- :cpp:any:`pjsua_callback::on_vid_conf_op_completed`
-
-
-Video Codec API
-~~~~~~~~~~~~~~~~~~~~~~~
-
-API for managing video codecs:
-
-- :cpp:any:`pjsua_vid_enum_codecs()`
-- :cpp:any:`pjsua_vid_codec_set_priority()`
-- :cpp:any:`pjsua_vid_codec_get_param()`
-- :cpp:any:`pjsua_vid_codec_set_param()`
+- PJSUA-LIB:
+  :doc:`Video API reference </api/generated/pjsip/group/group__PJSUA__LIB__VIDEO>`
+- PJMEDIA video device:
+  :doc:`Video device API </api/generated/pjmedia/group/group__video__device__reference>`
+- PJMEDIA video codec / stream / conference / sync: see the relevant
+  PJMEDIA groups under :doc:`/api/pjmedia/index`.

@@ -1,10 +1,13 @@
-Using Video API (pjsua-lib)
-============================
+Using the Call Video API
+==========================
 
-This section provides several sample scenarios of using video in your
-application. Please see :any:`vid_ug_api_ref` section in the parent
-:any:`Video User's Guide </specific-guides/video/users_guide>` for a
-more complete documentation about the Video API.
+This page covers common scenarios for handling video on an active
+SIP call: enabling video, accepting and rejecting incoming video,
+starting and stopping outgoing video, manipulating the video stream,
+and showing or hiding the video window. For the authoritative API
+listing see :any:`vid_ug_api_ref` on the parent
+:any:`Video User's Guide </specific-guides/video/users_guide>`
+page.
 
 Enabling Video
 ~~~~~~~~~~~~~~
@@ -244,9 +247,8 @@ renegotiation:
 
 For operations that send re-INVITE/UPDATE the result is not available
 immediately; the application can implement
-:cpp:any:`pjsua_callback::on_call_media_state()` and inspect the resulting
-negotiation in :cpp:any:`pjsua_call_info`. See :any:`vid_ug_vcm` below for
-more information.
+:cpp:any:`pjsua_callback::on_call_media_state()` and inspect the
+resulting negotiation in :cpp:any:`pjsua_call_info`.
 
 Add or Remove Video
 ~~~~~~~~~~~~~~~~~~~
