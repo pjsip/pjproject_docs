@@ -168,10 +168,14 @@ Build flags:
   ``PJMEDIA_WITH_FFMPEG``, ``PJMEDIA_WITH_ANDROID_MEDIACODEC_CODEC``.
 - **GNU autoconf**: ``--with-openh264=DIR`` / ``--disable-openh264``,
   ``--with-vpx=DIR`` / ``--disable-vpx``, ``--with-ffmpeg`` /
-  ``--disable-ffmpeg``. VideoToolbox and Android MediaCodec are
-  auto-enabled when building for Apple/Android targets.
-- **Visual Studio**: set ``PJMEDIA_HAS_OPENH264_CODEC``,
-  ``PJMEDIA_HAS_VPX_CODEC``, or ``PJMEDIA_HAS_FFMPEG`` in ``config_site.h``,
+  ``--disable-ffmpeg``. **Android MediaCodec** is auto-enabled when
+  building for Android targets. **VideoToolbox** is *not*
+  auto-enabled on Apple targets — set
+  ``PJMEDIA_HAS_VID_TOOLBOX_CODEC=1`` in :ref:`config_site.h` to
+  enable it.
+- **Visual Studio / config_site.h**: set ``PJMEDIA_HAS_OPENH264_CODEC``,
+  ``PJMEDIA_HAS_VPX_CODEC``, ``PJMEDIA_HAS_FFMPEG``, or (on Apple
+  targets) ``PJMEDIA_HAS_VID_TOOLBOX_CODEC`` in :ref:`config_site.h`,
   and link the matching libraries.
 
 
