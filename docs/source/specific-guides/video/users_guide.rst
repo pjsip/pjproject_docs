@@ -84,6 +84,7 @@ The user's guide is organized into the following topics:
 .. toctree::
    :maxdepth: 1
 
+   users_guide/recommended_setup
    users_guide/call_video
    users_guide/codec_params
    users_guide/orientation
