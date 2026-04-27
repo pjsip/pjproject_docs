@@ -378,18 +378,23 @@ does when the peer certificate fails to verify:
 - :cpp:any:`pjsip_tls_setting::verify_client` — server-side check of
   the client certificate. Default ``PJ_FALSE``.
 
-The flag does not control *whether* verification runs; verification
-always runs and the result lands in
-:cpp:any:`pjsip_tls_state_info`. The flag controls the *consequence*
-of a failure:
+The flag primarily controls the *consequence* of a verification
+failure:
 
 - ``PJ_FALSE`` — the connection completes regardless of verification
   outcome. The application receives ``PJSIP_TP_STATE_CONNECTED`` via
   the transport-state callback and can inspect the
-  :cpp:any:`pjsip_tls_state_info` for the actual verification result.
-  This is "notify only".
+  :cpp:any:`pjsip_tls_state_info` for the verification result. This
+  is "notify only".
 - ``PJ_TRUE`` — verification failure causes the transport to be shut
   down; the application receives ``PJSIP_TP_STATE_DISCONNECTED``.
+
+On the OpenSSL, Apple, SChannel, and Mbed TLS backends the chain is
+verified regardless of the flag, so :cpp:any:`pjsip_tls_state_info`'s
+``verify_status`` is populated either way. **On GnuTLS prior to
+pjproject 2.17, chain verification is skipped when the flag is
+``PJ_FALSE`` and ``verify_status`` comes back empty** — see the
+Pattern B warning below for context.
 
 A separate flag :cpp:any:`pjsip_tls_setting::require_client_cert`
 (server-side, default ``PJ_FALSE``) tells the transport to **reject
