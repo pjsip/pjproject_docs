@@ -8,7 +8,26 @@ Working with video media
 
 .. tip::
 
-    For using video with PJSUA-LIB, see :any:`/specific-guides/video/users_guide`
+   For PJSUA-LIB usage, see the :any:`Video User's Guide
+   </specific-guides/video/users_guide>` and its sub-topic pages.
+   The sub-topic pages are written API-agnostically and are also useful
+   reference reading for PJSUA2 readers:
+
+   - :any:`Using the call video API
+     </specific-guides/video/users_guide/call_video>`
+   - :any:`Modifying video codec parameters (resolution, framerate,
+     bitrate) </specific-guides/video/users_guide/codec_params>`
+   - :any:`Setting video capture orientation
+     </specific-guides/video/users_guide/orientation>`
+   - :any:`Video conference bridge model and routing
+     </specific-guides/video/users_guide/conference>`
+   - :any:`Audio/Video synchronization
+     </specific-guides/video/users_guide/av_sync>`
+
+   See also :any:`Video components and backends
+   </specific-guides/video/components>` for the available capture /
+   renderer / codec / format-converter backends per platform and the
+   PJMEDIA event types a video application typically subscribes to.
 
 
 Video media is similar to audio media in many ways. The class :cpp:class:`pj::VideoMedia` is

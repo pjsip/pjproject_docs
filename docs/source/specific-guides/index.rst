@@ -24,7 +24,7 @@ Audio Troubleshooting
 .. toctree::
    :maxdepth: 1
    :glob:
-   
+
    audio-troubleshooting/problems/how_to_record
    audio-troubleshooting/problems/*
    audio-troubleshooting/checklist
@@ -123,6 +123,18 @@ Video
    :glob:
 
    video/*
+
+.. _video_troubleshooting_toc:
+
+Video Troubleshooting
+*****************************************
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+
+   video-troubleshooting/problems/*
+   video-troubleshooting/checklist
 
 .. _other_guide_toc:
 

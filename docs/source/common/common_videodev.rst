@@ -15,6 +15,7 @@ Supported capture devices:
 
 Supported renderer devices:
 
+- :ref:`metal`
 - :ref:`opengl`
 - :ref:`sdl`
 - :ref:`UIView (iOS) <avfoundation>`
