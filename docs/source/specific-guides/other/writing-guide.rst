@@ -232,7 +232,7 @@ Currenty available cross-references:
    specific-guides/security/ssl.rst:.. _guide_ssl:
    specific-guides/network_nat/qos.rst:.. _qos:
    specific-guides/other/writing-guide.rst:.. _my_secret_target:
-   specific-guides/video/index.rst:.. _guide_libyuv:
+   specific-guides/video/components.rst:.. _guide_libyuv:
    specific-guides/video/index.rst:.. _guide_vidconf:
 
 

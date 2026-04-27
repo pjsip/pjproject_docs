@@ -81,6 +81,15 @@ PJMEDIA uses FFMPEG to provide codecs and video capture device.
 See :ref:`guide_ffmpeg`.
 
 
+.. _metal:
+
+Metal (Mac and iOS)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Metal-based renderer for Mac OS X and iOS, using Apple's Metal and MetalKit
+frameworks. Enabled automatically when the Metal framework is detected by the
+``configure`` script (reference: ``PJMEDIA_VIDEO_DEV_HAS_METAL=1`` macro).
+
+
 .. _opengl:
 
 OpenGL (desktops)/OpenGL ES 2 (Android, iOS)
