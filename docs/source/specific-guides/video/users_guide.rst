@@ -88,6 +88,7 @@ The user's guide is organized into the following topics:
    users_guide/codec_params
    users_guide/orientation
    users_guide/conference
+   users_guide/av_sync
 
 
 Additional Info
