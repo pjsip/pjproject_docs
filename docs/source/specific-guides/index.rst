@@ -29,18 +29,6 @@ Audio Troubleshooting
    audio-troubleshooting/problems/*
    audio-troubleshooting/checklist
 
-.. _video_troubleshooting_toc:
-
-Video Troubleshooting
-*****************************************
-
-.. toctree::
-   :maxdepth: 1
-   :glob:
-
-   video-troubleshooting/problems/*
-   video-troubleshooting/checklist
-
 .. _build_int_guide_toc:
 
 Build & Integration
@@ -135,6 +123,18 @@ Video
    :glob:
 
    video/*
+
+.. _video_troubleshooting_toc:
+
+Video Troubleshooting
+*****************************************
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+
+   video-troubleshooting/problems/*
+   video-troubleshooting/checklist
 
 .. _other_guide_toc:
 
