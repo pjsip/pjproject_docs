@@ -24,7 +24,7 @@ do its job. Things to check:
    misconfigured), the synchronizer has nothing to anchor on and
    cannot align the streams. Verify SRs are being received by
    inspecting RTCP traffic or
-   :cpp:any:`pjsua_call_get_stream_stat` output.
+   :cpp:any:`pjsua_call_get_stream_stat()` output.
 
 #. **The lag tolerance is set unreasonably tight or loose.** Two
    compile-time tunables in ``pjmedia/config.h`` shape the

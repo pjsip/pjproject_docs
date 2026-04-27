@@ -41,8 +41,8 @@ in the enumerated device list.
 #. **Capture device already in use.** Some platforms allow only
    one process to hold the camera at a time. Other apps (browser
    tabs with the camera live, recording apps, the Camera app on
-   mobile) preempt or block PJSIP's access. Close the other user
-   and retry.
+   mobile) preempt or block PJSIP's access. Close the other app or
+   process and retry.
 
 #. **Native renderer surface is not ready yet.** On platforms
    where the renderer needs a parent native window, calling

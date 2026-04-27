@@ -239,5 +239,5 @@ If a permission is denied at runtime, capture device opening fails;
 the application typically sees a video device error event
 (:cpp:any:`PJMEDIA_EVENT_VID_DEV_ERROR <pjmedia_event_type::PJMEDIA_EVENT_VID_DEV_ERROR>`)
 or an error return from
-:cpp:any:`pjsua_vid_preview_start` /
-:cpp:any:`pjsua_call_set_vid_strm`.
+:cpp:any:`pjsua_vid_preview_start()` /
+:cpp:any:`pjsua_call_set_vid_strm()`.

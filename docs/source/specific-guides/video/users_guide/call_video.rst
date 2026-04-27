@@ -173,10 +173,10 @@ Outgoing video transmission is independent from the incoming video
 transmission; each can be operated separately. Note that outgoing video
 transmission **is not started by default**, not even when incoming offer
 contains video support. This behavior is controlled by
-:cpp:any:`pjsua_acc_config::vid_out_auto_transmit` setting, which default to
-*PJ_FALSE*. Setting this to *PJ_TRUE* will cause video transmission to
-be started automatically on each outgoing calls and on incoming calls
-that indicates video support in its offer. However, it is more flexible
+:cpp:any:`pjsua_acc_config::vid_out_auto_transmit` setting, which
+defaults to *PJ_FALSE*. Setting this to *PJ_TRUE* will cause video
+transmission to be started automatically on each outgoing call and on
+incoming calls that indicate video support in their offer. However, it is more flexible
 and appropriate to leave this setting at PJ_FALSE, and add video later
 during the call by using :cpp:any:`pjsua_call_set_vid_strm()` API, as will be
 explained shortly.

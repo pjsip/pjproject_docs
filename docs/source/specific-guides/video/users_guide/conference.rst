@@ -33,7 +33,7 @@ How the bridge works
   area in the sink frame. This is how a multi-party conference renders
   every other participant into one window.
 - The bridge handles frame-rate and format mismatches between
-  connected ports (see :cpp:any:`pjsua_vid_conf_update_port` for
+  connected ports (see :cpp:any:`pjsua_vid_conf_update_port()` for
   picking up format changes mid-session).
 
 

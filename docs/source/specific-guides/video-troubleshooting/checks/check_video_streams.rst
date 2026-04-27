@@ -30,19 +30,19 @@ Programmatic access
 From application code, the same information is available through
 the API:
 
-- :cpp:any:`pjsua_call_get_info` populates
+- :cpp:any:`pjsua_call_get_info()` populates
   :cpp:any:`pjsua_call_info`. The per-media entries
   ``ci.media[i]`` include the media's type, direction, status, and
   for video the encoding/decoding bridge slot IDs and the
   incoming-video window ID. Use this to answer "is the stream
   active?" and "what does the local SDP say its direction is?".
 
-- :cpp:any:`pjsua_call_get_stream_info` returns codec-level
+- :cpp:any:`pjsua_call_get_stream_info()` returns codec-level
   details: the video codec ID, encoded format
   (resolution, frame rate, bitrate), packetization parameters,
   and the negotiated fmtp.
 
-- :cpp:any:`pjsua_call_get_stream_stat` returns RTP/RTCP
+- :cpp:any:`pjsua_call_get_stream_stat()` returns RTP/RTCP
   statistics: send/receive packet counts, byte counts, loss, jitter,
   round-trip time, and the most recent RTCP SR/RR.
 
@@ -50,7 +50,7 @@ A typical "is video flowing?" check loop is:
 
 #. Read :cpp:any:`pjsua_call_info`. Confirm the video media's
    ``status`` is active and ``dir`` is what you expect.
-#. Read :cpp:any:`pjsua_call_get_stream_stat` periodically. If the
+#. Read :cpp:any:`pjsua_call_get_stream_stat()` periodically. If the
    receive packet count never increases, RTP is not arriving — go
    to :doc:`/specific-guides/audio-troubleshooting/checks/no_rx_rtp`.
 #. If RTP is arriving but the renderer shows no decoded video,
