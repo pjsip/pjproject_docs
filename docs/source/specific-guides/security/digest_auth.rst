@@ -61,9 +61,8 @@ Algorithm availability depends on what the build links against:
   falls back to its internal MD5 implementation.
 - **SHA-256** and **SHA-512/256** require **OpenSSL** as the SSL
   socket implementation, i.e. the library must be built with
-  ``PJ_HAS_SSL_SOCK = 1`` and ``PJ_SSL_SOCK_IMP =
-  PJ_SSL_SOCK_IMP_OPENSSL``. Without OpenSSL, the SHA digests are not
-  computed; only MD5 works.
+  ``PJ_HAS_SSL_SOCK = 1`` and ``PJ_SSL_SOCK_IMP = PJ_SSL_SOCK_IMP_OPENSSL``.
+  Without OpenSSL, the SHA digests are not computed; only MD5 works.
 - **AKA-MD5** (v1 and v2) is gated separately by the compile-time
   flag :c:macro:`PJSIP_HAS_DIGEST_AKA_AUTH`, which defaults to ``0``.
   Set it to ``1`` in :any:`config_site.h` when building for IMS / VoLTE
@@ -248,8 +247,7 @@ plaintext password. To use it:
 2. Set ``algorithm_type`` on the credential to either
    :cpp:any:`PJSIP_AUTH_ALGORITHM_AKAV1_MD5` or
    :cpp:any:`PJSIP_AUTH_ALGORITHM_AKAV2_MD5`.
-3. Set ``data_type`` to ``PJSIP_CRED_DATA_PLAIN_PASSWD |
-   PJSIP_CRED_DATA_EXT_AKA``.
+3. Set ``data_type`` to ``PJSIP_CRED_DATA_PLAIN_PASSWD | PJSIP_CRED_DATA_EXT_AKA``.
 4. Provide the AKA inputs in the ``ext.aka`` sub-struct: ``k``
    (permanent subscriber key), ``op`` (operator variant), ``amf``
    (authentication management field), and ``cb`` — a callback that
