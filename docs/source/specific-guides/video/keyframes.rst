@@ -39,9 +39,9 @@ specific reason to disable a transport.
 .. code-block:: c++
 
    try {
-       CallSetting cs;
-       cs.reqKeyframeMethod = PJSUA_VID_REQ_KEYFRAME_RTCP_PLI;
-       call.makeCall(dst_uri, cs);
+       CallOpParam prm;
+       prm.opt.reqKeyframeMethod = PJSUA_VID_REQ_KEYFRAME_RTCP_PLI;
+       call.makeCall(dst_uri, prm);
    } catch(Error& err) {
    }
 
