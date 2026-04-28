@@ -99,4 +99,11 @@ Incoming IM and typing indication received outside the scope of a call will be r
     Use :cpp:func:`pj::Account::findBuddy()` and :cpp:func:`pj::Account::findBuddy2()` to match
     incoming IM and typing indication to a buddy in the account's buddy list.
 
+.. note::
+
+    SIP MESSAGE (covered above) carries discrete messages and is the
+    natural fit for chat-style messaging. For *live, character-by-character*
+    text within a call (TTY-equivalent accessibility, RFC 4103), use
+    real-time text instead. See :ref:`guide_realtime_text`.
+
 
