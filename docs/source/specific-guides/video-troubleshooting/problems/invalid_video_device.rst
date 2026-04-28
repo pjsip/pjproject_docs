@@ -50,5 +50,5 @@ in the enumerated device list.
    can fail. Make sure your UI has created the container before
    you start preview.
 
-A general best-practice for permissions and device setup is in
-:doc:`/specific-guides/video/users_guide/recommended_setup`.
+For account-level capture / render device defaults, see
+:any:`/pjsua2/using/media_video`.

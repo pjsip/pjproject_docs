@@ -42,7 +42,8 @@ Recovery flow:
    checks as for the audio side:
    :doc:`/specific-guides/audio-troubleshooting/checks/no_rx_rtp`.
 
-A general best-practice setup for IP-change handling is in
-:doc:`/specific-guides/video/users_guide/recommended_setup`.
+For mid-call stream changes after a network event, see
+*Modifying video during a call* in
+:any:`/pjsua2/using/media_video`.
 
 Related: :doc:`mobile_bg_fg`.

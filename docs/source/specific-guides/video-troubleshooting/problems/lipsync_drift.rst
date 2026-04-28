@@ -15,7 +15,7 @@ do its job. Things to check:
    call setting does **not** include
    :cpp:any:`PJSUA_CALL_NO_MEDIA_SYNC`. With that flag set,
    PJSUA-LIB skips synchronizer creation entirely. See
-   :doc:`/specific-guides/video/users_guide/av_sync`.
+   :doc:`/specific-guides/video/av_sync`.
 
 #. **The peer is sending RTCP Sender Reports.** The synchronizer
    anchors its per-media timeline to wall-clock using the NTP and

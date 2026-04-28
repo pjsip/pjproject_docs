@@ -21,8 +21,8 @@ work through these in order:
    on the account, or start it explicitly per call with
    :cpp:any:`pjsua_call_set_vid_strm()` and
    ``PJSUA_CALL_VID_STRM_START_TRANSMIT`` /
-   ``PJSUA_CALL_VID_STRM_ADD``. See
-   :doc:`/specific-guides/video/users_guide/call_video`.
+   ``PJSUA_CALL_VID_STRM_ADD``. See *Modifying video during a call*
+   in :any:`/pjsua2/using/media_video`.
 #. **Verify the SDP carries video sendrecv.** Inspect the
    ``media[i].dir`` field of :cpp:any:`pjsua_call_info` and look for
    video marked ``sendonly`` / ``recvonly`` / ``inactive``. If the call

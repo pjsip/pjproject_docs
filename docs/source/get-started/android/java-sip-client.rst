@@ -205,8 +205,8 @@ and add STUN server.
 
 Notes on video quality
 ----------------------------------------
-Video quality can be improved by increasing the bitrate. See :doc:`/specific-guides/video/users_guide`
-for more information.
+Video quality can be improved by increasing the bitrate. See
+:doc:`/specific-guides/video/codec_params` for more information.
 
 For reference, the call above was using 320x240 video resolution and about 260 Kbps average bitrate
 on both transmit and receive side.

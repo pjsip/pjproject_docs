@@ -6,4 +6,6 @@
 
 .. tip::
 
-   See also :any:`Video User's Guide </specific-guides/video/users_guide>`
+   See also :any:`Sample Applications with Video
+   </specific-guides/video/samples>` and the deep-dive pages under
+   :ref:`video_guide_toc`.

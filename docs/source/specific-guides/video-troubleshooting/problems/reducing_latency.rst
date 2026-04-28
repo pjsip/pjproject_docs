@@ -31,11 +31,11 @@ present. Each can be tuned, with diminishing returns and trade-offs.
    (the default). The simple-blocking mode adds latency by holding
    the capture thread until the next sending slot;
    ``SEND_THREAD`` offloads pacing to a dedicated thread. See
-   :doc:`/specific-guides/video/users_guide/codec_params`.
+   :doc:`/specific-guides/video/codec_params`.
 
 #. **Watch for "preview opened the camera at a fixed framerate"
    limitation.** As noted in
-   :doc:`/specific-guides/video/users_guide/codec_params` (under
+   :doc:`/specific-guides/video/codec_params` (under
    *Framerate*), if local preview is started before the call, the
    camera opens at its default framerate and subsequent calls
    inherit it. Disable preview before establishing media if you
@@ -52,7 +52,7 @@ present. Each can be tuned, with diminishing returns and trade-offs.
 
 For an intuition on what end-to-end SIP/RTC video latency looks
 like in practice, see the *Choosing a bitrate* note in
-:doc:`/specific-guides/video/users_guide/codec_params`.
+:doc:`/specific-guides/video/codec_params`.
 
 The audio-side equivalent — much of which transfers — is
 :doc:`/specific-guides/audio-troubleshooting/problems/reducing_latency`.

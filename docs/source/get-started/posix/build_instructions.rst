@@ -79,7 +79,7 @@ The following components are needed for video:
 
    .. tip:: 
 
-      For more information about using the video, see :any:`/specific-guides/video/users_guide`
+      For more information about using the video, see :any:`/pjsua2/using/media_video` and the deep-dive pages under :ref:`video_guide_toc`.
 
 
 Host requirements

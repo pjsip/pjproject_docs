@@ -190,6 +190,43 @@ Declare this in  ``config_site.h`` and rebuild:
    #define PJMEDIA_VIDEO_DEV_HAS_SDL     1
 
 
+Using OpenGL with SDL
+^^^^^^^^^^^^^^^^^^^^^
+
+PJSIP also supports an OpenGL-backed renderer on top of SDL. To enable
+it:
+
+1. Install the OpenGL development headers and the SDL2 development
+   package for your system. On Debian/Ubuntu (recent enough to ship
+   ``libsdl2-dev``):
+
+   .. code-block:: shell
+
+      sudo apt-get install libgl-dev libsdl2-dev
+
+   ``libsdl2-dev`` already pulls in OpenGL on most distributions, so
+   the ``libgl-dev`` line is usually optional. Other platforms
+   typically install OpenGL via the system SDK and SDL2 from
+   `libsdl.org <https://www.libsdl.org/>`__.
+
+2. Enable SDL OpenGL support in PJSIP by declaring this in your
+   :ref:`config_site.h`:
+
+   .. code-block:: c
+
+      #define PJMEDIA_VIDEO_DEV_SDL_HAS_OPENGL    1
+
+3. Link the OpenGL library into your application. With the GNU build
+   system, add to ``user.mak`` in the root PJSIP directory:
+
+   .. code-block::
+
+      export LDFLAGS += -lGL
+
+4. Rebuild PJSIP. The **"SDL OpenGL renderer"** device will then show
+   up in the video device list — just use it as the renderer.
+
+
 .. _video4linux:
 
 Video4Linux
