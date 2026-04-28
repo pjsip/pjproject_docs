@@ -204,30 +204,41 @@ Some of the highlighted features include:
 Requirements
 ^^^^^^^^^^^^
 
+.. important::
+
+   On iOS, no video codec is enabled by default. A video build that
+   defines only ``PJMEDIA_HAS_VIDEO 1`` will compile but **no video call
+   can be negotiated**, because the SDP carries no offered codec. You
+   must enable at least one of the codec backends below — H.264 via
+   VideoToolbox or OpenH264, and/or VP8/VP9 via libvpx.
+
 libyuv
 ``````
 
-#. If you are using 2.5.5 or newer, libyuv should be built and enabled 
+#. If you are using 2.5.5 or newer, libyuv should be built and enabled
    automatically, see :pr:`1937` for more info.
 #. If you are using 2.5.1 or older, follow the instructions in :pr:`1776`.
 
 .. _videotoolbox:
 
-OpenH264 or **VideoToolbox** (if you need H264 codec, choose one of them)
-``````````````````````````````````````````````````````````````````````````
+H.264 — VideoToolbox or OpenH264
+````````````````````````````````
 
-* For OpenH264, see :ref:`openh264`
-* For **VideoToolbox** (supported since PJSIP version 2.7), define this in 
-  your ``config_site.h``:
+H.264 is the de facto SIP video codec. Pick one of:
+
+* **VideoToolbox** (Apple hardware codec, supported since PJSIP 2.7).
+  Define this in your ``config_site.h``:
 
   .. code-block:: c
 
      #define PJMEDIA_HAS_VID_TOOLBOX_CODEC 1
 
-libvpx (if you need VP8 or VP9 codec)
-`````````````````````````````````````
+* **OpenH264** (software codec from Cisco). See :ref:`openh264`.
 
-See See :ref:`libvpx`
+libvpx — VP8 / VP9
+``````````````````
+
+For VP8 or VP9, see :ref:`libvpx`.
 
 Configuring
 ^^^^^^^^^^^^
@@ -253,6 +264,11 @@ Set these in your :ref:`config_site.h`:
 
    #define PJ_CONFIG_IPHONE 			1
    #define PJMEDIA_HAS_VIDEO			1
+
+   /* Enable at least one video codec — see Requirements above.
+      VideoToolbox requires PJSIP 2.7+; on older versions enable
+      OpenH264 (PJMEDIA_HAS_OPENH264_CODEC) instead. */
+   #define PJMEDIA_HAS_VID_TOOLBOX_CODEC	1
 
    #include <pj/config_site_sample.h>
 

@@ -29,6 +29,9 @@ Working with video media
    renderer / codec / format-converter backends per platform and the
    PJMEDIA event types a video application typically subscribes to.
 
+   For sample applications that exercise video, see
+   :any:`Sample Applications with Video <vid_ug_samples>`.
+
 
 Video media is similar to audio media in many ways. The class :cpp:class:`pj::VideoMedia` is
 also derived from :cpp:class:`pj::Media` class. Its object types also consist of capture &
@@ -71,6 +74,36 @@ can start/stop the transmission to a destination by using the API
 
     In the video conference bridge, the port zero is not special like in audio, which is designated
     for the main audio device. In video, port zero can be assigned to any type of video object.
+
+
+Account video configuration
+----------------------------
+Video defaults for an account live in :cpp:class:`pj::AccountVideoConfig`,
+exposed as ``AccountConfig::videoConfig``. The most commonly-used fields:
+
+- ``autoTransmitOutgoing`` — when ``true``, the account starts sending
+  video for outgoing calls automatically. Default ``false``.
+- ``autoShowIncoming`` — when ``true``, the renderer window for incoming
+  video is shown automatically. Default ``false``.
+- ``defaultCaptureDevice`` and ``defaultRenderDevice`` — capture and
+  renderer device IDs used when starting a video call. Default to the
+  platform default capture / renderer.
+- ``windowFlags`` — bitmask of ``PJMEDIA_VID_DEV_WND_*`` flags applied to
+  newly-created renderer windows.
+
+.. code-block:: c++
+
+    AccountConfig acc_cfg;
+    // ... other configuration ...
+    acc_cfg.videoConfig.autoTransmitOutgoing = true;
+    acc_cfg.videoConfig.autoShowIncoming     = true;
+    acc_cfg.videoConfig.defaultCaptureDevice = PJMEDIA_VID_DEFAULT_CAPTURE_DEV;
+    acc_cfg.videoConfig.defaultRenderDevice  = PJMEDIA_VID_DEFAULT_RENDER_DEV;
+
+    MyAccount *acc = new MyAccount;
+    acc->create(acc_cfg);
+
+See :cpp:class:`pj::AccountVideoConfig` for the full set of fields.
 
 
 Starting camera preview
@@ -211,6 +244,51 @@ to a renderer video window once the call's video media is started.
     call media. And if there are two or more concurrent video calls sharing the same
     capture device, the device will be transmitting to three or more destinations.
     Thanks to the video conference bridge for its duplicating feature.
+
+
+Modifying video during a call
+------------------------------
+After a call is established, the application can change the active video
+stream(s) via :cpp:func:`pj::Call::vidSetStream()`. Common operations:
+
+- Stop sending video while still receiving:
+
+  .. code-block:: c++
+
+      try {
+          CallVidSetStreamParam param;
+          param.dir = PJMEDIA_DIR_DECODING;
+          call.vidSetStream(PJSUA_CALL_VID_STRM_CHANGE_DIR, param);
+      } catch(Error& err) {
+      }
+
+- Resume sending video:
+
+  .. code-block:: c++
+
+      try {
+          CallVidSetStreamParam param;
+          param.dir = PJMEDIA_DIR_ENCODING_DECODING;
+          call.vidSetStream(PJSUA_CALL_VID_STRM_CHANGE_DIR, param);
+      } catch(Error& err) {
+      }
+
+- Switch capture device (e.g. front camera ↔ rear camera on mobile):
+
+  .. code-block:: c++
+
+      try {
+          CallVidSetStreamParam param;
+          param.capDev = new_cap_dev_id;
+          call.vidSetStream(PJSUA_CALL_VID_STRM_CHANGE_CAP_DEV, param);
+      } catch(Error& err) {
+      }
+
+Other operations include ``PJSUA_CALL_VID_STRM_ADD`` and
+``PJSUA_CALL_VID_STRM_REMOVE`` to add or remove a video stream from an
+established call, and ``PJSUA_CALL_VID_STRM_SEND_KEYFRAME`` to force a
+keyframe on the next encoded frame. See :cpp:any:`pjsua_call_vid_strm_op`
+for the full list.
 
 
 Configuring a video window
