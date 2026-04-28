@@ -47,5 +47,5 @@ Using PJSIP in Windows applications
 #. Link with system specific libraries such as: wsock32.lib, ws2_32.lib, ole32.lib, 
    dsound.lib
 
-#. If you want to use video API see :any:`/specific-guides/video/users_guide`
+#. If you want to use video API see :any:`/pjsua2/using/media_video` and the deep-dive pages under :ref:`video_guide_toc`.
 

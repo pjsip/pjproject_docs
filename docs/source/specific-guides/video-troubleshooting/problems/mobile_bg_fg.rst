@@ -43,5 +43,6 @@ Recovery on returning to the foreground:
    media events; on receiving one, prompt the user to grant the
    camera back to your app.
 
-A general best-practice setup for these lifecycle events is in
-:doc:`/specific-guides/video/users_guide/recommended_setup`.
+For mid-call capture-device changes (foreground recovery), see the
+*Modifying video during a call* section of
+:any:`/pjsua2/using/media_video`.

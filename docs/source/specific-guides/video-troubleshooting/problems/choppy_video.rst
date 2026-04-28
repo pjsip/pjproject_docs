@@ -18,7 +18,7 @@ causes:
    ``enc_fmt.det.vid.avg_bps`` / ``max_bps`` and the per-stream
    rate-control settings in
    :cpp:any:`pjsua_acc_config::vid_stream_rc_cfg`. See
-   :doc:`/specific-guides/video/users_guide/codec_params`.
+   :doc:`/specific-guides/video/codec_params`.
 
 #. **CPU saturation.** Encoder/decoder cannot keep up, frames are
    dropped or arrive late at the renderer. Check

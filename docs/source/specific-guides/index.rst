@@ -120,9 +120,15 @@ Video
 
 .. toctree::
    :maxdepth: 1
-   :glob:
 
-   video/*
+   video/samples
+   video/codec_params
+   video/conference
+   video/av_sync
+   video/orientation
+   video/keyframes
+   video/best_practices
+   video/components
 
 .. _video_troubleshooting_toc:
 

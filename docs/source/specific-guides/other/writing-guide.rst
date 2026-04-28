@@ -233,7 +233,7 @@ Currenty available cross-references:
    specific-guides/network_nat/qos.rst:.. _qos:
    specific-guides/other/writing-guide.rst:.. _my_secret_target:
    specific-guides/video/components.rst:.. _guide_libyuv:
-   specific-guides/video/users_guide/conference.rst:.. _guide_vidconf:
+   specific-guides/video/conference.rst:.. _guide_vidconf:
 
 
 Creating own cross reference
