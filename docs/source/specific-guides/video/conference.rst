@@ -157,7 +157,7 @@ behaviour is implemented by inserting a custom intermediate
 from one or more upstream sources and emits a single composed
 frame for downstream sinks. In PJSUA2, derive from ``VideoMedia``,
 register the underlying port via
-:cpp:func:`pj::VideoMedia::registerMediaPort2()`, then connect
+:cpp:func:`pj::VideoMedia::registerMediaPort()`, then connect
 upstream sources into it and it into the eventual sink like any other
 ``VideoMedia``.
 
@@ -239,7 +239,7 @@ PJSUA2 exposes per-stream VideoMedia objects directly on the call:
 For a local capture preview started with
 :cpp:func:`pj::VideoPreview::start()`, the corresponding VideoMedia is
 returned by :cpp:func:`pj::VideoPreview::getVideoMedia()`. For
-arbitrary ports added via ``registerMediaPort2()``, the slot is
+arbitrary ports added via ``registerMediaPort()``, the slot is
 available as ``getPortId()`` on the wrapping VideoMedia subclass.
 
 To inspect the bridge as a whole, use
@@ -343,7 +343,7 @@ need this call.
 Asynchronous operations and completion callback
 -----------------------------------------------
 
-``startTransmit``, ``stopTransmit``, ``registerMediaPort2``,
+``startTransmit``, ``stopTransmit``, ``registerMediaPort``,
 ``unregisterMediaPort``, and the underlying
 ``pjsua_vid_conf_update_port`` all return as soon as the operation is
 *queued*. The actual work happens on a media thread.
@@ -380,7 +380,7 @@ PJSUA-LIB equivalents
 +------------------------------------------------------+--------------------------------------------------------+
 | ``VideoMedia::stopTransmit(sink)``                   | :cpp:any:`pjsua_vid_conf_disconnect()`                 |
 +------------------------------------------------------+--------------------------------------------------------+
-| :cpp:func:`pj::VideoMedia::registerMediaPort2()`     | :cpp:any:`pjsua_vid_conf_add_port()`                   |
+| :cpp:func:`pj::VideoMedia::registerMediaPort()`     | :cpp:any:`pjsua_vid_conf_add_port()`                   |
 +------------------------------------------------------+--------------------------------------------------------+
 | :cpp:func:`pj::VideoMedia::unregisterMediaPort()`    | :cpp:any:`pjsua_vid_conf_remove_port()`                |
 +------------------------------------------------------+--------------------------------------------------------+
