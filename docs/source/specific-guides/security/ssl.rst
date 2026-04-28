@@ -77,15 +77,19 @@ choice:
   precludes OpenSSL. Functionally close to OpenSSL but cipher-suite
   syntax differs and the custom-verify callback is not implemented.
 - **Apple Network framework** is the recommended Apple-side backend
-  on macOS 10.15+ and iOS 13+. It integrates with the Keychain and
-  the OS certificate store; certificate material is supplied via the
-  ``cert_lookup`` criteria rather than PEM files.
+  on macOS 10.15+ and iOS 13+. Certificate material is supplied as
+  PEM/DER via ``cert_file`` / ``cert_buf`` (and the matching
+  ``ca_list_*`` / ``privkey_*`` fields); ``cert_lookup`` is not
+  currently consumed by this backend.
 - **Apple Secure Transport** (``DARWIN``) is the legacy Apple backend.
   It is **deprecated** in macOS 10.15 and iOS 13; new code should use
-  the Network framework backend (``APPLE``) above.
+  the Network framework backend (``APPLE``) above. Like Apple NW it
+  consumes file/buffer credentials, not ``cert_lookup``.
 - **Windows SChannel** uses the OS SSPI/SChannel stack and the
-  Windows certificate store. Like the Apple Network framework, the
-  natural credential source is the OS store via ``cert_lookup``.
+  Windows certificate store. The only credential source it consumes
+  is ``cert_lookup`` — ``cert_file`` / ``cert_buf`` are silently
+  ignored, and a server with no matching store entry falls back to a
+  self-signed certificate.
 - **Mbed TLS** is a small TLS stack typical for embedded and
   resource-constrained targets. The feature set is a subset (e.g.
   TLS 1.3 support depends on the Mbed TLS version) and the custom
@@ -99,11 +103,11 @@ Capability differences worth noting:
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
 | Capability                               | OpenSSL  | GnuTLS  | Apple NW  | Apple Darwin | SChannel | Mbed TLS |
 +==========================================+==========+=========+===========+==============+==========+==========+
-| File-based PEM/DER certs                 | yes      | yes     | yes       | yes          | yes      | yes      |
+| File-based PEM/DER certs                 | yes      | yes     | yes       | yes          | —        | yes      |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
-| In-memory ``cert_buf`` / ``ca_list_buf`` | yes      | yes     | yes       | yes          | yes      | yes      |
+| In-memory ``cert_buf`` / ``ca_list_buf`` | yes      | yes     | yes       | yes          | —        | yes      |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
-| OS-store ``cert_lookup``                 | —        | —       | yes       | yes          | yes      | —        |
+| OS-store ``cert_lookup``                 | —        | —       | —         | —            | yes      | —        |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
 | Backend-object ``cert_direct``           | yes      | —       | —         | —            | —        | —        |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
@@ -297,16 +301,17 @@ mutually-exclusive fields on :cpp:any:`pjsip_tls_setting`:
   :cpp:any:`pjsip_tls_setting::ca_list_file`,
   :cpp:any:`pjsip_tls_setting::cert_file`, and
   :cpp:any:`pjsip_tls_setting::privkey_file` to PEM (or DER) paths.
-  Available on all backends.
+  Supported on every backend except SChannel.
 - **In-memory buffer** — set ``ca_list_buf``, ``cert_buf``,
   ``privkey_buf`` instead. Useful when the credential is fetched at
   runtime (e.g. from a vault) and you don't want it touching the
-  filesystem. Available on all backends.
+  filesystem. Supported on every backend except SChannel.
 - **OS certificate-store lookup** — set ``cert_lookup`` (a
   :cpp:any:`pj_ssl_cert_lookup_criteria`) to identify a credential by
   subject / SHA-1 thumbprint / etc. inside the platform's cert store.
-  This is the natural credential source on **Windows SChannel** and
-  the **Apple** backends.
+  Currently consumed only by the **Windows SChannel** backend; the
+  Apple backends ignore ``cert_lookup`` and require file or buffer
+  credentials.
 - **Backend-direct objects** — set ``cert_direct`` to inject
   pre-loaded backend objects (e.g. an OpenSSL ``X509`` plus
   ``EVP_PKEY``). **OpenSSL only**.
@@ -316,9 +321,11 @@ If the private key is encrypted, set
 :cpp:any:`pjsip_tls_setting_wipe_keys()` zero-fills the key fields when
 you no longer need them.
 
-If multiple credential fields are populated, the file-based fields
-take precedence over the in-memory buffers, which take precedence
-over ``cert_lookup``.
+On OpenSSL, where the same context can accept multiple source kinds,
+file-based fields take precedence over in-memory buffers, which take
+precedence over ``cert_direct``. On every other backend each source
+kind is consumed in isolation, so this ordering does not apply —
+populate only the source the backend actually supports.
 
 TLS protocol versions and primitives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
