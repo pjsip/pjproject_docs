@@ -1,6 +1,11 @@
 Setting Video Capture Orientation
 ==================================
 
+.. tip::
+
+   PJSUA-LIB readers — symbol equivalents are listed at the bottom of
+   this page.
+
 On mobile platforms the device rotates while a call is in progress, but
 the camera sensor's orientation does not, so transmitted video can end
 up sideways or upside-down at the peer. There are two strategies for
@@ -19,15 +24,6 @@ peer. Steps:
    rotation callbacks).
 2. Inside the callback, tell the capture device about the new
    orientation:
-
-   **PJSUA-LIB (C):**
-
-   .. code-block:: c
-
-      pjsua_vid_dev_set_setting(dev_id, PJMEDIA_VID_DEV_CAP_ORIENTATION,
-                                &new_orient, PJ_TRUE);
-
-   **PJSUA2 (C++):**
 
    .. code-block:: c++
 
@@ -56,16 +52,6 @@ default codec parameters assume landscape; if the call should start in
 portrait, configure the encoder format to portrait dimensions
 (``width < height``):
 
-**PJSUA-LIB (C):**
-
-.. code-block:: c
-
-   /* Sending 240 x 320 */
-   param.enc_fmt.det.vid.size.w = 240;
-   param.enc_fmt.det.vid.size.h = 320;
-
-**PJSUA2 (C++):**
-
 .. code-block:: c++
 
    // Sending 240 x 320
@@ -73,23 +59,8 @@ portrait, configure the encoder format to portrait dimensions
    param.encFmt.height = 320;
 
 …and tell the capture device the initial orientation **once**, after
-it is opened (e.g. by :cpp:any:`pjsua_vid_preview_start()` or implicitly
-by an outgoing/incoming video call):
-
-**PJSUA-LIB (C):**
-
-.. code-block:: c
-
-   /* On Android, portrait corresponds to PJMEDIA_ORIENT_ROTATE_270DEG */
-   current_orient = PJMEDIA_ORIENT_ROTATE_270DEG;
-
-   /* On iOS, portrait corresponds to PJMEDIA_ORIENT_ROTATE_90DEG */
-   current_orient = PJMEDIA_ORIENT_ROTATE_90DEG;
-
-   pjsua_vid_dev_set_setting(dev_id, PJMEDIA_VID_DEV_CAP_ORIENTATION,
-                             &current_orient, PJ_TRUE);
-
-**PJSUA2 (C++):**
+it is opened (e.g. by :cpp:func:`pj::VideoPreview::start()` or
+implicitly by an outgoing/incoming video call):
 
 .. code-block:: c++
 
@@ -101,7 +72,23 @@ by an outgoing/incoming video call):
                        .setCaptureOrient(dev_id, current_orient, true);
 
 After this initial setup, the application **must not** call
-``pjsua_vid_dev_set_setting()`` / ``setCaptureOrient()`` on subsequent
-orientation changes — doing so puts you back into Strategy A and forces
-the device to rotate. Instead, only update the remote peer over the
-out-of-band signaling channel.
+``setCaptureOrient()`` again on subsequent orientation changes — doing
+so puts you back into Strategy A and forces the device to rotate.
+Instead, only update the remote peer over the out-of-band signalling
+channel.
+
+
+PJSUA-LIB equivalents
+---------------------
+
++------------------------------------------------------+------------------------------------------------------+
+| PJSUA2                                               | PJSUA-LIB                                            |
++======================================================+======================================================+
+| ``Endpoint::vidDevManager().setCaptureOrient()``     | :cpp:any:`pjsua_vid_dev_set_setting()` with          |
+|                                                      | ``PJMEDIA_VID_DEV_CAP_ORIENTATION``                  |
++------------------------------------------------------+------------------------------------------------------+
+| ``VidCodecParam::encFmt.width`` / ``.height``        | ``pjmedia_vid_codec_param::enc_fmt.det.vid.size.w``  |
+|                                                      | / ``.h``                                             |
++------------------------------------------------------+------------------------------------------------------+
+| :cpp:func:`pj::VideoPreview::start()`                | :cpp:any:`pjsua_vid_preview_start()`                 |
++------------------------------------------------------+------------------------------------------------------+
