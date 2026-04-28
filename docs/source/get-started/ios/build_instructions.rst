@@ -224,7 +224,7 @@ libyuv
 H.264 — VideoToolbox or OpenH264
 ````````````````````````````````
 
-H.264 is the de-facto SIP video codec. Pick one of:
+H.264 is the de facto SIP video codec. Pick one of:
 
 * **VideoToolbox** (Apple hardware codec, supported since PJSIP 2.7).
   Define this in your ``config_site.h``:
@@ -265,7 +265,9 @@ Set these in your :ref:`config_site.h`:
    #define PJ_CONFIG_IPHONE 			1
    #define PJMEDIA_HAS_VIDEO			1
 
-   /* Enable at least one video codec — see Requirements above. */
+   /* Enable at least one video codec — see Requirements above.
+      VideoToolbox requires PJSIP 2.7+; on older versions enable
+      OpenH264 (PJMEDIA_HAS_OPENH264_CODEC) instead. */
    #define PJMEDIA_HAS_VID_TOOLBOX_CODEC	1
 
    #include <pj/config_site_sample.h>

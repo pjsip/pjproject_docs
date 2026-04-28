@@ -284,10 +284,11 @@ stream(s) via :cpp:func:`pj::Call::vidSetStream()`. Common operations:
       } catch(Error& err) {
       }
 
-Other operations include ``PJSUA_CALL_VID_STRM_ADD`` and ``REMOVE`` to add
-or remove a video stream from an established call, and
-``PJSUA_CALL_VID_STRM_SEND_KEYFRAME`` to force a keyframe on the next
-encoded frame. See :cpp:any:`pjsua_call_vid_strm_op` for the full list.
+Other operations include ``PJSUA_CALL_VID_STRM_ADD`` and
+``PJSUA_CALL_VID_STRM_REMOVE`` to add or remove a video stream from an
+established call, and ``PJSUA_CALL_VID_STRM_SEND_KEYFRAME`` to force a
+keyframe on the next encoded frame. See :cpp:any:`pjsua_call_vid_strm_op`
+for the full list.
 
 
 Configuring a video window
