@@ -3,6 +3,11 @@
 Video Conference
 =================
 
+.. tip::
+
+   PJSUA-LIB readers — symbol equivalents are listed at the bottom of
+   this page.
+
 The video conference bridge is the routing fabric that PJMEDIA uses to
 move video frames between sources (capture devices, call decoders,
 file players) and sinks (renderers, call encoders, file writers). It
@@ -10,6 +15,10 @@ plays the same role for video that the audio conference bridge plays
 for audio: every video media object is registered with the bridge as a
 *port* (identified by a slot ID), and the application connects sources
 to sinks to make video flow.
+
+In PJSUA2 each bridge port is wrapped as a :cpp:any:`pj::VideoMedia`
+that knows its slot ID and exposes ``startTransmit()`` /
+``stopTransmit()`` for connecting flows.
 
 Available since PJSIP 2.9. The original design discussion lives in
 ticket :issue:`2181`.
@@ -21,7 +30,9 @@ How the bridge works
 - Each video media object — a call's encoding stream, a call's decoding
   stream, a capture device, a renderer, an AVI player, an arbitrary
   ``pjmedia_port`` — registers as a port in the bridge and is
-  identified by a slot ID of type :cpp:any:`pjsua_conf_port_id`.
+  identified by a slot ID. In PJSUA2 the slot is encapsulated in a
+  ``VideoMedia`` instance; the raw integer ID is available via
+  :cpp:func:`pj::VideoMedia::getPortId()` if needed.
 - Connections are **unidirectional**: a source's frames are copied to
   zero or more sinks. To make video flow both ways between two
   endpoints, the application must establish two separate connections.
@@ -40,9 +51,9 @@ How the bridge works
 Bridge configuration and limits
 -------------------------------
 
-PJSUA-LIB creates a single video conference bridge during initialization
-with default settings (see :cpp:any:`pjmedia_vid_conf_setting`). The
-defaults that matter:
+PJSUA-LIB creates a single video conference bridge during
+initialization with default settings (see
+:cpp:any:`pjmedia_vid_conf_setting`). The defaults that matter:
 
 - **Frame rate**: 60 fps. The bridge runs at one rate and resamples
   port frames to it. For smooth playback, the bridge rate should be a
@@ -50,8 +61,8 @@ defaults that matter:
   ports running at 10, 15, 20, or 30 fps align cleanly; a port at e.g.
   24 fps will jitter against the 60 fps grid. If your application has
   unusual frame-rate combinations, you'd need to raise the bridge rate
-  accordingly — but PJSUA-LIB does not expose a setter for this, so
-  changing it requires either using the lower-level
+  accordingly — but neither PJSUA-LIB nor PJSUA2 exposes a setter for
+  this, so changing it requires either using the lower-level
   :cpp:any:`pjmedia_vid_conf_create()` API directly or modifying
   ``pjsua_vid.c``.
 - **Maximum slot count**: 32. This is the absolute ceiling on the
@@ -126,13 +137,13 @@ The slot order in the layout follows the order in which sources were
 connected to the sink (the ``transmitters`` array in
 :cpp:any:`pjsua_vid_conf_port_info`).
 
-**5 or more sources** — :cpp:any:`pjsua_vid_conf_connect()` does not
-enforce a 4-source limit, so additional connections succeed and the
-sources are tracked in the sink's transmitter list. However, the
-rendering layout switch only handles 1–4, so only the **first 4
-connected sources** are tiled into the sink frame. Frames from sources
-connected beyond the fourth are silently dropped at render time
-without an error — they simply don't appear in the mixed output.
+**5 or more sources** — the connect call does not enforce a 4-source
+limit, so additional connections succeed and the sources are tracked
+in the sink's transmitter list. However, the rendering layout switch
+only handles 1–4, so only the **first 4 connected sources** are tiled
+into the sink frame. Frames from sources connected beyond the fourth
+are silently dropped at render time without an error — they simply
+don't appear in the mixed output.
 
 .. _vid_conf_custom_port:
 
@@ -144,9 +155,11 @@ The bridge's built-in tile mixing covers the common
 behaviour is implemented by inserting a custom intermediate
 ``pjmedia_port`` — application code that consumes incoming frames
 from one or more upstream sources and emits a single composed
-frame for downstream sinks. Register it with
-:cpp:any:`pjsua_vid_conf_add_port()` and connect upstream sources to
-it (and it to the eventual sink) like any other bridge port.
+frame for downstream sinks. In PJSUA2, derive from ``VideoMedia``,
+register the underlying port via
+:cpp:func:`pj::VideoMedia::registerMediaPort2()`, then connect
+upstream sources into it and it into the eventual sink like any other
+``VideoMedia``.
 
 This pattern handles, among others:
 
@@ -179,15 +192,16 @@ encoders, renderers) don't need to know any of this is happening — the
 selection/composition logic stays local to the custom port. If your
 selection state changes mid-call (e.g. a different participant becomes
 the active speaker), update inside the port's ``put_frame`` /
-``get_frame`` implementation; you don't need to call
-:cpp:any:`pjsua_vid_conf_connect()` / ``disconnect()`` on every change.
+``get_frame`` implementation; you don't need to ``startTransmit()`` /
+``stopTransmit()`` on every change.
 
 
 Default wiring
 --------------
 
-When PJSUA-LIB negotiates a video stream on a call, it adds the call's
-encoder and decoder as separate ports and wires them automatically:
+When a video stream is negotiated on a call, the library adds the
+call's encoder and decoder as separate ports and wires them
+automatically:
 
 - The default capture device is connected to the call's encoding slot,
   so the camera reaches the encoder without manual setup.
@@ -207,43 +221,26 @@ The bridge becomes interesting when:
   the call's encoder slot).
 
 
-Looking up slot IDs
--------------------
+Looking up VideoMedia handles
+-----------------------------
 
-Slot IDs are obtained from the library as media objects are created:
+PJSUA2 exposes per-stream VideoMedia objects directly on the call:
 
-- For a call, the per-direction slots are exposed in
-  :cpp:any:`pjsua_call_info`. PJSUA-LIB exposes them as raw slot IDs;
-  PJSUA2 wraps them in :cpp:any:`pj::VideoMedia` objects that already
-  know how to transmit/stop:
+.. code-block:: c++
 
-  **PJSUA-LIB (C):**
+   // Per-stream VideoMedia — each wraps a bridge slot.
+   VideoMedia enc = call.getEncodingVideoMedia(med_idx);
+   VideoMedia dec = call.getDecodingVideoMedia(med_idx);
 
-  .. code-block:: c
+   // The underlying slot IDs, if you need them:
+   int enc_slot = enc.getPortId();
+   int dec_slot = dec.getPortId();
 
-     pjsua_conf_port_id enc, dec;
-
-     enc = pjsua_call_get_vid_conf_port(call_id, PJMEDIA_DIR_ENCODING);
-     dec = pjsua_call_get_vid_conf_port(call_id, PJMEDIA_DIR_DECODING);
-
-  **PJSUA2 (C++):**
-
-  .. code-block:: c++
-
-     // Per-stream VideoMedia objects (each wraps a bridge slot).
-     VideoMedia enc = call.getEncodingVideoMedia(med_idx);
-     VideoMedia dec = call.getDecodingVideoMedia(med_idx);
-
-     // The underlying slot IDs, if you need them:
-     int enc_slot = enc.getPortId();
-     int dec_slot = dec.getPortId();
-
-- For a local capture preview started with
-  :cpp:any:`pjsua_vid_preview_start()`, the slot is returned by
-  :cpp:any:`pjsua_vid_preview_get_vid_conf_port()`.
-- For arbitrary ports added via
-  :cpp:any:`pjsua_vid_conf_add_port()`, the slot is returned through
-  the ``p_id`` out-parameter.
+For a local capture preview started with
+:cpp:func:`pj::VideoPreview::start()`, the corresponding VideoMedia is
+returned by :cpp:func:`pj::VideoPreview::getVideoMedia()`. For
+arbitrary ports added via ``registerMediaPort2()``, the slot is
+available as ``getPortId()`` on the wrapping VideoMedia subclass.
 
 To inspect the bridge as a whole, use
 :cpp:any:`pjsua_vid_conf_get_active_ports()`,
@@ -256,25 +253,15 @@ debugging connection state.
 Connecting and disconnecting flows
 ----------------------------------
 
-The two primitives are:
-
-**PJSUA-LIB (C):**
-
-.. code-block:: c
-
-   pjsua_vid_conf_connect(source_slot, sink_slot, NULL);
-   pjsua_vid_conf_disconnect(source_slot, sink_slot);
-
-**PJSUA2 (C++):**
+VideoMedia exposes start / stop transmit between any two slots:
 
 .. code-block:: c++
 
-   // VideoMedia exposes startTransmit/stopTransmit between slots.
    source_vm.startTransmit(sink_vm, VideoMediaTransmitParam());
    source_vm.stopTransmit(sink_vm);
 
 Both are unidirectional and both run **asynchronously** — see
-:ref:`async-notification <vid_conf_async>` below.
+:ref:`async notification <vid_conf_async>` below.
 
 
 Three-party video conference
@@ -282,26 +269,6 @@ Three-party video conference
 
 Adding a third leg means cross-connecting two existing calls so their
 remote videos flow to each other in addition to the local participant.
-
-**PJSUA-LIB (C):**
-
-.. code-block:: c
-
-   pjsua_conf_port_id enc1, dec1, enc2, dec2;
-
-   enc1 = pjsua_call_get_vid_conf_port(call1_id, PJMEDIA_DIR_ENCODING);
-   dec1 = pjsua_call_get_vid_conf_port(call1_id, PJMEDIA_DIR_DECODING);
-   enc2 = pjsua_call_get_vid_conf_port(call2_id, PJMEDIA_DIR_ENCODING);
-   dec2 = pjsua_call_get_vid_conf_port(call2_id, PJMEDIA_DIR_DECODING);
-
-   /* Show call2's video to call1 (and to call1's local renderer if
-    * that connection is also established): */
-   pjsua_vid_conf_connect(dec2, enc1, NULL);
-
-   /* Show call1's video to call2: */
-   pjsua_vid_conf_connect(dec1, enc2, NULL);
-
-**PJSUA2 (C++):**
 
 .. code-block:: c++
 
@@ -321,15 +288,6 @@ that combines the local participant and the other remote.
 
 Tear it down by reversing the connects:
 
-**PJSUA-LIB (C):**
-
-.. code-block:: c
-
-   pjsua_vid_conf_disconnect(dec2, enc1);
-   pjsua_vid_conf_disconnect(dec1, enc2);
-
-**PJSUA2 (C++):**
-
 .. code-block:: c++
 
    dec2.stopTransmit(enc1);
@@ -341,39 +299,36 @@ Adding a custom port
 
 Any ``pjmedia_port`` (for example, the AVI player from
 :cpp:any:`pjmedia_avi_player_create_streams()`) can be registered with
-the bridge so it participates in the routing.
-
-**PJSUA-LIB (C):**
-
-.. code-block:: c
-
-   pjsua_conf_port_id avi_slot;
-
-   pjsua_vid_conf_add_port(pool, avi_port, NULL, &avi_slot);
-
-   /* Send the AVI video into call1 and also into a local renderer: */
-   pjsua_vid_conf_connect(avi_slot, enc1, NULL);
-   pjsua_vid_conf_connect(avi_slot, my_renderer_slot, NULL);
-
-**PJSUA2 (C++):**
+the bridge so it participates in the routing. PJSUA2's ``VideoMedia``
+exposes the registration helpers as protected, so the application
+derives a wrapper class that calls them and takes ownership of the
+underlying port:
 
 .. code-block:: c++
 
-   // Derive from VideoMedia and register the underlying pjmedia_port
-   // from the AVI player (or any custom port):
-   class MyVideoSource : public VideoMedia {};
+   class CustomVideoPort : public VideoMedia
+   {
+   public:
+       void init(pjmedia_port *port, pj_pool_t *pool) {
+           // Calls into the protected VideoMedia helper.
+           registerMediaPort(port, pool);
+       }
+       ~CustomVideoPort() override {
+           if (id != PJSUA_INVALID_ID)
+               unregisterMediaPort();
+       }
+   };
 
-   MyVideoSource avi_src;
-   avi_src.registerMediaPort2(avi_port, pool);
+   CustomVideoPort avi_src;
+   avi_src.init(avi_port, pool);
 
    // Forward into call1's encoder and a local renderer:
    avi_src.startTransmit(call1.getEncodingVideoMedia(0),
                          VideoMediaTransmitParam());
    avi_src.startTransmit(my_renderer_vm, VideoMediaTransmitParam());
 
-When done, call :cpp:any:`pjsua_vid_conf_remove_port()` (or
-:cpp:func:`pj::Media::unregisterMediaPort()` in PJSUA2) to
-unregister the port.
+The destructor calls ``unregisterMediaPort()`` so the port is removed
+from the bridge when the wrapper goes out of scope.
 
 If the port's media format changes mid-session (for example, a video
 decoder learns new dimensions from incoming RTP), call
@@ -388,21 +343,46 @@ need this call.
 Asynchronous operations and completion callback
 -----------------------------------------------
 
-``pjsua_vid_conf_add_port``, ``remove_port``, ``connect``,
-``disconnect``, and ``update_port`` all return as soon as the operation
-is *queued*. The actual work happens on a media thread.
+``startTransmit``, ``stopTransmit``, ``registerMediaPort2``,
+``unregisterMediaPort``, and the underlying
+``pjsua_vid_conf_update_port`` all return as soon as the operation is
+*queued*. The actual work happens on a media thread.
 
-Apps that need to know when an operation has fully taken effect
-should implement the bridge op-completion callback —
-:cpp:any:`pjsua_callback::on_vid_conf_op_completed` in PJSUA-LIB or
-:cpp:func:`pj::Endpoint::onVideoMediaOpCompleted()` in PJSUA2. The
+Apps that need to know when an operation has fully taken effect should
+implement :cpp:func:`pj::Endpoint::onVideoMediaOpCompleted()`. The
 callback receives info identifying which operation completed and the
-operation's result code (``PJ_SUCCESS`` on success, or an error code
-if the operation failed). The callback fires from a media thread, so
-keep the handler short — defer any long or blocking work to your own
-thread.
+operation's result code (``PJ_SUCCESS`` on success, or an error code if
+the operation failed). The callback fires from a media thread, so keep
+the handler short — defer any long or blocking work to your own thread.
 
 A common pattern: kick off a connect, mark the call/UI state as
 "pending", and let the completion callback transition it to "active".
-Don't assume the connection is ready right after
-``pjsua_vid_conf_connect()`` returns.
+Don't assume the connection is ready right after ``startTransmit()``
+returns.
+
+
+PJSUA-LIB equivalents
+---------------------
+
++------------------------------------------------------+--------------------------------------------------------+
+| PJSUA2                                               | PJSUA-LIB                                              |
++======================================================+========================================================+
+| ``VideoMedia`` (slot wrapper)                        | :cpp:any:`pjsua_conf_port_id` (raw slot ID)            |
++------------------------------------------------------+--------------------------------------------------------+
+| :cpp:func:`pj::VideoMedia::getPortId()`              | (the slot ID is the value itself)                      |
++------------------------------------------------------+--------------------------------------------------------+
+| :cpp:func:`pj::Call::getEncodingVideoMedia()` /      | :cpp:any:`pjsua_call_get_vid_conf_port()` with         |
+| :cpp:func:`pj::Call::getDecodingVideoMedia()`        | ``PJMEDIA_DIR_ENCODING`` / ``PJMEDIA_DIR_DECODING``    |
++------------------------------------------------------+--------------------------------------------------------+
+| :cpp:func:`pj::VideoPreview::getVideoMedia()`        | :cpp:any:`pjsua_vid_preview_get_vid_conf_port()`       |
++------------------------------------------------------+--------------------------------------------------------+
+| ``VideoMedia::startTransmit(sink, param)``           | :cpp:any:`pjsua_vid_conf_connect()`                    |
++------------------------------------------------------+--------------------------------------------------------+
+| ``VideoMedia::stopTransmit(sink)``                   | :cpp:any:`pjsua_vid_conf_disconnect()`                 |
++------------------------------------------------------+--------------------------------------------------------+
+| :cpp:func:`pj::VideoMedia::registerMediaPort2()`     | :cpp:any:`pjsua_vid_conf_add_port()`                   |
++------------------------------------------------------+--------------------------------------------------------+
+| :cpp:func:`pj::VideoMedia::unregisterMediaPort()`    | :cpp:any:`pjsua_vid_conf_remove_port()`                |
++------------------------------------------------------+--------------------------------------------------------+
+| :cpp:func:`pj::Endpoint::onVideoMediaOpCompleted()`  | :cpp:any:`pjsua_callback::on_vid_conf_op_completed`    |
++------------------------------------------------------+--------------------------------------------------------+

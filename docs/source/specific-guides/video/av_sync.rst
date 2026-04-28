@@ -3,6 +3,13 @@
 Audio/Video Synchronization
 ============================
 
+.. tip::
+
+   PJSUA-LIB readers — symbol equivalents are listed at the bottom of
+   this page. The page is mostly PJMEDIA-level content
+   (:cpp:any:`pjmedia_av_sync`), which is the same regardless of which
+   higher-level API you use.
+
 When a session carries audio and video together, the two streams
 travel and decode through independent pipelines (jitter buffer,
 decoder, renderer, file demuxer, …) and accumulate independent
@@ -51,22 +58,9 @@ Opting out per call
 
 To disable inter-media synchronization on a specific call, set the
 :cpp:any:`PJSUA_CALL_NO_MEDIA_SYNC` flag (value ``256`` in
-:cpp:any:`pjsua_call_flag`) in :cpp:any:`pjsua_call_setting::flag`.
-PJSUA-LIB will skip synchronizer creation, or destroy an existing one
-if the flag is set on a re-INVITE/UPDATE.
-
-**PJSUA-LIB (C):**
-
-.. code-block:: c
-
-   pjsua_call_setting opt;
-
-   pjsua_call_setting_default(&opt);
-   opt.flag |= PJSUA_CALL_NO_MEDIA_SYNC;
-
-   pjsua_call_make_call(acc_id, &dst, &opt, NULL, NULL, &call_id);
-
-**PJSUA2 (C++):**
+:cpp:any:`pjsua_call_flag`) in ``CallSetting::flag``. PJSUA-LIB will
+skip synchronizer creation, or destroy an existing one if the flag is
+set on a re-INVITE/UPDATE.
 
 .. code-block:: c++
 
@@ -176,3 +170,19 @@ the synchronizer themselves. The lifecycle:
 :cpp:any:`pjmedia_av_sync_reset()` clears the running per-media state
 without removing the registered media — useful on a re-INVITE/UPDATE
 that significantly changes the topology, or on a file rewind.
+
+
+PJSUA-LIB equivalents
+---------------------
+
+Most of this page is PJMEDIA-level (``pjmedia_av_sync_*``) and applies
+to both APIs unchanged. The only PJSUA2-specific symbols above are:
+
++------------------------------------------------------+------------------------------------------------------+
+| PJSUA2                                               | PJSUA-LIB                                            |
++======================================================+======================================================+
+| ``CallOpParam::opt`` (``CallSetting``) — ``.flag``   | :cpp:any:`pjsua_call_setting::flag` initialised via  |
+|                                                      | :cpp:any:`pjsua_call_setting_default()`              |
++------------------------------------------------------+------------------------------------------------------+
+| :cpp:func:`pj::Call::makeCall()`                     | :cpp:any:`pjsua_call_make_call()`                    |
++------------------------------------------------------+------------------------------------------------------+
