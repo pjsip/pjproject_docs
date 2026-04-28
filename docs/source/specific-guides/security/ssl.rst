@@ -105,7 +105,7 @@ Capability differences worth noting:
 +==========================================+==========+=========+===========+==============+==========+==========+
 | File-based PEM/DER certs                 | yes      | yes     | yes       | yes          | —        | yes      |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
-| In-memory ``cert_buf`` / ``ca_list_buf`` | yes      | yes     | yes       | yes          | —        | yes      |
+| In-memory ``cert_buf`` / ``ca_buf``      | yes      | yes     | yes       | yes          | —        | yes      |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
 | OS-store ``cert_lookup``                 | —        | —       | —         | —            | yes      | —        |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
@@ -301,11 +301,13 @@ mutually-exclusive fields on :cpp:any:`pjsip_tls_setting`:
   :cpp:any:`pjsip_tls_setting::ca_list_file`,
   :cpp:any:`pjsip_tls_setting::cert_file`, and
   :cpp:any:`pjsip_tls_setting::privkey_file` to PEM (or DER) paths.
+  As an alternative to ``ca_list_file``, the directory variant
+  :cpp:any:`pjsip_tls_setting::ca_list_path` accepts a directory of
+  CA files. Supported on every backend except SChannel.
+- **In-memory buffer** — set ``ca_buf``, ``cert_buf``, ``privkey_buf``
+  instead. Useful when the credential is fetched at runtime (e.g.
+  from a vault) and you don't want it touching the filesystem.
   Supported on every backend except SChannel.
-- **In-memory buffer** — set ``ca_list_buf``, ``cert_buf``,
-  ``privkey_buf`` instead. Useful when the credential is fetched at
-  runtime (e.g. from a vault) and you don't want it touching the
-  filesystem. Supported on every backend except SChannel.
 - **OS certificate-store lookup** — set ``cert_lookup`` (a
   :cpp:any:`pj_ssl_cert_lookup_criteria`) to identify a credential by
   subject / SHA-1 thumbprint / etc. inside the platform's cert store.
@@ -321,11 +323,12 @@ If the private key is encrypted, set
 :cpp:any:`pjsip_tls_setting_wipe_keys()` zero-fills the key fields when
 you no longer need them.
 
-On OpenSSL, where the same context can accept multiple source kinds,
-file-based fields take precedence over in-memory buffers, which take
-precedence over ``cert_direct``. On every other backend each source
-kind is consumed in isolation, so this ordering does not apply —
-populate only the source the backend actually supports.
+Populate exactly one source kind. The pjsip TLS transport's behavior
+when multiple sources are populated on the same ``pjsip_tls_setting``
+is path-dependent — listener creation and
+:cpp:any:`pjsip_tls_transport_restart2()` walk the source fields in
+different orders, so the resulting credential depends on which path
+loaded it last. Set only the source that matches the chosen backend.
 
 TLS protocol versions and primitives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -341,7 +344,9 @@ TLS protocol versions and primitives
   enable multiple TLS versions (e.g. ``PJ_SSL_SOCK_PROTO_TLS1_2 |
   PJ_SSL_SOCK_PROTO_TLS1_3``). Prefer this over ``method`` when you
   need explicit version selection — for example, to force TLS 1.3
-  only or to drop TLS 1.0/1.1.
+  only or to drop TLS 1.0/1.1. The default
+  (``PJSIP_SSL_DEFAULT_PROTO``) is ``TLS1 | TLS1_1 | TLS1_2`` — TLS
+  1.3 is **not** enabled by default and must be added explicitly.
 - :cpp:any:`pjsip_tls_setting::ciphers` and ``ciphers_num`` — array of
   allowed :cpp:any:`pj_ssl_cipher` IDs. Empty (default) means "use the
   backend's default cipher list". Enumerate what's actually available
@@ -352,23 +357,25 @@ TLS protocol versions and primitives
 - :cpp:any:`pjsip_tls_setting::sigalgs` — colon-separated string of
   signature algorithms in the form
   ``"<DIGEST>+<ALGORITHM>:<DIGEST>+<ALGORITHM>"``, e.g.
-  ``"SHA256+RSA:SHA256+ECDSA"``.
+  ``"SHA256+RSA:SHA256+ECDSA"``. **OpenSSL only** — other backends do
+  not consume this field.
 
 Cipher and curve identifiers map to backend-specific names internally
-(e.g. ``"SSL_RSA_WITH_AES_256_CBC_SHA"`` in OpenSSL vs the GnuTLS
-priority-string syntax). The
-:cpp:any:`pj_ssl_cipher_get_availables()` enumerator returns whatever
-the linked backend supports — so the same call gives different
-results on an OpenSSL build vs a Mbed TLS build.
+(e.g. ``"AES256-SHA"`` in OpenSSL vs the GnuTLS priority-string
+syntax). The :cpp:any:`pj_ssl_cipher_get_availables()` enumerator
+returns whatever the linked backend supports — so the same call gives
+different results on an OpenSSL build vs a Mbed TLS build.
 
 Hostname matching and SNI
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When the local end acts as a TLS client, the peer's certificate is
-matched against the **server name** in the URI by default. PJSIP
-sends SNI based on the same name. If you need to override (e.g.
-connecting to an SBC by IP but expecting a specific cert subject /
-SAN), set :cpp:any:`pjsip_tls_setting::server_name`.
+matched against the **host part of the SIP URI** that triggered the
+connection, and PJSIP sends SNI based on the same name. There is no
+per-transport override field on :cpp:any:`pjsip_tls_setting`; to
+reach an SBC at a different host than the URI's host (e.g. dial by
+IP but expect a specific cert subject / SAN), route the request
+through a SIP URI whose host matches the certificate.
 
 
 Operating TLS at runtime
@@ -517,7 +524,7 @@ Mutual TLS
 Mutual TLS combines verification on both sides:
 
 - *Client side*: ``verify_server = PJ_TRUE``, plus a CA list
-  (``ca_list_file`` or ``ca_list_buf``) that trusts the server's
+  (``ca_list_file`` or ``ca_buf``) that trusts the server's
   signing chain.
 - *Server side*: ``verify_client = PJ_TRUE``, ``require_client_cert =
   PJ_TRUE``, plus a CA list that trusts the client certificate's
@@ -562,7 +569,7 @@ the lower PJLIB SSL-socket level there is
 ``pj_ssl_sock_t``, so the only place this can be called from is code
 that works directly against PJLIB sockets.
 
-Even at PJLIB level, two backends fall short of doing a real
+Even at PJLIB level, several backends fall short of doing a real
 re-handshake:
 
 - The **Apple Network framework** backend (the modern macOS 10.15+ /
@@ -570,6 +577,10 @@ re-handshake:
   Network framework API doesn't expose a way to trigger renegotiation
   manually. The legacy Apple **Secure Transport** (``DARWIN``)
   backend, by contrast, does implement it via ``SSLReHandshake()``.
+- **GnuTLS** returns ``PJ_ENOTSUP`` when the local side is a TLS
+  *client* — ``gnutls_rehandshake()`` only sends the server's
+  HelloRequest, so client-initiated rekey isn't supported. Server
+  side works.
 - **Mbed TLS** currently returns ``PJ_SUCCESS`` but the call is a
   silent no-op — no re-handshake is actually triggered, so the
   function appears to succeed while the connection's keys are not
@@ -675,8 +686,9 @@ Troubleshooting
   causes: clock skew, missing intermediate certificates, wrong CA in
   ``ca_list_file``.
 - **"name mismatch"** — The server's certificate ``CN`` / SAN doesn't
-  match the URI host. Either fix the certificate or set
-  :cpp:any:`pjsip_tls_setting::server_name` to override the default.
+  match the SIP URI host. Either fix the certificate, or route the
+  request through a URI whose host matches the cert (there is no
+  per-transport override on :cpp:any:`pjsip_tls_setting`).
 - **Cipher / signature-algorithm mismatch** — The two ends share no
   common cipher or sigalg. Enumerate what your build offers with
   :cpp:any:`pj_ssl_cipher_get_availables()` /
