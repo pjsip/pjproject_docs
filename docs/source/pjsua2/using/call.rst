@@ -155,10 +155,12 @@ flag on :cpp:any:`pj::CallSetting::flag` and populate
 :cpp:any:`pj::CallSetting::mediaDir` with the per-stream direction.
 
 The direction is honoured wherever ``CallSetting`` is accepted —
-``Call::makeCall()``, ``Call::answer()``, ``Call::reinvite()``,
-``Call::update()``, and the ``onCallRxOffer()`` / ``onCallRxReinvite()``
-callbacks. It then persists for subsequent offers and answers on
-the same call. Note that the direction can only be **narrowed**
+:cpp:func:`pj::Call::makeCall()`, :cpp:func:`pj::Call::answer()`,
+:cpp:func:`pj::Call::reinvite()`, :cpp:func:`pj::Call::update()`, and
+the :cpp:func:`pj::Call::onCallRxOffer()` /
+:cpp:func:`pj::Call::onCallRxReinvite()` callbacks. It then persists for
+subsequent offers and answers on the same call. Note that the direction
+can only be **narrowed**
 once set: a stream that was set to ``PJMEDIA_DIR_ENCODING`` can
 become inactive on a later re-INVITE but will not flip back to
 ``sendrecv`` from the local side.
