@@ -141,9 +141,115 @@ Below is a sample code to connect the call to the sound device when the media is
         }
     }
 
-When the audio media becomes inactive (for example when the call is put on hold), there is no need to 
-stop the call's audio media transmission since they will be removed automatically from the conference 
+When the audio media becomes inactive (for example when the call is put on hold), there is no need to
+stop the call's audio media transmission since they will be removed automatically from the conference
 bridge, and this will automatically remove all connections to/from the call.
+
+
+Setting media direction
+------------------------
+By default each media stream is negotiated as ``sendrecv``. To
+configure a different direction (sendonly, recvonly, or inactive)
+for one or more streams in a call, set the ``PJSUA_CALL_SET_MEDIA_DIR``
+flag on :cpp:any:`pj::CallSetting::flag` and populate
+:cpp:any:`pj::CallSetting::mediaDir` with the per-stream direction.
+
+The direction is honoured wherever ``CallSetting`` is accepted —
+:cpp:func:`pj::Call::makeCall()`, :cpp:func:`pj::Call::answer()`,
+:cpp:func:`pj::Call::reinvite()`, :cpp:func:`pj::Call::update()`, and
+the :cpp:func:`pj::Call::onCallRxOffer()` /
+:cpp:func:`pj::Call::onCallRxReinvite()` callbacks. It then persists for
+subsequent offers and answers on the same call. Note that the direction
+can only be **narrowed**
+once set: a stream that was set to ``PJMEDIA_DIR_ENCODING`` can
+become inactive on a later re-INVITE but will not flip back to
+``sendrecv`` from the local side.
+
+The index of each ``mediaDir`` entry corresponds to the provisional
+media slot in :cpp:any:`pj::CallInfo::provMedia`. For offers that
+add new media (initial offer, or a re-INVITE that adds streams),
+the index orders all new **audio** media first, then **video**.
+So a new call with two audio streams and one video stream uses
+``mediaDir[0]`` and ``mediaDir[1]`` for the audios and ``mediaDir[2]``
+for the video.
+
+**Example — make an outgoing call as receive-only:**
+
+.. code-block:: c++
+
+    CallOpParam prm(true);
+    prm.opt.flag |= PJSUA_CALL_SET_MEDIA_DIR;
+    prm.opt.mediaDir.push_back(PJMEDIA_DIR_DECODING);  // audio: recvonly
+
+    try {
+        call->makeCall(dest_uri, prm);
+    } catch(Error& err) {
+    }
+
+**Example — answer with a one-way (send-only) audio path:**
+
+.. code-block:: c++
+
+    void MyAccount::onIncomingCall(OnIncomingCallParam &iprm) override
+    {
+        Call *call = new MyCall(*this, iprm.callId);
+        CallOpParam prm;
+        prm.statusCode = PJSIP_SC_OK;
+        prm.opt.flag |= PJSUA_CALL_SET_MEDIA_DIR;
+        prm.opt.mediaDir.push_back(PJMEDIA_DIR_ENCODING);
+        call->answer(prm);
+    }
+
+**Example — narrow an existing stream via re-INVITE** (e.g. mute
+the outgoing audio mid-call):
+
+.. code-block:: c++
+
+    CallOpParam prm(true);
+    prm.opt.flag |= PJSUA_CALL_SET_MEDIA_DIR;
+    prm.opt.mediaDir.push_back(PJMEDIA_DIR_DECODING);  // recvonly
+
+    try {
+        call->reinvite(prm);
+    } catch(Error& err) {
+    }
+
+For per-video-stream direction changes that don't go through a
+re-INVITE — e.g. flipping a video stream's direction locally
+without renegotiation — see :cpp:func:`pj::Call::vidSetStream` with
+the ``PJSUA_CALL_VID_STRM_CHANGE_DIR`` operation in
+:any:`/pjsua2/using/media_video`. Putting a call on hold is the
+more common case and is handled by :cpp:func:`pj::Call::setHold` /
+:cpp:func:`pj::Call::reinvite` directly; you don't need to drive
+``mediaDir`` manually for hold.
+
+.. note::
+
+   *Inactive* and *disabled* are different SDP concepts.
+   **Inactive** (``PJMEDIA_DIR_NONE`` here, ``a=inactive`` on the
+   wire) keeps the stream negotiated — real port, codec list,
+   RTCP still flowing (Sender / Receiver Reports keep updating).
+   RTP is the part that's suppressed by ``a=inactive``; if
+   PJMEDIA's media keep-alive is enabled
+   (``PJMEDIA_STREAM_ENABLE_KA``, off by default) the stream still
+   emits keep-alive packets every few seconds — those are also
+   RTP packets (empty RTP frame in the default ``KA_EMPTY_RTP``
+   mode, or a user-defined payload in ``KA_USER`` mode). This is
+   what you set via ``mediaDir``.
+   **Disabled** is a stream rejected with ``port=0`` on the m-line
+   per :rfc:`3264`: no resources allocated, no codec negotiation, no
+   RTP, no RTCP, no keep-alive — the m-line is preserved only for
+   index alignment with the original offer. ``mediaDir`` does not
+   express disabled — for that, lower ``audioCount`` /
+   ``videoCount`` / ``textCount`` to drop the streams you don't
+   want, optionally combined with the
+   ``PJSUA_CALL_INCLUDE_DISABLED_MEDIA`` flag to keep the
+   placeholder m-line in the offer.
+
+PJSUA-LIB applications use the same flag plus the
+:cpp:any:`pjsua_call_setting::media_dir` array
+(``PJMEDIA_MAX_SDP_MEDIA`` entries instead of a vector).
+
 
 Call Operations
 -------------------
