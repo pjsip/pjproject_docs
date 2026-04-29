@@ -216,12 +216,12 @@ the outgoing audio mid-call):
 
 For per-video-stream direction changes that don't go through a
 re-INVITE — e.g. flipping a video stream's direction locally
-without renegotiation — see ``Call::vidSetStream()`` with the
-``PJSUA_CALL_VID_STRM_CHANGE_DIR`` operation in
+without renegotiation — see :cpp:func:`pj::Call::vidSetStream` with
+the ``PJSUA_CALL_VID_STRM_CHANGE_DIR`` operation in
 :any:`/pjsua2/using/media_video`. Putting a call on hold is the
-more common case and is handled by ``Call::setHold()`` /
-``Call::reinvite()`` directly; you don't need to drive ``mediaDir``
-manually for hold.
+more common case and is handled by :cpp:func:`pj::Call::setHold` /
+:cpp:func:`pj::Call::reinvite` directly; you don't need to drive
+``mediaDir`` manually for hold.
 
 .. note::
 
