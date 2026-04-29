@@ -237,7 +237,7 @@ more common case and is handled by :cpp:func:`pj::Call::setHold` /
    mode, or a user-defined payload in ``KA_USER`` mode). This is
    what you set via ``mediaDir``.
    **Disabled** is a stream rejected with ``port=0`` on the m-line
-   per RFC 3264: no resources allocated, no codec negotiation, no
+   per :rfc:`3264`: no resources allocated, no codec negotiation, no
    RTP, no RTCP, no keep-alive — the m-line is preserved only for
    index alignment with the original offer. ``mediaDir`` does not
    express disabled — for that, lower ``audioCount`` /
