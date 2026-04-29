@@ -231,11 +231,17 @@ body customization on the same channel — without a module:
        it gets folded into the multipart envelope as one of the parts.
 
 Which APIs accept the option varies per field. For example
-``targetUri`` is honoured by :cpp:func:`pj::Call::makeCall`,
-:cpp:func:`pj::Call::reinvite`, :cpp:func:`pj::Call::update`,
-:cpp:func:`pj::Call::setHold`, and :cpp:func:`pj::Buddy::sendInstantMessage`;
-``localUri`` and ``contactUri`` are call-and-IM specific. Check the
-field documentation in :file:`pjsua.h` for the exact list per field.
+``targetUri`` is honoured by :cpp:func:`pj::Call::makeCall` and
+:cpp:func:`pj::Buddy::sendInstantMessage` directly. It is *also*
+read by :cpp:func:`pj::Call::reinvite`, :cpp:func:`pj::Call::update`,
+and :cpp:func:`pj::Call::setHold`, but only when the
+``PJSUA_CALL_UPDATE_TARGET`` flag is set on
+:cpp:any:`pj::CallSetting::flag` for that operation —
+``CallSetting::flag`` defaults to 0, so without the explicit flag
+the override is silently ignored on these three. ``localUri`` and
+``contactUri`` are call-and-IM specific and only honoured at the
+initial ``makeCall``. Check the field documentation in
+:file:`pjsua.h` for the exact list per field.
 
 **Example — outgoing INVITE whose Request-URI points to a specific
 gateway while the To header still names the peer:**
@@ -495,23 +501,37 @@ Sample implementations
 
 Working modules in the source tree, ordered by complexity:
 
-- :sourcedir:`pjsip-apps/src/samples/sipecho.c` — minimal incoming-
-  request handler; demonstrates the bare ``on_rx_request`` pattern at
-  ``PJSIP_MOD_PRIORITY_APPLICATION``.
-- :sourcedir:`pjsip-apps/src/samples/sipstateless.c` — bidirectional
-  message logger plus a stateless UA. Shows the both-directions
-  pattern (``on_rx_*`` + ``on_tx_*``) at the canonical
-  ``TRANSPORT_LAYER - 1`` logger priority.
+- :sourcedir:`pjsip-apps/src/samples/sipecho.c` — minimal echo
+  responder; demonstrates the bare ``on_rx_request`` pattern at
+  ``PJSIP_MOD_PRIORITY_APPLICATION``. The same file also defines a
+  separate bidirectional message-logger module
+  (``mod-msg-log``) at ``TRANSPORT_LAYER - 1`` hooking all four
+  ``rx``/``tx`` callbacks — a clean example of the both-directions
+  logger pattern.
+- :sourcedir:`pjsip-apps/src/samples/sipstateless.c` — minimal
+  stateless responder; replies to every incoming request with a
+  configurable status code (default ``501 Not Implemented``).
+  ``on_rx_request`` only, at ``APPLICATION`` priority.
 - :sourcedir:`pjsip/src/pjsua-lib/pjsua_core.c` — PJSUA-LIB's own
   built-in ``pjsua_msg_logger`` module (``mod-pjsua-log``). Same
-  priority and shape as the ``sipstateless.c`` logger; this is the
+  priority and shape as the ``sipecho.c`` logger; this is the
   module behind the ``Request msg INVITE/cseq/...`` traces every
   PJSUA-based application emits, and a useful real-world reference.
-- :sourcedir:`pjsip-apps/src/samples/proxy.h` — drop-in proxy module
-  with full request / response / transaction-state handling,
-  including how to consume requests and forward them.
-- :sourcedir:`pjsip-apps/src/samples/invtester.c` — transaction-state
-  observer using ``on_tsx_state`` for INVITE flow tracking.
+- :sourcedir:`pjsip-apps/src/samples/stateless_proxy.c` — stateless
+  proxy module at ``UA_PROXY_LAYER`` (``on_rx_request`` only,
+  forwards via ``pjsip_endpt_send_request_stateless``).
+- :sourcedir:`pjsip-apps/src/samples/stateful_proxy.c` — stateful
+  proxy module at ``UA_PROXY_LAYER`` with both
+  ``on_rx_request`` and ``on_rx_response``, plus a separate
+  transaction-state observer (``mod_tu``) at ``APPLICATION`` for
+  forwarding via UAC transactions.
+- :sourcedir:`pjsip-apps/src/samples/proxy.h` — shared helpers used
+  by the two proxy samples, including the bidirectional
+  ``mod_msg_logger`` module at ``TRANSPORT_LAYER - 1`` (same shape
+  as ``sipecho.c``'s logger).
+- :sourcedir:`pjsip-apps/src/samples/invtester.c` — transaction-
+  state observer at ``APPLICATION`` priority using ``on_tsx_state``
+  for INVITE flow tracking (no rx/tx hooks).
 - `mod_contact_tp_compat.c <../../_static/mod_contact_tp_compat.c>`__
   (linked from this guide; see the worked example below) — a header-
   patching module sitting at ``TSX_LAYER + 1`` so the patch lands
