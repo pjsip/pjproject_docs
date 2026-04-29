@@ -35,6 +35,11 @@ If the underlying media-flow model (ports, ``get_frame()`` /
 unfamiliar, read :doc:`/specific-guides/media/audio_flow` first —
 the rest of this page assumes it.
 
+The terms **clock thread** and **get-frame thread** are used
+interchangeably below. Both refer to the upstream thread that pumps
+the bridge by calling ``get_frame()`` on it — typically the master
+port (slot 0), e.g. the sound device port driving the bridge.
+
 For the lower-latency, encoded-frame, no-mixing alternative see
 :doc:`switchboard`. For the video equivalent see
 :doc:`/specific-guides/video/conference`.
@@ -100,30 +105,88 @@ Switchboard wins over parallel if both inputs happen to be defined.
 .. _enable_parallel_conf_bridge:
 
 For the **parallel** backend, the recommended pattern is to set
-``PJMEDIA_CONF_BACKEND`` *explicitly* alongside ``PJMEDIA_CONF_THREADS``,
-so the intent is visible at the top of ``config_site.h`` and doesn't
-depend on the auto-selection precedence:
+``PJMEDIA_CONF_BACKEND`` *explicitly* alongside ``PJMEDIA_CONF_THREADS``
+in ``config_site.h``, so the intent is visible at the top of the
+file and doesn't depend on the auto-selection precedence:
 
 .. code-block:: c
 
    #define PJMEDIA_CONF_BACKEND   PJMEDIA_CONF_PARALLEL_BRIDGE_BACKEND
    #define PJMEDIA_CONF_THREADS   4
 
+The *backend* choice is compile-time only, but the *thread count*
+can also be overridden at runtime — at any API level (PJSUA2,
+PJSUA-LIB, or PJMEDIA). See *Worker threads* below for the
+field names.
+
 
 Worker threads (parallel backend)
 ---------------------------------
 
-The parallel backend's thread count is set at compile time via
-:c:macro:`PJMEDIA_CONF_THREADS` — the **total** number of conference
-threads including the get-frame thread. At runtime this maps to
-``pjmedia_conf_param::worker_threads`` (= ``PJMEDIA_CONF_THREADS - 1``).
-Default ``1`` is the serial bridge; ``2`` or more enables
-parallelism. Available since PJSIP 2.16 (:pr:`4241`).
+The parallel backend's thread count is the **total** number of
+conference threads including the get-frame thread, set in two places:
+
+- **Compile time** — :c:macro:`PJMEDIA_CONF_THREADS` in
+  ``config_site.h`` is the default value baked into the binary.
+- **Runtime** — three equivalent fields, one per API level. Each
+  forwards into the next, and each defaults to the compile-time
+  ``PJMEDIA_CONF_THREADS`` value if not set:
+
+  - PJSUA2 — :cpp:any:`pj::MediaConfig::confThreads` inside
+    :cpp:any:`pj::EpConfig::medConfig`.
+  - PJSUA-LIB — :cpp:any:`pjsua_media_config::conf_threads` in the
+    ``pjsua_media_config`` passed to :cpp:any:`pjsua_init`.
+  - PJMEDIA — :cpp:any:`pjmedia_conf_param::worker_threads` passed
+    to :cpp:any:`pjmedia_conf_create2()`. Apps that drive PJMEDIA
+    directly (no PJSUA-LIB / PJSUA2) use this. Note this field is
+    *worker* threads, i.e. ``conf_threads - 1`` (excludes the
+    get-frame thread).
+
+  The runtime field is only honoured when the parallel backend has
+  been compiled in
+  (``PJMEDIA_CONF_BACKEND == PJMEDIA_CONF_PARALLEL_BRIDGE_BACKEND``)
+  — backend choice itself remains compile-time.
+
+Note that the *serial backend* is selected only when
+``PJMEDIA_CONF_THREADS`` is **undefined** at compile time; defining
+it (even as ``1``) selects the *parallel* backend per the
+auto-selection logic above — ``1`` then means "parallel backend
+with no extra workers" rather than the serial backend. Available
+since PJSIP 2.16 (:pr:`4241`).
 
 Two simple rules: **don't exceed the host's physical core count**
 (mixing is compute-bound; oversubscribing cores burns context
 switches), and **don't count hyper-threads as full cores** (the
 realistic uplift is smaller than the logical-thread count suggests).
+
+**Thread priority asymmetry.** Only the get-frame thread *attempts*
+to run at elevated priority — ``pjmedia_clock`` calls
+``pj_thread_set_prio`` to the OS maximum, and sound-device threads
+typically get OS-level audio priority. The parallel-backend pool
+workers, by contrast, are created with default priority and no
+priority bump.
+
+The bump itself can silently fail. On Linux, raising thread
+priority beyond default requires ``CAP_SYS_NICE`` (effectively root
+or a matching rlimit configuration); without it,
+``pj_thread_set_prio`` returns an error that PJMEDIA logs at debug
+level but otherwise ignores — the clock thread keeps running at
+default priority. Comparable restrictions apply on other OSes.
+
+The bump can be disabled at the PJMEDIA level via the
+``PJMEDIA_CLOCK_NO_HIGHEST_PRIO`` flag on
+:cpp:any:`pjmedia_clock_create2()`, but **PJSUA-LIB / PJSUA2 do not
+expose this flag** for the bridge's clock — both the real
+``pjmedia_snd_port`` and the null-sound-device master port set up
+their internal clock with ``options = 0``. Disabling it from a
+PJSUA app would require either patching the library or driving
+PJMEDIA directly.
+
+Net effect on a typical non-root server deployment: nothing runs at
+elevated priority anyway. On a heavily loaded host the pool workers
+(and the clock thread when its bump didn't take) can be preempted
+by other application threads. Size with margin if the deployment is
+CPU-tight.
 
 The only published reference point from PR :pr:`4241` is **8 threads
 serving 240 concurrent ports without audio-quality degradation** on
@@ -183,14 +246,21 @@ Pre-built conference cases:
 Procedure:
 
 1. Tune ``mips_test.c`` for your conditions — codec, call count, etc.
-2. Build ``pjmedia-test`` with the backend you want to size
-   (``PJMEDIA_CONF_THREADS`` undefined for serial, set to a candidate
-   value for parallel) and run.
+   ``init_conf_call()`` calls :cpp:any:`pjmedia_conf_create2()` with
+   an explicit ``worker_threads`` value, so changing the thread
+   count is just a one-line edit there; no rebuild against a
+   different ``PJMEDIA_CONF_THREADS`` is needed (the parallel
+   backend itself does still need to be compiled in).
+2. Build ``pjmedia-test`` (with parallel compiled in if you want to
+   measure parallel) and run.
 3. Read the **Time** column. Time well under 1 s = headroom; crossing
-   1 s = either reduce the load or, for parallel, raise
-   ``PJMEDIA_CONF_THREADS`` (up to the physical-core ceiling).
+   1 s = either reduce the load or raise ``worker_threads`` (up to
+   the physical-core ceiling).
 4. The configuration that keeps the worst-case Time under 1 s with
-   margin is your sizing target.
+   margin is your sizing target. In your real PJSUA-LIB / PJSUA2 app,
+   apply that count via the runtime ``confThreads`` /
+   ``conf_threads`` field — same underlying ``worker_threads`` knob,
+   just one API level up.
 
 
 Asynchronous operations
@@ -225,15 +295,17 @@ the queued ops are synchronous:
   added port, so the port stays valid until the clock thread is done
   with it. The race is over **application-side resources attached
   to the port** (buffers, file handles, AI session state): freeing
-  them right after ``stopTransmit()`` or ``remove_port`` can run
-  ahead of the clock thread that still uses them. See :issue:`4526`.
+  them right after ``stopTransmit()`` or
+  :cpp:any:`pjmedia_conf_remove_port` can run ahead of the clock
+  thread that still uses them. See :issue:`4526`.
   The cleanest fix is to register a destroy handler on the port via
   :cpp:any:`pjmedia_port_add_destroy_handler` (:pr:`4244`); the
   handler fires when the bridge's last reference drops, which is the
   correct point to free the attached resources.
 - **Fast remove-after-add (no-clock case).** When a port is added
   then removed before the clock thread has serviced either op,
-  ``remove_port`` runs **synchronously** and frees the slot
+  :cpp:any:`pjmedia_conf_remove_port` runs **synchronously** and
+  frees the slot
   immediately (:pr:`4253`, since 2.16, in response to :issue:`4706`).
   This is the path that lets a bridge with no clock (e.g. when no
   sound device is attached, so no one is pumping ``get_frame()``)
@@ -293,7 +365,8 @@ To know when a queued op has actually taken effect, implement
 **Threading.** Callback invocations are serialised by the library —
 two never run concurrently. The thread varies, though: the clock
 thread for async-path completions, but the **application thread that
-called ``remove_port``** for the synchronous fast-path. So the
+called the remove API** (:cpp:any:`pjmedia_conf_remove_port` or its
+PJSUA-LIB / PJSUA2 wrappers) for the synchronous fast-path. So the
 callback can race against the rest of your code; anything shared
 with other threads (e.g. the ``mediaId → AudioMedia*`` map below)
 still needs your own mutex. Keep handlers short — post any long or
@@ -360,7 +433,7 @@ three options below cover both cases.
    Useful when you don't already hold the ``AudioMedia`` instance
    for that slot. Caveat: the helper only exposes the **base**
    ``AudioMedia`` interface (``startTransmit``, ``stopTransmit``,
-   ``adjustTxLevel`` / ``RxLevel``, ``getPortInfo``, ``getPortId``,
+   ``adjustTxLevel`` / ``adjustRxLevel``, ``getPortInfo``, ``getPortId``,
    etc.). It does not give you the originating derived instance, so
    subclass-only methods like ``AudioMediaPlayer::setPos()``,
    ``AudioMediaRecorder::getOption()``, or
