@@ -114,7 +114,7 @@ from the application's keystroke handler:
 
 .. code-block:: c++
 
-   void onKeyPressed(const string &ch)
+   void onKeyPressed(const std::string &ch)
    {
        try {
            CallSendTextParam param;
@@ -157,7 +157,8 @@ on the application's ``Call`` subclass:
            // prm.seq — RTP sequence number for this text block
            // prm.ts  — RTP timestamp
            // prm.text — the decoded text (UTF-8); may be empty
-           appendToTranscript(prm.text);
+           if (!prm.text.empty())
+               appendToTranscript(prm.text);
        }
    };
 
