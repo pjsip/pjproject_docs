@@ -262,9 +262,15 @@ Instant Messaging(IM)
 .. note::
 
     Usually it is more appropriate to do instant messaging outside the context of a
-    call. Application can send IM and typing indication outside a call by using 
+    call. Application can send IM and typing indication outside a call by using
     :cpp:func:`pj::Buddy::sendInstantMessage()` and :cpp:func:`pj::Buddy::sendTypingIndication()`.
     More will be explained in the next section.
+
+.. tip::
+
+    For *live, character-by-character* text within a call (TTY-equivalent
+    accessibility, RFC 4103), use real-time text instead of SIP MESSAGE.
+    See :ref:`guide_realtime_text`.
 
 Application can send IM within a call using :cpp:func:`pj::Call::sendInstantMessage()`. The transmission status 
 of outgoing instant messages is reported in :cpp:func:`pj::Call::onInstantMessageStatus()` callback.
