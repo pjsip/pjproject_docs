@@ -192,7 +192,7 @@ function pointers, then register it with
    port->get_frame = &my_get_frame;
 
    pjsua_conf_port_id slot;
-   pjsua_conf_add_port(pool, port, NULL, &slot);
+   pjsua_conf_add_port(pool, port, &slot);
    /* slot is now usable like any other bridge port. */
 
 Same threading rules apply — the function pointers run on the
