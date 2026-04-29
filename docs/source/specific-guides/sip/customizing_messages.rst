@@ -65,15 +65,14 @@ of being re-passed per call. Configure these on
        transport. Useful when the auto-generated Contact is wrong
        (e.g. behind a reverse proxy / odd NAT layout PJSIP can't
        infer).
-   * - ``sipConfig.contactParams`` / ``contactUriParams``
+   * - ``sipConfig.contactParams`` / ``sipConfig.contactUriParams``
      - Semicolon-separated parameters appended to every Contact
        header / Contact URI from this account — useful for
        ``;+sip.instance="<urn:uuid:...>"`` (RFC 5626), GRUU markers,
        custom device identifiers.
    * - ``regConfig.headers``
      - Custom SIP headers added to REGISTER requests only.
-   * - ``regConfig.contactParams`` /
-       ``regConfig.contactUriParams``
+   * - ``regConfig.contactParams`` / ``regConfig.contactUriParams``
      - Same idea as the ``sipConfig`` variants, but appended only on
        the Contact of REGISTER requests.
    * - ``presConfig.headers``
@@ -610,11 +609,13 @@ PJSUA-LIB equivalents
      - :cpp:any:`pjsua_acc_config::id`
    * - ``AccountConfig::sipConfig::contactForced``
      - :cpp:any:`pjsua_acc_config::force_contact`
-   * - ``AccountConfig::sipConfig::contactParams`` / ``contactUriParams``
+   * - ``AccountConfig::sipConfig::contactParams`` /
+       ``AccountConfig::sipConfig::contactUriParams``
      - :cpp:any:`pjsua_acc_config::contact_params` / ``contact_uri_params``
    * - ``AccountConfig::regConfig::headers``
      - :cpp:any:`pjsua_acc_config::reg_hdr_list`
-   * - ``AccountConfig::regConfig::contactParams`` / ``contactUriParams``
+   * - ``AccountConfig::regConfig::contactParams`` /
+       ``AccountConfig::regConfig::contactUriParams``
      - :cpp:any:`pjsua_acc_config::reg_contact_params` /
        ``reg_contact_uri_params``
    * - ``AccountConfig::presConfig::headers``

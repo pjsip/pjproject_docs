@@ -155,7 +155,7 @@ static pj_bool_t on_rx_response(pjsip_rx_data *rdata);
 static pjsip_module mod_contact_tp_compat =
 {
     NULL, NULL,                         /* prev, next                   */
-    { "mod-contact-tp-compat", 22 },    /* Name                         */
+    { "mod-contact-tp-compat", 21 },    /* Name                         */
     -1,                                 /* Id                           */
     PJSIP_MOD_PRIORITY_TSX_LAYER + 1,  /* Priority: after tsx,         */
                                         /*   before dialog/UA layer     */
