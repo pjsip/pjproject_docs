@@ -150,8 +150,8 @@ Google's open-source neural speech codec, targeting low bit rates
 - External dependency: build the Lyra library from
   https://github.com/google/lyra first.
 - Enable in PJSIP via ``./configure --with-lyra=DIR`` (autoconf),
-  ``find_package(Lyra)`` (CMake), or ``PJMEDIA_HAS_LYRA_CODEC 1``
-  in ``config_site.h``.
+  ``find_package(Lyra)`` (CMake), or by defining
+  ``PJMEDIA_HAS_LYRA_CODEC`` to ``1`` in ``config_site.h``.
 - Default clock rate: 16 kHz only. Toggle 8 / 32 / 48 kHz via
   ``PJMEDIA_CODEC_LYRA_HAS_*KHZ`` macros.
 - Requires four model files (``lyra_config.binarypb``,

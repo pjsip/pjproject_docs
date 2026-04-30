@@ -21,7 +21,6 @@ Audio Codecs
 - :ref:`lyra` (experimental)
 - :any:`/specific-guides/audio/opencore-amr`
 - :ref:`opus`
-- :ref:`l16`
 - :ref:`passthrough`
 - :ref:`silk`
 - :ref:`speex`
