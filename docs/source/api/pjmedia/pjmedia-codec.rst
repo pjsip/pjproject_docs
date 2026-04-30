@@ -134,6 +134,33 @@ Linear/PCM 8/16bit mono/stereo
 
 - Code documentation: :doc:`PCM/Linear 16bit </api/generated/pjmedia/group/group__PJMED__L16>`
 
+.. _lyra:
+
+Lyra (experimental)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Google's open-source neural speech codec, targeting low bit rates
+(3200, 6000, 9200 bps) at speech-quality fidelity.
+
+- **Experimental.** Lyra is not standardised — there is no RFC,
+  no IANA-registered MIME type, and no formally specified SDP /
+  RTP payload format. The ``fmtp:bitrate=N`` parameter PJSIP
+  advertises is an internal convention; expect interop limited to
+  peers running the same PJSIP Lyra integration.
+- External dependency: build the Lyra library from
+  https://github.com/google/lyra first.
+- Enable in PJSIP via ``./configure --with-lyra=DIR`` (autoconf),
+  ``find_package(Lyra)`` (CMake), or by defining
+  ``PJMEDIA_HAS_LYRA_CODEC`` to ``1`` in ``config_site.h``.
+- Default clock rate: 16 kHz only. Toggle 8 / 32 / 48 kHz via
+  ``PJMEDIA_CODEC_LYRA_HAS_*KHZ`` macros.
+- Requires four model files (``lyra_config.binarypb``,
+  ``lyragan.tflite``, ``quantizer.tflite``,
+  ``soundstream_encoder.tflite``) at the configured ``model_path``.
+- License: Apache 2.0. See :doc:`/overview/license_3rd_party`.
+- Code documentation: :doc:`Lyra </api/generated/pjmedia/group/group__PJMED__LYRA>`
+
+
 .. _opencore_amr:
 
 OpenCore AMR NB/WB
