@@ -555,7 +555,30 @@ ffmpeg and libx264
    * - License
      - Please consult the Ffmpeg and libx264 websites. 
    * - Usage
-     - See :ref:`ffmpeg`. 
+     - See :ref:`ffmpeg`.
+
+
+Lyra (experimental)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+.. list-table::
+   :header-rows: 0
+
+   * - Software
+     - https://github.com/google/lyra
+   * - Location
+     - - :source:`pjmedia/include/pjmedia-codec/lyra.h`
+       - :source:`pjmedia/src/pjmedia-codec/lyra.cpp`
+   * - Description
+     - Google's open-source neural speech codec, integrated as an
+       experimental low-bitrate option in PJSIP. Not standardised
+       (no RFC, no IANA-registered MIME type, no formal SDP/RTP
+       payload spec); interop is essentially limited to other
+       PJSIP peers running the same integration.
+   * - License
+     - Apache 2.0. See
+       https://github.com/google/lyra/blob/main/LICENSE
+   * - Usage
+     - See :ref:`lyra`
 
 
 Oboe
