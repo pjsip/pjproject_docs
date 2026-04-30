@@ -18,6 +18,11 @@ in the application layer. Please check `Apple's doc
 
 For an example, you can check ipjsua sample app, and refer to :pr:`1941`.
 
+For a deeper walkthrough of integrating PJSIP with PushKit and
+CallKit — including the PJSIP-side configuration, thread bridging,
+audio session lifecycle, and IP-change handling — see
+:ref:`guide_ios_push_notifications`.
+
 CallKit integration and audio session (AVAudioSession) management
 -----------------------------------------------------------------
 **CallKit** requires application to configure audio session and start the call 
