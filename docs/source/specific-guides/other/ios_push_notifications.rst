@@ -267,9 +267,14 @@ Receiving an incoming VoIP push
 
 When APNs delivers a VoIP push,
 ``pushRegistry:didReceiveIncomingPushWithPayload:`` fires. The
-handler has a strict deadline — it must report the incoming call
-to CallKit before the completion handler returns, or iOS may
-terminate the app.
+handler has a strict deadline — it must **initiate the CallKit
+incoming-call report** (i.e. invoke
+``reportNewIncomingCallWithUUID:update:completion:``) before
+calling the push completion block. iOS may terminate the app if
+the push completion fires without a CallKit report having been
+issued. The report API itself is non-blocking: its inner
+completion handler fires later, after CallKit processes the
+report — that doesn't have to land before ``completion()``.
 
 .. code-block:: objc
 
@@ -348,6 +353,21 @@ needs to touch PJSIP encodes its intent in a small integer
 ``action`` and dispatches via ``SCHEDULE_TIMER``. The integer
 encoding uses the low 4 bits for the action and the upper bits
 for parameters such as the call ID.
+
+.. caution::
+
+   The ``REGISTER_THREAD`` step inside ``SCHEDULE_TIMER`` registers
+   the *caller* with PJLIB just long enough to invoke
+   ``pjsua_schedule_timer2``. That registration is safe only when
+   the caller runs on a long-lived thread whose
+   ``pj_thread_desc`` storage outlives the call — most commonly
+   the main thread, which is why the sample initialises
+   ``PKPushRegistry`` and ``CXProvider`` with
+   ``dispatch_get_main_queue()``. If a handler fires on a
+   different queue (some Reachability hookups, custom GCD
+   queues), hop to the main queue or another dedicated long-
+   lived PJ-registered thread before calling ``SCHEDULE_TIMER``.
+   Don't drop the registration step into a transient GCD worker.
 
 For a more complex application, the sample's header comment
 recommends creating a dedicated PJ-registered worker thread
