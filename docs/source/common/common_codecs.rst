@@ -18,7 +18,7 @@ Audio Codecs
 - :ref:`ilbc`
 - :ref:`ipp` (G.722.1, G.723.1, G.726, G.728, G.729, AMR, and AMR-WB)
 - :ref:`l16`
-- :ref:`lyra` (experimental)
+- :ref:`lyra`
 - :any:`/specific-guides/audio/opencore-amr`
 - :ref:`opus`
 - :ref:`passthrough`
