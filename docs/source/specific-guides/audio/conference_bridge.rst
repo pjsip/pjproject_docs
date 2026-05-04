@@ -301,7 +301,9 @@ the queued ops are synchronous:
   The cleanest fix is to register a destroy handler on the port via
   :cpp:any:`pjmedia_port_add_destroy_handler` (:pr:`4244`); the
   handler fires when the bridge's last reference drops, which is the
-  correct point to free the attached resources.
+  correct point to free the attached resources. For ports the
+  application creates itself, the full pool / group-lock contract
+  is in :ref:`custom_port_lifecycle` below.
 - **Fast remove-after-add (no-clock case).** When a port is added
   then removed before the clock thread has serviced either op,
   :cpp:any:`pjmedia_conf_remove_port` runs **synchronously** and
@@ -463,6 +465,175 @@ If the goal is serving **many concurrent calls or participants**, use
 the parallel backend on the single primary bridge (see
 :ref:`how to enable the parallel backend <enable_parallel_conf_bridge>`) rather than spinning up multiple
 bridges.
+
+
+.. _custom_port_lifecycle:
+
+Custom port lifecycle
+---------------------
+
+.. important::
+
+   **Backward-compatibility considerations when upgrading from
+   PJSIP < 2.15.1.** Before :pr:`3928`, bridge port operations
+   were synchronous: freeing a custom port's pool right after
+   ``pjmedia_conf_remove_port`` was safe because the removal had
+   already completed when the call returned. From 2.15.1 onwards
+   removals are queued and run later on the clock thread, so any
+   custom port that doesn't already follow one of the patterns
+   below is now at risk of an access-after-free crash on the
+   clock thread. If you maintain a custom ``pjmedia_port``, audit
+   it against this section.
+
+Applications that supply their own ``pjmedia_port`` (rather than
+the bundled file player / recorder, AI port, or tone generator)
+need to respect the same async-removal contract as the
+library-side ports. The bridge holds a group-lock reference on
+every added port and only drops it when the queued remove op
+runs on the clock thread — so the port struct, the pool it lives
+in, and any attached resources must outlive that reference, even
+though the calling thread sees ``pjmedia_conf_remove_port``
+return immediately.
+
+Two main shapes:
+
+**Pattern 1 — port has its own pool.** The port struct lives in
+a pool the port itself owns, and the pool must be released from
+inside the group-lock destroy chain (so it survives the bridge's
+queued remove). Two sub-cases depending on who creates the group
+lock:
+
+*Pattern 1a — port also owns a group lock.* The port creator
+calls :cpp:any:`pjmedia_port_init_grp_lock`, which populates
+``port->grp_lock``, registers an internal handler that will
+invoke ``port->on_destroy`` when the lock destroys, and takes
+an implicit reference on the lock (so the port itself holds
+one). The pool is released from ``on_destroy``, or equivalently
+from a handler added via
+:cpp:any:`pjmedia_port_add_destroy_handler` — both run from the
+same destroy chain. The port-creation function:
+
+.. code-block:: c
+
+   /* Internal: the port struct, allocated inside its own pool. */
+   struct my_port {
+       pjmedia_port  base;
+       pj_pool_t    *pool;
+       /* ... attached resources (buffers, file handles, etc.) ... */
+   };
+
+   static pj_status_t my_port_on_destroy(pjmedia_port *this_port)
+   {
+       struct my_port *p = (struct my_port *)this_port;
+       /* tear down attached resources first... */
+       pj_pool_safe_release(&p->pool);
+       return PJ_SUCCESS;
+   }
+
+   /* Public: create a new port and return it to the caller. */
+   pj_status_t my_port_create(pjmedia_endpt *endpt,
+                              /* ... */,
+                              pjmedia_port **p_port)
+   {
+       pj_pool_t *pool = pjmedia_endpt_create_pool(endpt, "myport",
+                                                   1000, 1000);
+       struct my_port *p = PJ_POOL_ZALLOC_T(pool, struct my_port);
+       p->pool = pool;
+
+       pjmedia_port_info_init(&p->base.info, /* ... */);
+       p->base.get_frame  = &my_get_frame;
+       p->base.put_frame  = &my_put_frame;
+       p->base.on_destroy = &my_port_on_destroy;
+
+       /* Populates p->base.grp_lock; registers the destroy chain
+        * that will invoke on_destroy when the lock destroys;
+        * implicit add_ref — the port now holds one reference. */
+       pjmedia_port_init_grp_lock(&p->base, pool, NULL);
+
+       *p_port = &p->base;
+       return PJ_SUCCESS;
+   }
+
+The application then creates the port and adds it to the bridge.
+The bridge takes its own reference on the same group lock:
+
+.. code-block:: c
+
+   pjmedia_port *port;
+   my_port_create(endpt, /* ... */, &port);
+   pjmedia_conf_add_port(conf, pool, port, NULL, &slot);
+
+To remove and destroy, queue the bridge removal *and* drop the
+port's own reference. Order doesn't matter — whichever
+``dec_ref`` runs last triggers the destroy chain:
+
+.. code-block:: c
+
+   pjmedia_conf_remove_port(conf, slot);  /* queues bridge dec_ref */
+   pjmedia_port_destroy(port);            /* drops the port's own ref */
+   /* DO NOT touch port or its pool from here on. */
+
+:cpp:any:`pjmedia_port_destroy` routes to ``dec_ref`` when a
+group lock is present, so calling it is safe even with the
+bridge's queued op still outstanding. Pool release happens
+later, on whichever thread drops the final reference (usually
+the clock thread when the bridge services its queued remove).
+This is the shape :source:`pjmedia/src/pjmedia/ai_port.c`
+follows.
+
+*Pattern 1b — port has no group lock.* The port doesn't call
+``init_grp_lock`` itself; the bridge sees ``port->grp_lock ==
+NULL`` at add time and creates one internally (verified at
+``pjmedia/src/pjmedia/conference.c``, the add-port path:
+``pjmedia_port_init_grp_lock(port, conf_pool, NULL)`` followed by
+``pj_grp_lock_add_ref``). The same internal handler that invokes
+``port->on_destroy`` is registered as part of that
+``init_grp_lock`` call, so the destroy chain still runs through
+the port's own cleanup. A port that just sets
+``on_destroy = ...`` and leaves the group-lock setup to the
+bridge is also crash-safe — provided the application doesn't
+free the port's pool from outside ``on_destroy``. This is the
+shape :source:`pjmedia/src/pjmedia/wav_player.c` follows.
+
+The trade-off: there's no application-visible reference to drop,
+so the destroy chain only fires when the bridge dec_refs (when
+the queued remove is serviced on the clock thread). If the
+application needs teardown to be observable from its own thread,
+use Pattern 1a.
+
+.. note::
+
+   ``pjmedia_port_init_grp_lock`` logs a level-2 warning when a
+   port is registered without an ``on_destroy`` callback (see
+   :source:`pjmedia/src/pjmedia/port.c`) — a useful tripwire for
+   ports that own a pool but forgot the cleanup hook.
+
+**Pattern 2 — port has no own pool.** The port struct lives in
+a pool owned by a wider scope (a dialog pool, an account pool,
+the application's main pool). The constraint is simpler but
+strict: **the pool's lifetime must extend beyond the port's
+lifetime in the bridge.** Concretely, don't tear down the parent
+scope until the bridge has finished servicing its queued
+remove for the port — otherwise the bridge dereferences memory
+inside an already-released pool.
+
+If the parent scope is naturally long-lived (an account that
+outlives all its calls, a dialog that outlives its media
+streams), this is automatic. If the parent scope might be torn
+down close to the port's removal, gate the parent teardown on a
+:cpp:any:`pjmedia_port_add_destroy_handler` callback so you
+know the bridge has released the port before you release the
+pool.
+
+The risk in any pattern is the same: if the port's pool (or the
+parent pool in Pattern 2) is released before the bridge has
+finished servicing its queued remove, the clock thread reads
+freed memory — typically crashing inside ``conference.c``,
+``stream.c``, or ``port.c``. The canonical built-in ports
+(``ai_port.c`` for Pattern 1a, ``wav_player.c`` for Pattern 1b)
+are crash-safe out of the box; custom variants that strip out
+the group lock, no-op the ``on_destroy``, or free the pool from
+the application thread lose that safety net.
 
 
 Per-port TX / RX state
