@@ -51,38 +51,37 @@ Backend selection
 PJMEDIA ships **three** conference backend implementations, selected
 at compile time via :c:macro:`PJMEDIA_CONF_BACKEND`:
 
-+-----------------------------------------------+-------------------------------------------------------+
-| Backend (``PJMEDIA_CONF_BACKEND`` value)      | When to use                                           |
-+===============================================+=======================================================+
-| :c:macro:`PJMEDIA_CONF_SERIAL_BRIDGE_BACKEND` | **Default.** Mixing bridge running on a single        |
-| (``1``)                                       | clock thread. Comfortably covers typical SIP-client   |
-|                                               | workloads on modern CPUs with common codecs (G.711,   |
-|                                               | Opus) — multiple concurrent calls fit easily. The     |
-|                                               | per-tick CPU only becomes a bottleneck at large       |
-|                                               | participant counts (tens of ports). For benchmark     |
-|                                               | numbers see                                           |
-|                                               | :doc:`/specific-guides/perf_footprint/pjmedia_mips`.  |
-+-----------------------------------------------+-------------------------------------------------------+
-| :c:macro:`PJMEDIA_CONF_PARALLEL_BRIDGE_BACKEND`| Mixing bridge with multiple worker threads. Intended  |
-| (``2``)                                       | for **server-type endpoints** (conference servers,    |
-|                                               | SFU/MCU, IVR farms) where a single bridge hosts many  |
-|                                               | concurrent participants and the per-tick mixing CPU   |
-|                                               | exceeds one core. Typical SIP client apps do not      |
-|                                               | need this. Auto-selected when ``PJMEDIA_CONF_THREADS``|
-|                                               | is defined.                                           |
-+-----------------------------------------------+-------------------------------------------------------+
-| :c:macro:`PJMEDIA_CONF_SWITCH_BOARD_BACKEND`  | Drop-in replacement for the bridge that **handles     |
-| (``0``)                                       | encoded audio frames** end-to-end (no decode-mix-     |
-|                                               | encode cycle), at lower latency and lower footprint.  |
-|                                               | The trade-off is no mixing — one source per sink only |
-|                                               | — so it doesn't do conferencing. Useful for           |
-|                                               | endpoints that need encoded-frame routing (e.g. when  |
-|                                               | the audio device emits/consumes encoded frames        |
-|                                               | directly) or care about low-latency 1:1 paths.        |
-|                                               | Auto-selected when ``PJMEDIA_CONF_USE_SWITCH_BOARD``  |
-|                                               | is defined. See :doc:`switchboard` for the full       |
-|                                               | feature list.                                         |
-+-----------------------------------------------+-------------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Backend (``PJMEDIA_CONF_BACKEND`` value)
+     - When to use
+   * - :c:macro:`PJMEDIA_CONF_SERIAL_BRIDGE_BACKEND` (``1``)
+     - **Default.** Mixing bridge running on a single clock
+       thread. Comfortably covers typical SIP-client workloads on
+       modern CPUs with common codecs (G.711, Opus) — multiple
+       concurrent calls fit easily. The per-tick CPU only becomes
+       a bottleneck at large participant counts (tens of ports).
+       For benchmark numbers see
+       :doc:`/specific-guides/perf_footprint/pjmedia_mips`.
+   * - :c:macro:`PJMEDIA_CONF_PARALLEL_BRIDGE_BACKEND` (``2``)
+     - Mixing bridge with multiple worker threads. Intended for
+       **server-type endpoints** (conference servers, SFU/MCU,
+       IVR farms) where a single bridge hosts many concurrent
+       participants and the per-tick mixing CPU exceeds one core.
+       Typical SIP client apps do not need this. Auto-selected
+       when ``PJMEDIA_CONF_THREADS`` is defined.
+   * - :c:macro:`PJMEDIA_CONF_SWITCH_BOARD_BACKEND` (``0``)
+     - Drop-in replacement for the bridge that **handles encoded
+       audio frames** end-to-end (no decode-mix-encode cycle), at
+       lower latency and lower footprint. The trade-off is no
+       mixing — one source per sink only — so it doesn't do
+       conferencing. Useful for endpoints that need encoded-frame
+       routing (e.g. when the audio device emits/consumes encoded
+       frames directly) or care about low-latency 1:1 paths.
+       Auto-selected when ``PJMEDIA_CONF_USE_SWITCH_BOARD`` is
+       defined. See :doc:`switchboard` for the full feature list.
 
 Default is serial. To pick a different backend, define one input
 macro in your ``config_site.h`` — the auto-selection in
@@ -262,6 +261,8 @@ Procedure:
    ``conf_threads`` field — same underlying ``worker_threads`` knob,
    just one API level up.
 
+
+.. _asynchronous_operations:
 
 Asynchronous operations
 -----------------------
@@ -479,21 +480,49 @@ Custom port lifecycle
    were synchronous: freeing a custom port's pool right after
    ``pjmedia_conf_remove_port`` was safe because the removal had
    already completed when the call returned. From 2.15.1 onwards
-   removals are queued and run later on the clock thread, so any
-   custom port that doesn't already follow one of the patterns
-   below is now at risk of an access-after-free crash on the
-   clock thread. If you maintain a custom ``pjmedia_port``, audit
-   it against this section.
+   removals are queued in the common case (with a synchronous
+   fast-path exception covered in :ref:`asynchronous_operations`
+   above), so any custom port that doesn't already follow one of
+   the patterns below is at risk of an access-after-free crash on
+   the clock thread. If you maintain a custom ``pjmedia_port``,
+   audit it against this section.
+
+For most existing ports the migration fix is small: have the
+port create and own its own pool inside the port-creation
+function (using the application-supplied pool's factory), and
+release that pool from ``on_destroy``:
+
+.. code-block:: c
+
+   /* In the port-creation function: */
+   pj_pool_t *own_pool = pj_pool_create(app_pool->factory,
+                                        "myport", 1000, 1000, NULL);
+   /* ... allocate the port struct in own_pool, stash own_pool
+    * inside it, set on_destroy ... */
+
+   /* And release the pool from on_destroy: */
+   static pj_status_t my_port_on_destroy(pjmedia_port *this_port)
+   {
+       struct my_port *p = (struct my_port *)this_port;
+       pj_pool_safe_release(&p->pool);
+       return PJ_SUCCESS;
+   }
+
+That's the whole change for most ports — the bridge auto-creates
+the group lock and the destroy chain handles the timing. The
+patterns below cover when this minimum is enough, when a port
+also needs to manage its own group lock, and the alternative
+when the port doesn't own a pool at all.
 
 Applications that supply their own ``pjmedia_port`` (rather than
 the bundled file player / recorder, AI port, or tone generator)
 need to respect the same async-removal contract as the
 library-side ports. The bridge holds a group-lock reference on
 every added port and only drops it when the queued remove op
-runs on the clock thread — so the port struct, the pool it lives
-in, and any attached resources must outlive that reference, even
-though the calling thread sees ``pjmedia_conf_remove_port``
-return immediately.
+runs on the clock thread (typical case) — so the port struct,
+the pool it lives in, and any attached resources must outlive
+that reference, even though the calling thread sees
+``pjmedia_conf_remove_port`` return immediately.
 
 Two main shapes:
 
@@ -561,7 +590,13 @@ The bridge takes its own reference on the same group lock:
 
    pjmedia_port *port;
    my_port_create(endpt, /* ... */, &port);
-   pjmedia_conf_add_port(conf, pool, port, NULL, &slot);
+
+   /* `parent_pool` is any long-lived pool the app already has;
+    * the bridge uses it only to allocate its own conf_port slot
+    * data. The port's *own* pool (created inside
+    * my_port_create) is separate and lives until the destroy
+    * chain releases it. */
+   pjmedia_conf_add_port(conf, parent_pool, port, NULL, &slot);
 
 To remove and destroy, queue the bridge removal *and* drop the
 port's own reference. Order doesn't matter — whichever
@@ -595,11 +630,17 @@ bridge is also crash-safe — provided the application doesn't
 free the port's pool from outside ``on_destroy``. This is the
 shape :source:`pjmedia/src/pjmedia/wav_player.c` follows.
 
-The trade-off: there's no application-visible reference to drop,
-so the destroy chain only fires when the bridge dec_refs (when
-the queued remove is serviced on the clock thread). If the
-application needs teardown to be observable from its own thread,
-use Pattern 1a.
+The reference math is the same as Pattern 1a: the bridge's
+``init_grp_lock`` takes one implicit reference and its
+``add_ref`` adds another, leaving two outstanding. The bridge
+drops one when the queued remove runs; the application must
+call :cpp:any:`pjmedia_port_destroy` (or
+:cpp:any:`pjmedia_port_dec_ref`) after
+``pjmedia_conf_remove_port`` to drop the second, otherwise the
+destroy chain never fires and the pool leaks. PJSUA-LIB's
+own port teardown follows this pairing — see
+``pjsua_aud.c:522`` (remove) / ``:562`` (destroy) for the
+reference pattern.
 
 .. note::
 
