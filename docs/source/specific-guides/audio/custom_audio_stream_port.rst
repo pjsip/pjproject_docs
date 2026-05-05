@@ -424,6 +424,53 @@ Regardless of which pattern the substituted port follows:
   release anything from there. Wrapper teardown is driven by
   ``destroy_port`` + the bridge remove, not by this callback.
 
+PJSUA2 equivalents
+------------------
+
+PJSUA2 exposes the same hook through
+:cpp:any:`pj::Call::onStreamCreated`, which delegates to the
+C-side ``on_stream_created2`` (see
+:source:`pjsip/src/pjsua2/endpoint.cpp`). The same lifetime
+contract applies — PJSUA2 does not insulate the application
+from any of the C-level mechanics described above.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 50 50
+
+   * - PJSUA-LIB (C)
+     - PJSUA2 (C++)
+   * - ``on_stream_created2`` callback
+     - :cpp:any:`pj::Call::onStreamCreated`
+   * - ``pjsua_on_stream_created_param``
+     - :cpp:any:`pj::OnStreamCreatedParam`
+   * - ``param->port`` (``pjmedia_port *``)
+     - ``prm.pPort`` (:cpp:any:`pj::MediaPort`, a ``void *`` alias)
+   * - ``param->destroy_port``
+     - ``prm.destroyPort`` (``bool``)
+
+There is no PJSUA2 equivalent of the older C
+``on_stream_created`` callback — PJSUA2 collapsed it into the
+single ``onStreamCreated`` virtual.
+
+Because :cpp:any:`pj::MediaPort` is opaque (``typedef void *``),
+a Pattern A wrapper must cast back to ``pjmedia_port *`` to
+reach ``->grp_lock``:
+
+.. code-block:: cpp
+
+   void onStreamCreated(OnStreamCreatedParam &prm) override
+   {
+       pjmedia_port *original = (pjmedia_port *)prm.pPort;
+       pj_grp_lock_add_ref(original->grp_lock);   /* pin */
+       /* ... build dsp_wrapper, store original as downstream ... */
+       prm.pPort       = (MediaPort)wrapper;
+       prm.destroyPort = true;
+   }
+
+Pattern B doesn't need the cast; only the substitution and
+``destroyPort = true``.
+
 See also
 --------
 
@@ -443,3 +490,5 @@ See also
   :cpp:any:`pjsua_callback::on_stream_created`,
   :cpp:any:`pjsua_callback::on_stream_destroyed`,
   :cpp:any:`pjsua_on_stream_created_param`.
+- :cpp:any:`pj::Call::onStreamCreated`,
+  :cpp:any:`pj::OnStreamCreatedParam`.
