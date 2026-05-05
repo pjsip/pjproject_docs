@@ -14,6 +14,7 @@ import os
 import re
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
 
 
 # Which pjproject tag to checkout to create the documentation.
@@ -87,6 +88,37 @@ if is_in_rtd:
                 os.remove(f'api{os.sep}generated{os.sep}{api_dir}{os.sep}{f}')
             except:
                 pass
+
+        # breathe-apidoc names every group page "Group <RAW_ID>" (e.g.
+        # "Group PJMED_STRM"), ignoring the human-readable title from
+        # @defgroup. Read each group's doxygen XML and rewrite the H1
+        # with the actual title (e.g. "Streams").
+        xml_dir = f'pjproject{os.sep}{doxy_dir}{os.sep}docs{os.sep}xml'
+        rst_dir = f'api{os.sep}generated{os.sep}{api_dir}{os.sep}group'
+        if os.path.isdir(rst_dir):
+            for fname in sorted(os.listdir(rst_dir)):
+                if not (fname.startswith('group__') and fname.endswith('.rst')):
+                    continue
+                xml_path = os.path.join(xml_dir, fname[:-4] + '.xml')
+                if not os.path.exists(xml_path):
+                    continue
+                try:
+                    title_el = ET.parse(xml_path).getroot().find(
+                        './/compounddef/title')
+                except ET.ParseError as e:
+                    print(f'Warning: cannot parse {xml_path}: {e}')
+                    continue
+                if title_el is None or not (title_el.text or '').strip():
+                    continue
+                title = title_el.text.strip()
+                rst_path = os.path.join(rst_dir, fname)
+                with open(rst_path, 'rt') as f:
+                    lines = f.read().splitlines()
+                if len(lines) >= 2 and lines[0].startswith('Group '):
+                    lines[0] = title
+                    lines[1] = '=' * len(title)
+                    with open(rst_path, 'wt') as f:
+                        f.write('\n'.join(lines) + '\n')
 
 
 # -- Project information -----------------------------------------------------
