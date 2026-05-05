@@ -676,6 +676,15 @@ are crash-safe out of the box; custom variants that strip out
 the group lock, no-op the ``on_destroy``, or free the pool from
 the application thread lose that safety net.
 
+PJSUA-LIB applications that substitute or wrap the default
+audio stream port for a call (via
+:cpp:any:`pjsua_callback::on_stream_created` /
+:cpp:any:`pjsua_callback::on_stream_created2`) face an extra
+constraint when the substituted port keeps a reference to the
+precreated audio stream port. The contract above still applies,
+plus the inner stream port must be pinned through its group
+lock — see :ref:`guide_audio_custom_audio_stream_port`.
+
 
 Per-port TX / RX state
 ----------------------
