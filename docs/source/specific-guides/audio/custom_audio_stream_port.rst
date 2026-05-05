@@ -339,25 +339,33 @@ Common reasons to use Pattern B:
   a tone generator, a test source.
 
 Worked example: dropping in an AI port. ``pjmedia_ai_port_create``
-already returns a Pattern-1a-style port (see
-:source:`pjmedia/src/pjmedia/ai_port.c`), so the callback is
-the entire integration:
+returns a :cpp:any:`pjmedia_ai_port`; obtain the underlying
+:cpp:any:`pjmedia_port` with
+:cpp:any:`pjmedia_ai_port_get_port` and substitute that into
+``param->port``:
 
 .. code-block:: c
 
    static void on_stream_created2(pjsua_call_id call_id,
                                   pjsua_on_stream_created_param *param)
    {
-       pjmedia_port *ai_port;
-       pjmedia_ai_port_create(pjsua_var.pool, /* cfg */ ..., &ai_port);
+       pjmedia_ai_port *ai_port;
+       pjmedia_port *port;
 
-       param->port         = ai_port;
+       pjmedia_ai_port_create(pjsua_var.pool, /* cfg */ ..., &ai_port);
+       port = pjmedia_ai_port_get_port(ai_port);
+
+       param->port         = port;
        param->destroy_port = PJ_TRUE;
    }
 
-The ai_port has its own pool and group lock; nothing references
-the precreated stream port; pjsua tears down the stream
-independently when the call ends.
+The AI port manages its own pool and group lock, while pjsua owns
+the substituted ``pjmedia_port`` in ``param->port``. At call
+teardown, with ``destroy_port = PJ_TRUE``, pjsua calls
+:cpp:any:`pjmedia_port_destroy` on that substituted port, which
+releases the AI-port wrapper through its normal destroy chain;
+the precreated stream port remains unreferenced, and pjsua tears
+down the stream independently when the call ends.
 
 Checklist
 ---------
