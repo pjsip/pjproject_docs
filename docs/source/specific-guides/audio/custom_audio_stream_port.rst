@@ -349,23 +349,32 @@ returns a :cpp:any:`pjmedia_ai_port`; obtain the underlying
    static void on_stream_created2(pjsua_call_id call_id,
                                   pjsua_on_stream_created_param *param)
    {
+       pjmedia_ai_port_param ai_prm;
        pjmedia_ai_port *ai_port;
        pjmedia_port *port;
 
-       pjmedia_ai_port_create(pjsua_var.pool, /* cfg */ ..., &ai_port);
+       pjmedia_ai_port_param_default(&ai_prm);
+       /* fill ai_prm: ioqueue, timer_heap, backend, callbacks, etc. */
+
+       pjmedia_ai_port_create(pjsua_var.pool, &ai_prm, &ai_port);
        port = pjmedia_ai_port_get_port(ai_port);
 
        param->port         = port;
        param->destroy_port = PJ_TRUE;
    }
 
-The AI port manages its own pool and group lock, while pjsua owns
-the substituted ``pjmedia_port`` in ``param->port``. At call
-teardown, with ``destroy_port = PJ_TRUE``, pjsua calls
-:cpp:any:`pjmedia_port_destroy` on that substituted port, which
-releases the AI-port wrapper through its normal destroy chain;
-the precreated stream port remains unreferenced, and pjsua tears
-down the stream independently when the call ends.
+See :doc:`/specific-guides/media/ai_connectivity` for the full
+``pjmedia_ai_port_param`` setup. The pool passed to
+``pjmedia_ai_port_create`` only needs to outlive the
+``_create`` call itself; the AI port creates its own internal
+pool from the passed pool's factory and manages that pool
+through its own group lock. The substituted ``pjmedia_port`` in
+``param->port`` shares that group lock, so at call teardown,
+with ``destroy_port = PJ_TRUE``, pjsua calls
+:cpp:any:`pjmedia_port_destroy` on that port, which releases
+the AI port through its normal destroy chain. The precreated
+stream port remains unreferenced, and pjsua tears down the
+stream independently when the call ends.
 
 Checklist
 ---------
@@ -378,12 +387,11 @@ Regardless of which pattern the substituted port follows:
   the substituted port itself. With ``destroy_port = PJ_TRUE``,
   PJSUA performs that call at step 3 of the teardown sequence
   (only when the substituted port differs from the stream's
-  own port — see ``pjsua_aud.c`` near line 559). If neither the
-  application nor PJSUA calls ``port_destroy``, the wrapper's
-  own reference is never released, the destroy chain never
-  fires, and the wrapper's pool leaks — and in Pattern A, the
-  pin on the stream's group lock keeps the stream port alive
-  past its useful life too.
+  own port). If neither the application nor PJSUA calls
+  ``port_destroy``, the wrapper's own reference is never
+  released, the destroy chain never fires, and the wrapper's
+  pool leaks — and in Pattern A, the pin on the stream's group
+  lock keeps the stream port alive past its useful life too.
 
 - **Never call** :cpp:any:`pjmedia_stream_destroy` **on the
   precreated stream from the application.** PJSUA owns that
@@ -478,7 +486,8 @@ See also
   every custom port must honour, including the substituted
   ports described here.
 - :ref:`asynchronous_operations` — why
-  ``pjmedia_conf_remove_port`` returns before the port is
+  ``pjsua_conf_remove_port`` (which delegates to
+  ``pjmedia_conf_remove_port``) returns before the port is
   actually unregistered.
 - :doc:`/specific-guides/develop/group_lock` — group lock
   semantics and the :cpp:any:`pj_grp_lock_add_ref` /
