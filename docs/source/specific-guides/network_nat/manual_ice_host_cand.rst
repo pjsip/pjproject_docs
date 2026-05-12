@@ -57,10 +57,10 @@ Each manual address is processed as follows
   IPv4 are added only on IPv4 STUN transports, and IPv6 entries only
   on IPv6 transports. Mixed-family entries are filtered out for the
   wrong-family transport.
-- **Port is inherited from the media socket.** The port byte you set
-  on the manual address is overwritten with the port of the
+- **Port is inherited from the media socket.** Whatever port value
+  you set on the manual address is overwritten with the port of the
   auto-detected base — i.e. the actual port the media socket is
-  bound to. Use any value (e.g. 0) when initialising the address.
+  bound to. Leave the port at 0 when initialising the address.
 - **Foundation is computed from the base address**, matching how
   auto-detected hosts are foundationed, so pairing behaves the same.
 - **Priority follows declaration order**: manual hosts are inserted
@@ -84,8 +84,11 @@ PJSUA2 usage
 ------------
 
 Set :cpp:any:`pj::AccountNatConfig::iceManualHost` to a vector of
-bare IP-address strings. Both IPv4 and IPv6 literals work; hostnames
-are not resolved, so the value must already be a numeric address.
+bare host-address strings. Numeric IPv4 and IPv6 literals are the
+common case; hostnames are also accepted (resolved through the
+platform resolver by :cpp:any:`pj_sockaddr_set_str_addr()`), but
+since manual candidates exist precisely to pin a specific address,
+using a literal is normally clearer.
 
 .. code-block:: c++
 
@@ -107,9 +110,9 @@ Notes:
 
 - Strings are parsed via :cpp:any:`pj_sockaddr_set_str_addr()`. Use
   a bare host address (e.g. ``"10.0.0.5"`` or ``"2001:db8::5"``) —
-  not ``host:port``, and not a bracketed IPv6 literal like
-  ``[::1]``. Hostnames are resolved via the platform resolver, but
-  manual host candidates are normally a literal IP.
+  **not** ``host:port``, and **not** a bracketed IPv6 literal like
+  ``[::1]``. Both numeric literals and hostnames are accepted (the
+  latter via :cpp:any:`pj_getaddrinfo`).
 - The field is a :cpp:any:`pj::SocketAddressVector`, a typedef for
   :cpp:any:`pj::StringVector`. It is serialised by
   :cpp:any:`pj::AccountConfig::readObject` /
