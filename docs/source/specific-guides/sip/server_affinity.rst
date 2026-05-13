@@ -26,10 +26,16 @@ When an account's registrar / proxy resolves to a pool of addresses
 REGISTER and outbound request can land on a different server. That's
 usually fine — but it breaks two common deployment shapes:
 
-- **HA clusters with sticky state** — a load balancer pool where the
-  client should keep talking to the same back-end across REGISTER
-  refreshes and INVITEs, so dialog/subscription state on the server
-  stays warm.
+- **Server pools with per-session state** — when the registrar /
+  proxy hostname resolves to a pool of backend servers visible to
+  the client (multiple DNS SRV targets, multiple A/AAAA records, or
+  several explicitly-configured proxies), the client itself picks
+  which backend to contact on each request. Without affinity,
+  successive REGISTER refreshes / INVITEs may land on different
+  backends, so dialog / subscription state on a given server gets
+  stale or lost. (A transparent load balancer in front of the pool
+  hides this from the client and handles backend selection itself —
+  affinity isn't needed there.)
 - **TLS connection reuse** — TLS-to-cluster setups want to amortise
   the handshake across many requests. Re-resolving on every REGISTER
   forces a new connection, defeats coalescing, and pays the TLS
