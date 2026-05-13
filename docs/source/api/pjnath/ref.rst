@@ -56,8 +56,9 @@ uPnP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Universal Plug and Play support for SIP UDP and media UDP transports.
 
-- See ticket :pr:`3184` for build and use instructions.
+- :doc:`UPnP NAT Traversal guide </specific-guides/network_nat/upnp>` — build prerequisites, PJSUA / PJSUA2 / pjsua CLI usage, interaction with STUN/TURN/ICE, limitations.
 - :doc:`uPnP API reference </api/generated/pjnath/group/group__PJNATH__UPNP>`
+- Original implementation: :pr:`3184`
 
 
 NAT Type Detection
