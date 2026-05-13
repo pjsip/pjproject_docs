@@ -250,8 +250,9 @@ Behaviour and caveats
   :cpp:any:`pjsua_acc_config::transport_id` is non-default,
   affinity is silently bypassed — ``transport_id`` already pins
   the account to a specific local listener, which is a stronger
-  form of pinning. ``set_affinity_addr`` returns ``PJ_EINVALIDOP``
-  in that case.
+  form of pinning. :cpp:any:`pjsua_acc_set_affinity_addr`
+  (and :cpp:func:`pj::Account::setAffinityAddr`) return
+  ``PJ_EINVALIDOP`` in that case.
 
 - **UDP + ``reg_use_proxy=0``.** When REGISTER is configured to
   bypass both outbound and account proxies (``reg_use_proxy = 0``)
@@ -268,9 +269,11 @@ Behaviour and caveats
   There is no live health probe.
 
 - **Mid-call re-resolution.** Existing dialogs / calls hold their
-  own transport refs and are unaffected by ``refresh_transport``;
-  only the *next* REGISTER (and any new request after that) sees
-  the fresh resolution.
+  own transport refs and are unaffected by
+  :cpp:any:`pjsua_acc_refresh_transport` /
+  :cpp:func:`pj::Account::refreshTransport`; only the *next*
+  REGISTER (and any new request after that) sees the fresh
+  resolution.
 
 
 Diagnostics
