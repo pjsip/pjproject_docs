@@ -159,14 +159,18 @@ answerer (summary from
      for DTLS-SRTP) is rejected with 488 / Not Acceptable Here.
 
 :c:macro:`PJMEDIA_SRTP_OPTIONAL`
-   - **Offerer**: SRTP is offered alongside a non-secure option.
-     For SDES, that means an ``RTP/AVP`` m-line with ``a=crypto``;
-     for DTLS-SRTP, the offer uses ``UDP/TLS/RTP/SAVP`` (DTLS-SRTP
-     doesn't have a same-m-line non-secure fallback — see the
-     DTLS-SRTP section). The peer can accept SRTP or not.
+   - **Offerer**: SRTP is offered. For SDES the m-line is
+     ``RTP/AVP`` with ``a=crypto``, which the peer may answer either
+     securely (echo back a chosen crypto) or non-securely (omit
+     crypto). For DTLS-SRTP the m-line is ``UDP/TLS/RTP/SAVP``,
+     which the peer must accept as DTLS-SRTP or reject (the same
+     m-line cannot answer ``RTP/AVP``); OPTIONAL adds nothing
+     special on the offerer side for DTLS-SRTP.
    - **Answerer**: accept whatever the remote offered. Non-secure
      offers are answered non-secure; SRTP offers are answered with
-     SRTP.
+     SRTP. This is where OPTIONAL really matters — it lets the
+     local side join non-secure calls when the remote initiated
+     them.
 
 :c:macro:`PJMEDIA_SRTP_MANDATORY`
    - **Offerer**: the offer requires SRTP — ``RTP/SAVP`` for SDES
