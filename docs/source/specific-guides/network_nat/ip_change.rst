@@ -156,21 +156,24 @@ falls back to re-INVITE if the peer didn't advertise UPDATE in
    With listeners disabled, outbound TCP/TLS still works and the
    listener-restart step on IP change is a graceful no-op (per
    :pr:`3873`). See the macro doxygen for the additional
-   ``contact_use_src_port`` setting they require. To remove TLS code
-   entirely for footprint, set :c:macro:`PJSIP_HAS_TLS_TRANSPORT` to
-   ``0`` (TCP cannot be disabled at build time).
+   :cpp:any:`pjsua_acc_config::contact_use_src_port` /
+   :cpp:any:`pj::AccountNatConfig::contactUseSrcPort` setting they
+   require. To remove TLS code entirely for footprint, set
+   :c:macro:`PJSIP_HAS_TLS_TRANSPORT` to ``0`` (TCP cannot be
+   disabled at build time).
 
-A reasonable mobile-tuned configuration in PJSUA2:
+A reasonable mobile-tuned configuration in PJSUA2 (set the
+per-account knobs on the :cpp:any:`pj::AccountConfig` you pass to
+:cpp:func:`pj::Account::create` or :cpp:func:`pj::Account::modify`):
 
 .. code-block:: c++
 
-    // Per-account knobs — set before account.create() / account.modify().
     AccountConfig acc_cfg;
     // ... existing config (id, registrar, credentials) ...
-    acc_cfg.regConfig.disableRegOnModify        = true;  // if you call modify()
-    acc_cfg.ipChangeConfig.shutdownTp           = true;  // default
-    acc_cfg.ipChangeConfig.reinvUseUpdate       = true;  // prefer UPDATE
-    acc->modify(acc_cfg);  // or set on AccountConfig before account.create()
+    acc_cfg.regConfig.disableRegOnModify  = true;  // if you call modify()
+    acc_cfg.ipChangeConfig.shutdownTp     = true;  // default
+    acc_cfg.ipChangeConfig.reinvUseUpdate = true;  // prefer UPDATE
+    account.modify(acc_cfg);  // or pass acc_cfg to account.create()
 
     // On the IP-change event, hand off to PJSUA-LIB:
     IpChangeParam param;            // defaults: restartListener=true,
@@ -183,7 +186,8 @@ PJSUA-LIB equivalent:
 
     pjsua_ip_change_param ip_change_param;
     pjsua_ip_change_param_default(&ip_change_param);
-    /* All three already default to PJ_TRUE; shown for clarity. */
+    /* shutdown_transport and restart_listener already default to
+     * PJ_TRUE; shown here for clarity. */
     ip_change_param.shutdown_transport = PJ_TRUE;
     ip_change_param.restart_listener   = PJ_TRUE;
 
@@ -228,16 +232,17 @@ and per-account media (RTP/RTCP):
 
    // PJSUA2 — call before recreating SIP transport / modifying account.
    const std::string new_local_ip = "10.0.0.5";
+   Endpoint &ep = Endpoint::instance();
 
    // SIP transport: pass on the TransportConfig at transportCreate() time.
    TransportConfig sip_tp_cfg;
    sip_tp_cfg.boundAddress = new_local_ip;
-   ep.transportDestroy(old_sip_tp_id);
+   ep.transportClose(old_sip_tp_id);
    ep.transportCreate(PJSIP_TRANSPORT_UDP, sip_tp_cfg);
 
    // Media (RTP/RTCP): on the account config, then re-apply.
    acc_cfg.mediaConfig.transportConfig.boundAddress = new_local_ip;
-   acc->modify(acc_cfg);
+   account.modify(acc_cfg);
 
    ep.handleIpChange(IpChangeParam());
 
