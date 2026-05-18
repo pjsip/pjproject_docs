@@ -380,7 +380,7 @@ PJSUA-LIB equivalents
 +------------------------------------------------------+--------------------------------------------------------+
 | ``VideoMedia::stopTransmit(sink)``                   | :cpp:any:`pjsua_vid_conf_disconnect()`                 |
 +------------------------------------------------------+--------------------------------------------------------+
-| :cpp:func:`pj::VideoMedia::registerMediaPort()`     | :cpp:any:`pjsua_vid_conf_add_port()`                   |
+| :cpp:func:`pj::VideoMedia::registerMediaPort()`      | :cpp:any:`pjsua_vid_conf_add_port()`                   |
 +------------------------------------------------------+--------------------------------------------------------+
 | :cpp:func:`pj::VideoMedia::unregisterMediaPort()`    | :cpp:any:`pjsua_vid_conf_remove_port()`                |
 +------------------------------------------------------+--------------------------------------------------------+
