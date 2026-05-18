@@ -422,13 +422,13 @@ default ``printf()`` does depends on which side of the JNI boundary
 the message originates:
 
 - **PJSUA2 from Java / Kotlin** (the typical app pattern): override
-  :cpp:any:`pj::LogWriter` and call ``System.out.println(entry.msg)``
-  / ``println(entry.msg)``. Android's runtime forwards
-  ``System.out`` to logcat under the ``System.out`` tag, so logs
-  show up in logcat automatically. This is what the bundled
-  ``pjsua2`` Java / Kotlin Android samples do
+  :cpp:any:`pj::LogWriter` and call
+  ``System.out.println(entry.getMsg())``. Android's runtime
+  forwards ``System.out`` to logcat under the ``System.out`` tag,
+  so logs show up in logcat automatically. This is what the
+  bundled ``pjsua2`` Java / Kotlin Android samples do
   (see :sourcedir:`pjsip-apps/src/swig/java/android/`). For a
-  custom tag, call ``android.util.Log.d("pjsip", entry.msg)``
+  custom tag, call ``android.util.Log.d("pjsip", entry.getMsg())``
   instead of ``println``.
 - **Native NDK code linking the library directly**: ``printf()`` /
   stdout from the native side is not forwarded to logcat. Set
@@ -524,7 +524,10 @@ PJSUA2:
 
    // Audio — record the call leg as it sounds locally.
    AudioMediaRecorder rec;
-   rec.createRecorder("/sdcard/Android/data/com.example/files/call.wav");
+   rec.createRecorder("/path/to/writable/call.wav");
+   // On Android, pass the path from context.getFilesDir() (or
+   // context.getExternalFilesDir(null)) through JNI; on iOS, the
+   // Documents directory; on desktop, any writable path.
 
    // Hook to the call's audio leg (after the call connects).
    AudioMedia callAudio = call.getAudioMedia(/*med_idx*/ -1);
@@ -691,19 +694,28 @@ For systemd services, configure ``LimitCORE`` and
   symbolication if you upload your ``.dSYM`` / unstripped ``.so``
   / ``.pdb``.
 - **Custom**: install a signal handler (``SIGSEGV``, ``SIGABRT``)
-  that walks the stack via ``backtrace()`` / ``backtrace_symbols()``
-  (glibc / macOS), writes the result to your log, and re-raises.
-  Beware: signal handlers run in a constrained context — keep the
-  handler small, no ``malloc``, no PJ_LOG (logs may not flush).
+  that captures **raw frame addresses** via ``backtrace()`` (glibc
+  / macOS — async-signal-safe), writes them with ``write(2)`` to
+  a pre-opened file descriptor, and re-raises. Resolve the
+  addresses to symbols *offline* with ``addr2line`` against the
+  unstripped binary. Do **not** call ``backtrace_symbols()``,
+  ``malloc``, ``printf``, or PJ_LOG from the handler — they
+  aren't async-signal-safe and can deadlock or corrupt state.
+  For anything beyond this minimal pattern, prefer a dedicated
+  crash-reporter library.
 
 **Android tombstones**: native crashes produce tombstones in
-``/data/tombstones/``. Pull via:
+``/data/tombstones/`` (system-owned, not app-readable). The
+portable way to retrieve them is via the bug report:
 
 .. code-block:: shell
 
    adb bugreport bugreport.zip
-   # tombstone files are inside; or:
-   adb shell run-as <pkg> ls /data/tombstones
+   # tombstone files are inside, under FS/data/tombstones/
+
+Direct access via ``adb shell ls /data/tombstones`` works only
+when the ``shell`` user has access (typically rooted devices /
+``userdebug`` builds); on stock release builds root is required.
 
 Symbolicate with ``ndk-stack``:
 
