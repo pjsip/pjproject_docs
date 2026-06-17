@@ -35,44 +35,83 @@ Failover with TLS
 -----------------------------------------
 To do application-controlled failover over TLS, keep the **hostname** in the
 proxy/Route URI (so SNI and certificate validation use the correct name) and
-select the actual server *address* separately.
+select the actual server *address* separately. A PJSUA application can do this
+with an external resolver (current releases) or with server affinity (the
+release after 2.17); an application working directly at the PJSIP layer can use
+the transport API.
 
-Using an external resolver
+Using an external resolver (PJSUA)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Register an external resolver with :cpp:any:`pjsip_resolver_set_ext_resolver()`.
+Register an external resolver with :cpp:any:`pjsip_endpt_set_ext_resolver()`.
 Because the next-hop hostname is recorded before resolution runs, ``dest_info.name``
 stays the hostname — so SNI and certificate validation remain correct — while
 your resolver callback decides which address(es) to return for that hostname,
 in what order, and which failing server to exclude. PJSIP then uses the
 returned addresses (and retries the next one on connect failure). This works
-with PJSUA and keeps all failover policy in the application.
+with PJSUA on current releases and keeps all failover policy in the application.
 
-Using the transport API directly
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-At the PJSIP level the connect address and the TLS name are independent inputs
-to :cpp:any:`pjsip_endpt_acquire_transport2()`: the ``addr`` argument is the
-socket connect target, while ``tdata->dest_info.name`` is the name used for SNI
-and certificate validation. Acquire the transport with the IP as ``addr`` and
-the hostname in ``dest_info.name``. The call only *reads* ``dest_info`` from
-the tdata (to learn the connect target and the TLS name) and does not retain
-or reference-count it, so a throwaway zero-initialized ``pjsip_tx_data`` is
-sufficient here — this mirrors the pattern PJSIP uses internally::
+The resolver is just a single ``resolve`` callback — typically a thin wrapper
+over ``pj_getaddrinfo()`` (or your own server table) that returns the addresses
+in the order your failover logic prefers::
 
-    pjsip_tx_data dummy;
-    pj_bzero(&dummy, sizeof(dummy));
-    pj_strdup2(pool, &dummy.dest_info.name, "sip.example.com");
+    /* Turn the next-hop hostname into an address list, in your preferred
+     * order. dest_info.name already holds the hostname, so SNI/cert are
+     * unaffected by what is returned here.
+     */
+    static void my_resolve(pjsip_resolver_t *res, pj_pool_t *pool,
+                           const pjsip_host_info *target, void *token,
+                           pjsip_resolver_callback *cb)
+    {
+        pjsip_server_addresses svr;
+        pj_addrinfo ai[8];
+        unsigned i, cnt = PJ_ARRAY_SIZE(ai);
+        pj_status_t status;
 
-    pjsip_endpt_acquire_transport2(endpt, PJSIP_TRANSPORT_TLS,
-                                   &ip_addr, addr_len,  /* connect target */
-                                   tp_sel, &dummy, &tp);
+        pj_bzero(&svr, sizeof(svr));
+
+        /* Resolve the hostname (getaddrinfo/DNS SRV), or consult your own
+         * server table here and drop/reorder the servers you think are down.
+         */
+        status = pj_getaddrinfo(pj_AF_UNSPEC(), &target->addr.host, &cnt, ai);
+
+        for (i = 0; i < cnt; ++i) {
+            pj_sockaddr_cp(&svr.entry[i].addr, &ai[i].ai_addr);
+            pj_sockaddr_set_port(&svr.entry[i].addr,
+                                 (pj_uint16_t)(target->addr.port ?
+                                               target->addr.port : 5061));
+            svr.entry[i].addr_len = pj_sockaddr_get_len(&svr.entry[i].addr);
+            svr.entry[i].type     = target->type;   /* preserve transport (TLS) */
+            svr.entry[i].name     = target->addr.host;
+        }
+        svr.count = cnt;
+
+        cb(status, token, &svr);   /* hand the ordered list back to PJSIP */
+    }
+
+    /* Install once, e.g. right after pjsua_init(). */
+    pjsip_ext_resolver ext;
+    pj_bzero(&ext, sizeof(ext));
+    ext.resolve = &my_resolve;
+    pjsip_endpt_set_ext_resolver(pjsua_get_pjsip_endpt(), &ext);
+
+.. note::
+
+   The callback does not have to do the lookup itself with ``pj_getaddrinfo()``.
+   It can instead drive PJSIP's built-in DNS resolver — obtained via
+   :cpp:any:`pjsip_endpt_get_resolver()` (a :cpp:any:`pj_dns_resolver`) — to
+   perform the actual SRV/A resolution, then reorder or filter the results
+   before calling ``cb``. That keeps PJSIP's DNS handling (SRV priority/weight,
+   caching) while still letting the application control failover order. Note the
+   resolution is asynchronous in that case: call ``cb`` from the DNS query
+   completion, not inline.
 
 Using server affinity (PJSUA)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. note::
 
    Server affinity is **not yet part of a released PJSIP version**; it will ship
-   in the next release after 2.17. Use one of the approaches above on current
-   releases. See :ref:`guide_server_affinity` for the full feature guide.
+   in the next release after 2.17. On current releases use the external resolver
+   above. See :ref:`guide_server_affinity` for the full feature guide.
 
 Enable :cpp:any:`pjsua_acc_config::server_affinity` on the account and pin the
 chosen server address with :cpp:any:`pjsua_acc_set_affinity_addr()`. The
@@ -117,3 +156,38 @@ handshake used the correct hostname.
    header). It is the recommended way to do application-controlled failover for
    any transport; for TLS it additionally keeps the SNI and certificate name
    correct.
+
+Using the transport API directly (PJSIP layer)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+At the PJSIP level the connect address and the TLS name are independent inputs
+to :cpp:any:`pjsip_endpt_acquire_transport2()`: the ``addr`` argument is the
+socket connect target, while ``tdata->dest_info.name`` is the name used for SNI
+and certificate validation. Acquire the transport with the IP as ``addr`` and
+the hostname in ``dest_info.name``. The call only *reads* ``dest_info`` from
+the tdata (to learn the connect target and the TLS name) and does not retain
+or reference-count it, so a throwaway zero-initialized ``pjsip_tx_data`` is
+sufficient here — this mirrors the pattern PJSIP uses internally::
+
+    pjsip_tx_data dummy;
+    pj_bzero(&dummy, sizeof(dummy));
+    pj_strdup2(pool, &dummy.dest_info.name, "sip.example.com");
+
+    pjsip_endpt_acquire_transport2(endpt, PJSIP_TRANSPORT_TLS,
+                                   &ip_addr, addr_len,  /* connect target */
+                                   tp_sel, &dummy, &tp);
+
+To actually send on that connection, set a transport selector of type
+``PJSIP_TPSELECTOR_TRANSPORT`` (``sel->u.transport`` = the acquired transport)
+on the outgoing :cpp:any:`pjsip_tx_data` before sending.
+
+.. note::
+
+   This is a PJSIP-layer technique and is **not reachable from a plain PJSUA
+   application**. PJSUA's per-account transport binding
+   (:cpp:any:`pjsua_acc_config::transport_id` / :cpp:any:`pjsua_acc_set_transport()`)
+   selects only the local *listener* for connection-oriented transports
+   (TCP/TLS), not a specific connected transport, so it cannot pin the
+   destination. Use this approach when your application manages its own dialogs
+   and transactions and can set ``tdata->tp_sel`` directly. PJSUA applications
+   should use the external resolver (current releases) or server affinity (the
+   release after 2.17) above instead.
