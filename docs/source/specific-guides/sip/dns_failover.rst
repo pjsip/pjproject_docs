@@ -20,10 +20,10 @@ use by changing the account proxy setting with :cpp:any:`pjsua_acc_modify()`.
    **This IP-in-Route approach does not work for TLS.** When an IP address is
    put in the proxy/Route URI, PJSIP uses that same value both as the TLS
    ClientHello SNI and as the name matched against the server certificate
-   (CN/SubjectAltName). Sending an IP literal as SNI is invalid per RFC 6066,
-   and the certificate name check fails because certificates carry the server
-   *hostname*, not its IP. The result is a failed handshake or a rejected
-   certificate.
+   (CN/subjectAltName). Sending an IP literal as SNI is invalid per RFC 6066,
+   and the certificate name check typically fails because certificates usually
+   carry the server *hostname*, not its IP (unless the cert includes an iPAddress
+   subjectAltName entry). The result is a failed handshake or a rejected certificate.
 
    The underlying reason is that the TLS transport derives the SNI and the
    certificate-validation name from a single field (the next-hop URI host),
