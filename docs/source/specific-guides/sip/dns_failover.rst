@@ -53,7 +53,10 @@ At the PJSIP level the connect address and the TLS name are independent inputs
 to :cpp:any:`pjsip_endpt_acquire_transport2()`: the ``addr`` argument is the
 socket connect target, while ``tdata->dest_info.name`` is the name used for SNI
 and certificate validation. Acquire the transport with the IP as ``addr`` and
-the hostname in ``dest_info.name``::
+the hostname in ``dest_info.name``. The call only *reads* ``dest_info`` from
+the tdata (to learn the connect target and the TLS name) and does not retain
+or reference-count it, so a throwaway zero-initialized ``pjsip_tx_data`` is
+sufficient here — this mirrors the pattern PJSIP uses internally::
 
     pjsip_tx_data dummy;
     pj_bzero(&dummy, sizeof(dummy));
@@ -67,10 +70,11 @@ Using server affinity (PJSUA)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. note::
 
-   Server affinity is not available in a stable release yet; it is targeted for
-   an upcoming release. Use one of the approaches above on current releases.
+   Server affinity is **not yet part of a released PJSIP version**; it will ship
+   in the next release after 2.17. Use one of the approaches above on current
+   releases. See :ref:`guide_server_affinity` for the full feature guide.
 
-Enable :cpp:any:`pjsua_acc_config.server_affinity` on the account and pin the
+Enable :cpp:any:`pjsua_acc_config::server_affinity` on the account and pin the
 chosen server address with :cpp:any:`pjsua_acc_set_affinity_addr()`. The
 hostname in ``proxy[0]`` (or ``reg_uri``) is used for SNI and certificate
 validation, while the address you pass is used as the actual connect target::
