@@ -73,6 +73,10 @@ in the order your failover logic prefers::
          * server table here and drop/reorder the servers you think are down.
          */
         status = pj_getaddrinfo(pj_AF_UNSPEC(), &target->addr.host, &cnt, ai);
+        if (status != PJ_SUCCESS) {
+            cb(status, token, &svr);   /* svr.count == 0: nothing resolved */
+            return;
+        }
 
         for (i = 0; i < cnt; ++i) {
             pj_sockaddr_cp(&svr.entry[i].addr, &ai[i].ai_addr);
@@ -128,14 +132,16 @@ validation, while the address you pass is used as the actual connect target::
 
     /* Enable affinity so the pinned transport is reused across requests.
      * Leave cfg.transport_id == PJSUA_INVALID_ID: a fixed transport_id
-     * bypasses affinity. */
+     * bypasses affinity.
+     */
     cfg.server_affinity = PJSUA_SERVER_AFFINITY_ENABLED;
 
     pjsua_acc_add(&cfg, PJ_TRUE, &acc_id);
 
     /* Pick the server IP yourself (your failover decision) and pin it.
      * Connects to 198.51.100.10:5061 but presents/validates the TLS name
-     * as "sip.example.com". */
+     * as "sip.example.com".
+     */
     pj_sockaddr addr;
     pj_sockaddr_init(pj_AF_INET(), &addr, NULL, 5061);
     pj_inet_pton(pj_AF_INET(), &pj_str("198.51.100.10"),
