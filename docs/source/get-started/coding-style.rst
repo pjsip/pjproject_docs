@@ -55,6 +55,13 @@ future that we used to have that code (and it was disabled for a reason). For ex
     // *(int*)0 = 0;
 
 
+Avoid unnecessary comments
+----------------------------
+Avoid adding code comments unless necessary, i.e. only if the code itself is not self
+explanatory. When necessary, code comments must be as brief as possible to ensure
+readability and avoid overbloating.
+
+
 No declaration after statement
 ----------------------------------
 We don't use declaration after statement because our compiler did not support it back then
