@@ -119,7 +119,7 @@ sent with TCP, **provided a TCP transport exists** (see below).
 In case TCP transport is not instantiated, you may see an error similar
 to this:
 
-   *"Temporary failure in sending Request msg INVITE/cseq=15228 (tdta02EB0530), will try next server. Err=171060 (Unsupported transport (PJSIP_EUNSUPTRANSPORT))*
+   *"Temporary failure in sending Request msg INVITE/cseq=15228 (tdta02EB0530), will try next server. Err=171060 (Unsupported transport (PJSIP_EUNSUPTRANSPORT))"*
 
 As the error says, the error is not permanent, as PJSIP will send the
 request anyway with UDP.
