@@ -104,15 +104,33 @@ It could be the case that the initial INVITE is sent with UDP, and once
 the request is challenged with 401 or 407, the size grows larger than
 1300 bytes due to the addition of *Authorization* or
 *Proxy-Authorization* header. In this case, the request retry will be
-sent with TCP.
+sent with TCP, **provided a TCP transport exists** (see below).
 
-In case TCP transport is not instantiated, you will see error similar to
-this:
+.. important::
+
+   The switch can only use a transport that has been created. If the
+   application created a UDP transport but no TCP transport, there is
+   nothing to switch to: the oversized request is sent over UDP after
+   all, where it is likely to be fragmented and dropped by intervening
+   NATs or proxies. Applications relying on this feature should create a
+   TCP transport alongside the UDP one, even when TCP is never selected
+   explicitly.
+
+In case TCP transport is not instantiated, you may see an error similar
+to this:
 
    *"Temporary failure in sending Request msg INVITE/cseq=15228 (tdta02EB0530), will try next server. Err=171060 (Unsupported transport (PJSIP_EUNSUPTRANSPORT))*
 
 As the error says, the error is not permanent, as PJSIP will send the
 request anyway with UDP.
+
+This message is not emitted on every path, however. When the switch has
+already inserted TCP entries into the resolved address list and acquiring
+the TCP transport fails, the stack simply moves on to the next entry —
+the original UDP address. That fallback is logged at level 5 as
+*"Unable to acquire ... transport ..., trying next address"*; in releases
+before that message was added it is silent, and the only symptom is an
+oversized request going out over UDP and the transaction timing out.
 
 This TCP switching feature can be disabled as follows:
 
