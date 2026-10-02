@@ -264,13 +264,16 @@ Things to know:
 
   .. code-block:: powershell
 
-     > $vs = Join-Path $env:VSINSTALLDIR "Common7\IDE\CommonExtensions\Microsoft\CMake"
+     > $vsw = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+     > $vs = Join-Path (& $vsw -latest -products * -property installationPath) `
+         "Common7\IDE\CommonExtensions\Microsoft\CMake"
      > $env:PATH = "$vs\CMake\bin;$vs\Ninja;$env:PATH"
      > cmake -S . -B cmake-build -G "Visual Studio 17 2022" -A x64 `
          "-DCMAKE_IGNORE_PREFIX_PATH=C:/msys64/mingw64;C:/msys64/ucrt64;C:/msys64/usr;C:/Strawberry/c"
 
-  ``VSINSTALLDIR`` is set by the developer shell, for any Visual Studio
-  edition.
+  ``vswhere``, from the Visual Studio Installer, finds the installation of
+  any edition, Build Tools included, so this works in a plain PowerShell
+  too.
 
 Windows, MinGW-w64
 ^^^^^^^^^^^^^^^^^^
