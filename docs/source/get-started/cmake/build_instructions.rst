@@ -77,7 +77,8 @@ compiled without optimization or debug info, so always pass one of
 Multi-config generators (Visual Studio, Xcode, Ninja Multi-Config) ignore
 ``CMAKE_BUILD_TYPE``. Choose the configuration at build, test and install
 time instead, e.g. ``cmake --build cmake-build --config Release``,
-``ctest -C Release`` and ``cmake --install cmake-build --config Release``.
+``ctest --test-dir cmake-build -C Release`` and
+``cmake --install cmake-build --config Release``.
 Binaries then go to ``<build>/<module>/<Config>/``.
 
 
@@ -263,15 +264,18 @@ Things to know:
 
   .. code-block:: powershell
 
-     > $vs = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake"
+     > $vs = Join-Path $env:VSINSTALLDIR "Common7\IDE\CommonExtensions\Microsoft\CMake"
      > $env:PATH = "$vs\CMake\bin;$vs\Ninja;$env:PATH"
      > cmake -S . -B cmake-build -G "Visual Studio 17 2022" -A x64 `
-         "-DCMAKE_IGNORE_PREFIX_PATH=C:/msys64/mingw64;C:/msys64/usr;C:/Strawberry/c"
+         "-DCMAKE_IGNORE_PREFIX_PATH=C:/msys64/mingw64;C:/msys64/ucrt64;C:/msys64/usr;C:/Strawberry/c"
+
+  ``VSINSTALLDIR`` is set by the developer shell, for any Visual Studio
+  edition.
 
 Windows, MinGW-w64
 ^^^^^^^^^^^^^^^^^^
 
-From an MSYS2 *MINGW64* or *UCRT64* shell:
+From an MSYS2 *MINGW64* shell:
 
 .. code-block:: shell
 
@@ -279,6 +283,9 @@ From an MSYS2 *MINGW64* or *UCRT64* shell:
          mingw-w64-x86_64-ninja mingw-w64-x86_64-openssl
    $ cmake -S . -B cmake-build -G Ninja -DCMAKE_BUILD_TYPE=Release
    $ cmake --build cmake-build
+
+A *UCRT64* shell takes the same packages with the
+``mingw-w64-ucrt-x86_64-`` prefix instead; this has not been verified.
 
 The Windows-native options above apply too, except Schannel, which needs
 MSVC. The bundled WebRTC AEC and AEC3 are not available. Run the binaries
@@ -449,9 +456,14 @@ Migrating from ``./configure``
        ``-DPJMEDIA_WITH_FFMPEG=OFF``
    * - ``--disable-upnp``
      - ``-DPJNATH_WITH_UPNP=OFF``
-   * - ``--with-external-srtp``, ``-speex``, ``-yuv``, ``-gsm``
-     - ``-DPJ_DEP_SRTP=system``, ``-DPJ_DEP_SPEEX=system``,
-       ``-DPJ_DEP_YUV=system``, ``-DPJ_DEP_GSM=system``
+   * - ``--with-external-srtp``
+     - ``-DPJ_DEP_SRTP=system``
+   * - ``--with-external-speex``
+     - ``-DPJ_DEP_SPEEX=system``
+   * - ``--with-external-yuv``
+     - ``-DPJ_DEP_YUV=system``
+   * - ``--with-external-gsm``
+     - ``-DPJ_DEP_GSM=system``
    * - ``CFLAGS``, ``LDFLAGS``, ``user.mak``
      - ``-DCMAKE_C_FLAGS=...``, ``-DCMAKE_CXX_FLAGS=...``,
        ``-DCMAKE_EXE_LINKER_FLAGS=...``
