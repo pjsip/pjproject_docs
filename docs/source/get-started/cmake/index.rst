@@ -40,6 +40,11 @@ CMake support is **experimental**. Its status per platform:
 The GNU build, and on Windows the Visual Studio solution, remain the
 reference builds.
 
+.. note::
+
+   iOS (:pr:`5263`), Android (:pr:`5270`) and Windows (:pr:`5295`) support
+   are newer than 2.17. Use the master branch, or a later release.
+
 .. toctree::
    :maxdepth: 1
    :caption: Table of Contents

@@ -238,6 +238,9 @@ audio device support at all.
    * - ``PJMEDIA_WITH_AUDIODEV_JNI``
      - ``ON``
      - Android
+   * - ``PJMEDIA_WITH_AUDIODEV_NULL``
+     - ``OFF``
+     - All; a device that plays and records nothing
 
 Video devices
 ^^^^^^^^^^^^^

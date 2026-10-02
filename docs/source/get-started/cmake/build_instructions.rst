@@ -396,9 +396,17 @@ Installing
 installs:
 
 * headers under ``<prefix>/include/``;
-* libraries under ``<prefix>/lib/`` (``lib64`` on some distributions);
+* the PJSIP libraries under ``<prefix>/lib/`` (``lib64`` on some
+  distributions), and the bundled third-party ones under
+  ``<prefix>/lib/pjproject/third_party/``;
 * ``pjsua`` under ``<prefix>/bin/``;
-* the CMake package under ``<prefix>/lib/cmake/Pj/``, see :doc:`using`.
+* the CMake package under ``<prefix>/lib/cmake/Pj/``, and a pkg-config
+  file, ``<prefix>/lib/pkgconfig/libpjproject.pc``; see :doc:`using`.
+
+.. note::
+
+   Before :pr:`5301`, a static build installed its libraries under
+   ``<prefix>/bin/``, and the pkg-config file was empty.
 
 Packagers can split the installation with ``--component PjRuntime``
 (shared libraries and executables) and ``--component PjDevelopment``

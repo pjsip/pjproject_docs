@@ -125,3 +125,19 @@ PJSIP can also be built inside another project, without installing it:
 
 The targets then have no ``Pj::`` prefix: link ``pjsua-lib``, ``pjsua2``,
 ``pjsip``, and so on.
+
+
+Without CMake
+-------------
+
+The installation also has a pkg-config file. For a static build, ask for
+the libraries PJSIP itself links too, with ``--static``:
+
+.. code-block:: shell
+
+   $ export PKG_CONFIG_PATH=/opt/pjsip/lib/pkgconfig
+   $ cc myapp.c -o myapp $(pkg-config --static --cflags --libs libpjproject)
+
+The file locates the installation relative to itself, so it stays valid
+when the installation is moved. Use it with GCC or Clang; it requires
+:pr:`5301`.
