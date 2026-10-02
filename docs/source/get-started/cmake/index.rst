@@ -1,16 +1,54 @@
 CMake (experimental)
 *****************************************
 
+PJSIP can be built with CMake 3.28 or newer, as an alternative to the GNU
+build (``./configure && make``) and the Visual Studio solution. The CMake
+build also installs a ``find_package(Pj)`` package for use by other CMake
+projects.
+
+CMake support is **experimental**. Its status per platform:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 20 45
+
+   * - Platform
+     - Status
+     - Notes
+   * - Linux x86_64
+     - CI
+     -
+   * - macOS (Intel, Apple Silicon)
+     - CI
+     -
+   * - Android (arm64-v8a, armeabi-v7a, x86_64, x86)
+     - CI
+     - Also builds the pjsua2 JNI bindings and the AAR.
+   * - Windows x64, Visual Studio 2022
+     - CI
+     -
+   * - iOS (device, simulator)
+     - Verified manually
+     - Also used to build the PJSIP XCFramework.
+   * - Windows, MinGW-w64 (MSYS2)
+     - Verified manually
+     -
+   * - Other targets (BSD, RTEMS, other cross builds)
+     - Not validated
+     - Use the GNU build.
+
+The GNU build, and on Windows the Visual Studio solution, remain the
+reference builds.
+
 .. note::
 
-   CMake support is currently experimental. Tested platforms are Linux
-   x86_64 and macOS. Windows, Android, iOS, and cross-compilation builds
-   are not yet validated. The GNU build system (``./configure && make``)
-   remains the reference build for all platforms.
+   iOS (:pr:`5263`), Android (:pr:`5270`) and Windows (:pr:`5295`) support
+   are newer than 2.17. Use the master branch, or a later release.
 
 .. toctree::
    :maxdepth: 1
    :caption: Table of Contents
 
    build_instructions
+   options
    using

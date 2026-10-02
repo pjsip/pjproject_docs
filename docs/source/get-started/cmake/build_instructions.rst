@@ -2,584 +2,48 @@ Build Instructions with CMake
 =======================================================================================
 
 .. contents:: Table of Contents
-    :depth: 3
-
-
-Supported Platforms
--------------------
-
-CMake support was introduced in PJSIP 2.16 (:pr:`4494`) and is still
-marked **experimental** as of 2.17. Subsequent refinements include
-install/export support that makes ``find_package(Pj)`` usable by
-downstream projects (:pr:`4900`), version reading from ``version.mak``
-(:pr:`4896`), and aarch64 atomics fixes (:pr:`4739`). It is regularly
-tested on:
-
-* Linux x86_64
-* macOS (Intel and Apple Silicon)
-
-Other targets covered by the GNU build system (Windows, Android, iOS,
-mingw, cross-compilation, RTEMS, BSD, etc.) are not yet validated with
-CMake. For those platforms, use the autoconf build described in
-:any:`/get-started/posix/build_instructions` or the Visual Studio
-projects described in :any:`/get-started/windows/index`.
-
-When configuring, CMake prints a warning banner to make the experimental
-status explicit. The banner can be silenced once you are aware of the
-caveats:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build -DPJ_SKIP_EXPERIMENTAL_NOTICE=ON
+    :depth: 2
 
 
 Requirements
 ------------
 
-Tools
-^^^^^
-
 * **CMake 3.28** or newer.
-* A C and C++ compiler (GCC, Clang, or Apple Clang on macOS).
-* A build tool supported by CMake (Ninja or GNU Make recommended).
+* A C and C++ compiler: GCC, Clang, Apple Clang, or MSVC.
+* A build tool: Ninja or Make, or a Visual Studio or Xcode generator.
 
-Optional system libraries
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The same optional libraries listed for the GNU build apply. CMake locates
-them through its ``find_package()`` mechanism, using either CMake's
-built-in modules or the Find modules shipped under
-:source:`cmake/<cmake/>`:
-
-* SSL/TLS backends: OpenSSL, GnuTLS, Mbed TLS, Apple (darwin), Windows
-  Schannel. See :any:`/specific-guides/security/ssl`.
-* Audio: ALSA (Linux), Core Audio (macOS), Oboe (Android), WASAPI
-  (Windows).
-* Video: SDL2, FFMPEG, libyuv, OpenH264, libvpx, Video4Linux2 (Linux),
-  Metal (macOS/iOS).
-* Audio codecs: OPUS, Speex, SpeexDSP, SILK, OpenCORE AMR, Lyra, bcg729.
-* Other: libsrtp, libuuid, libupnp.
-
-The third-party libraries bundled in the :source:`third_party/` directory
-(Speex, GSM, iLBC, libsrtp, libyuv, libwebrtc, libwebrtc-aec3, G.722.1,
-and the legacy resampler) are built from source by default. Each one can
-optionally be switched to a system-provided copy via ``PJ_DEP_<NAME>``;
-see `Third-party dependency providers`_ below.
+The third-party libraries in :source:`third_party/` (Speex, GSM, iLBC,
+G.722.1, libsrtp, libyuv, the resampler, WebRTC AEC and AEC3) are built from
+source by default. Everything else is optional and found with
+``find_package()``: OpenSSL or another SSL backend, Opus, SDL2, OpenH264,
+libvpx, FFMPEG, ALSA, Video4Linux2, libuuid, libupnp, and others. See
+:doc:`options`.
 
 
 Quick Start
 -----------
 
-From the top of the source tree:
-
 .. code-block:: shell
 
    $ cd pjproject
-   $ cmake -S . -B build
-   $ cmake --build build -j
-
-The build places its output under ``build/`` rather than in the
-``<module>/lib`` and ``<module>/bin`` directories used by the GNU build.
-
-To run the test suite:
-
-.. code-block:: shell
-
-   $ ctest --test-dir build --output-on-failure
-
-To install headers, libraries, and the CMake package config:
-
-.. code-block:: shell
-
-   $ cmake --install build --prefix /usr/local
-
-
-Common Configurations
----------------------
-
-The recipes below cover the most frequent customizations. They can be
-combined freely, and all options can also be set interactively via
-``cmake-gui`` or ``ccmake``.
-
-Debug vs release build
-^^^^^^^^^^^^^^^^^^^^^^
-
-The CMake build defaults to ``Release``. Build with debug symbols and
-no optimization:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
-   $ cmake --build build-debug -j
-
-Use ``RelWithDebInfo`` for an optimized build that keeps debug info.
-
-.. note::
-
-   ``CMAKE_BUILD_TYPE`` is orthogonal to PJSIP's compile-time
-   diagnostic switches such as ``PJ_GRP_LOCK_DEBUG`` and
-   ``PJ_POOL_DEBUG``; those live in :any:`config_site.h`.
-
-Shared vs static libraries
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Static archives are built by default. Enable shared libraries with:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build -DBUILD_SHARED_LIBS=ON
-
-Choosing an SSL/TLS backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-OpenSSL is the default. Switch backends with ``PJLIB_WITH_SSL``:
-
-.. code-block:: shell
-
-   # GnuTLS
-   $ cmake -S . -B build -DPJLIB_WITH_SSL=gnutls
-
-   # Mbed TLS (e.g., embedded)
-   $ cmake -S . -B build -DPJLIB_WITH_SSL=mbedtls
-
-   # Apple Secure Transport (macOS / iOS native)
-   $ cmake -S . -B build -DPJLIB_WITH_SSL=darwin
-
-   # Windows Schannel (Windows native)
-   $ cmake -S . -B build -DPJLIB_WITH_SSL=schannel
-
-If the backend is installed outside the default search paths, point
-CMake at it via ``CMAKE_PREFIX_PATH``:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build \
-       -DPJLIB_WITH_SSL=openssl \
-       -DCMAKE_PREFIX_PATH=/opt/openssl-3
-
-See :any:`/specific-guides/security/ssl` for backend trade-offs.
-
-Choosing an I/O queue backend
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The default ``select`` backend works on every supported OS. For
-higher throughput, switch to the platform-native implementation:
-
-.. code-block:: shell
-
-   # Linux
-   $ cmake -S . -B build -DPJLIB_WITH_IOQUEUE=epoll
-
-   # macOS / BSD
-   $ cmake -S . -B build -DPJLIB_WITH_IOQUEUE=kqueue
-
-   # Windows
-   $ cmake -S . -B build -DPJLIB_WITH_IOQUEUE=iocp
-
-Enabling video
-^^^^^^^^^^^^^^
-
-``PJMEDIA_WITH_VIDEO`` is ``ON`` by default, but most video codec
-stacks are pulled in only when their system libraries are present.
-A fully featured video build typically needs SDL2 (preview window),
-libyuv (format conversion), and an H.264 or VP8/VP9 codec:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build \
-       -DPJMEDIA_WITH_VIDEO=ON \
-       -DPJMEDIA_WITH_LIBYUV=ON \
-       -DPJMEDIA_WITH_OPEN_H264_CODEC=ON \
-       -DPJMEDIA_WITH_VPX_CODEC=ON \
-       -DPJMEDIA_WITH_VIDEODEV_SDL=ON
-
-Watch the configure output to confirm that OpenH264, libvpx, libyuv,
-and SDL2 were found. Missing libraries silently turn the
-corresponding feature ``OFF``.
-
-.. note::
-
-   The CMake build automatically adds ``PJMEDIA_HAS_VIDEO=1`` (and
-   the other ``PJMEDIA_HAS_*`` macros) as compile definitions based
-   on the selected options, so you do **not** need to duplicate those
-   in ``config_site.h``.
-
-Minimal / audio-only build
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Skip video and heavier optional components to produce a lean library:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build \
-       -DPJMEDIA_WITH_VIDEO=OFF \
-       -DPJMEDIA_WITH_FFMPEG=OFF \
-       -DPJMEDIA_WITH_WEBRTC_AEC3=OFF
-
-Individual codecs can be disabled the same way,
-e.g. ``-DPJMEDIA_WITH_BCG729_CODEC=OFF`` or
-``-DPJMEDIA_WITH_OPUS_CODEC=OFF``.
-
-Disabling SIP TLS
-^^^^^^^^^^^^^^^^^
-
-SIP TLS transport is enabled whenever an SSL backend is available. To
-skip TLS even when the SSL backend is present:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build -DPJSIP_WITH_TLS=OFF
-
-Disabling UPnP
-^^^^^^^^^^^^^^
-
-.. code-block:: shell
-
-   $ cmake -S . -B build -DPJNATH_WITH_UPNP=OFF
-
-Customizing compile / link flags
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The CMake equivalent of ``user.mak`` is the standard set of CMake
-flag variables:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build \
-       -DCMAKE_C_FLAGS="-msoft-float -fno-builtin" \
-       -DCMAKE_CXX_FLAGS="-msoft-float -fno-builtin" \
-       -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed"
-
-For per-configuration flags use the suffixed forms
-(``CMAKE_C_FLAGS_DEBUG``, ``CMAKE_C_FLAGS_RELEASE``, etc.). Environment
-variables ``CC``, ``CXX``, and ``CFLAGS`` are also honoured on the
-first configure.
-
-Using a system-provided libsrtp
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: shell
-
-   $ cmake -S . -B build -DPJ_DEP_SRTP=system
-
-CMake locates libsrtp through the bundled
-:source:`cmake/FindSRTP.cmake` module. The same pattern works for
-other ``PJ_DEP_*`` entries — see `Third-party dependency providers`_.
-
-.. warning::
-
-   ``PJ_DEP_*=system`` has a known issue in 2.17 where the dependency
-   is located successfully but is not picked up by sibling modules
-   (e.g., libsrtp found, but ``PJMEDIA_WITH_SRTP`` silently turns
-   ``OFF``). The fix (:pr:`4942`) is available on master; users on
-   2.17 should either stick with the default ``bundled`` providers or
-   apply the patch.
-
-Installing to a custom prefix
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: shell
-
-   $ cmake -S . -B build -DCMAKE_INSTALL_PREFIX=/opt/pjsip
-   $ cmake --build build -j
-   $ cmake --install build
-
-
-Configure Options
------------------
-
-The tables in this section are the CMake equivalent of the GNU
-``./configure --help`` output — every PJSIP option, its default, and
-its allowed values. The same information can be queried on a
-configured build tree with::
-
-   $ cmake -LAH -N build | less
-
-``-L`` lists cached variables, ``-A`` includes advanced ones, ``-H``
-prints the help text, ``-N`` skips reconfiguring. In addition,
-``cmake-gui`` and ``ccmake`` provide interactive editors.
-
-Global options
-^^^^^^^^^^^^^^
-
-.. list-table::
-   :header-rows: 1
-   :widths: 35 15 50
-
-   * - Option
-     - Default
-     - Description
-   * - ``BUILD_SHARED_LIBS``
-     - ``OFF``
-     - Build shared libraries instead of static archives.
-   * - ``BUILD_TESTING``
-     - ``ON``
-     - Enable CTest. Test executables are registered automatically.
-   * - ``CMAKE_BUILD_TYPE``
-     - ``Release``
-     - Standard CMake build type (``Debug``, ``Release``,
-       ``RelWithDebInfo``, ``MinSizeRel``). Ignored by multi-config
-       generators such as Xcode and Visual Studio.
-   * - ``CMAKE_INSTALL_PREFIX``
-     - platform default
-     - Install destination (``/usr/local`` on most Unix-likes).
-   * - ``PJ_SKIP_EXPERIMENTAL_NOTICE``
-     - ``OFF``
-     - Silence the experimental-status warning printed during configure.
-
-Third-party dependency providers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Each bundled third-party library can be built from source (``bundled``)
-or linked against a system copy (``system``). The default is
-``bundled``.
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 20 55
-
-   * - Option
-     - Values
-     - Library
-   * - ``PJ_DEP_G7221``
-     - ``bundled`` / ``system``
-     - G.722.1 codec.
-   * - ``PJ_DEP_GSM``
-     - ``bundled`` / ``system``
-     - GSM 06.10 codec.
-   * - ``PJ_DEP_iLBC``
-     - ``bundled``
-     - iLBC codec (bundled only).
-   * - ``PJ_DEP_Resample``
-     - ``bundled`` / ``system``
-     - The legacy ``libresample`` provider.
-   * - ``PJ_DEP_Speex``
-     - ``bundled`` / ``system``
-     - Speex codec. The ``system`` value is also intended to cover the
-       Speex resampler backend together with ``PJMEDIA_WITH_RESAMPLE=speex``;
-       modern Speex (1.2+) ships the resampler in ``libspeexdsp``, which
-       CMake picks up automatically. This flow requires :pr:`4942`
-       and is therefore only reliable on master or 2.17.x releases
-       that include the fix.
-   * - ``PJ_DEP_SRTP``
-     - ``bundled`` / ``system``
-     - libsrtp for SRTP/DTLS-SRTP.
-   * - ``PJ_DEP_WebRTC``
-     - ``bundled``
-     - WebRTC AEC (not available on Apple, MinGW, Cygwin).
-   * - ``PJ_DEP_WebRTC_AEC3``
-     - ``bundled``
-     - WebRTC AEC3 (not available on Apple, MinGW, Cygwin).
-   * - ``PJ_DEP_YUV``
-     - ``bundled`` / ``system``
-     - libyuv for video colour conversion.
-
-PJLIB options
-^^^^^^^^^^^^^
-
-.. list-table::
-   :header-rows: 1
-   :widths: 35 25 40
-
-   * - Option
-     - Default / allowed values
-     - Description
-   * - ``PJLIB_WITH_FLOATING_POINT``
-     - ``ON``
-     - Enable floating-point math.
-   * - ``PJLIB_WITH_IOQUEUE``
-     - ``select`` / ``kqueue`` / ``epoll`` / ``iocp``
-     - I/O queue backend.
-   * - ``PJLIB_WITH_LIBUUID``
-     - ``ON`` on Linux
-     - Use ``libuuid`` for UUID generation.
-   * - ``PJLIB_WITH_SSL``
-     - ``openssl`` / ``gnutls`` / ``mbedtls`` / ``darwin`` / ``apple`` / ``schannel``
-     - SSL/TLS backend. See :any:`/specific-guides/security/ssl`.
-
-PJNATH options
-^^^^^^^^^^^^^^
-
-.. list-table::
-   :header-rows: 1
-   :widths: 35 15 50
-
-   * - Option
-     - Default
-     - Description
-   * - ``PJNATH_WITH_UPNP``
-     - ``ON``
-     - Enable UPnP NAT traversal (requires ``libupnp``).
-
-PJMEDIA options
-^^^^^^^^^^^^^^^
-
-Core media options:
-
-.. list-table::
-   :header-rows: 1
-   :widths: 35 25 40
-
-   * - Option
-     - Default / allowed values
-     - Description
-   * - ``PJMEDIA_WITH_SRTP``
-     - ``ON`` (requires ``Pj::Dep::SRTP``)
-     - Enable SRTP/DTLS-SRTP.
-   * - ``PJMEDIA_WITH_RESAMPLE``
-     - ``libresample`` / ``libsamplerate`` / ``speex`` / ``none``
-     - Resampling backend. ``libresample`` is bundled;
-       ``libsamplerate`` uses system ``libsamplerate``; ``speex`` uses
-       the bundled Speex resampler.
-   * - ``PJMEDIA_WITH_SPEEX_AEC``
-     - ``ON`` (requires Speex + SpeexDSP)
-     - Enable Speex acoustic echo cancellation.
-   * - ``PJMEDIA_WITH_WEBRTC_AEC``
-     - ``ON`` (non-Apple/MinGW/Cygwin)
-     - Enable WebRTC AEC.
-   * - ``PJMEDIA_WITH_WEBRTC_AEC3``
-     - ``ON`` (non-Apple/MinGW/Cygwin)
-     - Enable WebRTC AEC3.
-   * - ``PJMEDIA_WITH_VIDEO``
-     - ``ON``
-     - Master switch for video support.
-   * - ``PJMEDIA_WITH_LIBYUV``
-     - ``ON`` when video is enabled
-     - Use libyuv for video format conversion.
-   * - ``PJMEDIA_WITH_FFMPEG``
-     - ``ON`` when video is enabled
-     - Use FFMPEG. The ``avutil`` component is required; ``swscale``,
-       ``avcodec``, ``avformat``, and ``avdevice`` are optional and each
-       have their own ``PJMEDIA_WITH_FFMPEG_<COMPONENT>`` toggle.
-
-Audio codecs (default ``ON`` when the provider is available, except
-where noted):
-
-* ``PJMEDIA_WITH_G711_CODEC``
-* ``PJMEDIA_WITH_L16_CODEC``
-* ``PJMEDIA_WITH_GSM_CODEC``
-* ``PJMEDIA_WITH_SPEEX_CODEC``
-* ``PJMEDIA_WITH_ILBC_CODEC``
-* ``PJMEDIA_WITH_G722_CODEC``
-* ``PJMEDIA_WITH_G7221_CODEC``
-* ``PJMEDIA_WITH_OPENCORE_AMRNB_CODEC``
-* ``PJMEDIA_WITH_OPENCORE_AMRWB_CODEC``
-* ``PJMEDIA_WITH_SILK_CODEC``
-* ``PJMEDIA_WITH_OPUS_CODEC``
-* ``PJMEDIA_WITH_BCG729_CODEC``
-* ``PJMEDIA_WITH_LYRA_CODEC``
-* ``PJMEDIA_WITH_ANDROID_MEDIACODEC_CODEC`` (default ``OFF``; enable
-  when targeting Android)
-
-Video codecs:
-
-* ``PJMEDIA_WITH_VPX_CODEC`` (via libvpx)
-* ``PJMEDIA_WITH_OPEN_H264_CODEC`` (via OpenH264)
-
-Audio device backends (each enabled when the underlying platform library
-is found):
-
-* ``PJMEDIA_WITH_AUDIODEV`` (master switch)
-* ``PJMEDIA_WITH_AUDIODEV_NULL``
-* ``PJMEDIA_WITH_AUDIODEV_JNI``  (Android)
-* ``PJMEDIA_WITH_AUDIODEV_OBOE`` (Android)
-* ``PJMEDIA_WITH_AUDIODEV_COREAUDIO`` (macOS/iOS)
-* ``PJMEDIA_WITH_AUDIODEV_ALSA`` (Linux)
-* ``PJMEDIA_WITH_AUDIODEV_WMME`` (Windows)
-* ``PJMEDIA_WITH_AUDIODEV_WASAPI`` (Windows)
-
-Video device backends:
-
-* ``PJMEDIA_WITH_VIDEODEV`` (master switch)
-* ``PJMEDIA_WITH_VIDEODEV_AVI`` (AVI writer/player)
-* ``PJMEDIA_WITH_VIDEODEV_OPENGL``
-* ``PJMEDIA_WITH_VIDEODEV_FFMPEG``
-* ``PJMEDIA_WITH_VIDEODEV_SDL``
-* ``PJMEDIA_WITH_VIDEODEV_METAL`` (macOS/iOS)
-* ``PJMEDIA_WITH_VIDEODEV_QT``
-* ``PJMEDIA_WITH_VIDEODEV_V4L2`` (Linux)
-* ``PJMEDIA_WITH_VIDEODEV_DSHOW`` (Windows)
-
-PJSIP options
-^^^^^^^^^^^^^
-
-.. list-table::
-   :header-rows: 1
-   :widths: 35 25 40
-
-   * - Option
-     - Default
-     - Description
-   * - ``PJSIP_WITH_TLS``
-     - ``ON`` when SSL is enabled
-     - Enable SIP over TLS transport.
+   $ cmake -S . -B cmake-build -DCMAKE_BUILD_TYPE=Release
+   $ cmake --build cmake-build -j
+   $ ./cmake-build/pjsip-apps/pjsua
+
+Output goes to the build directory, under ``<build>/<module>/``, not to the
+``<module>/lib`` and ``<module>/bin`` directories of the GNU build.
 
 .. tip::
 
-   To list every option and its current value for an already-configured
-   build directory, run::
+   Don't name the build directory ``build``: :source:`build/` is a source
+   directory in pjproject, so its build output would mix with tracked files.
 
-      $ cmake -LAH -N build | less
-
-   ``-L`` lists cached variables, ``-A`` includes advanced ones, ``-H``
-   prints the help text, and ``-N`` skips reconfiguring.
+Configuring prints a banner about CMake support being experimental.
+``-DPJ_SKIP_EXPERIMENTAL_NOTICE=ON`` silences it.
 
 
-Configuring TLS Support
------------------------
-
-The SSL/TLS backend is selected with ``PJLIB_WITH_SSL``. The supported
-values are ``openssl`` (default), ``gnutls``, ``mbedtls``, ``darwin`` /
-``apple``, and ``schannel``. CMake locates the chosen backend via the
-same Find modules used by the GNU build, plus a config-mode lookup for
-Mbed TLS.
-
-Example with GnuTLS:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build -DPJLIB_WITH_SSL=gnutls
-
-See :any:`/specific-guides/security/ssl` for the full backend matrix and
-configuration notes. The selected backend is recorded in the installed
-``PjConfig.cmake`` so that downstream projects pick up the same
-dependency automatically.
-
-
-Site-Specific Configuration (``config_site.h``)
------------------------------------------------
-
-CMake does **not** generate ``pjlib/include/pj/config_site.h``; it
-remains user-managed, as in the GNU build.
-
-However — unlike the GNU build — the CMake build automatically wires
-the ``PJMEDIA_HAS_*`` family of feature macros from the corresponding
-``PJMEDIA_WITH_*`` options. You do **not** need to put
-``#define PJMEDIA_HAS_VIDEO 1``, ``PJMEDIA_HAS_SRTP``,
-``PJMEDIA_HAS_OPUS_CODEC``, etc. into ``config_site.h`` when building
-with CMake; toggling ``PJMEDIA_WITH_VIDEO`` / ``PJMEDIA_WITH_SRTP`` /
-``PJMEDIA_WITH_OPUS_CODEC`` at configure time is enough.
-
-``config_site.h`` is still needed for knobs that the CMake options do
-**not** cover — application-level sizing, debug diagnostics, group
-lock debugging, and similar. See :any:`config_site.h` for the full
-list. Typical content:
-
-.. code-block:: c
-
-   /* pjlib/include/pj/config_site.h */
-   #define PJSUA_MAX_CALLS       32
-   #define PJ_GRP_LOCK_DEBUG     1   /* troubleshooting */
-   #define PJSIP_MAX_PKT_LEN     8000
-
-
-Build Targets
--------------
-
-The GNU build uses ``make all``, ``make clean``, ``make distclean``,
-``make install``. The CMake equivalents are driver commands that work
-with whichever backend generator you selected (Ninja, Make, Xcode,
-Visual Studio, …):
+Everyday Commands
+-----------------
 
 .. list-table::
    :header-rows: 1
@@ -587,48 +51,349 @@ Visual Studio, …):
 
    * - Task
      - Command
-   * - Build everything
-     - ``cmake --build build -j``
+   * - Debug build
+     - ``cmake -S . -B cmake-debug -DCMAKE_BUILD_TYPE=Debug``
+   * - Shared libraries
+     - ``cmake -S . -B cmake-build -DBUILD_SHARED_LIBS=ON``
    * - Build one target
-     - ``cmake --build build --target pjsua -j``
-   * - Clean object files
-     - ``cmake --build build --target clean``
-   * - Wipe the whole build tree
-     - ``rm -rf build`` (no direct CMake equivalent of
-       ``make distclean`` — just delete the build directory)
-   * - Install
-     - ``cmake --install build``
-   * - Install with a different prefix than configured
-     - ``cmake --install build --prefix /some/path``
+     - ``cmake --build cmake-build --target pjsua -j``
    * - Verbose build
-     - ``cmake --build build -v``
+     - ``cmake --build cmake-build -v``
+   * - Clean objects
+     - ``cmake --build cmake-build --target clean``
+   * - Start over
+     - Delete the build directory.
+   * - Install
+     - ``cmake --install cmake-build --prefix /opt/pjsip``
+   * - Run the tests
+     - ``ctest --test-dir cmake-build --output-on-failure``
+   * - Show all options and their values
+     - ``cmake -LAH -N cmake-build``
+
+``CMAKE_BUILD_TYPE`` has no default. Without it, a Ninja or Make build is
+compiled without optimization or debug info, so always pass one of
+``Debug``, ``Release``, ``RelWithDebInfo`` or ``MinSizeRel``.
+
+Multi-config generators (Visual Studio, Xcode, Ninja Multi-Config) ignore
+``CMAKE_BUILD_TYPE``. Choose the configuration at build, test and install
+time instead, e.g. ``cmake --build cmake-build --config Release``,
+``ctest --test-dir cmake-build -C Release`` and
+``cmake --install cmake-build --config Release``.
+Binaries then go to ``<build>/<module>/<Config>/``.
+
+
+Configuring
+-----------
+
+Options
+^^^^^^^
+
+Features are selected with cache options passed as ``-D<option>=<value>``,
+e.g. ``-DPJLIB_WITH_SSL=gnutls`` or ``-DPJMEDIA_WITH_VIDEO=OFF``. The
+:doc:`options` page lists them all. Some common ones:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 45 55
+
+   * - Goal
+     - Option
+   * - Another SSL backend, or none
+     - ``-DPJLIB_WITH_SSL=gnutls|mbedtls|darwin|apple|schannel``, or
+       ``-DPJLIB_WITH_SSL=`` for none
+   * - The platform's native I/O queue
+     - ``-DPJLIB_WITH_IOQUEUE=epoll|kqueue|iocp``
+   * - Audio only
+     - ``-DPJMEDIA_WITH_VIDEO=OFF``
+   * - Drop a codec
+     - e.g. ``-DPJMEDIA_WITH_OPUS_CODEC=OFF``
+   * - A system copy of a bundled library
+     - e.g. ``-DPJ_DEP_SRTP=system``
+
+Dependencies and what got enabled
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A feature whose dependency is not found is switched off and the build
+carries on without it. Configure reports this as::
+
+   -- [!] OPUS was not found. setting PJMEDIA_WITH_OPUS_CODEC to OFF
+
+so check the configure output for ``[!]``, or the final values with
+``cmake -LA -N cmake-build``.
+
+To make CMake find a library outside the default locations, pass its
+install prefix, the directory holding ``include/`` and ``lib/``:
+
+.. code-block:: shell
+
+   $ cmake -S . -B cmake-build -DCMAKE_PREFIX_PATH="/opt/openssl-3;/opt/media"
+
+``<Package>_ROOT`` (e.g. ``-DOPUS_ROOT=...``) and ``-DOPENSSL_ROOT_DIR=...``
+work too. A result that has been cached is not searched again, so after
+installing a missing library, delete the build directory, or at least
+``CMakeCache.txt``, and configure again.
+
+``config_site.h``
+^^^^^^^^^^^^^^^^^
+
+CMake does not generate ``pjlib/include/pj/config_site.h``; it stays
+user-managed, as in the GNU build, for the settings without a CMake option,
+such as ``PJSUA_MAX_CALLS`` or ``PJ_GRP_LOCK_DEBUG``. See
+:any:`config_site.h`.
+
+Settings that have a CMake option must **not** also be set in
+``config_site.h``, because CMake cannot read that file. A
+``config_site.h`` written for the GNU build or the Visual Studio solution
+often has some. A clash shows up as macro redefinition warnings (``C4005``
+on MSVC, ``"redefined"`` on GCC and Clang) and, for a backend or codec, as
+undefined symbols at link time. Remove them and use the option instead:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 50 50
+
+   * - ``config_site.h`` macro
+     - CMake option
+   * - ``PJ_IOQUEUE_IMP``
+     - ``PJLIB_WITH_IOQUEUE``
+   * - ``PJ_HAS_SSL_SOCK``, ``PJ_SSL_SOCK_IMP``
+     - ``PJLIB_WITH_SSL``
+   * - ``PJ_HAS_THREADS``
+     - ``PJLIB_WITH_THREADS``
+   * - ``PJMEDIA_HAS_VIDEO``
+     - ``PJMEDIA_WITH_VIDEO``
+   * - ``PJMEDIA_HAS_SRTP``
+     - ``PJMEDIA_WITH_SRTP``
+   * - ``PJMEDIA_HAS_<codec>_CODEC``, ``PJMEDIA_HAS_WEBRTC_AEC3``, ...
+     - the matching ``PJMEDIA_WITH_*``
+   * - ``PJMEDIA_AUDIO_DEV_HAS_*``, ``PJMEDIA_VIDEO_DEV_HAS_*``
+     - ``PJMEDIA_WITH_AUDIODEV_*``, ``PJMEDIA_WITH_VIDEODEV_*``
+   * - ``PJSIP_HAS_TLS_TRANSPORT``
+     - ``PJSIP_WITH_TLS``
+   * - ``PJSIP_HAS_DIGEST_AKA_AUTH``
+     - ``PJSIP_WITH_DIGEST_AKA_AUTH``
+
+
+Platforms
+---------
+
+Linux
+^^^^^
+
+On Debian or Ubuntu, the build tools plus the commonly wanted libraries:
+
+.. code-block:: shell
+
+   $ sudo apt install cmake ninja-build build-essential libssl-dev \
+         libasound2-dev uuid-dev
+   $ cmake -S . -B cmake-build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+         -DPJLIB_WITH_IOQUEUE=epoll
+   $ cmake --build cmake-build
+
+ALSA and libuuid are used when found. For video, add ``libsdl2-dev``,
+``libv4l-dev``, ``libopenh264-dev`` and ``libvpx-dev``; for Opus,
+``libopus-dev``; for UPnP, ``libupnp-dev``.
+
+macOS
+^^^^^
+
+.. code-block:: shell
+
+   $ brew install cmake ninja openssl@3
+   $ cmake -S . -B cmake-build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+         -DOPENSSL_ROOT_DIR="$(brew --prefix openssl@3)" \
+         -DPJLIB_WITH_IOQUEUE=kqueue
+   $ cmake --build cmake-build
+
+Core Audio and AVFoundation capture are on by default, and Metal rendering
+(``PJMEDIA_WITH_VIDEODEV_METAL``) is available. ``-DPJLIB_WITH_SSL=apple``
+uses Apple's Network framework instead of OpenSSL, with the ``select`` I/O
+queue only. The bundled WebRTC AEC and AEC3 are not available on Apple
+platforms.
+
+Windows, Visual Studio
+^^^^^^^^^^^^^^^^^^^^^^
+
+Visual Studio 2022, x64. Run CMake from a *Developer PowerShell for VS 2022*
+or an *x64 Native Tools Command Prompt*, which provide Visual Studio's own
+CMake:
+
+.. code-block:: powershell
+
+   > cmake -S . -B cmake-build -G "Visual Studio 17 2022" -A x64
+   > cmake --build cmake-build --config Release --parallel
+   > cmake-build\pjsip-apps\Release\pjsua.exe
+
+The defaults match the Visual Studio solution: the ``select`` I/O queue,
+WMME audio, and no DirectShow or WASAPI. The Windows-native backends:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 45 55
+
+   * - Option
+     - Effect
+   * - ``-DPJLIB_WITH_IOQUEUE=iocp``
+     - I/O completion ports.
+   * - ``-DPJLIB_WITH_SSL=schannel``
+     - Windows Schannel. Needs no external library; MSVC only.
+   * - ``-DPJMEDIA_WITH_AUDIODEV_WASAPI=ON``
+     - WASAPI audio. Add ``-DPJMEDIA_WITH_AUDIODEV_WMME=OFF`` for WASAPI
+       only.
+   * - ``-DPJMEDIA_WITH_VIDEODEV_DSHOW=ON``
+     - DirectShow camera capture.
+   * - ``-DPJSIP_WITH_DIGEST_AKA_AUTH=ON``
+     - Digest AKA authentication.
+
+Things to know:
+
+* **Prebuilt libraries** (OpenSSL, SDL2, OpenH264, libvpx, Opus) are found
+  with ``-DCMAKE_PREFIX_PATH=C:/deps``. OpenSSL from the official Windows
+  installer is found without it. SDL2 is found through ``SDL2Config.cmake``
+  from the SDL2 VC development package; pass ``-DSDL2_DIR=<dir>`` if needed.
+  A library must use the same C runtime as the configuration, e.g. ``/MD``
+  for ``Release`` and ``/MDd`` for ``Debug``.
+* **DLLs** that an executable links, e.g. OpenSSL's or SDL2's, must be on
+  ``PATH`` or next to the executable to run it.
+* **MSYS2, Cygwin or Strawberry Perl on PATH** cause two problems. Their
+  ``cmake`` can come first on ``PATH`` even in a developer shell, because
+  the shell adds Visual Studio's CMake after the existing ``PATH``, and it
+  has no Visual Studio generators. ``cmake --version`` then lacks the
+  ``-msvc`` suffix. And CMake can pick up their MinGW builds of OpenSSL and
+  other libraries, which MSVC cannot link. To avoid both:
+
+  .. code-block:: powershell
+
+     > $vsw = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+     > $vs = Join-Path (& $vsw -latest -products * -property installationPath) `
+         "Common7\IDE\CommonExtensions\Microsoft\CMake"
+     > $env:PATH = "$vs\CMake\bin;$vs\Ninja;$env:PATH"
+     > cmake -S . -B cmake-build -G "Visual Studio 17 2022" -A x64 `
+         "-DCMAKE_IGNORE_PREFIX_PATH=C:/msys64/mingw64;C:/msys64/ucrt64;C:/msys64/usr;C:/Strawberry/c"
+
+  ``vswhere``, from the Visual Studio Installer, finds the installation of
+  any edition, Build Tools included, so this works in a plain PowerShell
+  too.
+
+Windows, MinGW-w64
+^^^^^^^^^^^^^^^^^^
+
+From an MSYS2 *MINGW64* shell:
+
+.. code-block:: shell
+
+   $ pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake \
+         mingw-w64-x86_64-ninja mingw-w64-x86_64-openssl
+   $ cmake -S . -B cmake-build -G Ninja -DCMAKE_BUILD_TYPE=Release
+   $ cmake --build cmake-build
+
+A *UCRT64* shell takes the same packages with the
+``mingw-w64-ucrt-x86_64-`` prefix instead; this has not been verified.
+
+The Windows-native options above apply too, except Schannel, which needs
+MSVC. The bundled WebRTC AEC and AEC3 are not available. Run the binaries
+from the same shell, which provides the GCC runtime and OpenSSL DLLs.
+
+iOS
+^^^
+
+From macOS with Xcode. One build directory per SDK; the simulator takes
+both architectures in one pass:
+
+.. code-block:: shell
+
+   $ cmake -S . -B cmake-ios -DCMAKE_SYSTEM_NAME=iOS \
+         -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 \
+         -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 -DCMAKE_BUILD_TYPE=Release
+   $ cmake --build cmake-ios -j
+
+   $ cmake -S . -B cmake-ios-sim -DCMAKE_SYSTEM_NAME=iOS \
+         -DCMAKE_OSX_SYSROOT=iphonesimulator \
+         "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64" \
+         -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 -DCMAKE_BUILD_TYPE=Release
+   $ cmake --build cmake-ios-sim -j
+
+Core Audio, AVFoundation capture, OpenGL ES rendering and the VideoToolbox
+H.264 codec are on by default. The command-line sample applications are not
+built for iOS.
+
+After the build, the libraries and generated headers are copied into the
+bundled Xcode sample projects (``ipjsua``, ``ipjsua-swift``,
+``ios-swift-pjsua2``), so those build as they are.
+``-DPJ_IOS_SAMPLE_LIBS=OFF`` turns this off.
+
+To build the ``PJSIP.xcframework`` binary distribution for iOS, the
+simulator and macOS, use :source:`build/apple/build-xcframework.sh`; see
+:source:`build/apple/README.md`.
+
+Android
+^^^^^^^
+
+The NDK provides the toolchain file. API level 23 is the minimum; build each
+ABI in its own directory:
+
+.. code-block:: shell
+
+   $ cmake -S . -B cmake-android \
+         -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake" \
+         -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-23 \
+         -DCMAKE_BUILD_TYPE=Release
+   $ cmake --build cmake-android -j
+
+Oboe audio, Java (JNI) audio, camera capture, OpenGL ES rendering and the
+MediaCodec codecs are on by default. Oboe needs ``-DOboe_ROOT=`` pointing
+at an unpacked ``oboe-<version>.aar``, and is switched off without it.
+
+Libraries built separately for Android, e.g. OpenSSL for TLS, are found only
+when their prefix is added to ``CMAKE_FIND_ROOT_PATH``; ``CMAKE_PREFIX_PATH``
+or ``<Package>_ROOT`` alone are not enough.
+
+To build the pjsua2 AAR, let Gradle drive CMake for all ABIs:
+
+.. code-block:: shell
+
+   $ cd pjsip-apps/src/swig/java/android
+   $ ./gradlew -PpjBuildWithCMake=true :pjsua2:assembleRelease
+
+This needs SWIG 4.0+ and Ninja. See :source:`build/android/README.md` for
+the details.
+
+Other cross builds
+^^^^^^^^^^^^^^^^^^
+
+Use a CMake toolchain file:
+
+.. code-block:: shell
+
+   $ cmake -S . -B cmake-arm -DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.cmake \
+         -DCMAKE_BUILD_TYPE=Release
+
+This is not validated; the GNU build (``./configure --host=...``, see
+:any:`/get-started/posix/build_instructions`) is the tested path.
 
 
 Running Tests
 -------------
 
-``BUILD_TESTING=ON`` (the default) registers all test executables with
-CTest. Typical use:
+``BUILD_TESTING`` (``ON`` by default) registers ``pjlib-test``,
+``pjlib-util-test``, ``pjnath-test``, ``pjmedia-test``, ``pjsip-test`` and
+``pjsua2-test`` with CTest. Each suite takes several minutes:
 
 .. code-block:: shell
 
-   $ ctest --test-dir build --output-on-failure          # run everything
-   $ ctest --test-dir build -R pjlib                     # regex by name
-   $ ctest --test-dir build -j $(nproc)                  # parallel
+   $ ctest --test-dir cmake-build --output-on-failure      # all suites
+   $ ctest --test-dir cmake-build -R pjlib-util            # one suite
 
-Individual test binaries can also be invoked directly, for example:
+To run single tests, call a test binary directly. Some tests read data
+files relative to the source tree's ``<module>/bin/`` directory; the pjlib
+SSL tests, for example, load their certificates from ``../build/``. Run
+those from ``<module>/bin/``:
 
 .. code-block:: shell
 
-   $ ./build/pjlib/pjlib-test --list
-   $ ./build/pjlib/pjlib-test timer_test
-
-.. note::
-
-   The GNU-style "run a specific test from the ``bin/`` directory" flow
-   described elsewhere in the documentation does not apply to the CMake
-   build. Test binaries live under ``build/<module>/`` rather than
-   ``<module>/bin/``.
+   $ mkdir -p pjlib/bin && cd pjlib/bin
+   $ ../../cmake-build/pjlib/pjlib-test --list
+   $ ../../cmake-build/pjlib/pjlib-test sock_test ssl_sock_test
 
 
 Installing
@@ -636,131 +401,116 @@ Installing
 
 .. code-block:: shell
 
-   $ cmake --install build --prefix /usr/local
+   $ cmake --install cmake-build --prefix /opt/pjsip
 
-The install lays out the tree as:
+installs:
 
-* Public headers: ``<prefix>/include/``
-* Libraries: ``<prefix>/lib/`` (or ``<prefix>/lib64/``, per
-  ``GNUInstallDirs``)
-* Executables (``pjsua``, test binaries if selected): ``<prefix>/bin/``
-* CMake package config: ``<prefix>/lib/cmake/Pj/``
+* headers under ``<prefix>/include/``;
+* the PJSIP libraries under ``<prefix>/lib/`` (``lib64`` on some
+  distributions), and the bundled third-party ones under
+  ``<prefix>/lib/pjproject/third_party/``;
+* ``pjsua`` under ``<prefix>/bin/``;
+* the CMake package under ``<prefix>/lib/cmake/Pj/``, and a pkg-config
+  file, ``<prefix>/lib/pkgconfig/libpjproject.pc``; see :doc:`using`.
 
-Installation components are defined so that packagers can split the
-payload:
+.. note::
 
-* ``PjRuntime`` – shared libraries and executables.
-* ``PjDevelopment`` – headers, static libraries, symlinks, and the CMake
-  package config.
+   Before :pr:`5301`, a static build installed its libraries under
+   ``<prefix>/bin/``, and the pkg-config file was empty.
 
-See :any:`using <using>` for consuming the installed package in a
-downstream CMake project.
-
-
-Cross-Compilation
------------------
-
-Cross-compilation follows the standard CMake toolchain-file pattern:
-
-.. code-block:: shell
-
-   $ cmake -S . -B build-arm64 \
-       -DCMAKE_TOOLCHAIN_FILE=/path/to/my-toolchain.cmake \
-       -DPJ_SKIP_EXPERIMENTAL_NOTICE=ON
-   $ cmake --build build-arm64 -j
-
-.. warning::
-
-   Cross-compilation with CMake is not regularly tested. If you need a
-   validated cross-build, use the GNU build (``./configure --host=...``)
-   described in :any:`/get-started/posix/build_instructions`.
+Packagers can split the installation with ``--component PjRuntime``
+(shared libraries and executables) and ``--component PjDevelopment``
+(headers, static libraries and the package files).
 
 
-CMake vs GNU ``./configure``
-----------------------------
-
-The CMake option names do not always match the autoconf flags one-for-one.
-The table below lists the common equivalences:
+Migrating from ``./configure``
+------------------------------
 
 .. list-table::
    :header-rows: 1
    :widths: 50 50
 
    * - ``./configure`` flag
-     - CMake equivalent
+     - CMake option
+   * - ``--prefix=DIR``
+     - ``-DCMAKE_INSTALL_PREFIX=DIR``, or ``cmake --install ... --prefix DIR``
    * - ``--enable-shared``
      - ``-DBUILD_SHARED_LIBS=ON``
+   * - ``--disable-threads``
+     - ``-DPJLIB_WITH_THREADS=OFF``
+   * - ``--enable-epoll`` / ``--enable-kqueue``
+     - ``-DPJLIB_WITH_IOQUEUE=epoll`` / ``kqueue``
+   * - ``--disable-ssl``
+     - ``-DPJLIB_WITH_SSL=``
+   * - ``--with-gnutls=DIR``, ``--with-mbedtls=DIR``
+     - ``-DPJLIB_WITH_SSL=gnutls`` / ``mbedtls``, with ``DIR`` in
+       ``CMAKE_PREFIX_PATH``
+   * - ``--with-ssl=DIR``
+     - ``-DOPENSSL_ROOT_DIR=DIR``
    * - ``--disable-video``
      - ``-DPJMEDIA_WITH_VIDEO=OFF``
-   * - ``--disable-ssl``
-     - (set ``PJLIB_WITH_SSL`` to the desired backend or disable
-       individual features)
-   * - ``--with-gnutls=DIR``
-     - ``-DPJLIB_WITH_SSL=gnutls`` (``DIR`` resolved via
-       ``CMAKE_PREFIX_PATH``)
-   * - ``--with-external-speex``
-     - ``-DPJ_DEP_Speex=system``
+   * - ``--disable-sound``
+     - ``-DPJMEDIA_WITH_AUDIODEV=OFF``
+   * - ``--disable-<codec>``, e.g. ``--disable-opus``
+     - ``-DPJMEDIA_WITH_<CODEC>_CODEC=OFF``, e.g.
+       ``-DPJMEDIA_WITH_OPUS_CODEC=OFF``
+   * - ``--disable-speex-aec``, ``--disable-libyuv``, ``--disable-ffmpeg``
+     - ``-DPJMEDIA_WITH_SPEEX_AEC=OFF``, ``-DPJMEDIA_WITH_LIBYUV=OFF``,
+       ``-DPJMEDIA_WITH_FFMPEG=OFF``
+   * - ``--disable-upnp``
+     - ``-DPJNATH_WITH_UPNP=OFF``
    * - ``--with-external-srtp``
      - ``-DPJ_DEP_SRTP=system``
+   * - ``--with-external-speex``
+     - ``-DPJ_DEP_SPEEX=system``
    * - ``--with-external-yuv``
      - ``-DPJ_DEP_YUV=system``
-   * - ``--enable-epoll``
-     - ``-DPJLIB_WITH_IOQUEUE=epoll``
-   * - ``--enable-kqueue``
-     - ``-DPJLIB_WITH_IOQUEUE=kqueue``
-   * - ``--disable-opus``
-     - ``-DPJMEDIA_WITH_OPUS_CODEC=OFF``
-   * - ``--disable-speex-aec``
-     - ``-DPJMEDIA_WITH_SPEEX_AEC=OFF``
-   * - ``--disable-libyuv``
-     - ``-DPJMEDIA_WITH_LIBYUV=OFF``
-   * - ``--disable-ffmpeg``
-     - ``-DPJMEDIA_WITH_FFMPEG=OFF``
-   * - ``--prefix=DIR``
-     - ``-DCMAKE_INSTALL_PREFIX=DIR``
-   * - ``CFLAGS="..."``
-     - ``-DCMAKE_C_FLAGS="..."`` (or ``CMAKE_BUILD_TYPE``)
+   * - ``--with-external-gsm``
+     - ``-DPJ_DEP_GSM=system``
+   * - ``CFLAGS``, ``LDFLAGS``, ``user.mak``
+     - ``-DCMAKE_C_FLAGS=...``, ``-DCMAKE_CXX_FLAGS=...``,
+       ``-DCMAKE_EXE_LINKER_FLAGS=...``
 
-For fine-grained codec/feature toggles that do not appear in this
-table, follow the ``--disable-FEATURE`` → ``PJMEDIA_WITH_FEATURE=OFF``
-naming pattern.
+Not available with CMake: ``--disable-pjsua2`` (pjsua2 is always built),
+``--disable-small-filter`` / ``--disable-large-filter`` (the resampler
+always has both), and the desktop Java, Python and C# bindings.
 
-A few GNU flags have no CMake equivalent today:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 40 60
+Troubleshooting
+---------------
 
-   * - ``./configure`` flag
-     - CMake status
-   * - ``--disable-ssl``
-     - No "off" value for ``PJLIB_WITH_SSL``. If the chosen backend
-       cannot be located the build silently falls back to no-SSL; to
-       deterministically skip TLS, also set
-       ``-DPJSIP_WITH_TLS=OFF``.
-   * - ``--disable-pjsua2``
-     - Not exposed. The ``pjsua2`` library is always built.
-   * - ``--disable-sound``
-     - Use ``-DPJMEDIA_WITH_AUDIODEV=OFF`` to disable the audio
-       device subsystem entirely.
-   * - ``--disable-small-filter`` / ``--disable-large-filter``
-     - Not exposed; bundled ``libresample`` is always built with both
-       filters.
+**A feature or backend is missing.** Its dependency was not found, and the
+option was switched off; configure printed a ``[!]`` line. Install the
+library, or point ``CMAKE_PREFIX_PATH`` at it, then delete the build
+directory and configure again.
+
+**Macro redefinition warnings, or undefined symbols at link time.**
+``config_site.h`` sets something a CMake option controls; see
+`config_site.h`_.
+
+**An option has no effect.** Option names are case-sensitive and a
+misspelled one is silently ignored. Check the name in :doc:`options`, or
+with ``cmake -LA -N cmake-build``.
+
+**Windows: "Could not create named generator Visual Studio ..."** The
+``cmake`` on ``PATH`` is MSYS2's or Cygwin's; see
+`Windows, Visual Studio`_.
+
+**A wrong copy of a library is used.** CMake also searches the prefixes of
+tools on ``PATH``. Exclude unwanted ones with
+``-DCMAKE_IGNORE_PREFIX_PATH=...``.
 
 
 Known Limitations
 -----------------
 
-* **Experimental.** Only Linux x86_64 and macOS are tested. Expect rough
-  edges on other platforms.
-* **No Visual Studio / Xcode project parity.** The CMake build can
-  generate VS or Xcode projects, but the bespoke
-  :source:`pjlib/build/pjlib.vcxproj <pjlib/build/pjlib.vcxproj>` and
-  companion projects are still the reference Windows build.
-* **Three build systems must stay in sync.** When adding or removing
-  source files in the tree, the GNU ``Makefile``, the MSVC ``.vcxproj``,
-  *and* the relevant ``CMakeLists.txt`` must all be updated.
-* **No automatic ``config_site.h``.** As with the GNU build,
-  ``pjlib/include/pj/config_site.h`` is user-managed.
-* **Cross-compilation untested.** Toolchain files work in principle but
-  are not exercised in CI.
+* **Experimental.** See the status table in :doc:`index`.
+* **Three build systems.** When adding or removing source files, update the
+  GNU ``Makefile``, the Visual Studio ``.vcxproj`` *and* the
+  ``CMakeLists.txt``.
+* **The Visual Studio solution stays the reference Windows build,** and
+  covers targets not yet validated with CMake, such as Windows ARM64 and
+  UWP.
+* **``PJ_DEP_<name>=system`` in 2.17** finds the library but sibling
+  modules may not use it (e.g. ``PJMEDIA_WITH_SRTP`` silently turns
+  ``OFF``). Fixed after 2.17 (:pr:`4942`).
