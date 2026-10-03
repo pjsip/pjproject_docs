@@ -93,7 +93,7 @@ choice:
 - **Mbed TLS** is a small TLS stack typical for embedded and
   resource-constrained targets. The feature set is a subset (e.g.
   TLS 1.3 support depends on the Mbed TLS version) and the custom
-  verify callback is not exposed.
+  verify callback is not exposed. See :ref:`guide_mbedtls`.
 - **NONE** disables TLS entirely. Useful for builds where signalling
   goes through a TLS-terminating proxy or for footprint-constrained
   builds.
@@ -195,6 +195,9 @@ See also the platform-specific OpenSSL install pages:
 - :any:`windows_openssl` (Windows)
 - :any:`ios_openssl` (iOS / iPhone)
 - :any:`android_openssl` (Android)
+
+For building Mbed TLS and PJSIP with it, and for configuring Mbed TLS
+for a small footprint, see :ref:`guide_mbedtls`.
 
 **CMake**
 
