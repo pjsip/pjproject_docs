@@ -99,7 +99,10 @@ Security
    :maxdepth: 1
    :glob:
 
-   security/*
+   security/ssl
+   security/mbedtls
+   security/digest_auth
+   security/srtp
 
 .. _sip_guide_toc:
 
