@@ -1,6 +1,6 @@
 .. _guide_ssl:
 
-SSL/TLS
+Using SSL/TLS with PJSIP
 =========================================
 
 .. contents:: Table of Contents
@@ -68,32 +68,50 @@ choice:
 - **OpenSSL** is the default and the most thoroughly exercised backend.
   It supports the full PJSIP TLS feature set, including handshake-time
   custom verification callbacks (see below) and direct backend-object
-  credential loading. **BoringSSL** is API-compatible with OpenSSL and
-  works as a link-time substitute — there is no separate
+  credential loading. **BoringSSL** and **LibreSSL** are API-compatible
+  with OpenSSL and work as link-time substitutes — there is no separate
   ``PJ_SSL_SOCK_IMP_BORINGSSL``. Several PJSIP features outside the
   TLS transport itself also depend on OpenSSL — see the *Features
   that require OpenSSL* note below the capability table.
 - **GnuTLS** is an LGPL alternative for projects whose licensing
   precludes OpenSSL. Functionally close to OpenSSL but cipher-suite
-  syntax differs and the custom-verify callback is not implemented.
+  syntax differs, the custom-verify callback is not implemented, and
+  the ``curves`` and ``sigalgs`` settings are not used.
 - **Apple Network framework** is the recommended Apple-side backend
-  on macOS 10.15+ and iOS 13+. Certificate material is supplied as
-  PEM/DER via ``cert_file`` / ``cert_buf`` (and the matching
-  ``ca_list_*`` / ``privkey_*`` fields); ``cert_lookup`` is not
-  currently consumed by this backend.
+  on macOS 10.15+ and iOS 13+. It requires the ``select`` I/O queue
+  (``PJ_IOQUEUE_IMP_SELECT``), and ``configure`` never selects it (see
+  *Building with TLS support* below). Credentials differ from the
+  other backends:
+
+  - the certificate comes from ``cert_file`` or ``cert_buf``: a
+    PKCS#12 bundle on iOS; PKCS#12, PEM or DER on macOS;
+  - ``privkey_file`` / ``privkey_buf`` are not used: the private key
+    must be inside the PKCS#12 bundle (iOS) or in the keychain
+    (macOS);
+  - a CA in ``ca_list_file`` or ``ca_buf`` must be a single DER
+    certificate, and becomes the only trust anchor; without one, the
+    system trust store is used. ``ca_list_path`` only serves as the
+    directory of ``ca_list_file``;
+  - ``cert_lookup`` is not consumed.
 - **Apple Secure Transport** (``DARWIN``) is the legacy Apple backend.
-  It is **deprecated** in macOS 10.15 and iOS 13; new code should use
-  the Network framework backend (``APPLE``) above. Like Apple NW it
-  consumes file/buffer credentials, not ``cert_lookup``.
+  It is **deprecated** in macOS 10.15 and iOS 13 and has no TLS 1.3;
+  new code should use the Network framework backend (``APPLE``) above.
+  Credentials follow the same rules as for ``APPLE``.
 - **Windows SChannel** uses the OS SSPI/SChannel stack and the
-  Windows certificate store. The only credential source it consumes
-  is ``cert_lookup`` — ``cert_file`` / ``cert_buf`` are silently
-  ignored, and a server with no matching store entry falls back to a
-  self-signed certificate.
+  Windows certificate store, and is selected in
+  :ref:`config_site.h` for Visual Studio builds. The only credential
+  source it consumes is ``cert_lookup``: ``cert_file``, ``cert_buf``,
+  ``privkey_*``, ``ca_list_*`` and ``ca_buf`` are ignored, and peers
+  are verified against the Windows certificate store. A server with
+  no ``cert_lookup`` — including one given only ``cert_file`` or
+  ``cert_buf`` — falls back to a self-signed certificate, with a
+  warning; a server whose ``cert_lookup`` matches nothing has no
+  certificate. The ``ciphers`` and ``curves`` settings are ignored.
 - **Mbed TLS** is a small TLS stack typical for embedded and
-  resource-constrained targets. The feature set is a subset (e.g.
-  TLS 1.3 support depends on the Mbed TLS version) and the custom
-  verify callback is not exposed.
+  resource-constrained targets. Mbed TLS 3.6 and 4.x are supported,
+  both with TLS 1.3. The custom verify callback, ``curves`` and
+  ``sigalgs`` are not supported, and Mbed TLS has no access to a
+  system trust store. See :ref:`guide_mbedtls`.
 - **NONE** disables TLS entirely. Useful for builds where signalling
   goes through a TLS-terminating proxy or for footprint-constrained
   builds.
@@ -103,9 +121,16 @@ Capability differences worth noting:
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
 | Capability                               | OpenSSL  | GnuTLS  | Apple NW  | Apple Darwin | SChannel | Mbed TLS |
 +==========================================+==========+=========+===========+==============+==========+==========+
-| File-based PEM/DER certs                 | yes      | yes     | yes       | yes          | —        | yes      |
+| Certificate from file (``cert_file``)    | yes      | yes     | yes ¹     | yes ¹        | —        | yes      |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
-| In-memory ``cert_buf`` / ``ca_buf``      | yes      | yes     | yes       | yes          | —        | yes      |
+| Certificate from memory (``cert_buf``)   | yes      | yes     | yes ¹     | yes ¹        | —        | yes      |
++------------------------------------------+----------+---------+-----------+--------------+----------+----------+
+| CA file or buffer (``ca_list_file``,     | yes      | yes     | DER ¹     | DER ¹        | —        | yes      |
+| ``ca_buf``)                              |          |         |           |              |          |          |
++------------------------------------------+----------+---------+-----------+--------------+----------+----------+
+| CA directory (``ca_list_path``)          | yes      | yes     | —         | —            | —        | yes      |
++------------------------------------------+----------+---------+-----------+--------------+----------+----------+
+| System trust store                       | —        | yes     | yes ²     | yes ²        | yes      | —        |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
 | OS-store ``cert_lookup``                 | —        | —       | —         | —            | yes      | —        |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
@@ -114,6 +139,23 @@ Capability differences worth noting:
 | Handshake-time verify hook               | yes      | —       | —         | —            | —        | —        |
 | (``on_verify_cb``)                       |          |         |           |              |          |          |
 +------------------------------------------+----------+---------+-----------+--------------+----------+----------+
+| TLS 1.3                                  | yes      | yes     | yes       | —            | yes ³    | yes      |
++------------------------------------------+----------+---------+-----------+--------------+----------+----------+
+| ``curves`` and ``sigalgs``               | yes      | —       | —         | —            | —        | —        |
++------------------------------------------+----------+---------+-----------+--------------+----------+----------+
+| Secure SDES-SRTP keys                    | yes      | —       | yes       | —            | —        | yes      |
+| (``pj_ssl_rand_bytes()``)                |          |         |           |              |          |          |
++------------------------------------------+----------+---------+-----------+--------------+----------+----------+
+
+| ¹ The private key must be in the PKCS#12 bundle or the keychain, and
+  the CA must be a single DER certificate; see the profile above.
+| ² Unless a CA is given, which then becomes the only trust anchor.
+| ³ On recent Windows versions.
+
+Without a system trust store, a client must be given the CA
+certificates to verify servers. Without ``pj_ssl_rand_bytes()``,
+PJMEDIA generates SDES-SRTP keys with a weak generator, and logs a
+warning.
 
 .. note::
 
@@ -139,24 +181,37 @@ OpenSSL with different rules. The matrix:
 |                                    | OPENSSL``             | :ref:`guide_digest_auth`         |
 +------------------------------------+-----------------------+----------------------------------+
 | DTLS-SRTP                          | **Yes** — must be     | ``PJMEDIA_SRTP_HAS_DTLS=1`` in   |
-|                                    | ``PJ_SSL_SOCK_IMP_    | :ref:`config_site.h`             |
-|                                    | OPENSSL``             |                                  |
+|                                    | ``PJ_SSL_SOCK_IMP_    | :ref:`config_site.h` (default    |
+|                                    | OPENSSL``             | ``0``)                           |
 +------------------------------------+-----------------------+----------------------------------+
-| AEAD-GCM SRTP suites               | No — needs libsrtp    | ``PJMEDIA_SRTP_HAS_AES_GCM_128`` |
-| (``AEAD_AES_128_GCM``,             | built with OpenSSL    | / ``_GCM_256`` in                |
-| ``AEAD_AES_256_GCM``)              | (or NSS), independent | :ref:`config_site.h`             |
-|                                    | of TLS backend        |                                  |
+| AEAD-GCM SRTP suites               | Not directly — needs  | ``PJMEDIA_SRTP_HAS_AES_GCM_128`` |
+| (``AEAD_AES_128_GCM``,             | libsrtp with OpenSSL  | / ``_GCM_256`` in                |
+| ``AEAD_AES_256_GCM``)              | crypto (see below)    | :ref:`config_site.h`             |
 +------------------------------------+-----------------------+----------------------------------+
 | AES-CM-192 SRTP suite              | No — same as          | ``PJMEDIA_SRTP_HAS_AES_CM_192``  |
 |                                    | AEAD-GCM              | in :ref:`config_site.h`          |
 +------------------------------------+-----------------------+----------------------------------+
 
 In short: digest SHA-256 and DTLS-SRTP require ``PJ_SSL_SOCK_IMP =
-PJ_SSL_SOCK_IMP_OPENSSL``; the AEAD/GCM and AES-CM-192 SRTP suites
-work with any TLS backend as long as libsrtp itself is built against
-OpenSSL or NSS. The reasoning and a workaround for combining DTLS-SRTP
-with a non-OpenSSL TLS backend are in *Build-time security
-considerations* below.
+PJ_SSL_SOCK_IMP_OPENSSL``. The digest algorithms are also checked at
+run time, so OpenSSL must provide them (SHA-512-256 needs OpenSSL
+1.1.1 or later).
+
+The AEAD-GCM and AES-CM-192 SRTP suites need libsrtp with OpenSSL
+crypto instead. That is not tied to the TLS backend in the code, but
+the build systems decide it differently:
+
+- with ``configure``, the bundled libsrtp uses OpenSSL crypto only
+  when ``configure`` detects OpenSSL, which it does not with
+  ``--with-gnutls`` or ``--with-mbedtls``;
+- with CMake, the bundled libsrtp uses OpenSSL crypto whenever
+  OpenSSL is found and ``SRTP_WITH_OPENSSL`` is ``ON`` (the default),
+  whatever ``PJLIB_WITH_SSL`` is;
+- an external libsrtp may be built with OpenSSL or NSS crypto.
+
+The reasoning and a workaround for combining DTLS-SRTP with a
+non-OpenSSL TLS backend are in *Build-time security considerations*
+below.
 
 Building with TLS support
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -174,13 +229,24 @@ automatically.
 
 .. code-block:: shell
 
-   ./configure --with-ssl=DIR        # OpenSSL (default)
+   ./configure                       # auto-detect, OpenSSL first
+   ./configure --with-ssl=DIR        # OpenSSL installed in DIR
    ./configure --with-gnutls=DIR     # GnuTLS
    ./configure --with-mbedtls=DIR    # Mbed TLS
+   ./configure --disable-ssl         # no TLS
 
-OpenSSL detection runs by default. ``--with-gnutls`` disables OpenSSL
-detection and selects GnuTLS instead. SChannel and the Apple backends
-are auto-selected on their respective platforms.
+Without an option, ``configure`` looks for OpenSSL, then GnuTLS, then
+Mbed TLS, and uses the first one found. On macOS and iOS targets it
+first tries Apple Secure Transport (``DARWIN``), and uses it only if
+the SDK does not report it as deprecated, which current SDKs do;
+``--disable-darwin-ssl`` skips that check. ``--with-gnutls`` and
+``--with-mbedtls`` select that library instead of OpenSSL. When cross
+compiling, no TLS library is detected unless one of the ``--with-*``
+options is given.
+
+``configure`` never selects the Apple Network framework (``APPLE``)
+or SChannel. Set them in :ref:`config_site.h` (``APPLE`` also needs
+``PJ_IOQUEUE_IMP_SELECT``), or use CMake for ``APPLE``.
 
 For Debian/Ubuntu systems, the development headers are typically:
 
@@ -190,11 +256,17 @@ For Debian/Ubuntu systems, the development headers are typically:
    sudo apt-get install libgnutls28-dev # GnuTLS
    sudo apt-get install libmbedtls-dev  # Mbed TLS
 
+Check the packaged Mbed TLS version: PJSIP needs 3.6 or later, and
+some distributions still ship 2.28 (e.g. Ubuntu 24.04).
+
 See also the platform-specific OpenSSL install pages:
 
 - :any:`windows_openssl` (Windows)
 - :any:`ios_openssl` (iOS / iPhone)
 - :any:`android_openssl` (Android)
+
+For building Mbed TLS and PJSIP with it, and for configuring Mbed TLS
+for a small footprint, see :ref:`guide_mbedtls`.
 
 **CMake**
 
@@ -204,9 +276,14 @@ See also the platform-specific OpenSSL install pages:
    cmake -DPJLIB_WITH_SSL=gnutls    ...
    cmake -DPJLIB_WITH_SSL=mbedtls   ...
    cmake -DPJLIB_WITH_SSL=darwin    ...   # Apple Secure Transport (legacy)
-   cmake -DPJLIB_WITH_SSL=apple     ...   # Apple Network framework
-   cmake -DPJLIB_WITH_SSL=schannel  ...
+   cmake -DPJLIB_WITH_SSL=apple -DPJLIB_WITH_IOQUEUE=select ...
+                                          # Apple Network framework
    cmake -DPJLIB_WITH_SSL=          ...   # disable
+
+``schannel`` is accepted as a value but not implemented yet in the
+CMake build; use Visual Studio for SChannel. With the default
+``openssl``, a build where OpenSSL is not found continues without TLS
+— check the CMake output.
 
 **Visual Studio / config_site.h**
 
@@ -238,10 +315,12 @@ Build-time security considerations
   require OpenSSL* above. The two notable cases are:
 
   - **AEAD-GCM and AES-CM-192 SRTP suites** are *not* coupled to
-    :c:macro:`PJ_SSL_SOCK_IMP`; they only require libsrtp to be
-    built with OpenSSL (or NSS). You can run e.g.
-    ``PJ_SSL_SOCK_IMP_GNUTLS`` for SIP TLS and still enable these
-    SRTP suites by flipping the matching ``PJMEDIA_SRTP_HAS_*`` flag.
+    :c:macro:`PJ_SSL_SOCK_IMP` in the code; they require libsrtp
+    with OpenSSL crypto. You can run e.g. ``PJ_SSL_SOCK_IMP_GNUTLS``
+    for SIP TLS and still enable these SRTP suites by flipping the
+    matching ``PJMEDIA_SRTP_HAS_*`` flag, with a CMake build or an
+    external libsrtp (``configure`` builds the bundled libsrtp
+    without OpenSSL when GnuTLS or Mbed TLS is selected).
   - **DTLS-SRTP** has a hard source-level gate in
     ``transport_srtp.c`` that force-disables
     :c:macro:`PJMEDIA_SRTP_HAS_DTLS` whenever ``PJ_SSL_SOCK_IMP !=
@@ -257,9 +336,11 @@ Build-time security considerations
   In a strict-FIPS OpenSSL configuration, MD5 may be unavailable;
   PJSIP detects this at runtime and falls back to its internal MD5
   for digest authentication (see :ref:`guide_digest_auth`).
-- **TLS 1.3** is supported in OpenSSL, GnuTLS, Mbed TLS (recent
-  versions), the Apple Network framework, and SChannel on recent
-  Windows. The legacy Apple Secure Transport (``DARWIN``) does not.
+- **TLS 1.3** is supported in OpenSSL, GnuTLS, Mbed TLS, the Apple
+  Network framework, and SChannel on recent Windows. The legacy Apple
+  Secure Transport (``DARWIN``) does not, and rejects a protocol set
+  with TLS 1.3 only. It is not enabled by default for SIP; see
+  ``proto`` below.
 - **Cipher / curve / signature-algorithm policy** — the *available* set
   comes from the backend; PJSIP lets you constrain it at runtime
   (see *Configuring TLS in your application* below). The available
@@ -303,7 +384,9 @@ mutually-exclusive fields on :cpp:any:`pjsip_tls_setting`:
   :cpp:any:`pjsip_tls_setting::privkey_file` to PEM (or DER) paths.
   As an alternative to ``ca_list_file``, the directory variant
   :cpp:any:`pjsip_tls_setting::ca_list_path` accepts a directory of
-  CA files. Supported on every backend except SChannel.
+  CA files (OpenSSL, GnuTLS and Mbed TLS only). Supported on every
+  backend except SChannel; the Apple backends have their own format
+  rules (see *Choosing a backend*).
 - **In-memory buffer** — set ``ca_buf``, ``cert_buf``, ``privkey_buf``
   instead. Useful when the credential is fetched at runtime (e.g.
   from a vault) and you don't want it touching the filesystem.
@@ -323,12 +406,11 @@ If the private key is encrypted, set
 :cpp:any:`pjsip_tls_setting_wipe_keys()` zero-fills the key fields when
 you no longer need them.
 
-Populate exactly one source kind. The pjsip TLS transport's behavior
-when multiple sources are populated on the same ``pjsip_tls_setting``
-is path-dependent — listener creation and
-:cpp:any:`pjsip_tls_transport_restart2()` walk the source fields in
-different orders, so the resulting credential depends on which path
-loaded it last. Set only the source that matches the chosen backend.
+Populate exactly one source kind. The TLS transport loads every
+populated field into one credential, and when several are set, the
+backend decides which one is used (OpenSSL, for example, prefers the
+files, then the buffers, then ``cert_direct``; SChannel uses only
+``cert_lookup``). Set only the source that matches the chosen backend.
 
 TLS protocol versions and primitives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -338,7 +420,8 @@ TLS protocol versions and primitives
   ``PJSIP_TLSV1_2_METHOD``). Default
   ``PJSIP_SSL_UNSPECIFIED_METHOD`` (0) maps to
   ``PJSIP_SSL_DEFAULT_METHOD``, currently
-  ``PJSIP_TLSV1_METHOD``. Used only when ``proto`` is zero.
+  ``PJSIP_TLSV1_METHOD``. Used only when ``proto`` is zero, which it
+  is not by default.
 - :cpp:any:`pjsip_tls_setting::proto` — bitmask of
   :cpp:any:`pj_ssl_sock_proto` values; combine with bitwise OR to
   enable multiple TLS versions (e.g. ``PJ_SSL_SOCK_PROTO_TLS1_2 |
@@ -346,14 +429,18 @@ TLS protocol versions and primitives
   need explicit version selection — for example, to force TLS 1.3
   only or to drop TLS 1.0/1.1. The default
   (``PJSIP_SSL_DEFAULT_PROTO``) is ``TLS1 | TLS1_1 | TLS1_2`` — TLS
-  1.3 is **not** enabled by default and must be added explicitly.
+  1.3 is **not** enabled by default and must be added explicitly,
+  per transport or for the whole application by redefining
+  ``PJSIP_SSL_DEFAULT_PROTO`` in :ref:`config_site.h`.
 - :cpp:any:`pjsip_tls_setting::ciphers` and ``ciphers_num`` — array of
   allowed :cpp:any:`pj_ssl_cipher` IDs. Empty (default) means "use the
   backend's default cipher list". Enumerate what's actually available
   on the running system with :cpp:any:`pj_ssl_cipher_get_availables()`.
+  Ignored by SChannel.
 - :cpp:any:`pjsip_tls_setting::curves` and ``curves_num`` — same
   pattern for elliptic curves; enumerate with
-  :cpp:any:`pj_ssl_curve_get_availables()`.
+  :cpp:any:`pj_ssl_curve_get_availables()`. **OpenSSL only** — other
+  backends do not consume this field.
 - :cpp:any:`pjsip_tls_setting::sigalgs` — colon-separated string of
   signature algorithms in the form
   ``"<DIGEST>+<ALGORITHM>:<DIGEST>+<ALGORITHM>"``, e.g.
@@ -369,13 +456,19 @@ different results on an OpenSSL build vs a Mbed TLS build.
 Hostname matching and SNI
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When the local end acts as a TLS client, the peer's certificate is
-matched against the **host part of the SIP URI** that triggered the
-connection, and PJSIP sends SNI based on the same name. There is no
-per-transport override field on :cpp:any:`pjsip_tls_setting`; to
-reach an SBC at a different host than the URI's host (e.g. dial by
-IP but expect a specific cert subject / SAN), route the request
-through a SIP URI whose host matches the certificate.
+When the local end acts as a TLS client, PJSIP sends SNI with, and
+matches the peer's certificate (subjectAltName, or CN) against, the
+host name of the **next hop**, before DNS SRV/A resolution: the host
+of the top ``Route`` header or outbound proxy if there is one,
+otherwise the host (or ``maddr``) of the Request-URI. With an
+outbound proxy, the certificate must therefore match the proxy's
+name. PJSIP does this matching itself, with every backend.
+
+There is no per-transport override field on
+:cpp:any:`pjsip_tls_setting`; to reach an SBC at a different host than
+the URI's host (e.g. dial by IP but expect a specific cert subject /
+SAN), route the request through a SIP URI whose host matches the
+certificate.
 
 
 Operating TLS at runtime
@@ -403,17 +496,27 @@ failure:
 - ``PJ_TRUE`` — verification failure causes the transport to be shut
   down; the application receives ``PJSIP_TP_STATE_DISCONNECTED``.
 
-On the OpenSSL, Apple, SChannel, and Mbed TLS backends the chain is
-verified regardless of the flag, so :cpp:any:`pjsip_tls_state_info`'s
-``verify_status`` is populated either way. **On GnuTLS prior to
-pjproject 2.17, chain verification is skipped when the flag is
-``PJ_FALSE`` and ``verify_status`` comes back empty** — see the
-Pattern B warning below for context.
+The SIP transport applies both flags itself, after the handshake,
+rather than passing them to the SSL socket underneath. On the
+OpenSSL, GnuTLS, Apple Network framework and SChannel backends
+the chain is verified regardless of the flag, so
+:cpp:any:`pjsip_tls_state_info`'s ``verify_status`` is populated
+either way. **On GnuTLS prior to pjproject 2.17, chain verification
+is skipped when the flag is ``PJ_FALSE`` and ``verify_status`` comes
+back empty** — see the Pattern B warning below for context.
+
+The certificates trusted depend on the backend: OpenSSL and Mbed TLS
+trust only the CA certificates you supply, GnuTLS adds the system
+trust store, the Apple backends use the system trust store unless a
+CA is supplied, and SChannel uses the Windows certificate store (see
+the capability table above).
 
 A separate flag :cpp:any:`pjsip_tls_setting::require_client_cert`
 (server-side, default ``PJ_FALSE``) tells the transport to **reject
 the connection** when the client did not present a certificate at
 all. This corresponds to OpenSSL's ``SSL_VERIFY_FAIL_IF_NO_PEER_CERT``.
+SChannel requests a client certificate, but PJLIB does not itself
+reject a client that sends none.
 
 For most production deployments, you want
 ``verify_server = PJ_TRUE`` on the client side to prevent
@@ -554,7 +657,10 @@ There are two distinct sides to renegotiation:
 
 **Accepting incoming renegotiation requests** is controlled by
 :cpp:any:`pjsip_tls_setting::enable_renegotiation` (default
-``PJ_TRUE``). The default is appropriate for most applications.
+``PJ_TRUE``), which only the OpenSSL and Apple Network framework
+backends honour: GnuTLS, Apple Secure Transport and SChannel always
+accept renegotiation, and Mbed TLS always refuses it. The default is
+appropriate for most applications.
 Setting it to ``PJ_FALSE`` is a defence against renegotiation-flood
 denial-of-service attacks (and similar abuse patterns) at the cost
 of forfeiting any rekey before the session ends; it's worth doing if
@@ -569,8 +675,9 @@ the lower PJLIB SSL-socket level there is
 ``pj_ssl_sock_t``, so the only place this can be called from is code
 that works directly against PJLIB sockets.
 
-Even at PJLIB level, several backends fall short of doing a real
-re-handshake:
+OpenSSL starts a renegotiation with ``SSL_renegotiate()`` (TLS 1.2 and
+earlier), and SChannel restarts the handshake on the existing
+context. The other backends fall short of doing a real re-handshake:
 
 - The **Apple Network framework** backend (the modern macOS 10.15+ /
   iOS 13+ ``APPLE`` backend) returns ``PJ_ENOTSUP`` — the underlying
@@ -594,7 +701,7 @@ done by restarting the **listener** with a fresh
 :cpp:any:`pjsip_tls_setting`:
 
 - **PJSUA-LIB**: :cpp:any:`pjsua_transport_lis_restart()` (added in
-  2.17, :pr:`4631`) takes a transport ID and a new
+  2.16, :pr:`4631`) takes a transport ID and a new
   :cpp:any:`pjsua_transport_config`. The listener socket is closed,
   the new ``tls_setting`` is applied, and the listener is recreated
   on the same address/port.
@@ -602,6 +709,7 @@ done by restarting the **listener** with a fresh
   TLS-specific equivalent that takes a new ``pjsip_tls_setting``;
   :cpp:any:`pjsip_udp_transport_restart2()` provides the UDP variant
   for non-TLS settings.
+- **PJSUA2** has no equivalent yet.
 
 These restart the **listener**; existing in-flight connections are
 not torn down by the restart itself. Plan rotation around your
@@ -644,7 +752,8 @@ Running pjsua as a TLS server
           --tls-cert-file server-cert.pem \
           --tls-privkey-file privkey.pem
 
-3. ``./pjsua --help`` lists all TLS-related options.
+3. ``./pjsua --help`` lists all TLS-related options, including
+   ``--tls-password``, ``--tls-neg-timeout`` and ``--tls-cipher``.
 
 Running pjsua as a TLS client
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -684,11 +793,14 @@ Troubleshooting
   Inspect the per-connection :cpp:any:`pjsip_tls_state_info` from the
   transport-state callback for the OpenSSL-style error code. Common
   causes: clock skew, missing intermediate certificates, wrong CA in
-  ``ca_list_file``.
+  ``ca_list_file``, or no CA at all with a backend that has no system
+  trust store (OpenSSL, Mbed TLS).
 - **"name mismatch"** — The server's certificate ``CN`` / SAN doesn't
-  match the SIP URI host. Either fix the certificate, or route the
-  request through a URI whose host matches the cert (there is no
-  per-transport override on :cpp:any:`pjsip_tls_setting`).
+  match the next-hop host (the outbound proxy or ``Route`` host if
+  there is one, otherwise the Request-URI host). Either fix the
+  certificate, or route the request through a URI whose host matches
+  the cert (there is no per-transport override on
+  :cpp:any:`pjsip_tls_setting`).
 - **Cipher / signature-algorithm mismatch** — The two ends share no
   common cipher or sigalg. Enumerate what your build offers with
   :cpp:any:`pj_ssl_cipher_get_availables()` /
@@ -707,8 +819,13 @@ Troubleshooting
   PJSIP runs as needs read access to the private key in the cert
   store. Use ``certutil -repairstore`` or the Certificates MMC to
   grant access.
-- **Mbed TLS: TLS 1.3 missing** — Older Mbed TLS releases lack TLS 1.3
-  altogether. Upgrade Mbed TLS or set ``proto`` to TLS 1.2 only.
+- **Mbed TLS: "Unsupported TLS protocol"** — The protocol set asks
+  only for versions the Mbed TLS build lacks, e.g. TLS 1.3 alone from
+  a TLS 1.2-only configuration. Add a version the build has to
+  ``proto``, or rebuild Mbed TLS with it. More in :ref:`guide_mbedtls`.
+- **SChannel server presents a self-signed certificate** —
+  ``cert_lookup`` was not set (``cert_file`` / ``cert_buf`` are
+  ignored by SChannel).
 - **Apple Secure Transport (Darwin) deprecation** — On macOS 10.15+
   and iOS 13+, prefer the ``APPLE`` (Network framework) backend.
 
