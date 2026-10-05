@@ -9,14 +9,27 @@ Using Mbed TLS with PJSIP
 
 `Mbed TLS <https://github.com/Mbed-TLS/mbedtls>`__ is a TLS library designed for
 embedded systems. PJSIP can use it as its SSL/TLS backend, for SIP over TLS, TURN
-over TLS and any other ``pj_ssl_sock`` user. Its random number generator also
-provides ``pj_ssl_rand_bytes()``, which PJMEDIA uses for SDES-SRTP keys.
+over TLS and any other
+:doc:`pj_ssl_sock </api/generated/pjlib/group/group__PJ__SSL__SOCK>` user. Its
+random number generator also provides :cpp:any:`pj_ssl_rand_bytes()`, which PJMEDIA
+uses for SDES-SRTP keys.
 
-This guide covers building Mbed TLS, building PJSIP against it, and configuring
-Mbed TLS for a small footprint. It applies to both supported major versions.
+This guide applies to both supported major versions, and covers:
 
-See also: :any:`/specific-guides/security/ssl`.
+1. :ref:`mbedtls_versions`, and :ref:`mbedtls_footprint` compared with OpenSSL.
+2. :ref:`mbedtls_v4_changes`.
+3. :ref:`mbedtls_building` and :ref:`mbedtls_building_pjsip`.
+4. :ref:`mbedtls_using`: what differs from the other backends when configuring the
+   TLS transport.
+5. :ref:`mbedtls_small_footprint`, with complete example configurations.
+6. :ref:`mbedtls_troubleshooting`.
 
+How the Mbed TLS backend compares with the other TLS backends, and the TLS transport
+settings common to all of them, are in :ref:`guide_ssl` (see
+:ref:`tls_backend_mbedtls`).
+
+
+.. _mbedtls_versions:
 
 Supported versions
 ------------------
@@ -24,8 +37,11 @@ Supported versions
 - **Mbed TLS 3.6** (the long-term support branch), tested with 3.6.7.
 - **Mbed TLS 4.x**, tested with 4.2.0.
 
-Earlier versions are not supported.
+Earlier versions are not supported. Check the version your distribution packages:
+some still ship 2.28 (e.g. Ubuntu 24.04).
 
+
+.. _mbedtls_footprint:
 
 Footprint
 ---------
@@ -67,17 +83,21 @@ connection, and is dominated by the record buffers, ``MBEDTLS_SSL_IN_CONTENT_LEN
 plus ``MBEDTLS_SSL_OUT_CONTENT_LEN``: 16 KB each by default, 16 KB and 4 KB in the
 minimal configurations.
 
-How these were measured: on x86-64 with GCC 13.3, Mbed TLS built with CMake
-``MinSizeRel`` (``-Os``) and ``-ffunction-sections -fdata-sections``, then linked
-with ``-Wl,--gc-sections`` into a small program that creates a PJLIB TLS socket and
-calls ``pj_ssl_rand_bytes()``, which pulls in the whole PJLIB backend. OpenSSL was
-built the same way, as static libraries with its default options
-(``./Configure no-shared -Os -ffunction-sections -fdata-sections``), and linked
-through PJLIB's OpenSSL backend. The sizes are the ``.text``, ``.rodata`` and
-``.data`` taken from the TLS library's archives, from the linker map; PJSIP's own
-code is not included. Absolute sizes are smaller on 32-bit microcontrollers, but the
-differences between the configurations should be similar in proportion.
+.. note::
 
+   How these were measured: on x86-64 with GCC 13.3, Mbed TLS built with CMake
+   ``MinSizeRel`` (``-Os``) and ``-ffunction-sections -fdata-sections``, then linked
+   with ``-Wl,--gc-sections`` into a small program that creates a PJLIB TLS socket
+   and calls :cpp:any:`pj_ssl_rand_bytes()`, which pulls in the whole PJLIB backend.
+   OpenSSL was built the same way, as static libraries with its default options
+   (``./Configure no-shared -Os -ffunction-sections -fdata-sections``), and linked
+   through PJLIB's OpenSSL backend. The sizes are the ``.text``, ``.rodata`` and
+   ``.data`` taken from the TLS library's archives, from the linker map; PJSIP's own
+   code is not included. Absolute sizes are smaller on 32-bit microcontrollers, but
+   the differences between the configurations should be similar in proportion.
+
+
+.. _mbedtls_v4_changes:
 
 What changed in Mbed TLS 4
 --------------------------
@@ -107,7 +127,7 @@ For PJSIP users the differences are:
      - ``MBEDTLS_xxx_C`` options
      - ``PSA_WANT_xxx`` options
    * - Random numbers used by PJSIP
-     - one CTR_DRBG per TLS socket and per ``pj_ssl_rand_bytes()`` call
+     - one CTR_DRBG per TLS socket and per :cpp:any:`pj_ssl_rand_bytes()` call
      - the global PSA random generator
    * - DES, 3DES and PKCS#12
      - available
@@ -117,10 +137,12 @@ For PJSIP users the differences are:
      - ``MbedTLS::mbedtls``, ``MbedTLS::mbedx509``, ``MbedTLS::tfpsacrypto``
 
 PJSIP handles these differences itself. The ones that need attention from you are
-the configuration files (see :ref:`mbedtls_small_footprint`), thread safety (see
+the configuration files (see :ref:`mbedtls_install_config`), thread safety (see
 :ref:`mbedtls_thread_safety`), and encrypted private keys (see
 :ref:`mbedtls_troubleshooting`).
 
+
+.. _mbedtls_building:
 
 Building Mbed TLS
 -----------------
@@ -145,9 +167,9 @@ With CMake (3.6 and 4.x)
    $ cmake --install build
 
 This installs the headers under ``include/`` and static libraries under ``lib/``
-(``lib64/`` on some distributions), together with pkg-config files (``lib/pkgconfig``) and CMake package files
-(``lib/cmake``). PJSIP's ``configure`` uses the former, and PJSIP's CMake build
-needs the latter.
+(``lib64/`` on some distributions), together with pkg-config files
+(``lib/pkgconfig``) and CMake package files (``lib/cmake``). PJSIP's ``configure``
+uses the former, and PJSIP's CMake build needs the latter.
 
 Useful options:
 
@@ -182,7 +204,7 @@ If PJSIP is built with threads, which is the default, build Mbed TLS with its
 threading layer: enable ``MBEDTLS_THREADING_C`` and ``MBEDTLS_THREADING_PTHREAD``
 (or ``MBEDTLS_THREADING_ALT`` with your own mutex implementation on an RTOS).
 
-- With **4.x** this is required. All TLS sockets and ``pj_ssl_rand_bytes()`` (SRTP
+- With **4.x** this is required. All TLS sockets and :cpp:any:`pj_ssl_rand_bytes()` (SRTP
   keys) share PSA's random generator and key store, and PSA Crypto is not
   thread-safe without these options.
 - With **3.6** it is recommended whenever ``MBEDTLS_PSA_CRYPTO_C`` is enabled, which
@@ -205,8 +227,13 @@ the release:
    $ python3 tf-psa-crypto/scripts/config.py set MBEDTLS_THREADING_PTHREAD
 
 
+.. _mbedtls_building_pjsip:
+
 Building PJSIP with Mbed TLS
 ----------------------------
+
+This section covers what is specific to Mbed TLS; the general build options for TLS
+are in :ref:`tls_building`.
 
 With configure
 ~~~~~~~~~~~~~~
@@ -259,7 +286,7 @@ installed with CMake (it needs ``lib/cmake/MbedTLS``).
 
 ``-DSRTP_WITH_OPENSSL=OFF`` keeps the bundled libsrtp from using OpenSSL's crypto
 when OpenSSL happens to be installed. Without it, a build that uses Mbed TLS for TLS
-still links OpenSSL's ``libcrypto`` for SRTP.
+still links OpenSSL's ``libcrypto`` for SRTP (see :ref:`tls_openssl_features`).
 
 Visual Studio
 ~~~~~~~~~~~~~
@@ -290,15 +317,35 @@ The test needs a TLS server and the default set of algorithms, so it fails with 
 client-only or otherwise reduced Mbed TLS configuration.
 
 
+.. _mbedtls_using:
+
+Using the Mbed TLS backend
+--------------------------
+
+The TLS transport is configured the same way with every backend; see
+:ref:`tls_configuring`. Two points are specific to Mbed TLS.
+
+.. _mbedtls_certificates:
+
+Certificates and trust
+~~~~~~~~~~~~~~~~~~~~~~
+
+Mbed TLS has no access to a system trust store. To verify servers
+(``verify_server``), give PJSIP the CA certificates, as a file, directory or buffer
+(see :ref:`tls_credentials`). Mbed TLS 3.6.3 and later also need the name to verify
+the server against, in ``server_name``; PJSIP's SIP TLS transport sets it to the
+remote host.
+
 .. _mbedtls_tls13:
 
-Using TLS 1.3
--------------
+TLS 1.3
+~~~~~~~
 
 The default configurations of both Mbed TLS versions include TLS 1.3, and the PJLIB
 backend supports it. PJSIP's SIP TLS transport, however, asks for TLS 1.0 to 1.2 by
 default (``PJSIP_SSL_DEFAULT_PROTO``), whatever the backend. To allow TLS 1.3 for
-SIP, add ``PJ_SSL_SOCK_PROTO_TLS1_3`` to the protocol set:
+SIP, add ``PJ_SSL_SOCK_PROTO_TLS1_3`` to the protocol set (see
+:ref:`tls_protocols`):
 
 - per transport, in ``pjsip_tls_setting.proto`` (in PJSUA,
   ``pjsua_transport_config.tls_setting.proto``; in PJSUA2, ``TlsConfig::proto``),
@@ -314,8 +361,40 @@ The backend only asks Mbed TLS for the versions it was built with, so the same
 setting also works with an Mbed TLS that lacks one of them.
 
 
+.. _mbedtls_small_footprint:
+
+Configuring Mbed TLS for a small footprint
+------------------------------------------
+
+The default Mbed TLS configuration includes nearly every algorithm, protocol version
+and feature. A device that talks to one known server needs a small part of that, and
+building only that part saves most of the library's code and some of its RAM (see
+:ref:`mbedtls_footprint` for the numbers).
+
+Principles
+~~~~~~~~~~
+
+- **One protocol version.** TLS 1.2 alone is smaller: TLS 1.3 needs HKDF and, with
+  RSA certificates, RSA-PSS. Both are still in common use, so pick what your server
+  supports.
+- **One cipher suite, one curve.** ``TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`` over
+  P-256 is supported by practically every TLS 1.2 server. Pin it with
+  ``MBEDTLS_SSL_CIPHERSUITES`` so the ciphersuite table and the ClientHello carry
+  only that entry.
+- **Client only**, unless the device must accept TLS connections.
+- **Only the certificate types your servers use**, e.g. RSA with PKCS#1 v1.5
+  signatures. Add ECDSA if a server has an ECDSA certificate.
+- **Smaller buffers.** ``MBEDTLS_SSL_OUT_CONTENT_LEN`` can be reduced to what the
+  application sends: SIP messages are well under 4 KB. ``MBEDTLS_SSL_IN_CONTENT_LEN``
+  must stay at 16384, because a server may send full-size records unless the Max
+  Fragment Length extension is negotiated, which PJSIP does not do.
+- **Size over speed.** A handful of options trade speed or flexibility for code
+  size; see :ref:`mbedtls_size_options`.
+
+.. _mbedtls_requirements:
+
 What PJSIP needs from Mbed TLS
-------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Whatever the configuration, the PJLIB backend needs:
 
@@ -348,41 +427,6 @@ Optional:
    * - ``MBEDTLS_DEBUG_C``
      - Mbed TLS debug messages, which PJSIP logs at level 3
 
-Mbed TLS has no access to a system trust store. To verify servers
-(``verify_server``), give PJSIP the CA certificates, as a file, directory or buffer.
-Mbed TLS 3.6.3 and later also need the name to verify the server against, in
-``server_name``; PJSIP's SIP TLS transport sets it to the remote host.
-
-
-.. _mbedtls_small_footprint:
-
-Configuring Mbed TLS for a small footprint
-------------------------------------------
-
-The default Mbed TLS configuration includes nearly every algorithm, protocol version
-and feature. A device that talks to one known server needs a small part of that, and
-building only that part saves most of the library's code and some of its RAM.
-
-Principles
-~~~~~~~~~~
-
-- **One protocol version.** TLS 1.2 alone is smaller: TLS 1.3 needs HKDF and, with
-  RSA certificates, RSA-PSS. Both are still in common use, so pick what your server
-  supports.
-- **One cipher suite, one curve.** ``TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`` over
-  P-256 is supported by practically every TLS 1.2 server. Pin it with
-  ``MBEDTLS_SSL_CIPHERSUITES`` so the ciphersuite table and the ClientHello carry
-  only that entry.
-- **Client only**, unless the device must accept TLS connections.
-- **Only the certificate types your servers use**, e.g. RSA with PKCS#1 v1.5
-  signatures. Add ECDSA if a server has an ECDSA certificate.
-- **Smaller buffers.** ``MBEDTLS_SSL_OUT_CONTENT_LEN`` can be reduced to what the
-  application sends: SIP messages are well under 4 KB. ``MBEDTLS_SSL_IN_CONTENT_LEN``
-  must stay at 16384, because a server may send full-size records unless the Max
-  Fragment Length extension is negotiated, which PJSIP does not do.
-- **Size over speed.** A handful of options trade speed or flexibility for code
-  size; see below.
-
 .. _mbedtls_install_config:
 
 Build the configuration into the installed headers
@@ -402,7 +446,8 @@ replace the default configuration files in the source tree before building, so t
    $ cp my_mbedtls_config.h include/mbedtls/mbedtls_config.h
    $ cp my_crypto_config.h  tf-psa-crypto/include/psa/crypto_config.h
 
-Then build and install as above, and rebuild PJSIP from clean against it.
+Then build and install as in :ref:`mbedtls_building`, and rebuild PJSIP from clean
+against it.
 
 Mbed TLS also accepts the configuration through the CMake options
 ``MBEDTLS_CONFIG_FILE`` and ``TF_PSA_CRYPTO_CONFIG_FILE``. Note that this does not
@@ -410,6 +455,8 @@ change the installed configuration headers: only CMake projects importing the Mb
 TLS package receive the setting, as a compile definition pointing at the original
 file. PJSIP's ``configure`` build would compile against the default configuration,
 so do not use these options with it.
+
+.. _mbedtls_size_options:
 
 Size options
 ~~~~~~~~~~~~
@@ -472,7 +519,7 @@ Example: minimal TLS 1.2 client, Mbed TLS 3.6
 
 A TLS 1.2 client with one cipher suite, ``TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256``,
 over P-256, verifying RSA PKCS#1 v1.5 signatures with SHA-256. It also provides the
-random generator behind ``pj_ssl_rand_bytes()``, which PJMEDIA uses for SDES-SRTP
+random generator behind :cpp:any:`pj_ssl_rand_bytes()`, which PJMEDIA uses for SDES-SRTP
 keys. This replaces the whole ``include/mbedtls/mbedtls_config.h``:
 
 .. code-block:: c
@@ -619,8 +666,8 @@ The same profile for Mbed TLS 4.x, as a pair of files.
    #endif /* PSA_CRYPTO_CONFIG_H */
 
 If PJSIP is built with threads, also define ``MBEDTLS_THREADING_C`` and
-``MBEDTLS_THREADING_PTHREAD`` in the crypto file; PJSIP warns at compile time if they
-are missing.
+``MBEDTLS_THREADING_PTHREAD`` in the crypto file (see
+:ref:`mbedtls_thread_safety`); PJSIP warns at compile time if they are missing.
 
 Adapting the examples
 ~~~~~~~~~~~~~~~~~~~~~
@@ -708,15 +755,16 @@ files are the ones the library was built with (see :ref:`mbedtls_install_config`
 
 **Unsupported TLS protocol.**
 The application asked only for protocol versions that this Mbed TLS build does not
-have, e.g. TLS 1.3 alone from a TLS 1.2-only build.
+have, e.g. TLS 1.3 alone from a TLS 1.2-only build (see :ref:`mbedtls_tls13`).
 
 **Handshake fails when verifying the server.**
-Mbed TLS has no system trust store: supply the CA certificates. With PEM files, the
-configuration needs ``MBEDTLS_PEM_PARSE_C``; to load files at all, ``MBEDTLS_FS_IO``.
-With Mbed TLS 3.6.3 and later, ``Failed to mbedtls_ssl_handshake, ret -0x5D80``
+Mbed TLS has no system trust store: supply the CA certificates (see
+:ref:`mbedtls_certificates`). With PEM files, the configuration needs
+``MBEDTLS_PEM_PARSE_C``; to load files at all, ``MBEDTLS_FS_IO``. With Mbed TLS
+3.6.3 and later, ``Failed to mbedtls_ssl_handshake, ret -0x5D80``
 (``MBEDTLS_ERR_SSL_CERTIFICATE_VERIFICATION_WITHOUT_HOSTNAME``) means the client
 verifies the server but has no name to verify it against: set ``server_name`` in
-``pj_ssl_sock_param``.
+:cpp:any:`pj_ssl_sock_param`.
 
 **More detail.**
 Build Mbed TLS with ``MBEDTLS_DEBUG_C``; its messages then appear in the PJSIP log at
