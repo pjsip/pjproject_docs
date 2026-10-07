@@ -112,8 +112,10 @@ Clearing the pin
   a retry-eligible status (408 / 5xx / 6xx) or the connection drops,
   PJSUA schedules another REGISTER attempt (the built-in
   *automatic re-registration* mechanism, configured via
-  :cpp:any:`pjsua_acc_config::reg_retry_interval` and
-  :cpp:any:`pjsua_acc_config::reg_first_retry_interval`). On that
+  :cpp:any:`pjsua_acc_config::reg_retry_interval`,
+  :cpp:any:`pjsua_acc_config::reg_first_retry_interval` and
+  :cpp:any:`pjsua_acc_config::reg_retry_random_interval`, which
+  randomizes both retry delays). On that
   retry, **auto-captured pins are dropped** so the retry can resolve
   fresh and pick a different alternate. Explicitly-set pins are
   preserved so applications that pinned for a reason aren't silently
