@@ -371,6 +371,21 @@ Use a CMake toolchain file:
 This is not validated; the GNU build (``./configure --host=...``, see
 :any:`/get-started/posix/build_instructions`) is the tested path.
 
+For an ARM target without an operating system (``CMAKE_SYSTEM_NAME``
+``Generic``), :source:`cmake/toolchains/arm-none-eabi.cmake` configures with
+a GCC toolchain such as the Arm GNU toolchain; its header lists the
+settings:
+
+.. code-block:: shell
+
+   $ cmake -S . -B cmake-arm --toolchain cmake/toolchains/arm-none-eabi.cmake \
+         -DPJ_WITH_CXX=OFF -DPJ_BUILD_APPS=OFF -DBUILD_TESTING=OFF \
+         -DPJLIB_WITH_SSL=
+
+CI checks this configure, and that the pjlib sources needing only the C
+library compile. The socket layer and threads have to come from an RTOS, so
+pjlib does not link yet.
+
 
 Running Tests
 -------------

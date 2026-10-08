@@ -39,6 +39,14 @@ General
    * - ``CMAKE_INSTALL_PREFIX``
      - platform default
      - Install destination.
+   * - ``PJ_WITH_CXX``
+     - ``ON``
+     - Build the C++ components: pjsua2 and the C++ backends (WebRTC AEC3,
+       libyuv, Lyra, OpenH264, Oboe, WASAPI, DirectShow, Android
+       MediaCodec). ``OFF`` gives a pure C build, without them.
+   * - ``PJ_BUILD_APPS``
+     - ``ON``
+     - Build pjsua and the sample applications. Never built for iOS.
    * - ``PJ_SKIP_EXPERIMENTAL_NOTICE``
      - ``OFF``
      - Silence the experimental-status banner.

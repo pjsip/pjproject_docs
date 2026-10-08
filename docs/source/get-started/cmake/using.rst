@@ -139,5 +139,5 @@ the libraries PJSIP itself links too, with ``--static``:
    $ cc myapp.c -o myapp $(pkg-config --static --cflags --libs libpjproject)
 
 The file locates the installation relative to itself, so it stays valid
-when the installation is moved. Use it with GCC or Clang; it requires
-:pr:`5301`.
+when the installation is moved, and it does not need the dependencies' own
+pkg-config files. Use it with GCC or Clang.
