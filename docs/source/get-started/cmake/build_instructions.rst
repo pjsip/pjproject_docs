@@ -526,6 +526,6 @@ Known Limitations
 * **The Visual Studio solution stays the reference Windows build,** and
   covers targets not yet validated with CMake, such as Windows ARM64 and
   UWP.
-* **``PJ_DEP_<name>=system`` in 2.17** finds the library but sibling
-  modules may not use it (e.g. ``PJMEDIA_WITH_SRTP`` silently turns
-  ``OFF``). Fixed after 2.17 (:pr:`4942`).
+* **System dependencies in 2.17.** ``PJ_DEP_<name>=system`` finds the
+  library but sibling modules may not use it (e.g. ``PJMEDIA_WITH_SRTP``
+  silently turns ``OFF``). Fixed after 2.17 (:pr:`4942`).

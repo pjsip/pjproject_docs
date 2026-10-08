@@ -18,9 +18,9 @@ CMake support is **experimental**. Its status per platform:
    * - Linux x86_64
      - CI
      -
-   * - macOS (Intel, Apple Silicon)
+   * - macOS
      - CI
-     -
+     - CI runs on Apple Silicon.
    * - Android (arm64-v8a, armeabi-v7a, x86_64, x86)
      - CI
      - Also builds the pjsua2 JNI bindings and the AAR.

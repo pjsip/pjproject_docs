@@ -340,7 +340,8 @@ Third-party Libraries
 
 The libraries in :source:`third_party/` are built from source
 (``bundled``). Those with a ``system`` provider can use an installed copy
-instead, found with ``find_package()``.
+instead, found with ``find_package()``. ``none`` leaves the library out,
+and the features that need it switch themselves off.
 
 .. list-table::
    :header-rows: 1
@@ -350,29 +351,33 @@ instead, found with ``find_package()``.
      - Values
      - Library
    * - ``PJ_DEP_SRTP``
-     - ``bundled``, ``system``
+     - ``bundled``, ``system``, ``none``
      - libsrtp. The bundled copy uses OpenSSL's AES-GCM when OpenSSL is
        found (``SRTP_WITH_OPENSSL``, ``ON``).
    * - ``PJ_DEP_SPEEX``
-     - ``bundled``, ``system``
+     - ``bundled``, ``system``, ``none``
      - Speex codec. With ``system``, the Speex AEC and resampler use
        libspeexdsp.
    * - ``PJ_DEP_GSM``
-     - ``bundled``, ``system``
+     - ``bundled``, ``system``, ``none``
      - GSM 06.10.
    * - ``PJ_DEP_G7221``
-     - ``bundled``, ``system``
+     - ``bundled``, ``system``, ``none``
      - G.722.1.
    * - ``PJ_DEP_YUV``
-     - ``bundled``, ``system``
-     - libyuv.
+     - ``bundled``, ``system``, ``none``
+     - libyuv. Only with ``PJ_WITH_CXX``.
    * - ``PJ_DEP_RESAMPLE``
-     - ``bundled``, ``system``
+     - ``bundled``, ``system``, ``none``
      - libresample.
    * - ``PJ_DEP_ILBC``
-     - ``bundled``
+     - ``bundled``, ``none``
      - iLBC.
-   * - ``PJ_DEP_WEBRTC``, ``PJ_DEP_WEBRTC_AEC3``
-     - ``bundled``
-     - WebRTC AEC and AEC3. Not available on Apple platforms, MinGW or
-       Cygwin.
+   * - ``PJ_DEP_WEBRTC``
+     - ``bundled``, ``none``
+     - WebRTC AEC. Not available on Apple platforms, MinGW or Cygwin, nor
+       on x86 without ``PJ_WITH_CXX``.
+   * - ``PJ_DEP_WEBRTC_AEC3``
+     - ``bundled``, ``none``
+     - WebRTC AEC3. Not available on Apple platforms, MinGW or Cygwin.
+       Only with ``PJ_WITH_CXX``.
