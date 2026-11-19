@@ -326,6 +326,12 @@ Platform Integration
      - ``OFF`` (Android)
      - Build the pjsua2 JNI bindings, ``libpjsua2.so`` and the Java
        sources. Needs SWIG 4.0+.
+   * - ``PJSUA2_ANDROID_DIR``
+     - the sample's ``pjsua2/src/main`` (Android)
+     - Android source set that the build copies ``libpjsua2.so``,
+       ``libc++_shared.so`` and the Java classes into, with
+       ``PJ_BUILD_SWIG_JAVA``. Empty for none. See
+       :doc:`/get-started/android/build_cmake`.
    * - ``PJ_IOS_SAMPLE_LIBS``
      - ``ON`` (iOS)
      - Copy the built libraries into the bundled iOS sample projects.
