@@ -80,9 +80,11 @@ By default this builds **arm64-v8a**, for API level **23**, with the shared C++ 
 (``libc++_shared.so``), as ``./configure-android`` does. The next sections show how to change
 the first two.
 
-``-DANDROID_STL=c++_static`` uses the static C++ runtime instead, but not with the prebuilt Oboe
-AAR: its ``liboboe.so`` needs ``libc++_shared.so``, which is then not copied, so the application
-fails to load it. Use it only without Oboe, or with an Oboe built as a static library.
+``-DANDROID_STL=c++_static`` uses the static C++ runtime instead. It is only for when
+``libpjsua2.so`` is the application's only native library using C++, as the NDK does not support a
+static C++ runtime alongside other C++ shared libraries. So it cannot be used with the prebuilt
+Oboe AAR, whose ``liboboe.so`` needs ``libc++_shared.so``, and configure stops on that combination.
+Use it without Oboe, or with an Oboe built as a static library.
 
 .. tip::
 
