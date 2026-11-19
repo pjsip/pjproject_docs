@@ -28,10 +28,11 @@ Quick Start
    $ cd pjproject
    $ cmake -S . -B cmake-build -DCMAKE_BUILD_TYPE=Release
    $ cmake --build cmake-build -j
-   $ ./cmake-build/pjsip-apps/pjsua
+   $ ./cmake-build/pjsip-apps/bin/pjsua
 
-Output goes to the build directory, under ``<build>/<module>/``, not to the
-``<module>/lib`` and ``<module>/bin`` directories of the GNU build.
+Output goes to the build directory, into ``<build>/<module>/lib`` and
+``<build>/<module>/bin``, not into the source tree's ``<module>/lib`` and
+``<module>/bin`` as with the GNU build.
 
 .. tip::
 
@@ -70,16 +71,18 @@ Everyday Commands
    * - Show all options and their values
      - ``cmake -LAH -N cmake-build``
 
-``CMAKE_BUILD_TYPE`` has no default. Without it, a Ninja or Make build is
-compiled without optimization or debug info, so always pass one of
-``Debug``, ``Release``, ``RelWithDebInfo`` or ``MinSizeRel``.
+Without ``CMAKE_BUILD_TYPE``, a Ninja or Make build is compiled with
+``-O2`` and assertions enabled, as the GNU build is, unless ``CMAKE_C_FLAGS``
+has an ``-O`` flag of its own. The build types ``Debug``, ``Release``,
+``RelWithDebInfo`` and ``MinSizeRel`` use CMake's standard flags instead.
 
 Multi-config generators (Visual Studio, Xcode, Ninja Multi-Config) ignore
 ``CMAKE_BUILD_TYPE``. Choose the configuration at build, test and install
 time instead, e.g. ``cmake --build cmake-build --config Release``,
 ``ctest --test-dir cmake-build -C Release`` and
 ``cmake --install cmake-build --config Release``.
-Binaries then go to ``<build>/<module>/<Config>/``.
+The configuration is then added to the file names instead, e.g.
+``pjlib-test-Release.exe`` or ``libpj-Debug.lib``.
 
 
 Configuring
@@ -132,6 +135,8 @@ install prefix, the directory holding ``include/`` and ``lib/``:
 work too. A result that has been cached is not searched again, so after
 installing a missing library, delete the build directory, or at least
 ``CMakeCache.txt``, and configure again.
+
+.. _cmake_config_site:
 
 ``config_site.h``
 ^^^^^^^^^^^^^^^^^
@@ -210,6 +215,11 @@ Core Audio and AVFoundation capture are on by default, and Metal rendering
 uses Apple's Network framework instead of OpenSSL, with the ``select`` I/O
 queue only. The bundled WebRTC AEC and AEC3 are not available on Apple
 platforms.
+
+See :doc:`/get-started/posix/build_cmake` for the full steps on macOS and
+Linux, including builds for the other architecture and universal binaries,
+and :doc:`/get-started/posix/framework` for the prebuilt
+``PJSIP.xcframework``.
 
 Windows, Visual Studio
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -369,7 +379,7 @@ Use a CMake toolchain file:
          -DCMAKE_BUILD_TYPE=Release
 
 This is not validated; the GNU build (``./configure --host=...``, see
-:any:`/get-started/posix/build_instructions`) is the tested path.
+:doc:`/get-started/posix/build_gnu`) is the tested path.
 
 For an ARM target without an operating system (``CMAKE_SYSTEM_NAME``
 ``Generic``), :source:`cmake/toolchains/arm-none-eabi.cmake` configures with
@@ -407,8 +417,8 @@ those from ``<module>/bin/``:
 .. code-block:: shell
 
    $ mkdir -p pjlib/bin && cd pjlib/bin
-   $ ../../cmake-build/pjlib/pjlib-test --list
-   $ ../../cmake-build/pjlib/pjlib-test sock_test ssl_sock_test
+   $ ../../cmake-build/pjlib/bin/pjlib-test --list
+   $ ../../cmake-build/pjlib/bin/pjlib-test sock_test ssl_sock_test
 
 
 Installing
@@ -438,6 +448,8 @@ Packagers can split the installation with ``--component PjRuntime``
 (headers, static libraries and the package files).
 
 
+.. _cmake_migrating_from_configure:
+
 Migrating from ``./configure``
 ------------------------------
 
@@ -453,6 +465,8 @@ Migrating from ``./configure``
      - ``-DBUILD_SHARED_LIBS=ON``
    * - ``--disable-threads``
      - ``-DPJLIB_WITH_THREADS=OFF``
+   * - ``--disable-pjsua2``
+     - ``-DPJ_BUILD_PJSUA2=OFF``
    * - ``--enable-epoll`` / ``--enable-kqueue``
      - ``-DPJLIB_WITH_IOQUEUE=epoll`` / ``kqueue``
    * - ``--disable-ssl``
@@ -486,9 +500,10 @@ Migrating from ``./configure``
      - ``-DCMAKE_C_FLAGS=...``, ``-DCMAKE_CXX_FLAGS=...``,
        ``-DCMAKE_EXE_LINKER_FLAGS=...``
 
-Not available with CMake: ``--disable-pjsua2`` (pjsua2 is always built),
-``--disable-small-filter`` / ``--disable-large-filter`` (the resampler
-always has both), and the desktop Java, Python and C# bindings.
+Not available with CMake: ``--disable-small-filter`` /
+``--disable-large-filter`` (the resampler always has both), and the Qt
+``vidgui`` sample. The SWIG bindings are built with ``-DPJ_BUILD_SWIG_JAVA=ON``,
+``-DPJ_BUILD_SWIG_PYTHON=ON`` and ``-DPJ_BUILD_SWIG_CSHARP=ON``.
 
 
 Troubleshooting
