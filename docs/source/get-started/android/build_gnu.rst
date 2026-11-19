@@ -56,7 +56,7 @@ section for building other targets.
      options should be applicable to this script too.
    * Please check ``./configure-android --help`` for more info.
    * Other customizations are similar to what is explained in 
-     :doc:`Building with GNU Tools/Autoconf </get-started/posix/build_instructions>` 
+     :doc:`Building with GNU Tools/Autoconf </get-started/posix/build_gnu>` 
      page.
 
 Specifying Android API level

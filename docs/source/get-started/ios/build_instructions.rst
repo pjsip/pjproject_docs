@@ -55,7 +55,7 @@ See :doc:`CLI Manual </specific-guides/other/cli_cmd>` for commands available.
    * You may pass standard ``./configure`` options to this script too.
    * For more info, run ``./configure-iphone --help``
    * Other customizations are similar to what is explained in 
-     :doc:`Building with GNU </get-started/posix/build_instructions>` page.
+     :doc:`Building with GNU </get-started/posix/build_gnu>` page.
 
 Supporting multiple architectures (e.g. armv7, arm64)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

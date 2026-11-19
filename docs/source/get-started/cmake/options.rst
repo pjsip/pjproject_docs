@@ -28,8 +28,9 @@ General
    * - ``CMAKE_BUILD_TYPE``
      - none
      - ``Debug``, ``Release``, ``RelWithDebInfo`` or ``MinSizeRel``. Without
-       one, a single-config build has no optimization flags. Ignored by
-       multi-config generators (Visual Studio, Xcode).
+       one, a single-config build gets ``-O2`` with assertions enabled, as
+       the GNU build, unless ``CMAKE_C_FLAGS`` has an ``-O`` flag. Ignored
+       by multi-config generators (Visual Studio, Xcode).
    * - ``BUILD_SHARED_LIBS``
      - ``OFF``
      - Shared libraries instead of static ones.
@@ -63,11 +64,14 @@ PJLIB
      - Default
      - Notes
    * - ``PJLIB_WITH_SSL``
-     - ``openssl``
-     - ``openssl``, ``gnutls``, ``mbedtls``, ``darwin``, ``apple``,
-       ``schannel``, or empty for no SSL. Falls back to no SSL when
-       OpenSSL is not found. ``apple`` needs the ``select`` I/O queue;
-       ``schannel`` needs MSVC. See :any:`/specific-guides/security/ssl`.
+     - ``auto``
+     - ``auto``, ``openssl``, ``gnutls``, ``mbedtls``, ``darwin``,
+       ``apple``, ``schannel``, or ``none`` (or empty) for no SSL. ``auto``
+       uses the first of OpenSSL, GnuTLS and Mbed TLS that is found, and
+       builds without SSL when there is none, as ``./configure``. A backend
+       named explicitly stops the configure when it cannot be used.
+       ``apple`` needs the ``select`` I/O queue; ``schannel`` needs MSVC.
+       See :any:`/specific-guides/security/ssl`.
    * - ``PJLIB_WITH_IOQUEUE``
      - ``select``
      - ``select``, ``epoll`` (Linux), ``kqueue`` (macOS, BSD), ``iocp``
@@ -128,11 +132,14 @@ General
      - Speex echo canceller.
    * - ``PJMEDIA_WITH_WEBRTC_AEC``
      - ``ON``
-     - WebRTC echo canceller. Not available on Apple platforms, MinGW or
-       Cygwin.
+     - WebRTC echo canceller. Not in an Apple build for several
+       architectures at once (e.g. ``arm64;x86_64``), nor on x86 without
+       ``PJ_WITH_CXX``.
    * - ``PJMEDIA_WITH_WEBRTC_AEC3``
-     - ``ON``
-     - WebRTC AEC3 echo canceller. Same availability as above.
+     - ``OFF``
+     - WebRTC AEC3 echo canceller, as ``--enable-libwebrtc-aec3``. Only with
+       ``PJ_WITH_CXX``. Not in an Apple build for several architectures at
+       once, and the bundled copy cannot be built with MinGW.
    * - ``PJMEDIA_WITH_LIBYUV``
      - ``ON`` with video
      - libyuv for video format conversion.
@@ -360,7 +367,9 @@ Third-party Libraries
 The libraries in :source:`third_party/` are built from source
 (``bundled``). Those with a ``system`` provider can use an installed copy
 instead, found with ``find_package()``. ``none`` leaves the library out,
-and the features that need it switch themselves off.
+and the features that need it switch themselves off. The default, ``auto``,
+uses the bundled copy, or the system one when its ``<Package>_ROOT`` is
+given.
 
 .. list-table::
    :header-rows: 1
@@ -370,33 +379,34 @@ and the features that need it switch themselves off.
      - Values
      - Library
    * - ``PJ_DEP_SRTP``
-     - ``bundled``, ``system``, ``none``
+     - ``auto``, ``bundled``, ``system``, ``none``
      - libsrtp. The bundled copy uses OpenSSL's AES-GCM when OpenSSL is
        found (``SRTP_WITH_OPENSSL``, ``ON``).
    * - ``PJ_DEP_SPEEX``
-     - ``bundled``, ``system``, ``none``
+     - ``auto``, ``bundled``, ``system``, ``none``
      - Speex codec. With ``system``, the Speex AEC and resampler use
        libspeexdsp.
    * - ``PJ_DEP_GSM``
-     - ``bundled``, ``system``, ``none``
+     - ``auto``, ``bundled``, ``system``, ``none``
      - GSM 06.10.
    * - ``PJ_DEP_G7221``
-     - ``bundled``, ``system``, ``none``
+     - ``auto``, ``bundled``, ``none``
      - G.722.1.
    * - ``PJ_DEP_YUV``
-     - ``bundled``, ``system``, ``none``
+     - ``auto``, ``bundled``, ``system``, ``none``
      - libyuv. Only with ``PJ_WITH_CXX``.
    * - ``PJ_DEP_RESAMPLE``
-     - ``bundled``, ``system``, ``none``
+     - ``auto``, ``bundled``, ``system``, ``none``
      - libresample.
    * - ``PJ_DEP_ILBC``
-     - ``bundled``, ``none``
+     - ``auto``, ``bundled``, ``none``
      - iLBC.
    * - ``PJ_DEP_WEBRTC``
-     - ``bundled``, ``none``
-     - WebRTC AEC. Not available on Apple platforms, MinGW or Cygwin, nor
-       on x86 without ``PJ_WITH_CXX``.
+     - ``auto``, ``bundled``, ``system``, ``none``
+     - WebRTC AEC. Not in an Apple build for several architectures at
+       once, nor on x86 without ``PJ_WITH_CXX``.
    * - ``PJ_DEP_WEBRTC_AEC3``
-     - ``bundled``, ``none``
-     - WebRTC AEC3. Not available on Apple platforms, MinGW or Cygwin.
-       Only with ``PJ_WITH_CXX``.
+     - ``auto``, ``bundled``, ``system``, ``none``
+     - WebRTC AEC3, with ``PJMEDIA_WITH_WEBRTC_AEC3``. Not in an Apple
+       build for several architectures at once; the bundled copy cannot be
+       built with MinGW. Only with ``PJ_WITH_CXX``.
