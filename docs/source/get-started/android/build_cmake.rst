@@ -190,8 +190,9 @@ applications' ``pjsua2`` module:
 
 ``-DPJSUA2_ANDROID_DIR=/path/to/your/app/src/main`` copies into your own application instead, and
 ``-DPJSUA2_ANDROID_DIR=`` copies nothing. Each build updates only the generated classes that
-changed, and removes those that are no longer generated; other sources there, such as your
-application's own, are left alone. ``libc++_shared.so`` is left out when building with
+changed. The ``org.pjsip.pjsua2`` package is reserved for them: any other class directly in it is
+removed. Keep your application's own sources in another package, or in a subpackage such as
+``org.pjsip.pjsua2.app`` as the sample application does; those are left alone. ``libc++_shared.so`` is left out when building with
 ``-DANDROID_STL=c++_static``.
 
 
