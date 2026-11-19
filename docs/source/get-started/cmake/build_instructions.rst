@@ -462,9 +462,14 @@ Migrating from ``./configure``
      - ``-DCMAKE_C_FLAGS=...``, ``-DCMAKE_CXX_FLAGS=...``,
        ``-DCMAKE_EXE_LINKER_FLAGS=...``
 
-Not available with CMake: ``--disable-pjsua2`` (pjsua2 is always built),
+Not available with CMake: ``--disable-pjsua2`` (pjsua2 is always built), and
 ``--disable-small-filter`` / ``--disable-large-filter`` (the resampler
-always has both), and the desktop Java, Python and C# bindings.
+always has both).
+
+The Java, Python and C# bindings, built with ``make`` in
+:source:`pjsip-apps/src/swig`, are ``-DPJ_BUILD_SWIG_JAVA=ON``,
+``-DPJ_BUILD_SWIG_PYTHON=ON`` and ``-DPJ_BUILD_SWIG_CSHARP=ON``; see
+:doc:`options`.
 
 
 Troubleshooting
