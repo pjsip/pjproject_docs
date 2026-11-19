@@ -38,11 +38,23 @@ Tools and development libraries
 * A C and C++ compiler: GCC, Clang, or Apple Clang (Xcode or its command line tools on macOS).
 * A build tool: Make or Ninja. CMake uses Make by default; add ``-G Ninja`` to use Ninja.
 
+On Debian or Ubuntu, the tools plus the commonly wanted libraries:
+
+.. code-block:: shell
+
+   $ sudo apt install cmake ninja-build build-essential libssl-dev libasound2-dev uuid-dev
+
+For video, add ``libsdl2-dev``, ``libv4l-dev``, ``libopenh264-dev`` and ``libvpx-dev``; for Opus,
+``libopus-dev``; for UPnP, ``libupnp-dev``.
+
 On macOS, with `Homebrew <https://brew.sh/>`__:
 
 .. code-block:: shell
 
-   $ brew install cmake ninja
+   $ brew install cmake ninja openssl@3
+
+For video, add ``sdl2`` and ``libvpx``; for Opus, ``opus``. Homebrew's OpenSSL has to be pointed
+at when configuring, see :ref:`posix_cmake_tls`.
 
 In addition, the following libraries are optional, but they will be used if they are present:
 
@@ -129,9 +141,6 @@ second argument names the build directory, where all the output goes:
    pjproject. Each build directory holds one configuration, so use a new one to build another
    configuration side by side.
 
-Configuring prints a banner about CMake support being experimental.
-``-DPJ_SKIP_EXPERIMENTAL_NOTICE=ON`` silences it.
-
 Configure with Video Support
 `````````````````````````````
 
@@ -202,6 +211,14 @@ All the options are described in :doc:`/get-started/cmake/options`, and the CMak
 each ``./configure`` option is listed in
 :ref:`Migrating from ./configure <cmake_migrating_from_configure>`.
 
+For example, the I/O queue is ``select`` by default, as with ``./configure``. To use the platform's
+native one, the equivalent of ``--enable-epoll`` and ``--enable-kqueue``:
+
+.. code-block:: shell
+
+   $ cmake -B cmake-build -DPJLIB_WITH_IOQUEUE=epoll     # Linux
+   $ cmake -B cmake-build -DPJLIB_WITH_IOQUEUE=kqueue    # macOS
+
 .. note::
 
    PJSIP's settings that are not CMake options still go in :any:`config_site.h`, as with
@@ -245,7 +262,15 @@ than building without TLS:
 
    $ cmake -B cmake-build -DPJLIB_WITH_SSL=openssl -DOPENSSL_ROOT_DIR=/opt/openssl-3
 
-On a Mac, ``-DPJLIB_WITH_SSL=apple`` uses Apple's Network framework, which needs no SSL library.
+On a Mac, Homebrew's ``openssl@3`` is not linked into Homebrew's prefix, so it is only found when
+pointed at:
+
+.. code-block:: shell
+
+   $ cmake -B cmake-build -DOPENSSL_ROOT_DIR="$(brew --prefix openssl@3)"
+
+Alternatively, ``-DPJLIB_WITH_SSL=apple`` uses Apple's Network framework, which needs no SSL
+library. It works with the default ``select`` I/O queue only.
 
 See :any:`/specific-guides/security/ssl` for the backends.
 

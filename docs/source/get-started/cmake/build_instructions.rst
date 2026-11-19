@@ -182,44 +182,13 @@ undefined symbols at link time. Remove them and use the option instead:
 Platforms
 ---------
 
-Linux
-^^^^^
+Linux and macOS
+^^^^^^^^^^^^^^^
 
-On Debian or Ubuntu, the build tools plus the commonly wanted libraries:
-
-.. code-block:: shell
-
-   $ sudo apt install cmake ninja-build build-essential libssl-dev \
-         libasound2-dev uuid-dev
-   $ cmake -S . -B cmake-build -G Ninja -DCMAKE_BUILD_TYPE=Release \
-         -DPJLIB_WITH_IOQUEUE=epoll
-   $ cmake --build cmake-build
-
-ALSA and libuuid are used when found. For video, add ``libsdl2-dev``,
-``libv4l-dev``, ``libopenh264-dev`` and ``libvpx-dev``; for Opus,
-``libopus-dev``; for UPnP, ``libupnp-dev``.
-
-macOS
-^^^^^
-
-.. code-block:: shell
-
-   $ brew install cmake ninja openssl@3
-   $ cmake -S . -B cmake-build -G Ninja -DCMAKE_BUILD_TYPE=Release \
-         -DOPENSSL_ROOT_DIR="$(brew --prefix openssl@3)" \
-         -DPJLIB_WITH_IOQUEUE=kqueue
-   $ cmake --build cmake-build
-
-Core Audio and AVFoundation capture are on by default, and Metal rendering
-(``PJMEDIA_WITH_VIDEODEV_METAL``) is available. ``-DPJLIB_WITH_SSL=apple``
-uses Apple's Network framework instead of OpenSSL, with the ``select`` I/O
-queue only. The bundled WebRTC AEC and AEC3 are not available on Apple
-platforms.
-
-See :doc:`/get-started/posix/build_cmake` for the full steps on macOS and
-Linux, including builds for the other architecture and universal binaries,
-and :doc:`/get-started/posix/framework` for the prebuilt
-``PJSIP.xcframework``.
+See :doc:`/get-started/posix/build_cmake`, which covers the libraries to
+install, the I/O queue and TLS options, and on macOS, builds for the other
+architecture and universal binaries. For macOS applications, the prebuilt
+``PJSIP.xcframework`` is described in :doc:`/get-started/posix/framework`.
 
 Windows, Visual Studio
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -232,7 +201,7 @@ CMake:
 
    > cmake -S . -B cmake-build -G "Visual Studio 17 2022" -A x64
    > cmake --build cmake-build --config Release --parallel
-   > cmake-build\pjsip-apps\Release\pjsua.exe
+   > cmake-build\pjsip-apps\bin\pjsua-Release.exe
 
 The defaults match the Visual Studio solution: the ``select`` I/O queue,
 WMME audio, and no DirectShow or WASAPI. The Windows-native backends:
