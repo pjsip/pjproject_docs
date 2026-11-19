@@ -105,8 +105,9 @@ Specify the Android API level target in ``ANDROID_PLATFORM``. For example:
 
 .. note::
 
-   * Some features need a minimum API level. For example, native Android audio & video codecs
-     require API level 28 or higher.
+   * Some features need a minimum API level on the device. For example, native Android audio &
+     video codecs are built at any API level, but are only used on devices with API level 28 or
+     higher.
    * If you build third party libraries from the source (such as OpenSSL), you need to rebuild
      them for the same API level as well.
    * To change the API level of an existing build directory, delete the directory, or add
@@ -160,7 +161,10 @@ Check that all the intended features are detected by observing the configure out
      -- [pjmedia] Checking if Oboe is available - yes (PJMEDIA_WITH_AUDIODEV_OBOE)
 
 A feature whose library is not found is switched off and configure carries on; look for lines
-starting with ``-- [!]``. The final values can be listed with:
+starting with ``-- [!]``.
+
+With the Oboe AAR, configure also warns that ``liboboe.so`` is not packaged with the bindings'
+library. That is expected: it is copied in :ref:`a later step <android_cmake_copy_libs>`. The final values can be listed with:
 
 .. code-block:: shell
 
@@ -186,7 +190,8 @@ applications' ``pjsua2`` module:
     │   └── libc++_shared.so
     ├── java/org/pjsip
     │   ├── pjsua2/*.java
-    │   └── PjCamera*.java
+    │   ├── PjCamera*.java
+    │   └── PjAudioDevInfo.java (with Oboe)
 
 ``-DPJSUA2_ANDROID_DIR=/path/to/your/app/src/main`` copies into your own application instead, and
 ``-DPJSUA2_ANDROID_DIR=`` copies nothing. Each build updates only the generated classes that
@@ -195,6 +200,8 @@ removed. Keep your application's own sources in another package, or in a subpack
 ``org.pjsip.pjsua2.app`` as the sample application does; those are left alone. ``libc++_shared.so`` is left out when building with
 ``-DANDROID_STL=c++_static``.
 
+
+.. _android_cmake_copy_libs:
 
 Copy third party native libraries
 -----------------------------------------------------
@@ -226,8 +233,9 @@ four architectures in one go:
    $ cd pjsip-apps/src/swig/java/android
    $ ./gradlew -PpjBuildWithCMake=true :app:assembleDebug
 
-This needs CMake 3.28 or newer and Ninja, either from the SDK Manager or on ``PATH``, and
-``ANDROID_NDK_ROOT`` set. It builds with the
+This needs CMake 3.28 or newer and Ninja, either from the SDK Manager or on ``PATH``. It uses
+the NDK at ``ANDROID_NDK_ROOT`` when that is set, and otherwise one installed with the SDK
+Manager. It builds with the
 default options only, so without OpenSSL and Oboe unless they are added to the ``arguments`` in
 :source:`pjsip-apps/src/swig/java/android/pjsua2/build.gradle`. In this mode the module ignores
 what the steps above copied into ``pjsua2/src/main``. ``:pjsua2:assembleRelease`` builds the

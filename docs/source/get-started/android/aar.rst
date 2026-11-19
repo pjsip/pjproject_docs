@@ -33,8 +33,9 @@ Starting from release 2.18, the AAR is attached to each release on the
 Build the AAR
 -----------------------------------
 Alternatively, to build the AAR yourself, :source:`build/android/build-aar.sh` downloads and builds pinned releases of OpenSSL, Opus and Oboe,
-then PJSIP for each architecture, and packages the result. It needs CMake 3.28 or newer, SWIG,
-``curl`` and a JDK, in addition to the Android NDK and SDK:
+then PJSIP for each architecture, and packages the result. It runs on Linux and macOS, and needs
+CMake 3.28 or newer, SWIG, ``curl``, a JDK, and Perl and ``make`` for building OpenSSL, in
+addition to the Android NDK and SDK:
 
 .. code-block:: shell
 

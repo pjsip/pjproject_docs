@@ -73,7 +73,8 @@ Specify the Android API level target in ``APP_PLATFORM``. For example:
 
    * Third party libraries that use ``stdout`` and ``stderr`` (e.g: OpenSSL, OpenH264) may not
      be detected properly by the configure on API level below 23.
-   * Native Android audio & video codecs require API level 28 or higher.
+   * Native Android audio & video codecs are built at any API level, but are only used on devices
+     with API level 28 or higher.
 
 .. note::
 
