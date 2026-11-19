@@ -78,7 +78,11 @@ default.
 
 By default this builds **arm64-v8a**, for API level **23**, with the shared C++ runtime
 (``libc++_shared.so``), as ``./configure-android`` does. The next sections show how to change
-the first two; ``-DANDROID_STL=c++_static`` uses the static C++ runtime instead.
+the first two.
+
+``-DANDROID_STL=c++_static`` uses the static C++ runtime instead, but not with the prebuilt Oboe
+AAR: its ``liboboe.so`` needs ``libc++_shared.so``, which is then not copied, so the application
+fails to load it. Use it only without Oboe, or with an Oboe built as a static library.
 
 .. tip::
 
@@ -183,7 +187,9 @@ applications' ``pjsua2`` module:
     │   └── PjCamera*.java
 
 ``-DPJSUA2_ANDROID_DIR=/path/to/your/app/src/main`` copies into your own application instead, and
-``-DPJSUA2_ANDROID_DIR=`` copies nothing. ``libc++_shared.so`` is left out when building with
+``-DPJSUA2_ANDROID_DIR=`` copies nothing. Each build updates only the generated classes that
+changed, and removes those that are no longer generated; other sources there, such as your
+application's own, are left alone. ``libc++_shared.so`` is left out when building with
 ``-DANDROID_STL=c++_static``.
 
 

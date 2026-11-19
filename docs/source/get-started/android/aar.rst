@@ -83,8 +83,8 @@ Use the AAR with the sample applications
 The sample applications in :source:`pjsip-apps/src/swig/java/android` normally take PJSUA2 from
 the project's ``pjsua2`` module. To use the AAR instead:
 
-#. Copy the AAR into ``app/libs`` (and ``app-kotlin/libs`` for the Kotlin sample).
-#. In ``app/build.gradle`` (and ``app-kotlin/build.gradle``), replace:
+#. Copy the AAR into both ``app/libs`` and ``app-kotlin/libs``.
+#. In both ``app/build.gradle`` and ``app-kotlin/build.gradle``, replace:
 
    .. code-block:: groovy
 
@@ -96,6 +96,8 @@ the project's ``pjsua2`` module. To use the AAR instead:
 
       implementation files('libs/pjsua2-<version>.aar')
 
-#. In ``settings.gradle``, remove ``include ':pjsua2'``.
+#. In ``settings.gradle``, remove ``include ':pjsua2'``. Change both modules first, even to run
+   only one of the samples: Gradle configures every module that ``settings.gradle`` includes, and
+   fails on one that still refers to ``:pjsua2``.
 
 Then build the applications as described in :doc:`java-sip-client` and :doc:`kotlin-sip-client`.
