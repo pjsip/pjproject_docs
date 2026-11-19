@@ -323,9 +323,28 @@ Platform Integration
      - Default
      - Notes
    * - ``PJ_BUILD_SWIG_JAVA``
-     - ``OFF`` (Android)
-     - Build the pjsua2 JNI bindings, ``libpjsua2.so`` and the Java
-       sources. Needs SWIG 4.0+.
+     - ``OFF``
+     - Build the pjsua2 Java bindings: the JNI library and the Java
+       sources, and on desktop also ``pjsua2.jar``. Not on iOS. Needs SWIG
+       4.0+, and on desktop a JDK.
+   * - ``PJ_BUILD_SWIG_PYTHON``
+     - ``OFF``
+     - Build the pjsua2 Python module. Not on Android or iOS. Needs SWIG
+       4.0+ and Python 3 with its headers.
+   * - ``PJ_BUILD_SWIG_CSHARP``
+     - ``OFF``
+     - Build the pjsua2 C# bindings: the C# sources and the native library
+       they call. Needs SWIG 4.0+.
+   * - ``PJSUA2_ANDROID_DIR``
+     - the sample's ``pjsua2/src/main`` (Android)
+     - Android source set that the build copies ``libpjsua2.so``,
+       ``libc++_shared.so`` and the Java classes into, with
+       ``PJ_BUILD_SWIG_JAVA``. Empty for none. See
+       :doc:`/get-started/android/build_cmake`.
+   * - ``PJSUA2_MAUI_DIR``
+     - the sample's ``pjsua2maui/pjsua2maui`` (Android, iOS)
+     - .NET MAUI project that the build copies the C# bindings into, with
+       ``PJ_BUILD_SWIG_CSHARP``. Empty for none.
    * - ``PJ_IOS_SAMPLE_LIBS``
      - ``ON`` (iOS)
      - Copy the built libraries into the bundled iOS sample projects.
