@@ -133,6 +133,8 @@ work too. A result that has been cached is not searched again, so after
 installing a missing library, delete the build directory, or at least
 ``CMakeCache.txt``, and configure again.
 
+.. _cmake_config_site:
+
 ``config_site.h``
 ^^^^^^^^^^^^^^^^^
 
@@ -329,34 +331,8 @@ simulator and macOS, use :source:`build/apple/build-xcframework.sh`; see
 Android
 ^^^^^^^
 
-The NDK provides the toolchain file. API level 23 is the minimum; build each
-ABI in its own directory:
-
-.. code-block:: shell
-
-   $ cmake -S . -B cmake-android \
-         -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake" \
-         -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-23 \
-         -DCMAKE_BUILD_TYPE=Release
-   $ cmake --build cmake-android -j
-
-Oboe audio, Java (JNI) audio, camera capture, OpenGL ES rendering and the
-MediaCodec codecs are on by default. Oboe needs ``-DOboe_ROOT=`` pointing
-at an unpacked ``oboe-<version>.aar``, and is switched off without it.
-
-Libraries built separately for Android, e.g. OpenSSL for TLS, are found only
-when their prefix is added to ``CMAKE_FIND_ROOT_PATH``; ``CMAKE_PREFIX_PATH``
-or ``<Package>_ROOT`` alone are not enough.
-
-To build the pjsua2 AAR, let Gradle drive CMake for all ABIs:
-
-.. code-block:: shell
-
-   $ cd pjsip-apps/src/swig/java/android
-   $ ./gradlew -PpjBuildWithCMake=true :pjsua2:assembleRelease
-
-This needs SWIG 4.0+ and Ninja. See :source:`build/android/README.md` for
-the details.
+See :doc:`/get-started/android/build_cmake` in the Android guide, and
+:doc:`/get-started/android/aar` for the AAR.
 
 Other cross builds
 ^^^^^^^^^^^^^^^^^^
