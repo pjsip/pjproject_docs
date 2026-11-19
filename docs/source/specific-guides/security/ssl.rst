@@ -182,8 +182,9 @@ Windows SChannel
 
 :c:macro:`PJ_SSL_SOCK_IMP_SCHANNEL` uses the Windows SSPI/SChannel
 stack and the Windows certificate store. It is selected in
-:ref:`config_site.h` for Visual Studio builds; ``configure`` never
-selects it, and the CMake build does not implement it yet.
+:ref:`config_site.h` for Visual Studio builds, or with
+``-DPJLIB_WITH_SSL=schannel`` with CMake (MSVC only); ``configure`` never
+selects it.
 
 The only credential source it consumes is ``cert_lookup``:
 ``cert_file``, ``cert_buf``, ``privkey_*``, ``ca_list_*`` and
@@ -404,18 +405,20 @@ CMake
 
 .. code-block:: shell
 
-   cmake -DPJLIB_WITH_SSL=openssl   ...   # default
+   cmake -DPJLIB_WITH_SSL=auto      ...   # default
+   cmake -DPJLIB_WITH_SSL=openssl   ...
    cmake -DPJLIB_WITH_SSL=gnutls    ...
    cmake -DPJLIB_WITH_SSL=mbedtls   ...
    cmake -DPJLIB_WITH_SSL=darwin    ...   # Apple Secure Transport (legacy)
    cmake -DPJLIB_WITH_SSL=apple -DPJLIB_WITH_IOQUEUE=select ...
                                           # Apple Network framework
-   cmake -DPJLIB_WITH_SSL=          ...   # disable
+   cmake -DPJLIB_WITH_SSL=schannel  ...   # Windows, MSVC only
+   cmake -DPJLIB_WITH_SSL=none      ...   # disable
 
-``schannel`` is accepted as a value but not implemented yet in the
-CMake build; use Visual Studio for SChannel. With the default
-``openssl``, a build where OpenSSL is not found continues without TLS;
-check the CMake output.
+The default, ``auto``, uses the first of OpenSSL, GnuTLS and Mbed TLS
+that is found, as ``configure`` does, and continues without TLS when there
+is none; check the CMake output for ``SSL backend``. A backend named
+explicitly stops the configure when it cannot be used.
 
 Visual Studio and config_site.h
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
