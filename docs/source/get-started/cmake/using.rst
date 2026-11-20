@@ -116,7 +116,6 @@ PJSIP can also be built inside another project, without installing it:
    cmake_minimum_required(VERSION 3.28)
    project(super C CXX)
 
-   set(PJ_SKIP_EXPERIMENTAL_NOTICE ON)
    set(PJMEDIA_WITH_VIDEO OFF)            # any PJSIP option
    add_subdirectory(third_party/pjproject EXCLUDE_FROM_ALL)
 
