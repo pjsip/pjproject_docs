@@ -6,8 +6,7 @@ is the same libraries and applications.
 
 .. note::
 
-   Supported since release 2.18. CMake support is **experimental**; see
-   :doc:`/get-started/cmake/index` for its status, and
+   Supported since release 2.18. See :doc:`/get-started/cmake/index` for its status, and
    :doc:`/get-started/cmake/build_instructions` for CMake in general.
 
 .. contents:: Table of Contents

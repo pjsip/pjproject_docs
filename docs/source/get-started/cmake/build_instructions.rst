@@ -39,9 +39,6 @@ Output goes to the build directory, into ``<build>/<module>/lib`` and
    Don't name the build directory ``build``: :source:`build/` is a source
    directory in pjproject, so its build output would mix with tracked files.
 
-Configuring prints a banner about CMake support being experimental.
-``-DPJ_SKIP_EXPERIMENTAL_NOTICE=ON`` silences it.
-
 
 Everyday Commands
 -----------------

@@ -16,8 +16,8 @@ Android Studio.
 
 * :doc:`build_gnu` uses ``./configure-android`` and ``make``. It is the established way, and
   what the rest of this guide was written with.
-* :doc:`build_cmake` uses CMake and the NDK's CMake toolchain file. It is newer and
-  **experimental**; see :doc:`/get-started/cmake/index`.
+* :doc:`build_cmake` uses CMake and the NDK's CMake toolchain file. It is newer; see
+  :doc:`/get-started/cmake/index`.
 * :doc:`aar` packages PJSUA2 as an Android Archive (AAR) for distribution: one file an
   application adds as a dependency, with no PJSIP build of its own.
 

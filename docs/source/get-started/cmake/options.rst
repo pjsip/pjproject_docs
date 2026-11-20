@@ -48,9 +48,6 @@ General
    * - ``PJ_BUILD_APPS``
      - ``ON``
      - Build pjsua and the sample applications. Never built for iOS.
-   * - ``PJ_SKIP_EXPERIMENTAL_NOTICE``
-     - ``OFF``
-     - Silence the experimental-status banner.
 
 
 PJLIB
