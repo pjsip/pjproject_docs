@@ -276,34 +276,8 @@ from the same shell, which provides the GCC runtime and OpenSSL DLLs.
 iOS
 ^^^
 
-From macOS with Xcode. One build directory per SDK; the simulator takes
-both architectures in one pass:
-
-.. code-block:: shell
-
-   $ cmake -S . -B cmake-ios -DCMAKE_SYSTEM_NAME=iOS \
-         -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=arm64 \
-         -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 -DCMAKE_BUILD_TYPE=Release
-   $ cmake --build cmake-ios -j
-
-   $ cmake -S . -B cmake-ios-sim -DCMAKE_SYSTEM_NAME=iOS \
-         -DCMAKE_OSX_SYSROOT=iphonesimulator \
-         "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64" \
-         -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 -DCMAKE_BUILD_TYPE=Release
-   $ cmake --build cmake-ios-sim -j
-
-Core Audio, AVFoundation capture, OpenGL ES rendering and the VideoToolbox
-H.264 codec are on by default. The command-line sample applications are not
-built for iOS.
-
-After the build, the libraries and generated headers are copied into the
-bundled Xcode sample projects (``ipjsua``, ``ipjsua-swift``,
-``ios-swift-pjsua2``), so those build as they are.
-``-DPJ_IOS_SAMPLE_LIBS=OFF`` turns this off.
-
-To build the ``PJSIP.xcframework`` binary distribution for iOS, the
-simulator and macOS, use :source:`build/apple/build-xcframework.sh`; see
-:source:`build/apple/README.md`.
+See :doc:`/get-started/ios/build_cmake` in the iOS guide, and
+:doc:`/get-started/ios/framework` for the XCFramework.
 
 Android
 ^^^^^^^

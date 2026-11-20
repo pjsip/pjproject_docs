@@ -4,7 +4,7 @@ PJSIP XCFramework (macOS)
 ``PJSIP.xcframework`` is PJSIP prebuilt for Apple platforms: one file that an Xcode application
 adds, instead of building PJSIP itself. It holds static libraries for macOS (arm64 and x86_64),
 iOS and the iOS simulator, with their headers, so the same framework serves a Mac and an iOS
-application.
+application. For iOS, see :doc:`/get-started/ios/framework`.
 
 Its configuration is fixed. To choose the codecs, backends or third party libraries yourself,
 build PJSIP with :doc:`build_gnu` or :doc:`build_cmake` instead.
