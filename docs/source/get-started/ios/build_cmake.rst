@@ -81,7 +81,8 @@ see :ref:`ios_cmake_tls`.
 
 Configuring for the simulator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Use a build directory of its own, with the simulator SDK and the architecture of the Mac:
+Use a build directory of its own, with the simulator SDK and the architecture of the Mac: arm64 on
+Apple silicon, as below, or x86_64 on an Intel Mac:
 
 .. code-block:: shell
 

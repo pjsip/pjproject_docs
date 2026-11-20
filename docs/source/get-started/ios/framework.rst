@@ -83,7 +83,7 @@ macOS.
      ``DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer``.
    * The script uses its own configuration and ignores ``config_site.h``. It refuses to run in a
      tree where ``./configure-iphone`` or a :doc:`CMake build <build_cmake>` has left the generated
-     headers; use a clean checkout, or run ``make distclean`` first.
+     headers; use a clean checkout. After ``./configure-iphone``, ``make distclean`` also works.
    * :source:`build/apple/tests/verify-xcframework.sh` checks the result.
    * See :source:`build/apple/README.md` for all the settings.
 
@@ -133,8 +133,8 @@ compiles the ``pjsua_app*.c`` files next to ``ios``):
    Content*.
 #. Add ``PJSIP.xcframework`` as above. The system frameworks are already in the project.
 #. In *Build Settings*, remove the pjproject directories from *Header Search Paths* (keep ``..``,
-   for ``pjsua_app.h``) and from *Library Search Paths*, remove ``PJ_AUTOCONF=1`` from
-   *Preprocessor Macros*, and add ``-lc++`` to *Other Linker Flags*.
+   for ``pjsua_app.h``), remove ``PJ_AUTOCONF=1`` from *Preprocessor Macros*, and add ``-lc++`` to
+   *Other Linker Flags*.
 
 Its configuration is then the framework's. For example, the ``config_site.h`` settings of
 :doc:`build_gnu` no longer apply.
