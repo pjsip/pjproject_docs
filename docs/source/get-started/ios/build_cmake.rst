@@ -40,7 +40,9 @@ contents to the following:
    #include <pj/config_site_sample.h>
 
 This is the same as for :doc:`build_gnu`. Video and the VideoToolbox H.264 codec are on by default
-with CMake, so ``PJMEDIA_HAS_VIDEO`` and ``PJMEDIA_HAS_VID_TOOLBOX_CODEC`` are not needed.
+with CMake, so ``PJMEDIA_HAS_VIDEO`` and ``PJMEDIA_HAS_VID_TOOLBOX_CODEC`` are not needed. The
+profile leaves the settings that have a CMake option, such as Speex AEC and the L16 codec (both off
+on iOS), to the options; for example, ``-DPJMEDIA_WITH_SPEEX_AEC=ON`` enables Speex AEC.
 
 .. warning::
 

@@ -79,9 +79,9 @@ environment variable before running ``configure-iphone``, for example:
 
 .. code-block:: shell
 
-   export MIN_IOS="-miphoneos-version-min=8.0"
+   export MIN_IOS="-miphoneos-version-min=16.0"
 
-The default setting is iOS 7.0. If you don't want to specify this flag, you can 
+The default setting is iOS 15.0. If you don't want to specify this flag, you can 
 set ``MIN_IOS`` to a single space instead (``export MIN_IOS=" "``) 
 
 .. note:: 
@@ -91,7 +91,7 @@ set ``MIN_IOS`` to a single space instead (``export MIN_IOS=" "``)
 
 .. code-block:: shell
 
-   ld: warning: object file (...) was built for newer iOS version (10.0) than being linked (7.0)
+   ld: warning: object file (...) was built for newer 'iOS' version (16.0) than being linked (15.0)
 
 Simulator
 ^^^^^^^^^
@@ -102,11 +102,9 @@ To configure the build system for the iPhone simulator:
 
    export DEVPATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer
    # arm64 simulator
-   ARCH="-arch arm64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
+   ARCH="-arch arm64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=15.0" ./configure-iphone
    # x86_64 simulator
-   ARCH="-arch x86_64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone
-   # or 32-bit
-   ARCH="-arch i386" CFLAGS="-O2 -m32" LDFLAGS="-O2 -m32" MIN_IOS="-mios-simulator-version-min=13.0" ./configure-iphone 
+   ARCH="-arch x86_64" CFLAGS="-O2 -m64" LDFLAGS="-O2 -m64" MIN_IOS="-mios-simulator-version-min=15.0" ./configure-iphone
    make dep && make clean && make
 
 .. note::
