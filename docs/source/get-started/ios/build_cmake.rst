@@ -64,14 +64,18 @@ The architecture is arm64, and the minimum iOS version is 15.0 (see
 :ref:`ios_cmake_min_ios`).
 
 Core Audio, AVFoundation capture, Metal and OpenGL ES rendering, and the VideoToolbox H.264 codec
-are on by default. TLS is off unless enabled as in :ref:`ios_cmake_tls`.
+are on by default. TLS is on only with a TLS library built for iOS, or Apple's Network framework;
+see :ref:`ios_cmake_tls`.
 
 .. tip::
 
    * Each build directory holds one configuration: one SDK, one deployment target.
    * Without ``CMAKE_BUILD_TYPE``, the libraries are built with ``-O2``. Add
      ``-DCMAKE_BUILD_TYPE=Debug`` for a debug build, or ``Release`` for ``-O3``.
-   * ``-G Xcode`` generates an Xcode project instead of Makefiles.
+   * ``-G Xcode`` generates an Xcode project instead of Makefiles. Xcode ignores
+     ``CMAKE_BUILD_TYPE`` and builds Debug by default; choose the configuration when building,
+     e.g. ``cmake --build build-ios --config Release``. The libraries' names then end in the
+     configuration, e.g. ``libpj-Release.a``.
    * More options, such as disabling a codec, are in :doc:`/get-started/cmake/options`.
    * Everyday CMake commands are in :doc:`/get-started/cmake/build_instructions`.
 
@@ -117,7 +121,13 @@ e.g. ``cmake --fresh -B build-ios ...``.
 
 Configuring TLS support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Either use Apple's Network framework, which needs no other library:
+By default (``PJLIB_WITH_SSL=auto``), configure uses the first of OpenSSL, GnuTLS and Mbed TLS that
+it finds, and builds without TLS if there is none. For iOS, it only finds one built for iOS whose
+location is given, e.g. with ``-DOPENSSL_ROOT_DIR``; libraries installed for macOS, e.g. with
+Homebrew, are not used. A library found this way also has to be added to the application.
+``-DPJLIB_WITH_SSL=none`` builds without TLS in any case.
+
+To choose the backend instead, either use Apple's Network framework, which needs no other library:
 
 .. code-block:: shell
 
