@@ -125,7 +125,7 @@ General
      - ``libresample`` (bundled), ``libsamplerate`` (system), ``speex``, or
        ``none``.
    * - ``PJMEDIA_WITH_SPEEX_AEC``
-     - ``ON``
+     - ``ON``, ``OFF`` on iOS
      - Speex echo canceller.
    * - ``PJMEDIA_WITH_WEBRTC_AEC``
      - ``ON``
@@ -160,7 +160,7 @@ Audio codecs
      - ``ON``
      -
    * - ``PJMEDIA_WITH_L16_CODEC``
-     - ``ON``
+     - ``ON``, ``OFF`` on iOS
      -
    * - ``PJMEDIA_WITH_G722_CODEC``
      - ``ON``
