@@ -455,7 +455,6 @@ tools on ``PATH``. Exclude unwanted ones with
 Known Limitations
 -----------------
 
-* **Experimental.** See the status table in :doc:`index`.
 * **Three build systems.** When adding or removing source files, update the
   GNU ``Makefile``, the Visual Studio ``.vcxproj`` *and* the
   ``CMakeLists.txt``.

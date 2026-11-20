@@ -12,8 +12,7 @@ There are three ways to get PJSIP for iOS:
 
 * :doc:`build_gnu` uses ``./configure-iphone`` and ``make``. It is the established way, and what
   the rest of this guide was written with.
-* :doc:`build_cmake` uses CMake. It is newer and **experimental**; see
-  :doc:`/get-started/cmake/index`.
+* :doc:`build_cmake` uses CMake. It is newer; see :doc:`/get-started/cmake/index`.
 * :doc:`framework` is PJSIP prebuilt as ``PJSIP.xcframework``, for Xcode applications, with no
   PJSIP build of their own.
 
