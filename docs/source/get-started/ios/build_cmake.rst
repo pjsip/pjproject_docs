@@ -100,17 +100,8 @@ and the one the sample applications use. To specify another minimum iOS version,
 
    $ cmake -B build-ios -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0
 
-The same applies to the simulator.
-
-To change it in an existing build directory, delete the directory, or add ``--fresh`` to the
-``cmake`` command. Configure stops with an error otherwise:
-
-.. code-block::
-
-   CMAKE_OSX_DEPLOYMENT_TARGET changed from "15.0" to "16.0" in a build folder
-   configured for the former; its cached configure checks and library paths
-   would be wrong.  Reconfigure with 'cmake --fresh' or use a new build
-   folder.
+The same applies to the simulator. If you have a previous build, run it with ``cmake --fresh``,
+e.g. ``cmake --fresh -B build-ios ...``.
 
 .. note::
 
