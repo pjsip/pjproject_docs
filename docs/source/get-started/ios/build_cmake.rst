@@ -57,14 +57,11 @@ For a device:
 .. code-block:: shell
 
    $ cd /path/to/pjproject
-   $ cmake -B build-ios -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0
+   $ cmake -B build-ios -DCMAKE_SYSTEM_NAME=iOS
 
-* ``-DCMAKE_SYSTEM_NAME=iOS`` builds for iOS with the Xcode toolchain; no toolchain file is needed.
-  The architecture is arm64.
-* ``-DCMAKE_OSX_DEPLOYMENT_TARGET`` is the minimum iOS version, which should match the
-  application's. The sample applications use 15.0. To change it in an existing build directory,
-  delete the directory, or add ``--fresh`` to the ``cmake`` command; configure stops with an error
-  otherwise.
+``-DCMAKE_SYSTEM_NAME=iOS`` builds for iOS with the Xcode toolchain; no toolchain file is needed.
+The architecture is arm64, and the minimum iOS version is 15.0 (see
+:ref:`ios_cmake_min_ios`).
 
 Core Audio, AVFoundation capture, Metal and OpenGL ES rendering, and the VideoToolbox H.264 codec
 are on by default. TLS is off unless enabled as in :ref:`ios_cmake_tls`.
@@ -85,11 +82,45 @@ Use a build directory of its own, with the simulator SDK and the architecture of
 .. code-block:: shell
 
    $ cmake -B build-ios-sim -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphonesimulator \
-         -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0
+         -DCMAKE_OSX_ARCHITECTURES=arm64
 
 ``"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"`` builds both simulator architectures in one pass,
 into fat libraries. The bundled WebRTC echo canceller cannot be built that way and is left out,
 with a ``[!]`` line in the configure output.
+
+.. _ios_cmake_min_ios:
+
+Setting minimum supported iOS version
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+By default, the libraries support iOS 15.0 or later, the oldest version the current Xcode supports
+and the one the sample applications use. To specify another minimum iOS version, set
+``CMAKE_OSX_DEPLOYMENT_TARGET``, for example:
+
+.. code-block:: shell
+
+   $ cmake -B build-ios -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=16.0
+
+The same applies to the simulator.
+
+To change it in an existing build directory, delete the directory, or add ``--fresh`` to the
+``cmake`` command. Configure stops with an error otherwise:
+
+.. code-block::
+
+   CMAKE_OSX_DEPLOYMENT_TARGET changed from "15.0" to "16.0" in a build folder
+   configured for the former; its cached configure checks and library paths
+   would be wrong.  Reconfigure with 'cmake --fresh' or use a new build
+   folder.
+
+.. note::
+
+   Set the application's minimum iOS version to the libraries' or higher. Otherwise you may
+   encounter linker warnings in your Xcode app, which may lead to crashes when running on the
+   older iOS versions:
+
+   .. code-block:: shell
+
+      ld: warning: object file (...) was built for newer 'iOS' version (16.0) than being linked (15.0)
 
 .. _ios_cmake_tls:
 
