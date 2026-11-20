@@ -1,4 +1,4 @@
-CMake (experimental)
+CMake
 *****************************************
 
 PJSIP can be built with CMake 3.28 or newer, as an alternative to the GNU
@@ -6,7 +6,7 @@ build (``./configure && make``) and the Visual Studio solution. The CMake
 build also installs a ``find_package(Pj)`` package for use by other CMake
 projects.
 
-CMake support is **experimental**. Its status per platform:
+The status of CMake support per platform:
 
 .. list-table::
    :header-rows: 1
