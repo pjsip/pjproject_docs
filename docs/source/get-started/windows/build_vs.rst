@@ -47,18 +47,13 @@ The Visual Studio based project files can be used with:
 
 .. warning::
 
-   Since release 2.18, Visual Studio versions older than 2022 are **deprecated**. The following
-   still work, but are no longer tested:
+   Since release 2.18:
 
-   * Microsoft Visual Studio 2015, 2017 and 2019, with ``pjproject-vs14.sln``.
-   * Microsoft Visual Studio/C++ 2005 (including Express edition), 2008 and 2012, with
-     ``pjproject-vs8.sln``. These solution and project files are still shipped, but may be
-     removed in the next release. Visual Studio 2008 may need the IP Helper API header bug
-     fixed, and Visual Studio 2010 **is unsupported** as it does not import these solution files
-     properly.
-
-   Visual Studio before 2012 also needs the DirectX SDK and the Platform SDK installed separately,
-   with their include and library paths added to Visual Studio.
+   * Microsoft Visual Studio 2015, 2017 and 2019 are **deprecated**. They can still open
+     ``pjproject-vs14.sln``, but are no longer tested.
+   * The Visual Studio 2005 solution, ``pjproject-vs8.sln``, and its projects are **removed**,
+     and with them the support for Visual Studio 2005, 2008 and 2012, and the Windows Mobile
+     project files. Use release 2.17 or earlier with these.
 
 In addition, the following is optional:
 
@@ -225,18 +220,8 @@ Building the Projects
 
 Follow the steps below to build the libraries/application using Visual Studio:
 
-#. For Visual Studio 17 (VS 2022): open ``pjproject-vs14.sln`` solution file.
-#. For the deprecated versions:
-
-   #. Visual Studio 14, 15 and 16 (VS 2015, 2017 and 2019): open ``pjproject-vs14.sln``
-      solution file.
-   #. Visual Studio 8 (VS 2005): open ``pjproject-vs8.sln`` solution file.
-   #. Visual Studio 9 (VS 2008) and 11 (VS 2012): open ``pjproject-vs8.sln`` solution file.
-      One-time conversion of projects to the VS 2008 or VS 2012 format will be done
-      automatically. With VS 2012, warnings about Windows Mobile projects/configurations can be
-      safely ignored, VS 2012 does not support Windows Mobile. Additional tips from
-      `pjsip mailing list <http://lists.pjsip.org/pipermail/pjsip_lists.pjsip.org/2012-December/015574.html>`_
-
+#. For Visual Studio 17 (VS 2022): open ``pjproject-vs14.sln`` solution file. The deprecated
+   Visual Studio 14, 15 and 16 (VS 2015, 2017 and 2019) open the same solution file.
 #. Set ``pjsua`` as Active or Startup Project.
 #. Select the platform: ``Win32``, ``x64`` or ``ARM64``.
 #. Select ``Debug`` or ``Release`` build as appropriate.

@@ -32,8 +32,9 @@ Windows Desktop
 All features are expected to work. 64bit is supported. Development is based on Visual Studio.
 Considerations for this platform include:
 
-#. The Visual Studio solution, ``pjproject-vs14.sln``, is for Visual Studio 2022. Older Visual
-   Studio versions are deprecated since release 2.18.
+#. The Visual Studio solution, ``pjproject-vs14.sln``, is for Visual Studio 2022. Since release
+   2.18, Visual Studio 2015 to 2019 are deprecated, and Visual Studio 2005 to 2012 are no longer
+   supported.
 #. Since release 2.18, PJSIP can also be built with CMake.
 
 Detailed Windows guide is in :doc:`Getting Started for Windows  </get-started/windows/index>`
