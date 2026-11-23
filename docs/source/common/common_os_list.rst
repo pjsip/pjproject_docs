@@ -5,7 +5,6 @@
 
    - :doc:`iOS </get-started/ios/index>`
    - :doc:`Android </get-started/android/index>`
-   - :doc:`Windows Phone 10/Universal Windows Platform (UWP) </get-started/windows-phone/index>`
 
 - Community supported:
 
@@ -18,6 +17,7 @@
 
 - Deprecated platforms:
 
+   - Windows Phone 10/Universal Windows Platform (UWP)
    - `Windows Mobile/Windows CE <https://trac.pjsip.org/repos/wiki/Getting-Started/Windows-Mobile>`__
    - `Symbian S60 3rd Edition and 5th Edition <https://trac.pjsip.org/repos/wiki/Getting-Started/Symbian>`__
    - `BlackBerry (BB10) <https://trac.pjsip.org/repos/wiki/Getting-Started/BB10>`__

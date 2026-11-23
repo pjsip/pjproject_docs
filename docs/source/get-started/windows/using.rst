@@ -1,6 +1,9 @@
 Using PJSIP in Windows applications
 =====================================================
 
+These steps use the libraries built with :doc:`build_vs`. For the libraries built with
+:doc:`build_cmake`, see :doc:`/get-started/cmake/using`.
+
 #. Put these include directories in the include search path of your project:
 
    * pjlib/include
@@ -31,9 +34,6 @@ Using PJSIP in Windows applications
       The documentation of the relevant libraries should say which header files 
       should be included to get the declaration of the APIs).
 
-#. Declare PJ_WIN32=1 macro in the project settings (declaring the macro in the 
-   source file may not be sufficient).
-
 #. Link with the main pjproject library ``libpjproject``. It includes all the 
    libraries provided. 
 
@@ -41,11 +41,16 @@ Using PJSIP in Windows applications
 
       The actual library names will be appended with the target name and the 
       build configuration. For example: The actual library names will look 
-      like ``libpjproject-i386-win32-vc6-debug.lib`` depending on whether 
+      like ``libpjproject-x86_64-x64-vc14-Release.lib`` depending on whether
       we are building the Debug or Release version of the library.
 
-#. Link with system specific libraries such as: wsock32.lib, ws2_32.lib, ole32.lib, 
-   dsound.lib
+#. Build the application with the same C run-time option as the libraries, e.g. Multithreaded
+   Debug (/MTd) for the ``Debug`` configuration; see the build configurations in
+   :doc:`build_vs`.
+
+#. Link with system specific libraries, as the ``pjsua`` project does: ws2_32.lib, mswsock.lib,
+   iphlpapi.lib, netapi32.lib, ole32.lib, user32.lib, gdi32.lib, advapi32.lib, dsound.lib,
+   dxguid.lib
 
 #. If you want to use video API see :any:`/pjsua2/using/media_video` and the deep-dive pages under :ref:`video_guide_toc`.
 

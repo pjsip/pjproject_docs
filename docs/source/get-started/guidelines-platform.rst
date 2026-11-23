@@ -29,12 +29,12 @@ Detailed iPhone/iOS guide is in :doc:`Getting Started for iPhone/iOS  </get-star
 
 Windows Desktop
 ----------------
-Windows is supported from Windows 2000 up to Windows 10 and beyond. All features are expected 
-to work. 64bit is supported. Development is based on Visual Studio. Considerations for 
-this platform include:
+All features are expected to work. 64bit is supported. Development is based on Visual Studio.
+Considerations for this platform include:
 
-#. Because Visual Studio file format keeps changing on every release, we decided to support Visual Studio
-   2015. Newer VS should be able to open the projects.
+#. The Visual Studio solution, ``pjproject-vs14.sln``, is for Visual Studio 2022. Older Visual
+   Studio versions are deprecated since release 2.18.
+#. Since release 2.18, PJSIP can also be built with CMake.
 
 Detailed Windows guide is in :doc:`Getting Started for Windows  </get-started/windows/index>`
 
@@ -58,18 +58,6 @@ All features are expected to work. Linux considerations:
    is more lightweight than PortAudio
 
 Detailed Linux guide is in :doc:`Getting Started for Mac/Linux/Unix  </get-started/posix/index>`
-
-Windows Phone 10 (UWP)
---------------------------
-Windows Phone 10/Universal Windows Platform (UWP) support has being added in version 2.6. 
-Specific considerations for this platform are:
-
-#. WP8 governs specific interaction with WP8 GUI and framework that needs to be followed by application 
-   in order to make VoIP call work seamlessly on the device. Some lightweight process will be created by 
-   WP8 framework in order for background call to work and PJSIP needs to put its background processing in 
-   this process' context. Currently this feature is under development.
-
-Detailed Windows Phone guide is in :doc:`Getting Started for Windows Phone  </get-started/windows-phone/index>`
 
 Embedded Linux
 --------------
