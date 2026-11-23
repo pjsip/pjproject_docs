@@ -170,8 +170,15 @@ And rebuild the Visual Studio project.
 
 WASAPI (Windows Audio Session API)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-WASAPI will be used by following the instructions in
-:any:`Getting started for Windows Phone</get-started/windows-phone/build_instructions>`.
+WASAPI is the Windows Audio Session API. To enable WASAPI support, add this to your
+``config_site.h``:
+
+.. code-block:: c
+
+   #define PJMEDIA_AUDIO_DEV_HAS_WASAPI  1
+
+And rebuild the Visual Studio project. With CMake, configure with
+``-DPJMEDIA_WITH_AUDIODEV_WASAPI=ON`` instead, see :doc:`/get-started/windows/build_cmake`.
 
 
 No longer supported devices:

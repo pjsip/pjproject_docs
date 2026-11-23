@@ -14,23 +14,25 @@ The best way to find the crash is to equip your program with debugging info
 (for the Release mode) so that we can know exactly where the crash location is. 
 A debugging info will not slow down your application, although it will 
 add size to it, so it shouldn't be a problem.
-Building Application with Debugging Info
 
 The instructions here applies for Visual Studio use:
 
-   * For all libraries, open Project Settings, then go to C/C++ General Tab, 
-     set Debug Info to Program Database.
-   * Then in the application project, open Project Settings, go to Link tab, 
-     enable Generate debug info.
+   * For all libraries, open the project's Properties, then go to
+     *C/C++ > General*, set *Debug Information Format* to *Program Database (/Zi)*.
+   * Then in the application project, open the Properties, go to *Linker > Debugging*,
+     set *Generate Debug Info* to *Yes*.
    * Rebuild all libraries and application 
 
    Now a .PDB (Program Database) file will be generated for the application.
 
+With :doc:`build_cmake`, build the ``RelWithDebInfo`` configuration instead, which is optimized
+and generates the .PDB files.
+
 Distributing Application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-When distributing the application executable, the .PDB file (for the application) 
-needs to be distributed alongside the application. 
-Put the .PDB file on the same directory as the application.
+Keep the .PDB file (for the application) of every build you distribute; it is needed to read the
+crash dumps below. For a debugger on the target machine to show the crash location, also
+distribute the .PDB file alongside the application, in the same directory.
 
 .. note::
 
@@ -58,7 +60,8 @@ Checking the Crash Report
 If Visual Studio is installed in the target machine, it will be executed when 
 the application crashes.
 
-Otherwise the crash info will be saved in Dr. Watson log. Open Dr. Watson 
-application by executing drwtsn32.exe from Start Menu --> Run.. menu. 
-The crash info should show where exactly the crash happens along with other 
+Otherwise, have Windows Error Reporting save a crash dump: create the registry key
+``HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Windows Error Reporting\LocalDumps``. The dumps
+are then saved in ``%LOCALAPPDATA%\CrashDumps``. Open the dump file in Visual Studio or WinDbg,
+with the application's .PDB file, to see where exactly the crash happens along with other
 useful information.

@@ -130,7 +130,6 @@ Sample linking to getting started pages:
 - :doc:`/get-started/ios/index`
 - :doc:`/get-started/posix/index`
 - :doc:`/get-started/windows/index`
-- :doc:`/get-started/windows-phone/index`
 
 Sample linking to root API reference pages and samples:
 

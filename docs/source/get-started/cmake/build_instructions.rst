@@ -190,66 +190,12 @@ architecture and universal binaries. For macOS applications, the prebuilt
 Windows, Visual Studio
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Visual Studio 2022, x64. Run CMake from a *Developer PowerShell for VS 2022*
-or an *x64 Native Tools Command Prompt*, which provide Visual Studio's own
-CMake:
+See :doc:`/get-started/windows/build_cmake`, which covers the Visual Studio
+requirements, the Windows-native options (IOCP, Schannel, WASAPI,
+DirectShow), prebuilt libraries and their C runtime, and building and
+debugging in Visual Studio.
 
-.. code-block:: powershell
-
-   > cmake -S . -B cmake-build -G "Visual Studio 17 2022" -A x64
-   > cmake --build cmake-build --config Release --parallel
-   > cmake-build\pjsip-apps\bin\pjsua-Release.exe
-
-The defaults match the Visual Studio solution: the ``select`` I/O queue,
-WMME audio, and no DirectShow or WASAPI. The Windows-native backends:
-
-.. list-table::
-   :header-rows: 1
-   :widths: 45 55
-
-   * - Option
-     - Effect
-   * - ``-DPJLIB_WITH_IOQUEUE=iocp``
-     - I/O completion ports.
-   * - ``-DPJLIB_WITH_SSL=schannel``
-     - Windows Schannel. Needs no external library; MSVC only.
-   * - ``-DPJMEDIA_WITH_AUDIODEV_WASAPI=ON``
-     - WASAPI audio. Add ``-DPJMEDIA_WITH_AUDIODEV_WMME=OFF`` for WASAPI
-       only.
-   * - ``-DPJMEDIA_WITH_VIDEODEV_DSHOW=ON``
-     - DirectShow camera capture.
-   * - ``-DPJSIP_WITH_DIGEST_AKA_AUTH=ON``
-     - Digest AKA authentication.
-
-Things to know:
-
-* **Prebuilt libraries** (OpenSSL, SDL2, OpenH264, libvpx, Opus) are found
-  with ``-DCMAKE_PREFIX_PATH=C:/deps``. OpenSSL from the official Windows
-  installer is found without it. SDL2 is found through ``SDL2Config.cmake``
-  from the SDL2 VC development package; pass ``-DSDL2_DIR=<dir>`` if needed.
-  A library must use the same C runtime as the configuration, e.g. ``/MD``
-  for ``Release`` and ``/MDd`` for ``Debug``.
-* **DLLs** that an executable links, e.g. OpenSSL's or SDL2's, must be on
-  ``PATH`` or next to the executable to run it.
-* **MSYS2, Cygwin or Strawberry Perl on PATH** cause two problems. Their
-  ``cmake`` can come first on ``PATH`` even in a developer shell, because
-  the shell adds Visual Studio's CMake after the existing ``PATH``, and it
-  has no Visual Studio generators. ``cmake --version`` then lacks the
-  ``-msvc`` suffix. And CMake can pick up their MinGW builds of OpenSSL and
-  other libraries, which MSVC cannot link. To avoid both:
-
-  .. code-block:: powershell
-
-     > $vsw = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-     > $vs = Join-Path (& $vsw -latest -products * -property installationPath) `
-         "Common7\IDE\CommonExtensions\Microsoft\CMake"
-     > $env:PATH = "$vs\CMake\bin;$vs\Ninja;$env:PATH"
-     > cmake -S . -B cmake-build -G "Visual Studio 17 2022" -A x64 `
-         "-DCMAKE_IGNORE_PREFIX_PATH=C:/msys64/mingw64;C:/msys64/ucrt64;C:/msys64/usr;C:/Strawberry/c"
-
-  ``vswhere``, from the Visual Studio Installer, finds the installation of
-  any edition, Build Tools included, so this works in a plain PowerShell
-  too.
+.. _cmake_windows_mingw:
 
 Windows, MinGW-w64
 ^^^^^^^^^^^^^^^^^^
@@ -266,9 +212,10 @@ From an MSYS2 *MINGW64* shell:
 A *UCRT64* shell takes the same packages with the
 ``mingw-w64-ucrt-x86_64-`` prefix instead; this has not been verified.
 
-The Windows-native options above apply too, except Schannel, which needs
-MSVC. The bundled WebRTC AEC and AEC3 are not available. Run the binaries
-from the same shell, which provides the GCC runtime and OpenSSL DLLs.
+The Windows-native options in :doc:`/get-started/windows/build_cmake` apply
+too, except Schannel, which needs MSVC. The bundled WebRTC AEC and AEC3 are
+not available. Run the binaries from the same shell, which provides the GCC
+runtime and OpenSSL DLLs.
 
 iOS
 ^^^
@@ -442,7 +389,7 @@ with ``cmake -LA -N cmake-build``.
 
 **Windows: "Could not create named generator Visual Studio ..."** The
 ``cmake`` on ``PATH`` is MSYS2's or Cygwin's; see
-`Windows, Visual Studio`_.
+:ref:`MSYS2, Cygwin or Strawberry Perl on PATH <windows_cmake_path>`.
 
 **A wrong copy of a library is used.** CMake also searches the prefixes of
 tools on ``PATH``. Exclude unwanted ones with
@@ -456,8 +403,8 @@ Known Limitations
   GNU ``Makefile``, the Visual Studio ``.vcxproj`` *and* the
   ``CMakeLists.txt``.
 * **The Visual Studio solution stays the reference Windows build,** and
-  covers targets not yet validated with CMake, such as Windows ARM64 and
-  UWP.
+  covers targets not yet validated with CMake, such as Windows 32-bit and
+  ARM64.
 * **System dependencies in 2.17.** ``PJ_DEP_<name>=system`` finds the
   library but sibling modules may not use it (e.g. ``PJMEDIA_WITH_SRTP``
   silently turns ``OFF``). Fixed after 2.17 (:pr:`4942`).
