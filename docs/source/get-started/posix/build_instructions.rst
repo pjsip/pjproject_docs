@@ -1,7 +1,7 @@
 Build Instructions
 =======================================
 
-There are three ways to get PJSIP for Linux, macOS and other Unix-like systems:
+There are three ways to build PJSIP for Linux, macOS and other Unix-like systems:
 
 .. toctree::
    :maxdepth: 1
@@ -15,7 +15,9 @@ There are three ways to get PJSIP for Linux, macOS and other Unix-like systems:
   with.
 * :doc:`build_cmake` uses CMake. It is newer, tested on Linux and macOS; see
   :doc:`/get-started/cmake/index`.
-* :doc:`framework` (macOS) is PJSIP prebuilt as ``PJSIP.xcframework``, for Xcode applications,
-  with no PJSIP build of their own.
+* :doc:`framework` (macOS, experimental) builds PJSIP into ``PJSIP.xcframework``: one bundle
+  that an Xcode application adds. Its script is provided for reference purposes only, and builds
+  one fixed configuration without all the customization options; for a customized build, use one
+  of the first two.
 
-The first two build the same libraries and applications from source; pick one.
+The first two build the same libraries and applications; pick one of them.

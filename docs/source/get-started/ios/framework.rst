@@ -1,10 +1,10 @@
 PJSIP XCFramework (iOS)
 =======================================
 
-``PJSIP.xcframework`` is PJSIP prebuilt for Apple platforms: one file that an Xcode application
-adds, instead of building PJSIP itself. It holds static libraries for iOS (arm64), the iOS
-simulator (arm64 and x86_64) and macOS, with their headers, so the same framework serves an iOS and
-a Mac application. For macOS, see :doc:`/get-started/posix/framework`.
+``PJSIP.xcframework`` is PJSIP prebuilt for iOS: one file that an Xcode application adds,
+instead of building PJSIP itself. It holds static libraries for iOS (arm64) and the iOS simulator
+(arm64 and x86_64), with their headers. For macOS applications, see
+:doc:`/get-started/posix/framework`.
 
 Its configuration is fixed. To choose the codecs, backends or third party libraries yourself,
 build PJSIP with :doc:`build_gnu` or :doc:`build_cmake` instead.
@@ -66,15 +66,14 @@ Build the framework
 -----------------------------------
 Alternatively, to build the framework yourself, :source:`build/apple/build-xcframework.sh` builds
 PJSIP with CMake for each platform and packages the result. It needs Xcode, CMake 3.28 or newer,
-and network access on the first run, to download Opus. To build the iOS parts only:
+and network access on the first run, to download Opus. To build it for iOS:
 
 .. code-block:: shell
 
    $ cd /path/to/pjproject
    $ SLICES="ios-device ios-simulator" ./build/apple/build-xcframework.sh
 
-The framework is written to ``out/dist/PJSIP.xcframework``. Without ``SLICES``, it also contains
-macOS.
+The framework is written to ``out/dist/PJSIP.xcframework``.
 
 .. tip::
 
