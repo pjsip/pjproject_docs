@@ -1,4 +1,4 @@
-Android Archive (AAR) (experimental)
+Android Archive (AAR, experimental)
 =======================================
 
 .. warning::
@@ -42,8 +42,8 @@ addition to the Android NDK and SDK:
    $ ./build/android/build-aar.sh
 
 The AAR is written to ``out-android/dist/pjsua2-<version>.aar``. The other files there (sources and
-javadoc jars, POM, checksums) are for publishing to Maven Central, and an application does not need
-them.
+javadoc jars, POM, checksums) are for publishing the AAR to a Maven repository of your own, and an
+application does not need them.
 
 .. tip::
 
@@ -71,7 +71,8 @@ The AAR has no dependencies of its own, so this is all that is needed.
 
    The Android Gradle plugin accepts a local AAR file in an application module only. A library
    module that depends on it fails with *"Direct local .aar file dependencies are not supported
-   when building an AAR"*; take the AAR from a Maven repository (a local one works) instead.
+   when building an AAR"*. Publish the AAR to a Maven repository of your own (a local one works)
+   and take it from there instead.
 
 
 Use the AAR with the sample applications
