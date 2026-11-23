@@ -395,8 +395,10 @@ pjlib SSL tests, for example, load their certificates from ``..\build\``:
 
 .. code-block:: powershell
 
-   > mkdir pjlib\bin -Force; cd pjlib\bin
+   > mkdir pjlib\bin -Force | Out-Null
+   > Push-Location pjlib\bin
    > ..\..\cmake-build\pjlib\bin\pjlib-test-Release.exe sock_test ssl_sock_test
+   > Pop-Location
 
 
 Optional: Installing PJSIP
