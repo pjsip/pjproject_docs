@@ -184,8 +184,9 @@ Linux and macOS
 
 See :doc:`/get-started/posix/build_cmake`, which covers the libraries to
 install, the I/O queue and TLS options, and on macOS, builds for the other
-architecture and universal binaries. For macOS applications, the prebuilt
-``PJSIP.xcframework`` is described in :doc:`/get-started/posix/framework`.
+architecture and universal binaries. For macOS applications, building PJSIP
+into ``PJSIP.xcframework`` (experimental) is described in
+:doc:`/get-started/posix/framework`.
 
 Windows, Visual Studio
 ^^^^^^^^^^^^^^^^^^^^^^

@@ -1,16 +1,21 @@
-Android Archive (AAR)
+Android Archive (AAR, experimental)
 =======================================
 
-The PJSUA2 AAR is PJSIP packaged for Android applications: one file that an application adds as a
-dependency, instead of building PJSIP itself. It contains:
+.. warning::
+
+   Building the AAR is **experimental**, and :source:`build/android/build-aar.sh` is provided for
+   reference purposes only. The script builds one fixed configuration and does not provide all
+   the customization options of PJSIP. For a customized build, building PJSIP with
+   :doc:`build_gnu` or :doc:`build_cmake` is still recommended. The script, its configuration and
+   the contents of the AAR may change in future releases.
+
+The PJSUA2 AAR packages PJSIP for Android applications: one file that an application adds as a
+dependency, instead of building PJSIP as part of the application. It contains:
 
 * the ``org.pjsip.pjsua2`` Java classes, and the ``org.pjsip`` camera and Oboe helper classes,
 * ``libpjsua2.so`` for ``arm64-v8a``, ``armeabi-v7a``, ``x86_64`` and ``x86``, with OpenSSL, Opus,
   Oboe and the C++ runtime linked in, so there are no other native libraries to copy,
 * the licence notices of everything bundled, under ``META-INF``.
-
-Its configuration is fixed. To choose the codecs, backends or third party libraries yourself, build
-PJSIP with :doc:`build_gnu` or :doc:`build_cmake` instead.
 
 .. note::
 
@@ -22,19 +27,11 @@ PJSIP with :doc:`build_gnu` or :doc:`build_cmake` instead.
    :local:
 
 
-Download the AAR
------------------------------------
-Starting from release 2.18, the AAR is attached to each release on the
-`PJSIP GitHub releases page <https://github.com/pjsip/pjproject/releases>`__, as
-``pjsua2-<version>.aar``. Download it and continue with
-:ref:`android_aar_use`.
-
-
 Build the AAR
 -----------------------------------
-Alternatively, to build the AAR yourself, :source:`build/android/build-aar.sh` downloads and builds pinned releases of OpenSSL, Opus and Oboe,
-then PJSIP for each architecture, and packages the result. It runs on Linux and macOS, and needs
-CMake 3.28 or newer, SWIG, ``curl``, a JDK, and Perl and ``make`` for building OpenSSL, in
+:source:`build/android/build-aar.sh` downloads and builds pinned releases of OpenSSL, Opus and
+Oboe, then PJSIP for each architecture, and packages the result. It runs on Linux and macOS, and
+needs CMake 3.28 or newer, SWIG, ``curl``, a JDK, and Perl and ``make`` for building OpenSSL, in
 addition to the Android NDK and SDK:
 
 .. code-block:: shell
@@ -45,8 +42,8 @@ addition to the Android NDK and SDK:
    $ ./build/android/build-aar.sh
 
 The AAR is written to ``out-android/dist/pjsua2-<version>.aar``. The other files there (sources and
-javadoc jars, POM, checksums) are for publishing to Maven Central, and an application does not need
-them.
+javadoc jars, POM, checksums) are for publishing the AAR to a Maven repository of your own, and an
+application does not need them.
 
 .. tip::
 
@@ -56,8 +53,6 @@ them.
      tree configured with ``./configure-android``; run ``make distclean`` first.
    * See :source:`build/android/README.md` for what is included and excluded, and why.
 
-
-.. _android_aar_use:
 
 Use the AAR in an application
 -----------------------------------
@@ -76,7 +71,8 @@ The AAR has no dependencies of its own, so this is all that is needed.
 
    The Android Gradle plugin accepts a local AAR file in an application module only. A library
    module that depends on it fails with *"Direct local .aar file dependencies are not supported
-   when building an AAR"*; take the AAR from a Maven repository (a local one works) instead.
+   when building an AAR"*. Publish the AAR to a Maven repository of your own (a local one works)
+   and take it from there instead.
 
 
 Use the AAR with the sample applications
