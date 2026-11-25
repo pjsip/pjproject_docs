@@ -37,8 +37,19 @@ other video codecs. :source:`build/apple/README.md` lists the configuration and 
 Get the framework
 -----------------------------------
 Starting from release 2.18, the framework is attached to each release on the
-`PJSIP GitHub releases page <https://github.com/pjsip/pjproject/releases>`__. Download
-``PJSIP.xcframework.zip`` from the release, unzip it, and continue with :ref:`ios_framework_use`.
+`PJSIP GitHub releases page <https://github.com/pjsip/pjproject/releases>`__, and can be added to
+a project in two ways.
+
+**CocoaPods.** The pod is not in the CocoaPods index, so point at the podspec attached to the
+release:
+
+.. code-block:: ruby
+
+   pod 'PJSIP', :podspec =>
+     'https://github.com/pjsip/pjproject/releases/download/<version>/PJSIP.podspec'
+
+**Manually.** Download ``PJSIP.xcframework.zip`` from the release, unzip it, and continue with
+:ref:`ios_framework_use`.
 
 
 Build the framework
@@ -70,6 +81,8 @@ The framework is written to ``out/dist/PJSIP.xcframework``.
 
 Use the framework in an application
 -----------------------------------
+With CocoaPods, the framework is set up already. Otherwise:
+
 #. Drag ``PJSIP.xcframework`` into the Xcode project, and in the target's *General* tab, under
    *Frameworks, Libraries, and Embedded Content*, set it to **Do Not Embed**: it holds static
    libraries.
