@@ -58,8 +58,8 @@ release:
    pod 'PJSIP', :podspec =>
      'https://github.com/pjsip/pjproject/releases/download/<version>/PJSIP.podspec'
 
-**Manually.** Download ``PJSIP.xcframework.zip`` from the release, unzip it, and continue with
-:ref:`ios_framework_use`.
+**Manually.** Download ``PJSIP-<version>-ios.xcframework.zip`` (``PJSIP.xcframework.zip`` in
+2.18) from the release, unzip it, and continue with :ref:`ios_framework_use`.
 
 
 Build the framework
