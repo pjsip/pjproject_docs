@@ -19,7 +19,7 @@ import xml.etree.ElementTree as ET
 
 # Which pjproject tag to checkout to create the documentation.
 # Set to "master" to checkout the latest version
-pjproject_tag = 'master'  # 'master'  # 'docs_2_5'
+pjproject_tag = '2.18'  # 'master'  # 'docs_2_5'
 
 # Doxygen XML files to be sanitized because it contains characters causing XML parsing to fail
 sanitize_xml_files = [
