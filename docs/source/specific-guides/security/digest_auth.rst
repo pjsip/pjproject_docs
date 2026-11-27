@@ -199,7 +199,9 @@ response with a specific algorithm:
 
 .. code-block:: c
 
-   /* qop, nonce, opaque can be NULL — the framework fills them in */
+   /* nonce and opaque can be NULL (random values are used);
+    * a NULL qop means no qop in the challenge.
+    */
    pjsip_auth_srv_challenge2(&auth_srv,
                              NULL, NULL, NULL,
                              PJ_FALSE,                  /* not stale */
@@ -215,6 +217,30 @@ pick the strongest it supports), call :cpp:any:`pjsip_auth_srv_challenge2()`
 multiple times on the same ``tdata`` with different
 ``algorithm_type`` values. Per :rfc:`7616` the strongest algorithm
 should appear first.
+
+
+Verifying responses (server side)
+---------------------------------
+
+:cpp:any:`pjsip_auth_srv_verify()` checks the ``Authorization`` (or
+``Proxy-Authorization``) header of a request against the credential
+returned by the lookup callback. The server framework keeps no state
+about the challenges it has issued, so it does not check that:
+
+- the nonce is one the server has issued and is still valid,
+- the nonce count (``nc``) has not been used before with that nonce,
+  which is how a replayed request is detected (:rfc:`7616`
+  section 3.4),
+- the algorithm is one that was offered in the challenge.
+
+If the server needs these checks, the application should do them, for
+example in the :cpp:any:`pjsip_auth_lookup_cred2` callback (set with
+:cpp:any:`pjsip_auth_srv_init2()`), which receives the header being
+verified in ``param->auth_hdr``. To be able to check the nonce, the
+application should generate it and pass it to
+:cpp:any:`pjsip_auth_srv_challenge2()`, and it should record a nonce
+count only after :cpp:any:`pjsip_auth_srv_verify()` has returned
+``PJ_SUCCESS`` for the request.
 
 
 Helper APIs
