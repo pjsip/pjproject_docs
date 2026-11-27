@@ -199,11 +199,14 @@ response with a specific algorithm:
 
 .. code-block:: c
 
-   /* nonce and opaque can be NULL (random values are used);
-    * a NULL qop means no qop in the challenge.
+   /* RFC 3261 section 22.4 requires servers to send qop. nonce and
+    * opaque can be NULL to use random values (see "Verifying responses"
+    * below about checking the nonce).
     */
+   pj_str_t qop = pj_str("auth");
+
    pjsip_auth_srv_challenge2(&auth_srv,
-                             NULL, NULL, NULL,
+                             &qop, NULL, NULL,
                              PJ_FALSE,                  /* not stale */
                              tdata,
                              PJSIP_AUTH_ALGORITHM_SHA256);
@@ -231,16 +234,27 @@ about the challenges it has issued, so it does not check that:
 - the nonce count (``nc``) has not been used before with that nonce,
   which is how a replayed request is detected (:rfc:`7616`
   section 3.4),
-- the algorithm is one that was offered in the challenge.
+- the algorithm and opaque are the ones sent in the challenge.
 
-If the server needs these checks, the application should do them, for
-example in the :cpp:any:`pjsip_auth_lookup_cred2` callback (set with
-:cpp:any:`pjsip_auth_srv_init2()`), which receives the header being
-verified in ``param->auth_hdr``. To be able to check the nonce, the
-application should generate it and pass it to
-:cpp:any:`pjsip_auth_srv_challenge2()`, and it should record a nonce
-count only after :cpp:any:`pjsip_auth_srv_verify()` has returned
-``PJ_SUCCESS`` for the request.
+If the server needs these checks, the application should do them:
+
+- The nonce, algorithm and opaque can be checked before calling
+  :cpp:any:`pjsip_auth_srv_verify()`, or in the
+  :cpp:any:`pjsip_auth_lookup_cred2` callback (set with
+  :cpp:any:`pjsip_auth_srv_init2()`), which receives the header being
+  verified in ``param->auth_hdr``. An error returned by the callback is
+  returned by :cpp:any:`pjsip_auth_srv_verify()` with status code 403,
+  so it is simpler to check for an expired nonce before the call, to
+  answer it with a new challenge that has ``stale`` set. To be able to
+  check the nonce, the application should generate it and pass it to
+  :cpp:any:`pjsip_auth_srv_challenge2()`.
+- The nonce count should be checked once
+  :cpp:any:`pjsip_auth_srv_verify()` has returned ``PJ_SUCCESS``:
+  record it for the nonce and reject the request if it was already
+  recorded, as one atomic step (for example under a lock), so that two
+  copies of a request handled at the same time cannot both be accepted.
+  Without qop the request has no nonce count, so the nonce itself
+  should then be accepted only once.
 
 
 Helper APIs
