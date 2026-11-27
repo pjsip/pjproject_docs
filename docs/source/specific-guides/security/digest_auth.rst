@@ -231,8 +231,8 @@ returned by the lookup callback. The server framework keeps no state
 about the challenges it has issued, so it does not check that:
 
 - the nonce is one the server has issued and is still valid,
-- the nonce count (``nc``) has not been used before with that nonce,
-  which is how a replayed request is detected (:rfc:`7616`
+- the nonce count (``nc``) has not been used before with that nonce
+  and cnonce, which is how a replayed request is detected (:rfc:`7616`
   section 3.4),
 - the algorithm and opaque are the ones sent in the challenge.
 
@@ -250,11 +250,14 @@ If the server needs these checks, the application should do them:
   :cpp:any:`pjsip_auth_srv_challenge2()`.
 - The nonce count should be checked once
   :cpp:any:`pjsip_auth_srv_verify()` has returned ``PJ_SUCCESS``:
-  record it for the nonce and reject the request if it was already
-  recorded, as one atomic step (for example under a lock), so that two
-  copies of a request handled at the same time cannot both be accepted.
-  Without qop the request has no nonce count, so the nonce itself
-  should then be accepted only once.
+  record it for the user, nonce and cnonce (a nonce may be used by
+  several clients or sessions, each counting from 1 with its own
+  cnonce) and reject the request if it was already recorded, as one
+  atomic step (for example under a lock), so that two copies of a
+  request handled at the same time cannot both be accepted. The records
+  can be dropped once the nonce expires. Without qop the request has no
+  nonce count or cnonce, so the nonce itself should then be accepted
+  only once, which requires a new nonce for each challenge.
 
 
 Helper APIs
